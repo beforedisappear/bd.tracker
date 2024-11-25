@@ -49,6 +49,7 @@
     "@storybook/nextjs": "^8.4.2",
     "@storybook/react": "^8.4.2",
     "@storybook/test": "^8.4.2",
+    "@tanstack/react-query-devtools": "^5.61.3",
     "@types/node": "^20",
     "@types/react": "18.3.12",
     "@types/react-dom": "18.3.1",
