@@ -7,3 +7,6 @@
 ### App Features
 
 - 📦 FSD - 🍌 Light/Dark mode - 🥕 Storybook - ⭐️...
+
+FSD designations:
+...
