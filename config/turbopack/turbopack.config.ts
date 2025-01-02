@@ -1,12 +1,8 @@
 import type { ExperimentalTurboOptions } from "next/dist/server/config-shared";
 
 export const TurbopackConfig: ExperimentalTurboOptions = {
-  // treeShaking: true,
+  treeShaking: true,
   rules: {
-    // "*.a.svg": {
-    //   loaders: ["@svgr/webpack"],
-    //   as: "*.js",
-    // },
     "*.svgr": {
       loaders: ["@svgr/webpack"],
       as: "*.js",
