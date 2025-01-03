@@ -9,7 +9,7 @@ import {
 import { type ReactNode, useRef } from "react";
 
 export const StoreProvider = ({ children }: { children: ReactNode }) => {
-  const storeRef = useRef<GlobalStoreApi>();
+  const storeRef = useRef<GlobalStoreApi>(null);
   if (!storeRef.current) {
     storeRef.current = createStore();
   }
