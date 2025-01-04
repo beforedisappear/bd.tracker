@@ -1,4 +1,4 @@
-import { createStore as createZustandStore } from "zustand/vanilla";
+import { createStore as createZustandStore } from 'zustand/vanilla';
 
 interface IGlobalStoreState {}
 

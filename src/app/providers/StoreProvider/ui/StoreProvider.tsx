@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
 import {
   type GlobalStoreApi,
   GlobalStoreContext,
   createStore,
-} from "@/shared/config/stores/globalStore";
+} from '@/shared/config/stores/globalStore';
 
-import { type ReactNode, useRef } from "react";
+import { type ReactNode, useRef } from 'react';
 
 export const StoreProvider = ({ children }: { children: ReactNode }) => {
   const storeRef = useRef<GlobalStoreApi>(null);

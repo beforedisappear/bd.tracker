@@ -1,5 +1,5 @@
 # Use postgres/example user/password credentials
-version: "3.5"
+version: '3.5'
 
 services:
   postgres:
@@ -13,7 +13,7 @@ services:
     volumes:
       - postgres:${PGDATA:-/data/postgres}
     ports:
-      - "${DB_PORT:-5432}:5432"
+      - '${DB_PORT:-5432}:5432'
     networks:
       - postgres
     restart: unless-stopped
@@ -27,7 +27,7 @@ services:
     volumes:
       - pgadmin:/root/.pgadmin
     ports:
-      - "${PGADMIN_PORT:-5050}:80"
+      - '${PGADMIN_PORT:-5050}:80'
     networks:
       - postgres
     restart: unless-stopped

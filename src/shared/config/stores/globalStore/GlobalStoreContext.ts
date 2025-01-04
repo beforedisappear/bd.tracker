@@ -1,6 +1,6 @@
-import { createContext } from "react";
+import { createContext } from 'react';
 
-import type { GlobalStoreApi } from "./store";
+import type { GlobalStoreApi } from './store';
 
 export const GlobalStoreContext = createContext<GlobalStoreApi | undefined>(
   undefined,
