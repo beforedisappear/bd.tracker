@@ -13,7 +13,7 @@
     "storybook": "storybook dev -p 6006 -c ./config/storybook",
     "build-storybook": "storybook build -c ./config/storybook",
     "format": "bun x prettier",
-    "format:all": "bun x prettier -w .",
+    "format:all": "bun x prettier . -w \"**/*.{ts,tsx,mjs,json}\"",
     "db:validate": "bun x prisma validate --schema ./config/prisma/schema.prisma",
     "db:seed": "bun x prisma db seed",
     "db:migrate": "bun x prisma migrate dev --schema ./config/prisma/schema.prisma --name",
