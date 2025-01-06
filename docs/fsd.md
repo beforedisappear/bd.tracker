@@ -1,0 +1,13 @@
+### App FSD
+
+## Common rules
+
+• app - Next.js App Router dir
+• src/pages - independent of NextJS dir to reduce coupling with framework
+
+## Designations
+
+• shared/config - ...  
+• shared/assets - ...  
+• shared/lib - ...  
+• shared/api - ...

@@ -21,7 +21,8 @@ const eslintConfig = [
     ],
     rules: {
       'react/react-in-jsx-scope': 'off',
-      'prettier/prettier': ['error', { singleQuote: true }],
+      '@typescript-eslint/no-empty-object-type': 'warn',
+      'prettier/prettier': ['error', { singleQuote: true, endOfLine: 'auto' }],
     },
     settings: {
       'import/resolver': {

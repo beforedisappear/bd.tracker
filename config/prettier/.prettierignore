@@ -6,3 +6,6 @@ coverage
 **/*.html
 
 *.yml
+next-env.d.ts
+.next
+node_modules
