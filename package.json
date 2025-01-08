@@ -9,7 +9,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "add:ui": "bun x shadcn@latest add",
+    "ui:add": "bun x shadcn@latest add",
     "storybook": "storybook dev -p 6006 -c ./config/storybook",
     "build:storybook": "storybook build -c ./config/storybook",
     "format": "bun x prettier --config ./config/prettier/.prettierrc --ignore-path ./config/prettier/.prettierignore",
@@ -18,9 +18,11 @@
     "db:seed": "bun x prisma db seed",
     "db:migrate": "bun x prisma migrate dev --schema ./config/prisma/schema.prisma --name",
     "db:reset": "bun x prisma migrate reset --schema ./config/prisma/schema.prisma --name",
-    "docker:up": "docker compose -f ./config/docker/postgres/docker-compose.yml up -d",
-    "docker:down": "docker compose -f ./config/docker/postgres/docker-compose.yml down",
-    "prepare": "husky"
+    "docker:postgres:up": "docker compose -f ./config/docker/postgres/docker-compose.yml up -d",
+    "docker:postgres:down": "docker compose -f ./config/docker/postgres/docker-compose.yml down",
+    "prepare": "husky",
+    "docker:redis:up": "docker compose -f ./config/docker/redis/docker-compose.yml up -d",
+    "docker:redis:down": "docker compose -f ./config/docker/redis/docker-compose.yml down"
   },
   "prisma": {
     "seed": "tsx ./config/prisma/seed.ts"
@@ -41,6 +43,7 @@
     "react-device-detect": "^2.2.3",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.53.1",
+    "redis": "^4.7.0",
     "server-only": "^0.0.1",
     "tailwind-merge": "^2.5.3",
     "tailwindcss-animate": "^1.0.7",
