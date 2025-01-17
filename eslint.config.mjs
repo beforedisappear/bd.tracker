@@ -24,7 +24,12 @@ const eslintConfig = [
       '@typescript-eslint/no-empty-object-type': 'warn',
       'prettier/prettier': [
         'error',
-        { singleQuote: true, endOfLine: 'auto', arrowParens: 'avoid' },
+        {
+          singleQuote: true,
+          jsxSingleQuote: true,
+          endOfLine: 'auto',
+          arrowParens: 'avoid',
+        },
       ],
     },
     settings: {
