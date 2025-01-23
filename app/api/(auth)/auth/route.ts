@@ -1,7 +1,8 @@
 import { authDataSchema } from '$/dto/auth.dto';
 import { authService } from '$/services/auth.service';
 
-import { ZodError } from 'zod';
+import { handleError } from '$/errors/handeError';
+
 import { type NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
@@ -16,14 +17,6 @@ export async function POST(request: NextRequest) {
       status: 204,
     });
   } catch (e) {
-    let status = 500;
-    let message = '';
-
-    if (e instanceof ZodError) {
-      status = 400;
-      message = e.errors[0].message;
-    }
-
-    return new NextResponse(message, { status });
+    return handleError(e);
   }
 }

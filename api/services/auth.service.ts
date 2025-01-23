@@ -1,6 +1,7 @@
 import 'server-only';
 
 import crypto from 'crypto';
+import { v4 as uuidv4 } from 'uuid';
 import { add } from 'date-fns';
 import { SignJWT, jwtVerify } from 'jose';
 
@@ -9,9 +10,16 @@ import { userService } from './user.service';
 import { mailService } from './mail.service';
 import { prismaService } from '@/shared/lib/db/postgres';
 
-import type { CreateUser, IJwtPayload, LoginData } from '../types';
+import type {
+  CreateUser,
+  IJwtPayload,
+  ILoginDto,
+  ILogoutDto,
+  IRefreshTokenDto,
+} from '../types';
+import { ApiError } from '$/errors/apiError';
 
-const secretKey = '3719d726-d649-419e-8aea-7607457869ef';
+const secretKey = process.env.JWT_SECRET;
 
 const key = new TextEncoder().encode(secretKey);
 
@@ -31,46 +39,64 @@ class AuthService {
     });
   }
 
-  async login(data: LoginData, agent: string) {
+  async login(data: ILoginDto, agent: string) {
     const user = await userService.findOne(data.email);
 
-    if (!user) throw new Error('Error in the authentication process');
+    if (!user) throw ApiError.notFound('User not found');
 
     const code = await this.getAuthCode(user.id);
 
     if (code === data.code) {
-      return this.generateTokens({ userId: user.id, email: user.email }, agent);
+      const newTokens = await this.generateTokens(
+        { userId: user.id, email: user.email },
+        agent,
+      );
+
+      await this.clearAuthCode(user.id);
+
+      return newTokens;
     }
 
-    //incorrect code
-    return null;
+    throw ApiError.conflict('Incorrect code');
   }
 
-  async refreshTokens(refreshToken: string, agent: string) {
+  async refreshTokens(data: IRefreshTokenDto, agent: string) {
     const token = await prismaService.jWT.delete({
-      where: { token: refreshToken },
+      where: { token: data.refreshToken },
     });
 
-    if (!token || new Date(token.exp) < new Date()) {
-      throw new Error('Session expired');
+    if (!token) throw ApiError.conflict('Token not provided');
+    else if (new Date(token.exp) < new Date()) {
+      throw ApiError.unauthorized('Session expired');
     }
 
     const user = await userService.findOne(token.userId);
 
-    if (!user) throw new Error('User not found');
+    if (!user) throw ApiError.notFound('User not found');
 
     return this.generateTokens({ userId: user.id, email: user.email }, agent);
   }
 
-  async logout(refreshToken: string) {
+  async verifyJwt(token: string) {
+    const accessToken = token.replace('Bearer ', '');
+
+    try {
+      const { payload } = await jwtVerify(accessToken, key);
+      return payload as IJwtPayload;
+    } catch {
+      throw ApiError.unauthorized('Invalid or expired token');
+    }
+  }
+
+  async logout(data: ILogoutDto) {
     const token = await prismaService.jWT.findFirst({
-      where: { token: refreshToken },
+      where: { token: data.refreshToken },
     });
 
-    if (!token) throw new Error('Token was expired');
+    if (!token) throw ApiError.unauthorized('Token was expired');
 
     await prismaService.jWT.delete({
-      where: { token: refreshToken },
+      where: { token: data.refreshToken },
     });
 
     return null;
@@ -81,7 +107,11 @@ class AuthService {
 
     const refreshToken = await this.getRefreshToken(payload.userId, agent);
 
-    return { accessToken, refreshToken };
+    return {
+      accessToken,
+      refreshToken: refreshToken.token,
+      exp: refreshToken.exp,
+    };
   }
 
   private getAccessToken(payload: IJwtPayload) {
@@ -97,14 +127,16 @@ class AuthService {
       where: { userId, userAgent: agent },
     });
 
-    const token = jwt?.token || '';
+    const token = jwt?.token || ' ';
 
     return prismaService.jWT.upsert({
-      where: { token },
+      where: { token: token },
       update: {
+        token: uuidv4(),
         exp: add(new Date(), { months: 1 }),
       },
       create: {
+        token: uuidv4(),
         exp: add(new Date(), { months: 1 }),
         userId,
         userAgent: agent,
@@ -116,6 +148,10 @@ class AuthService {
     return redisService.get(userId);
   }
 
+  private async clearAuthCode(userId: string) {
+    return redisService.del(userId);
+  }
+
   private async generateAuthCode(userId: string) {
     try {
       const code = crypto.randomInt(100000, 1000000).toString();
@@ -123,12 +159,12 @@ class AuthService {
       const res = await redisService.set(userId, code, { EX: 300 });
 
       if (res !== 'OK')
-        throw new Error('Error in the key establishment process');
+        throw ApiError.internal('Error in the key establishment process');
 
       return code;
     } catch (e) {
       console.error(e);
-      throw new Error('Error in the code creation process');
+      throw ApiError.internal('Error in the code creation process');
     }
   }
 }

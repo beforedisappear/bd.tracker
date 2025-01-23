@@ -1,6 +1,7 @@
 import 'server-only';
 
 import nodemailer, { Transporter } from 'nodemailer';
+import { ApiError } from '$/errors/apiError';
 
 import type { EmailOptions } from '../types';
 
@@ -32,26 +33,9 @@ class MailService {
       console.log('Message sent: %s', info.messageId);
     } catch (error) {
       console.error('Error sending email:', error);
-      throw new Error('Failed to send email');
+      throw ApiError.internal('Failed to send email');
     }
   }
 }
 
 export const mailService = new MailService();
-
-// Пример использования MailService
-// (async () => {
-//   const mailService = new MailService();
-
-//   try {
-//     await mailService.sendAuthMail({
-//       from: 'your-email@example.com',
-//       to: 'roman23kl@gmail.com',
-//       subject: 'Test Email',
-//       text: 'Hello, this is a test email sent from Node.js using Nodemailer!',
-//       html: '<h1>Hello</h1><p>This is a test email sent from Node.js using Nodemailer!</p>',
-//     });
-//   } catch (error) {
-//     console.error('Error:', error);
-//   }
-// })();
