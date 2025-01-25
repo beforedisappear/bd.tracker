@@ -1,7 +1,7 @@
-import { refreshTokensSchema } from '$/dto/auth.dto';
+import { RefreshTokensReqSchema } from '$/dto/auth.dto';
 import { authService } from '$/services/auth.service';
 import { NextRequest, NextResponse, userAgent } from 'next/server';
-import { handleError } from '$/errors/handeError';
+import { ErrorResponse } from '$/errors/errorResponse';
 
 import type { IRefreshTokenDto } from '$/types';
 
@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   try {
     const dto: IRefreshTokenDto = await request.json();
 
-    refreshTokensSchema.parse(dto);
+    RefreshTokensReqSchema.parse(dto);
 
     const agent = userAgent(request);
 
@@ -19,6 +19,6 @@ export async function POST(request: NextRequest) {
       status: 200,
     });
   } catch (e) {
-    return handleError(e);
+    return ErrorResponse(e);
   }
 }

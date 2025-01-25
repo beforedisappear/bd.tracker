@@ -1,8 +1,9 @@
-import { ZodError } from 'zod';
 import { ApiError } from './apiError';
 import { NextResponse } from 'next/server';
 
-export function handleError(e: unknown) {
+import { ZodError } from 'zod';
+
+export function ErrorResponse(e: unknown) {
   console.error(e);
 
   if (e instanceof ApiError) {

@@ -1,8 +1,8 @@
-import { loginDataSchema } from '$/dto/auth.dto';
+import { LoginDataReqSchema } from '$/dto/auth.dto';
 import { authService } from '$/services/auth.service';
 
 import { NextResponse, type NextRequest, userAgent } from 'next/server';
-import { handleError } from '$/errors/handeError';
+import { ErrorResponse } from '$/errors/errorResponse';
 
 import type { ILoginDto } from '$/types';
 
@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
   try {
     const data: ILoginDto = await request.json();
 
-    loginDataSchema.parse(data);
+    LoginDataReqSchema.parse(data);
 
     const agent = userAgent(request);
 
@@ -23,6 +23,6 @@ export async function POST(request: NextRequest) {
       status: 200,
     });
   } catch (e) {
-    return handleError(e);
+    return ErrorResponse(e);
   }
 }

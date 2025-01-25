@@ -1,7 +1,7 @@
-import { authDataSchema } from '$/dto/auth.dto';
+import { AuthDataReqSchema } from '$/dto/auth.dto';
 import { authService } from '$/services/auth.service';
 
-import { handleError } from '$/errors/handeError';
+import { ErrorResponse } from '$/errors/errorResponse';
 
 import { type NextRequest, NextResponse } from 'next/server';
 
@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
 
-    authDataSchema.parse(data);
+    AuthDataReqSchema.parse(data);
 
     await authService.auth(data);
 
@@ -17,6 +17,6 @@ export async function POST(request: NextRequest) {
       status: 204,
     });
   } catch (e) {
-    return handleError(e);
+    return ErrorResponse(e);
   }
 }

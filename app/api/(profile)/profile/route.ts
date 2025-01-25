@@ -1,5 +1,5 @@
 import { ApiError } from '$/errors/apiError';
-import { handleError } from '$/errors/handeError';
+import { ErrorResponse } from '$/errors/errorResponse';
 import { authService } from '$/services/auth.service';
 import { userService } from '$/services/user.service';
 
@@ -19,6 +19,6 @@ export async function GET(request: NextRequest) {
       status: 200,
     });
   } catch (e) {
-    return handleError(e);
+    return ErrorResponse(e);
   }
 }

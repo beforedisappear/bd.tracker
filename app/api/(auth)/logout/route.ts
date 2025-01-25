@@ -1,16 +1,16 @@
-import { logoutDataSchema } from '$/dto/auth.dto';
+import { LogoutDataReqSchema } from '$/dto/auth.dto';
 import { authService } from '$/services/auth.service';
 
 import { NextResponse, type NextRequest } from 'next/server';
 
 import type { ILogoutDto } from '$/types';
-import { handleError } from '$/errors/handeError';
+import { ErrorResponse } from '$/errors/errorResponse';
 
 export async function POST(request: NextRequest) {
   try {
     const dto: ILogoutDto = await request.json();
 
-    logoutDataSchema.parse(dto);
+    LogoutDataReqSchema.parse(dto);
 
     await authService.logout(dto);
 
@@ -18,6 +18,6 @@ export async function POST(request: NextRequest) {
       status: 204,
     });
   } catch (e) {
-    return handleError(e);
+    return ErrorResponse(e);
   }
 }
