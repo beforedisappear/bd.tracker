@@ -2,7 +2,7 @@
 
 ## App Stack
 
-🍎 Next.js 15 - 🌈 React 19 - 🍊 Tailwind CSS - 🍞 shadcn/ui - 🥯 Prisma - 🐻 zustand - 📝 - react-hook-form - 🎲 dnd-kit - ✉️ nodemailer - 🍕 jest - ❓Cypress - ...
+🍎 Next.js 15 - 🌈 React 19 - 🌊 Tailwind CSS - 🍞 shadcn/ui - 🐻 zustand - 📝 - react-hook-form - 🎲 dnd-kit - 🍕 jest - ❓Cypress - 🥯 Prisma (PostgreSQL) - 💯 Redis - ✉️ nodemailer - 💬 socket.io? - ...
 
 ## App Features
 
