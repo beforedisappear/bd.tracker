@@ -2,9 +2,10 @@ import { RefreshTokensReqSchema, RefreshTokensResSchema } from '$/dto/auth.dto';
 
 import { type RouteConfig } from '@asteasolutions/zod-to-openapi';
 
-export const RefreshTokenPathDoc: RouteConfig = {
+export const PostRefreshTokensDoc: RouteConfig = {
   method: 'post',
   path: '/refresh-tokens',
+  tags: ['auth'],
   description: 'to rotate tokens',
   request: {
     body: {
