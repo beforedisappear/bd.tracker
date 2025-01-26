@@ -61,9 +61,15 @@ class AuthService {
   }
 
   async refreshTokens(data: IRefreshTokenDto, agent: string) {
-    const token = await prismaService.jWT.delete({
-      where: { token: data.refreshToken },
-    });
+    let token;
+
+    try {
+      token = await prismaService.jWT.delete({
+        where: { token: data.refreshToken },
+      });
+    } catch {
+      throw ApiError.notFound('Token not found');
+    }
 
     if (!token) throw ApiError.conflict('Token not provided');
     else if (new Date(token.exp) < new Date()) {

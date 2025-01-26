@@ -20,5 +20,11 @@ export function ErrorResponse(e: unknown) {
     });
   }
 
-  return new NextResponse('Internal Server Error', { status: 500 });
+  let message = `Internal Server Error`;
+
+  if (e instanceof Error) {
+    message += e.message;
+  }
+
+  return new NextResponse(message, { status: 500 });
 }

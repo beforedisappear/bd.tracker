@@ -1,17 +1,11 @@
-'use client';
+import { SwaggerPageContent } from './content';
 
-import 'swagger-ui-react/swagger-ui.css';
+import type { Metadata } from 'next';
 
-import SwaggerUI from 'swagger-ui-react';
-
-import { openApiSpec } from '&/swagger/swagger.config';
-
-// import dynamic from 'next/dynamic';
-
-// const DynamicSwaggerUi = dynamic(() => import('swagger-ui-react'), {
-//   ssr: false,
-// });
+export const metadata: Metadata = {
+  title: 'API documentation',
+};
 
 export default function SwaggerPage() {
-  return <SwaggerUI spec={openApiSpec} />;
+  return <SwaggerPageContent />;
 }
