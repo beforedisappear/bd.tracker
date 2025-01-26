@@ -5,7 +5,7 @@ import { ErrorResponse } from '$/errors/errorResponse';
 
 import type { IRefreshTokenDto } from '$/types';
 
-export async function RefreshTokensPost(request: NextRequest) {
+export async function PostRefreshTokens(request: NextRequest) {
   try {
     const dto: IRefreshTokenDto = await request.json();
 

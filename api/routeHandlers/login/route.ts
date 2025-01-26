@@ -6,7 +6,7 @@ import { ErrorResponse } from '$/errors/errorResponse';
 
 import type { ILoginDto } from '$/types';
 
-export async function LoginPost(request: NextRequest) {
+export async function PostLogin(request: NextRequest) {
   try {
     const data: ILoginDto = await request.json();
 

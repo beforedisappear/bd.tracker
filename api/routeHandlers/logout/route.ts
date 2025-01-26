@@ -6,7 +6,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import type { ILogoutDto } from '$/types';
 import { ErrorResponse } from '$/errors/errorResponse';
 
-export async function LogoutPost(request: NextRequest) {
+export async function PostLogout(request: NextRequest) {
   try {
     const dto: ILogoutDto = await request.json();
 

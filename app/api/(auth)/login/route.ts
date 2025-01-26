@@ -1,1 +1,1 @@
-export { LoginPost as POST } from '$/routeHandlers/login/route';
+export { PostLogin as POST } from '$/routeHandlers/login/route';

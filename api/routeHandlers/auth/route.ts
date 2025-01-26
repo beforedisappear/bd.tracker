@@ -5,7 +5,7 @@ import { ErrorResponse } from '$/errors/errorResponse';
 
 import { type NextRequest, NextResponse } from 'next/server';
 
-export async function AuthPost(request: NextRequest) {
+export async function PostAuth(request: NextRequest) {
   try {
     const data = await request.json();
 

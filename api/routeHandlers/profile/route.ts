@@ -5,7 +5,7 @@ import { userService } from '$/services/user.service';
 
 import { type NextRequest, NextResponse } from 'next/server';
 
-export async function ProfileGet(request: NextRequest) {
+export async function GetProfile(request: NextRequest) {
   try {
     const accessToken = request.headers.get('Authorization');
 

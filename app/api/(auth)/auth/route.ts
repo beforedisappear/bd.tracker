@@ -1,1 +1,1 @@
-export { AuthPost as POST } from '$/routeHandlers/auth/route';
+export { PostAuth as POST } from '$/routeHandlers/auth/route';
