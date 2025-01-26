@@ -2,7 +2,7 @@ import { LoginDataReqSchema, LoginDataResSchema } from '$/dto/auth.dto';
 
 import { type RouteConfig } from '@asteasolutions/zod-to-openapi';
 
-export const LoginPath: RouteConfig = {
+export const LoginPathDoc: RouteConfig = {
   method: 'post',
   path: '/login',
   description: 'to send auth code on email',

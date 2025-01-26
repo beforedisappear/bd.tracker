@@ -2,7 +2,7 @@ import { AuthDataReqSchema } from '$/dto/auth.dto';
 
 import { type RouteConfig } from '@asteasolutions/zod-to-openapi';
 
-export const AuthPath: RouteConfig = {
+export const AuthPathDoc: RouteConfig = {
   method: 'post',
   path: '/auth',
   description: 'to get auth data',

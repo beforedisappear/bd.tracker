@@ -6,10 +6,10 @@ import {
   OpenAPIRegistry,
 } from '@asteasolutions/zod-to-openapi';
 
-import { AuthPath } from '#/api/(auth)/auth/doc';
-import { LoginPath } from '#/api/(auth)/login/doc';
-import { RefreshTokenPath } from '#/api/(auth)/refresh-tokens/doc';
-import { LogoutPath } from '#/api/(auth)/logout/doc';
+import { AuthPathDoc } from '$/routeHandlers/auth/doc';
+import { LoginPathDoc } from '$/routeHandlers/login/doc';
+import { RefreshTokenPathDoc } from '$/routeHandlers/refreshTokens/doc';
+import { LogoutPathDoc } from '$/routeHandlers/logout/doc';
 
 // const UserIdSchema = openAPIRegistry.registerParameter(
 //   'UserId',
@@ -74,10 +74,10 @@ extendZodWithOpenApi(z);
 
 const openAPIRegistry = new OpenAPIRegistry();
 
-openAPIRegistry.registerPath(AuthPath);
-openAPIRegistry.registerPath(LoginPath);
-openAPIRegistry.registerPath(RefreshTokenPath);
-openAPIRegistry.registerPath(LogoutPath);
+openAPIRegistry.registerPath(AuthPathDoc);
+openAPIRegistry.registerPath(LoginPathDoc);
+openAPIRegistry.registerPath(RefreshTokenPathDoc);
+openAPIRegistry.registerPath(LogoutPathDoc);
 
 function getOpenApiDocumentation() {
   const generator = new OpenApiGeneratorV3(openAPIRegistry.definitions);

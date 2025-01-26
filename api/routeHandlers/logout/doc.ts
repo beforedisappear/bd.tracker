@@ -2,7 +2,7 @@ import { LogoutDataReqSchema } from '$/dto/auth.dto';
 
 import { type RouteConfig } from '@asteasolutions/zod-to-openapi';
 
-export const LogoutPath: RouteConfig = {
+export const LogoutPathDoc: RouteConfig = {
   method: 'post',
   path: '/logout',
   description: 'to logout from profile',
