@@ -31,6 +31,7 @@ const eslintConfig = [
           arrowParens: 'avoid',
         },
       ],
+      '@typescript-eslint/no-empty-object-type': 'off',
     },
     settings: {
       'import/resolver': {
