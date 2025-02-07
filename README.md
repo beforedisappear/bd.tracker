@@ -1,5 +1,7 @@
 # BD.tracker
 
+BD.tracker - Fullstack приложение, с упором на Frontend составляющую. Backend часть инкапсулирована в /api, тогда как Frontend реализован внутри /src с использованием методологии Feature Sliced Design.
+
 ## App Stack
 
 🍎 Next.js 15 - 🌈 React 19 - 🌊 Tailwind CSS - 🍞 shadcn/ui - 🐻 zustand - 📝 - react-hook-form - 🎲 dnd-kit - 🍕 jest - ❓Cypress - 🥯 Prisma (PostgreSQL) - 💯 Redis - ✉️ nodemailer - 💬 socket.io? - ...
