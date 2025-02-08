@@ -45,7 +45,7 @@ function getOpenApiDocumentation() {
       title: 'BD.tracker API',
       description: 'Doc of api based on Next.js Route Handlers',
     },
-    servers: [{ url: 'http://localhost:3000/api' }],
+    servers: [{ url: process.env.NEXT_PUBLIC_API_URL! }],
   });
 }
 

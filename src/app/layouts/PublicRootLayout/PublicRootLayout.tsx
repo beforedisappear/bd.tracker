@@ -2,7 +2,7 @@
 
 import type { PropsWithChildren } from 'react';
 
-export function RootLayout({ children }: PropsWithChildren) {
+export function PublicRootLayout({ children }: PropsWithChildren) {
   return (
     <div id='wrapper'>
       {/* <Header /> */}

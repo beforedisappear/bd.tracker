@@ -1,6 +1,7 @@
 'use client';
 
 import 'swagger-ui-react/swagger-ui.css';
+import '&/swagger/styles.css';
 
 import SwaggerUI from 'swagger-ui-react';
 

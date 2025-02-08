@@ -3,8 +3,6 @@ import './styles/globals.css';
 import { geistMono } from './fonts/geistMono';
 import { geistSans } from './fonts/geistSans';
 
-import { RootLayout } from './layouts/RootLayout/RootLayout';
-
 import { ThemeProvider } from './providers/ThemeProvider';
 import { StoreProvider } from './providers/StoreProvider';
 import { QueryProvider } from './providers/QueryProvider';
@@ -20,9 +18,7 @@ export function App({ children }: PropsWithChildren) {
       >
         <StoreProvider>
           <ThemeProvider>
-            <QueryProvider>
-              <RootLayout>{children}</RootLayout>
-            </QueryProvider>
+            <QueryProvider>{children}</QueryProvider>
           </ThemeProvider>
         </StoreProvider>
       </body>
