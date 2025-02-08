@@ -1,14 +1,15 @@
+import { СommonConfig } from '&/common/common.config';
+import { TurbopackConfig } from '&/turbopack/turbopack.config';
+import { WebpackConfig } from '&/webpack/webpack.config';
+
 import type { NextConfig } from 'next';
 
-import { TurbopackConfig } from './config/turbopack/turbopack.config';
-import { WebpackConfig } from './config/webpack/webpack.config';
-
 const nextConfig: NextConfig = {
+  ...СommonConfig,
   webpack: WebpackConfig,
   experimental: {
     turbo: TurbopackConfig,
   },
-  // reactStrictMode: false,
 };
 
 export default nextConfig;
