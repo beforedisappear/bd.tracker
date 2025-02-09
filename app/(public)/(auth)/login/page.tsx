@@ -5,6 +5,4 @@ export const metadata: Metadata = {
   description: '',
 };
 
-export default function Page() {
-  return <div>login page</div>;
-}
+export { LoginPage as default } from '@/pages/LoginPage';
