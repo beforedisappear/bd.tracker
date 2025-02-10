@@ -1,3 +1,4 @@
+import { SwitchTheme } from '@/features/SwitchTheme';
 import { HeaderLogo } from '../HeaderLogo/HeaderLogo';
 
 import Link from 'next/link';
@@ -10,6 +11,8 @@ export function Header({}: Props) {
       <HeaderLogo />
 
       <Link href={'/login'}>Войти</Link>
+
+      <SwitchTheme />
     </header>
   );
 }
