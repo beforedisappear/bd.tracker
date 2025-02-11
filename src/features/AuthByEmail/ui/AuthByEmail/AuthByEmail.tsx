@@ -1,25 +1,39 @@
 'use client';
 
-import { Button } from '@/shared/ui';
-import { Select } from '@/shared/ui/Select';
-import { FormProvider, useForm } from 'react-hook-form';
+import { Button, Input } from '@/shared/ui';
+import { useForm } from 'react-hook-form';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Form } from '@/shared/ui/Form';
 
 interface Props {}
 
+const FormSchema = z.object({
+  email: z
+    .string({
+      required_error: 'Please select an email to display.',
+    })
+    .min(1, 'Please enter an email address.')
+    .email(),
+});
+
 export function AuthByEmail({}: Props) {
-  const methods = useForm();
+  const methods = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+  });
 
   const onSubmit = methods.handleSubmit(data => {
     console.log('data', data);
   });
 
   return (
-    <FormProvider {...methods}>
+    <Form {...methods}>
       <form onSubmit={onSubmit}>
-        <Select name='selct' options={[{ value: '1', name: '1' }]} />
+        <Input name='email' fieldLabel='Email' />
 
         <Button type='submit'>Отправить</Button>
       </form>
-    </FormProvider>
+    </Form>
   );
 }
