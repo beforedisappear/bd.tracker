@@ -5,11 +5,11 @@ import { WebpackConfig } from '&/webpack/webpack.config';
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  ...СommonConfig,
   webpack: WebpackConfig,
   experimental: {
     turbo: TurbopackConfig,
   },
+  ...СommonConfig,
 };
 
 export default nextConfig;

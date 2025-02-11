@@ -33,7 +33,7 @@ openAPIRegistry.registerPath(PostRefreshTokensDoc);
 openAPIRegistry.registerPath(PostLogoutDoc);
 
 //profile
-openAPIRegistry.registerPath(GetProfileDoc);
+openAPIRegistry.registerPath(GetProfileDoc(bearerAuth.name));
 
 function getOpenApiDocumentation() {
   const generator = new OpenApiGeneratorV3(openAPIRegistry.definitions);

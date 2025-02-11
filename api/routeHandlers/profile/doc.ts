@@ -1,13 +1,12 @@
 import { UserSchemaRes } from '$/dto/user.dto';
-import { bearerAuth } from '&/swagger/swagger.config';
 import { type RouteConfig } from '@asteasolutions/zod-to-openapi';
 
-export const GetProfileDoc: RouteConfig = {
+export const GetProfileDoc = (bearerName: string): RouteConfig => ({
   method: 'get',
   path: '/profile',
   tags: ['profile'],
   description: 'to get user data',
-  security: [{ [bearerAuth.name]: [] }],
+  security: [{ [bearerName]: [] }],
   request: {},
   responses: {
     200: {
@@ -15,4 +14,4 @@ export const GetProfileDoc: RouteConfig = {
       description: '',
     },
   },
-};
+});
