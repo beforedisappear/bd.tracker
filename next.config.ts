@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
   experimental: {
     turbo: TurbopackConfig,
   },
+
   ...СommonConfig,
 };
 

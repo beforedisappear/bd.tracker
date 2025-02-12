@@ -1,70 +1,85 @@
-'use client';
+import { Fragment } from 'react';
+import { InputOTPContainer } from './InputOTPContainer';
+import { InputOTPGroup } from './InputOTPGroup';
+import { InputOTPSeparator } from './InputOTPSeparator';
+import { InputOTPSlot } from './InputOTPSlot';
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '../Form';
 
-import * as React from 'react';
-import { OTPInput, OTPInputContext } from 'input-otp';
-import { cn } from '@/shared/lib/css';
-import { MinusIcon } from '@radix-ui/react-icons';
+import { REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
+import { useFormContext } from 'react-hook-form';
 
-const InputOTP = React.forwardRef<
-  React.ElementRef<typeof OTPInput>,
-  React.ComponentPropsWithoutRef<typeof OTPInput>
->(({ className, containerClassName, ...props }, ref) => (
-  <OTPInput
-    ref={ref}
-    containerClassName={cn(
-      'flex items-center gap-2 has-[:disabled]:opacity-50',
-      containerClassName,
-    )}
-    className={cn('disabled:cursor-not-allowed', className)}
-    {...props}
-  />
-));
-InputOTP.displayName = 'InputOTP';
+interface IProps {
+  name: string;
+  length: number;
+  groupSize?: number;
+  fieldLabel?: string;
+  fieldDescription?: string;
+}
 
-const InputOTPGroup = React.forwardRef<
-  React.ElementRef<'div'>,
-  React.ComponentPropsWithoutRef<'div'>
->(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn('flex items-center', className)} {...props} />
-));
-InputOTPGroup.displayName = 'InputOTPGroup';
+export function InputOTP(props: IProps) {
+  const { name, length, groupSize = 3, fieldLabel, fieldDescription } = props;
 
-const InputOTPSlot = React.forwardRef<
-  React.ElementRef<'div'>,
-  React.ComponentPropsWithoutRef<'div'> & { index: number }
->(({ index, className, ...props }, ref) => {
-  const inputOTPContext = React.useContext(OTPInputContext);
-  const { char, hasFakeCaret, isActive } = inputOTPContext.slots[index];
+  if (length <= 0 || groupSize <= 0) {
+    throw new Error('groupSize и separatorStep can only be positive ');
+  }
+
+  const numberOfGroups = Math.ceil(length / groupSize);
+
+  const { control } = useFormContext();
 
   return (
-    <div
-      ref={ref}
-      className={cn(
-        'relative flex h-9 w-9 items-center justify-center border-y border-r border-input text-sm shadow-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md',
-        isActive && 'z-10 ring-1 ring-ring',
-        className,
+    <FormField
+      name={name}
+      control={control}
+      render={({ field }) => (
+        <FormItem>
+          {fieldLabel && <FormLabel>{fieldLabel}</FormLabel>}
+
+          <FormControl>
+            <InputOTPContainer
+              {...field}
+              maxLength={length}
+              pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
+            >
+              {new Array(numberOfGroups).fill('_').map((_, groupIndex) => {
+                const slotsInGroup =
+                  groupIndex === numberOfGroups - 1
+                    ? length - groupIndex * groupSize
+                    : groupSize;
+
+                const isNotLast = numberOfGroups - 1 !== groupIndex;
+
+                return (
+                  <Fragment key={groupIndex}>
+                    <InputOTPGroup>
+                      {new Array(slotsInGroup).fill('_').map((_, slotIndex) => {
+                        const index = groupIndex * groupSize + slotIndex;
+
+                        return <InputOTPSlot key={index} index={index} />;
+                      })}
+                    </InputOTPGroup>
+
+                    {isNotLast && <InputOTPSeparator />}
+                  </Fragment>
+                );
+              })}
+            </InputOTPContainer>
+          </FormControl>
+
+          {fieldDescription && (
+            <FormDescription>{fieldDescription}</FormDescription>
+          )}
+
+          <FormMessage />
+        </FormItem>
       )}
-      {...props}
-    >
-      {char}
-      {hasFakeCaret && (
-        <div className='pointer-events-none absolute inset-0 flex items-center justify-center'>
-          <div className='h-4 w-px animate-caret-blink bg-foreground duration-1000' />
-        </div>
-      )}
-    </div>
+    />
   );
-});
-InputOTPSlot.displayName = 'InputOTPSlot';
-
-const InputOTPSeparator = React.forwardRef<
-  React.ElementRef<'div'>,
-  React.ComponentPropsWithoutRef<'div'>
->(({ ...props }, ref) => (
-  <div ref={ref} role='separator' {...props}>
-    <MinusIcon />
-  </div>
-));
-InputOTPSeparator.displayName = 'InputOTPSeparator';
-
-export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator };
+}
