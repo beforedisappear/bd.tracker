@@ -6,8 +6,6 @@ import { DropdownMenuSeparator } from './DropdownMenuSeparator';
 import { DropdownMenuSubContent } from './DropdownMenuSubContent';
 import { DropdownMenuSubTrigger } from './DropdownMenuSubTrigger';
 
-import { useId } from 'react';
-
 import type { MenuItem, MenuSubItem } from './DropdownMenu.types';
 import { v4 as uuidv4 } from 'uuid';
 

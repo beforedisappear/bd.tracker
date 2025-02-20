@@ -13,7 +13,7 @@ const defaultInitState: IGlobalStoreState = {};
 export const createStore = (
   initState: IGlobalStoreState = defaultInitState,
 ) => {
-  return createZustandStore<GlobalStore>()((set, get, store) => ({
+  return createZustandStore<GlobalStore>()(() => ({
     ...initState,
   }));
 };
