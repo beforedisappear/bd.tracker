@@ -11,9 +11,9 @@ body {
   min-height: 100%;
 }
 
-body > *:nth-child(2) {
+/* body > *:nth-child(2) {
   flex-grow: 1;
-}
+} */
 
 #wrapper {
   display: flex;

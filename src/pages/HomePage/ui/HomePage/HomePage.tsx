@@ -3,5 +3,5 @@
 export async function HomePage() {
   // console.log(await redis.get('key'));
 
-  return <div></div>;
+  return <div>123</div>;
 }

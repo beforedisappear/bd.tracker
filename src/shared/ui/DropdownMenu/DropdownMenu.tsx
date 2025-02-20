@@ -17,12 +17,12 @@ import { DropdownMenuSeparator } from './DropdownMenuSeparator';
 
 import { v4 as uuidv4 } from 'uuid';
 
-import type { Options } from './DropdownMenu.types';
 import {
   getMenuItem,
   getMenuSeparator,
   getMenuSubItem,
 } from './DropdownMenu.utils';
+import type { Options } from './DropdownMenu.types';
 
 interface IProps {
   trigger?: {

@@ -1,3 +1,5 @@
+'use client';
+
 import { Fragment } from 'react';
 import { InputOTPContainer } from './InputOTPContainer';
 import { InputOTPGroup } from './InputOTPGroup';

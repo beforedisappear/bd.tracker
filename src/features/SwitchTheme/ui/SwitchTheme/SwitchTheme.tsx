@@ -2,7 +2,7 @@
 
 import { Moon, Sun } from 'lucide-react';
 
-import { DropdownMenu } from '@/shared/ui';
+import { DropdownMenu } from '@/shared/ui/c';
 
 import { useTheme } from 'next-themes';
 

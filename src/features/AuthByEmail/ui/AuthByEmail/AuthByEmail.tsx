@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Input, InputOTP, Form } from '@/shared/ui';
+import { Button, Input, InputOTP, Form } from '@/shared/ui/c';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 
