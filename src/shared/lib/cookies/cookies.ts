@@ -1,9 +1,5 @@
 import Cookies from 'js-cookie';
-import { getCookieConfig } from './config';
-
-const accessTokenName = 'access_token';
-
-const refreshTokenName = 'refresh_tokens';
+import { accessTokenName, getCookieConfig, refreshTokenName } from './config';
 
 export const getAccessToken = () => {
   return Cookies.get(accessTokenName) ?? null;
@@ -13,13 +9,13 @@ export const getRefreshToken = () => {
   return Cookies.get(refreshTokenName) ?? null;
 };
 
-export const saveTokens = (accessToken: string, refreshToken: string) => {
+export const saveJwt = (accessToken: string, refreshToken: string) => {
   Cookies.set(accessTokenName, accessToken, getCookieConfig());
 
   Cookies.set(refreshTokenName, refreshToken, getCookieConfig());
 };
 
-export const removeTokens = () => {
+export const removeJwt = () => {
   const expiredDate = new Date(0);
 
   Cookies.set(accessTokenName, '', getCookieConfig(expiredDate));

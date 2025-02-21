@@ -3,11 +3,11 @@ import { authService } from '$/services/auth.service';
 import { NextRequest, NextResponse, userAgent } from 'next/server';
 import { ErrorResponse } from '$/errors/errorResponse';
 
-import type { IRefreshTokenDto } from '$/types';
+import type { RefreshTokenDto } from '$/types';
 
 export async function PostRefreshTokens(request: NextRequest) {
   try {
-    const dto: IRefreshTokenDto = await request.json();
+    const dto: RefreshTokenDto = await request.json();
 
     RefreshTokensReqSchema.parse(dto);
 

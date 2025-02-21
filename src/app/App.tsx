@@ -6,6 +6,7 @@ import { geistSans } from './fonts/geistSans';
 import { ThemeProvider } from './providers/ThemeProvider';
 import { StoreProvider } from './providers/StoreProvider';
 import { QueryProvider } from './providers/QueryProvider';
+import { ToastProvider } from './providers/ToastProvider';
 
 import type { PropsWithChildren } from 'react';
 
@@ -18,7 +19,9 @@ export function App({ children }: PropsWithChildren) {
       >
         <StoreProvider>
           <ThemeProvider>
-            <QueryProvider>{children}</QueryProvider>
+            <QueryProvider>
+              <ToastProvider>{children}</ToastProvider>
+            </QueryProvider>
           </ThemeProvider>
         </StoreProvider>
       </body>

@@ -1,6 +1,5 @@
 'use client';
 
-import { useFormContext } from 'react-hook-form';
 import {
   FormControl,
   FormDescription,
@@ -11,7 +10,11 @@ import {
 } from '../Form';
 import { PureInput } from './PureInput';
 
-interface IProps {
+import { useFormContext } from 'react-hook-form';
+
+import type { ComponentProps } from 'react';
+
+interface IProps extends ComponentProps<typeof PureInput> {
   name: string;
   fieldLabel?: string;
   fieldDescription?: string;

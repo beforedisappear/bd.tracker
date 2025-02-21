@@ -4,10 +4,11 @@ import { authService } from '$/services/auth.service';
 import { ErrorResponse } from '$/errors/errorResponse';
 
 import { type NextRequest, NextResponse } from 'next/server';
+import type { AuthDto } from '$/types';
 
 export async function PostAuth(request: NextRequest) {
   try {
-    const data = await request.json();
+    const data: AuthDto = await request.json();
 
     AuthDataReqSchema.parse(data);
 

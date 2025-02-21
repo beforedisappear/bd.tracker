@@ -23,10 +23,18 @@ interface IProps {
   groupSize?: number;
   fieldLabel?: string;
   fieldDescription?: string;
+  disabled?: boolean;
 }
 
 export function InputOTP(props: IProps) {
-  const { name, length, groupSize = 3, fieldLabel, fieldDescription } = props;
+  const {
+    name,
+    length,
+    groupSize = 3,
+    fieldLabel,
+    fieldDescription,
+    disabled,
+  } = props;
 
   if (length <= 0 || groupSize <= 0) {
     throw new Error('groupSize и separatorStep can only be positive ');
@@ -49,6 +57,7 @@ export function InputOTP(props: IProps) {
               {...field}
               maxLength={length}
               pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
+              disabled={disabled}
             >
               {new Array(numberOfGroups).fill('_').map((_, groupIndex) => {
                 const slotsInGroup =

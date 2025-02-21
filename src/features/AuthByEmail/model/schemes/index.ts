@@ -2,4 +2,4 @@ export {
   type AuthFormValues,
   AuthFormFirstStepSchema,
   AuthFormSecondStepSchema,
-} from './AuthSchema';
+} from './AuthFormSchema';

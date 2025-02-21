@@ -1,5 +1,9 @@
 const SESSION_TIMEOUT = 60 * 60 * 24 * 30 * 1000; // 30 days
 
+export const accessTokenName = 'access_token';
+
+export const refreshTokenName = 'refresh_tokens';
+
 export const getCookieConfig = (expiresIn?: Date) => {
   const date = new Date(new Date().getTime() + SESSION_TIMEOUT);
 

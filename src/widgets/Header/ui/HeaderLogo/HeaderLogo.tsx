@@ -1,7 +1,9 @@
 import Link from 'next/link';
 
+import { getMainRoute } from '@/shared/config/routes';
+
 interface Props {}
 
 export function HeaderLogo({}: Props) {
-  return <Link href={'/'}>BD.tracker</Link>;
+  return <Link href={getMainRoute()}>BD.tracker</Link>;
 }

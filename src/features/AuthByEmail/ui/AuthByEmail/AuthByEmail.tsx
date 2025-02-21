@@ -3,8 +3,13 @@
 import { Button, Input, InputOTP, Form } from '@/shared/ui/c';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 
+import { getErrorMessage } from '@/shared/lib/error';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { queries } from '../../api';
+import { getProfileRoute } from '@/shared/config/routes';
 
 import {
   AuthFormFirstStepSchema,
@@ -13,12 +18,14 @@ import {
 } from '../../model/schemes';
 
 import type { AnyZodObject } from 'zod';
+import { saveJwt } from '@/shared/lib/cookies';
 
 type FormStep = '1' | '2';
 
 interface Props {}
 
 export function AuthByEmail({}: Props) {
+  const { push } = useRouter();
   const [currentStep, setCurrentStep] = useState<FormStep>('1');
 
   const schema: { [Key in FormStep]: AnyZodObject } = {
@@ -27,16 +34,39 @@ export function AuthByEmail({}: Props) {
   };
 
   const methods = useForm<AuthFormValues>({
+    mode: 'onSubmit',
+    reValidateMode: 'onSubmit',
     resolver: zodResolver(schema[currentStep]),
   });
 
-  const onSubmit = methods.handleSubmit(data => {
-    console.log('data', data);
+  const { mutateAsync: onAuth, isPending: isAuthing } = useMutation(
+    queries.auth(),
+  );
+  const { mutateAsync: onLogin, isPending: isLogging } = useMutation(
+    queries.login(),
+  );
 
+  const onSubmit = methods.handleSubmit(data => {
+    //first step
     if ('email' in data) {
-      setCurrentStep('2');
-    } else {
-      //smth
+      onAuth(data)
+        .then(() => setCurrentStep('2'))
+        .catch(e => {
+          methods.setError('email', { message: getErrorMessage(e) });
+        });
+    }
+    //second step
+    else {
+      const email = methods.getValues('email');
+
+      onLogin({ ...data, email })
+        .then(res => {
+          saveJwt(res.data.accessToken, res.data.refreshToken);
+          push(getProfileRoute());
+        })
+        .catch(e => {
+          methods.setError('code', { message: getErrorMessage(e) });
+        });
     }
   });
 
@@ -44,7 +74,11 @@ export function AuthByEmail({}: Props) {
     <Form {...methods}>
       <form className='container max-w-80 m-auto' onSubmit={onSubmit}>
         {currentStep === '1' && (
-          <Input name='email' fieldLabel='Адрес электронной почты' />
+          <Input
+            name='email'
+            fieldLabel='Адрес электронной почты'
+            disabled={isAuthing}
+          />
         )}
 
         {currentStep === '2' && (
@@ -53,6 +87,7 @@ export function AuthByEmail({}: Props) {
             length={6}
             groupSize={3}
             fieldLabel='Код подтверждения'
+            disabled={isLogging}
           />
         )}
 

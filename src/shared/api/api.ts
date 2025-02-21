@@ -4,8 +4,8 @@ import axios, { type AxiosInstance, type AxiosResponse } from 'axios';
 import {
   getAccessToken,
   getRefreshToken,
-  removeTokens,
-  saveTokens,
+  saveJwt,
+  removeJwt,
 } from '../lib/cookies';
 import type { JWT } from './types';
 
@@ -34,7 +34,7 @@ class ApiClient {
     });
 
     if (response.data) {
-      saveTokens(response.data.accessToken, response.data.refreshToken);
+      saveJwt(response.data.accessToken, response.data.refreshToken);
     }
 
     return response;
@@ -73,7 +73,7 @@ class ApiClient {
             await this.refreshPromise;
             return this.axiosWithAuth(originalReq);
           } catch {
-            removeTokens();
+            removeJwt();
           }
         }
         return Promise.reject(error);
