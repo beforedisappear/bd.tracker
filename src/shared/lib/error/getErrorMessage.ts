@@ -9,7 +9,7 @@ export const getErrorMessage = (error: unknown) => {
       error.response?.data &&
       typeof error.response?.data === 'object' &&
       'code' in error.response.data &&
-      typeof error.response.data.code === 'number'
+      typeof error.response.data.code === 'string'
     ) {
       message = errorMessagesMap[error.response.data.code as number];
     }

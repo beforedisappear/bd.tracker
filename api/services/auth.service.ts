@@ -13,9 +13,9 @@ import { prismaService } from '@/shared/lib/db/postgres';
 import type {
   CreateUser,
   IJwtPayload,
-  ILoginDto,
-  ILogoutDto,
-  IRefreshTokenDto,
+  LoginDto,
+  LogoutDto,
+  RefreshTokenDto,
 } from '../types';
 import { ApiError } from '$/errors/apiError';
 
@@ -39,7 +39,7 @@ class AuthService {
     });
   }
 
-  async login(data: ILoginDto, agent: string) {
+  async login(data: LoginDto, agent: string) {
     const user = await userService.findOne(data.email);
 
     if (!user) throw ApiError.notFound('User not found');
@@ -57,10 +57,10 @@ class AuthService {
       return newTokens;
     }
 
-    throw ApiError.conflict('Incorrect code');
+    throw ApiError.conflict('Incorrect code', '1004');
   }
 
-  async refreshTokens(data: IRefreshTokenDto, agent: string) {
+  async refreshTokens(data: RefreshTokenDto, agent: string) {
     let token;
 
     try {
@@ -94,7 +94,7 @@ class AuthService {
     }
   }
 
-  async logout(data: ILogoutDto) {
+  async logout(data: LogoutDto) {
     const token = await prismaService.jWT.findFirst({
       where: { token: data.refreshToken },
     });

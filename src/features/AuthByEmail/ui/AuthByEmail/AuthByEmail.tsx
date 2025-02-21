@@ -42,9 +42,11 @@ export function AuthByEmail({}: Props) {
   const { mutateAsync: onAuth, isPending: isAuthing } = useMutation(
     queries.auth(),
   );
-  const { mutateAsync: onLogin, isPending: isLogging } = useMutation(
-    queries.login(),
-  );
+  const {
+    mutateAsync: onLogin,
+    isPending: isLogging,
+    isSuccess: isLoggedIn,
+  } = useMutation(queries.login());
 
   const onSubmit = methods.handleSubmit(data => {
     //first step
@@ -87,7 +89,7 @@ export function AuthByEmail({}: Props) {
             length={6}
             groupSize={3}
             fieldLabel='Код подтверждения'
-            disabled={isLogging}
+            disabled={isLogging || isLoggedIn}
           />
         )}
 
