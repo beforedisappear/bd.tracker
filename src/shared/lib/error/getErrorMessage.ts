@@ -1,8 +1,9 @@
 import { AxiosError } from 'axios';
 import { errorMessagesMap } from './errorMessages';
+import { ERROR_MESSAGE } from '@/shared/constants';
 
 export const getErrorMessage = (error: unknown) => {
-  let message = 'Непредвиденная ошибка';
+  let message = ERROR_MESSAGE;
 
   if (error instanceof AxiosError) {
     if (

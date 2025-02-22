@@ -7,31 +7,41 @@ import {
   saveJwt,
   removeJwt,
 } from '../lib/cookies';
-import type { JWT } from './types';
+import { REQUEST_TIMEOUT } from './constants';
+import type { RefreshTokensResponse } from '$/types';
+
+type Refresh = Promise<AxiosResponse<RefreshTokensResponse>>;
 
 class ApiClient {
   public axiosWithAuth: AxiosInstance;
   public axiosNoAuth: AxiosInstance;
-  private refreshPromise: Promise<AxiosResponse<JWT>> | null = null;
+  private refreshPromise: Refresh | null = null;
 
   constructor(baseURL: string) {
     this.axiosNoAuth = axios.create({
       baseURL,
+      timeout: REQUEST_TIMEOUT,
       headers: { 'Content-Type': 'application/json' },
     });
 
     this.axiosWithAuth = axios.create({
       baseURL,
+      timeout: REQUEST_TIMEOUT,
       headers: { 'Content-Type': 'application/json' },
     });
 
     this.initializeInterceptors();
   }
 
-  private async refreshTokens(refreshToken: JWT['refreshToken']) {
-    const response = await this.axiosNoAuth.post<JWT>(`/refreshTokens`, {
-      refreshToken,
-    });
+  private async refreshTokens(
+    refreshToken: RefreshTokensResponse['refreshToken'],
+  ) {
+    const response = await this.axiosNoAuth.post<RefreshTokensResponse>(
+      `/refreshTokens`,
+      {
+        refreshToken,
+      },
+    );
 
     if (response.data) {
       saveJwt(response.data.accessToken, response.data.refreshToken);

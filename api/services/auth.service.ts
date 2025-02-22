@@ -15,7 +15,7 @@ import type {
   IJwtPayload,
   LoginDto,
   LogoutDto,
-  RefreshTokenDto,
+  RefreshTokensDto,
 } from '../types';
 import { ApiError } from '$/errors/apiError';
 
@@ -60,7 +60,7 @@ class AuthService {
     throw ApiError.conflict('Incorrect code', '1004');
   }
 
-  async refreshTokens(data: RefreshTokenDto, agent: string) {
+  async refreshTokens(data: RefreshTokensDto, agent: string) {
     let token;
 
     try {
