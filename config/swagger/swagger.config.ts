@@ -33,7 +33,7 @@ openAPIRegistry.registerPath(PostRefreshTokensDoc);
 openAPIRegistry.registerPath(PostLogoutDoc);
 
 //profile
-openAPIRegistry.registerPath(GetProfileDoc);
+openAPIRegistry.registerPath(GetProfileDoc(bearerAuth.name));
 
 function getOpenApiDocumentation() {
   const generator = new OpenApiGeneratorV3(openAPIRegistry.definitions);
@@ -45,7 +45,7 @@ function getOpenApiDocumentation() {
       title: 'BD.tracker API',
       description: 'Doc of api based on Next.js Route Handlers',
     },
-    servers: [{ url: 'http://localhost:3000/api' }],
+    servers: [{ url: process.env.NEXT_PUBLIC_API_URL! }],
   });
 }
 

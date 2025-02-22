@@ -2,13 +2,13 @@ import { LogoutDataReqSchema } from '$/dto/auth.dto';
 import { authService } from '$/services/auth.service';
 
 import { NextResponse, type NextRequest } from 'next/server';
-
-import type { ILogoutDto } from '$/types';
 import { ErrorResponse } from '$/errors/errorResponse';
+
+import type { LogoutDto } from '$/types';
 
 export async function PostLogout(request: NextRequest) {
   try {
-    const dto: ILogoutDto = await request.json();
+    const dto: LogoutDto = await request.json();
 
     LogoutDataReqSchema.parse(dto);
 

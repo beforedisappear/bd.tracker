@@ -4,11 +4,11 @@ import { authService } from '$/services/auth.service';
 import { NextResponse, type NextRequest, userAgent } from 'next/server';
 import { ErrorResponse } from '$/errors/errorResponse';
 
-import type { ILoginDto } from '$/types';
+import type { LoginDto } from '$/types';
 
 export async function PostLogin(request: NextRequest) {
   try {
-    const data: ILoginDto = await request.json();
+    const data: LoginDto = await request.json();
 
     LoginDataReqSchema.parse(data);
 

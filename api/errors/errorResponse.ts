@@ -7,10 +7,13 @@ export function ErrorResponse(e: unknown) {
   console.error(e);
 
   if (e instanceof ApiError) {
-    return new NextResponse(e.message, {
-      status: e.status,
-      statusText: e.statusText,
-    });
+    return NextResponse.json(
+      { message: e.message, code: e.code },
+      {
+        status: e.status,
+        statusText: e.statusText,
+      },
+    );
   }
 
   if (e instanceof ZodError) {

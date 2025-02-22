@@ -4,7 +4,7 @@ import {
   type GlobalStoreApi,
   GlobalStoreContext,
   createStore,
-} from '@/shared/config/stores/globalStore';
+} from '@/shared/store/globalStore';
 
 import { type ReactNode, useRef } from 'react';
 

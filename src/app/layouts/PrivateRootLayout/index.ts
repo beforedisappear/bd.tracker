@@ -1,0 +1,1 @@
+export { PrivateRootLayout } from './PrivateRootLayout';
