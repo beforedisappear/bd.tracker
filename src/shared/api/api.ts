@@ -13,18 +13,18 @@ import type { RefreshTokensResponse } from '$/types';
 type Refresh = Promise<AxiosResponse<RefreshTokensResponse>>;
 
 class ApiClient {
-  public axiosWithAuth: AxiosInstance;
-  public axiosNoAuth: AxiosInstance;
+  public withAuth: AxiosInstance;
+  public noAuth: AxiosInstance;
   private refreshPromise: Refresh | null = null;
 
   constructor(baseURL: string) {
-    this.axiosNoAuth = axios.create({
+    this.noAuth = axios.create({
       baseURL,
       timeout: REQUEST_TIMEOUT,
       headers: { 'Content-Type': 'application/json' },
     });
 
-    this.axiosWithAuth = axios.create({
+    this.withAuth = axios.create({
       baseURL,
       timeout: REQUEST_TIMEOUT,
       headers: { 'Content-Type': 'application/json' },
@@ -36,8 +36,8 @@ class ApiClient {
   private async refreshTokens(
     refreshToken: RefreshTokensResponse['refreshToken'],
   ) {
-    const response = await this.axiosNoAuth.post<RefreshTokensResponse>(
-      `/refreshTokens`,
+    const response = await this.noAuth.post<RefreshTokensResponse>(
+      `/refresh-tokens`,
       {
         refreshToken,
       },
@@ -55,7 +55,7 @@ class ApiClient {
   }
 
   private initializeInterceptors() {
-    this.axiosWithAuth.interceptors.request.use(async config => {
+    this.withAuth.interceptors.request.use(async config => {
       const accessToken = getAccessToken();
       if (config?.headers && accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
@@ -63,7 +63,7 @@ class ApiClient {
       return config;
     });
 
-    this.axiosWithAuth.interceptors.response.use(
+    this.withAuth.interceptors.response.use(
       config => config,
       async error => {
         const originalReq = error.config;
@@ -81,7 +81,7 @@ class ApiClient {
             }
 
             await this.refreshPromise;
-            return this.axiosWithAuth(originalReq);
+            return this.withAuth(originalReq);
           } catch {
             removeJwt();
           }

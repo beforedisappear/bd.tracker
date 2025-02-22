@@ -93,7 +93,9 @@ export function AuthByEmail({}: Props) {
           />
         )}
 
-        <Button type='submit'>Отправить</Button>
+        <Button type='submit' disabled={isAuthing || isLogging || isLoggedIn}>
+          Отправить
+        </Button>
       </form>
     </Form>
   );
