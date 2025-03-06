@@ -4,10 +4,12 @@ import type { PropsWithChildren } from 'react';
 
 export function PublicRootLayout({ children }: PropsWithChildren) {
   return (
-    <div id='wrapper'>
+    <>
       <Header />
-      <main>{children}</main>
-      {/* <Footer /> */}
-    </div>
+      <div id='wrapper' className='container flex flex-col flex-grow p-0'>
+        <main>{children}</main>
+        {/* <Footer /> */}
+      </div>
+    </>
   );
 }

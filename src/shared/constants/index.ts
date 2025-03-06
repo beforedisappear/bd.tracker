@@ -4,3 +4,5 @@ export {
   SUCCESS_MESSAGE,
   ERROR_MESSAGE,
 } from './toast.constants';
+
+export { SITE_NAME } from './seo.constants';
