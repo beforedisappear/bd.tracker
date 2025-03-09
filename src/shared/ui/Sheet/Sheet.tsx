@@ -17,6 +17,7 @@ interface IProps
   title: string;
   trigger: React.ReactNode;
   description?: string;
+  className?: string;
 }
 
 const SheetContainer = SheetPrimitive.Root;
@@ -24,13 +25,14 @@ const SheetTrigger = SheetPrimitive.Trigger;
 // const SheetClose = SheetPrimitive.Close;
 
 export function Sheet(props: IProps) {
-  const { title, trigger, description, children } = props;
+  const { title, trigger, description, children, className, ...restProps } =
+    props;
 
   return (
-    <SheetContainer>
+    <SheetContainer {...restProps}>
       <SheetTrigger asChild>{trigger}</SheetTrigger>
 
-      <SheetContent side='left'>
+      <SheetContent side='left' className={className}>
         <SheetHeader>
           <SheetTitle className='text-center'>{title}</SheetTitle>
 

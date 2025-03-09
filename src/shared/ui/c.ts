@@ -9,3 +9,5 @@ export { DropdownMenu } from './DropdownMenu/DropdownMenu';
 export { Toaster } from './Toaster/Toaster';
 export { NavigationMenu } from './NavigationMenu/NavigationMenu';
 export { Sheet } from './Sheet/Sheet';
+export { Switch } from './Switch/Switch';
+export { Drawer } from './Drawer/Drawer';

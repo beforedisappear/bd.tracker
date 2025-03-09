@@ -1,5 +1,7 @@
 'use client';
 
+import { cn } from '@/shared/lib/css';
+
 import {
   FormControl,
   FormDescription,
@@ -16,12 +18,12 @@ import type { ComponentProps } from 'react';
 
 interface IProps extends ComponentProps<typeof PureInput> {
   name: string;
-  fieldLabel?: string;
-  fieldDescription?: string;
+  label?: string;
+  description?: string;
 }
 
 const Input = (props: IProps) => {
-  const { name, fieldLabel, fieldDescription, ...restProps } = props;
+  const { name, label, description, className, ...restProps } = props;
 
   const { control } = useFormContext();
 
@@ -31,16 +33,14 @@ const Input = (props: IProps) => {
       control={control}
       defaultValue={''}
       render={({ field }) => (
-        <FormItem>
-          {fieldLabel && <FormLabel>{fieldLabel}</FormLabel>}
+        <FormItem className={cn(className)}>
+          {label && <FormLabel>{label}</FormLabel>}
 
           <FormControl>
             <PureInput {...restProps} {...field} />
           </FormControl>
 
-          {fieldDescription && (
-            <FormDescription>{fieldDescription}</FormDescription>
-          )}
+          {description && <FormDescription>{description}</FormDescription>}
 
           <FormMessage />
         </FormItem>

@@ -21,20 +21,13 @@ interface IProps {
   name: string;
   length: number;
   groupSize?: number;
-  fieldLabel?: string;
-  fieldDescription?: string;
+  label?: string;
+  description?: string;
   disabled?: boolean;
 }
 
 export function InputOTP(props: IProps) {
-  const {
-    name,
-    length,
-    groupSize = 3,
-    fieldLabel,
-    fieldDescription,
-    disabled,
-  } = props;
+  const { name, length, groupSize = 3, label, description, disabled } = props;
 
   if (length <= 0 || groupSize <= 0) {
     throw new Error('groupSize и separatorStep can only be positive ');
@@ -50,7 +43,7 @@ export function InputOTP(props: IProps) {
       control={control}
       render={({ field }) => (
         <FormItem>
-          {fieldLabel && <FormLabel>{fieldLabel}</FormLabel>}
+          {label && <FormLabel>{label}</FormLabel>}
 
           <FormControl>
             <InputOTPContainer
@@ -84,9 +77,7 @@ export function InputOTP(props: IProps) {
             </InputOTPContainer>
           </FormControl>
 
-          {fieldDescription && (
-            <FormDescription>{fieldDescription}</FormDescription>
-          )}
+          {description && <FormDescription>{description}</FormDescription>}
 
           <FormMessage />
         </FormItem>

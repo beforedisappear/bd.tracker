@@ -1,7 +1,9 @@
-// import { redis } from '@/shared/lib/db/redis';
+import { ProjectHero } from '@/widgets/ProjectHero';
 
 export async function HomePage() {
-  // console.log(await redis.get('key'));
-
-  return <div>123</div>;
+  return (
+    <>
+      <ProjectHero />
+    </>
+  );
 }

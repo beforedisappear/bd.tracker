@@ -7,13 +7,16 @@ import { isDesktop, isMobile } from 'react-device-detect';
 
 interface Props {
   offMobile?: boolean;
+  onSetShowSheet?: (state: boolean) => void;
 }
 
-export function HeaderNavMenu({ offMobile }: Props) {
+export function HeaderNavMenu({ offMobile, onSetShowSheet }: Props) {
   return (
     <>
       {isDesktop && <LazyDesktopHeaderNavMenu />}
-      {isMobile && !offMobile && <LazyMobileHeaderNavMenu />}
+      {isMobile && !offMobile && (
+        <LazyMobileHeaderNavMenu onSetShowSheet={onSetShowSheet} />
+      )}
     </>
   );
 }
