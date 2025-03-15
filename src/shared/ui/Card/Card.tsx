@@ -7,12 +7,14 @@ import { CardHeader } from './CardHeader';
 import { CardTitle } from './CardTitle';
 
 interface Props extends PropsWithChildren {
-  title: string;
-  description?: string;
+  title: React.ReactNode;
+  description?: React.ReactNode;
   className?: string;
   titleClassName?: string;
   descClassName?: string;
   contentClassName?: string;
+  headerClassName?: string;
+  headerContent?: React.ReactNode;
   footerContent?: React.ReactNode;
 }
 
@@ -25,21 +27,26 @@ export function Card(props: Props) {
     titleClassName,
     descClassName,
     contentClassName,
+    headerClassName,
+    headerContent,
     footerContent,
   } = props;
 
   return (
     <CardContainer className={className}>
-      <CardHeader>
-        {<CardTitle className={titleClassName}>{title}</CardTitle>}
+      <CardHeader className={headerClassName}>
+        <CardTitle className={titleClassName}>{title}</CardTitle>
         {description && (
           <CardDescription className={descClassName}>
             {description}
           </CardDescription>
         )}
+        {headerContent}
       </CardHeader>
 
-      <CardContent className={contentClassName}>{children}</CardContent>
+      {children && (
+        <CardContent className={contentClassName}>{children}</CardContent>
+      )}
 
       {footerContent && <CardFooter>{footerContent}</CardFooter>}
     </CardContainer>
