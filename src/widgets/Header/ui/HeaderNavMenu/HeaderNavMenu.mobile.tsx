@@ -20,6 +20,7 @@ export function MobileHeaderNavMenu({ onSetShowSheet }: Props) {
           key={label}
           href={href}
           onClick={() => onSetShowSheet?.(false)}
+          scroll={false}
           className={buttonVariants({ variant: 'ghost' })}
         >
           {label}

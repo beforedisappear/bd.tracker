@@ -1,9 +1,9 @@
 export const sizes = {
-  sm: '640px',
-  md: '768px',
-  lg: '1024px',
-  xl: '1280px',
-  xxl: '1440px',
+  sm: '640px', //phone
+  md: '768px', //phone & tablet
+  lg: '1024px', //tablet
+  xl: '1280px', //laptop
+  xxl: '1440px', //desktop
 };
 
 export const screens = {

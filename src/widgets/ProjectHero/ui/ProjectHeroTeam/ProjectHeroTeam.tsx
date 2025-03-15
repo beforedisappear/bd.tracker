@@ -10,7 +10,7 @@ export function ProjectHeroTeam({}: Props) {
     <Image
       src='https://i.pravatar.cc/150?img=58'
       alt='user avatar'
-      className='absolute grayscale-[0%] -top-12 rounded-full w-24 h-24 aspect-square object-cover'
+      className='absolute grayscale-[0%] bottom-16 rounded-full w-24 h-24 aspect-square object-cover'
       width={24}
       height={24}
     />
@@ -71,7 +71,7 @@ export function ProjectHeroTeam({}: Props) {
     <Card
       className='absolute right-[20px] top-4 w-80 flex flex-col justify-center items-center drop-shadow-xl shadow-black/10 dark:shadow-white/10
       md:static md:w-full md:mt-8'
-      headerClassName='mt-8 flex justify-center items-center pb-2'
+      headerClassName='relative mt-8 flex justify-center items-center pb-2'
       title='Leo Miranda'
       titleClassName='text-center'
       description='Frontend Developer'

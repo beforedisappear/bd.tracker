@@ -13,7 +13,7 @@ import type { PropsWithChildren } from 'react';
 //entrypoint (layout.tsx)
 export function App({ children }: PropsWithChildren) {
   return (
-    <html lang='en' suppressHydrationWarning>
+    <html lang='ru' translate='no' suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
