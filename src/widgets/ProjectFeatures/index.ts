@@ -1,1 +1,1 @@
-// export { ProjectFeatures } from './ui/ProjectFeatures/ProjectFeatures';
+export { ProjectFeatures } from './ui/ProjectFeatures/ProjectFeatures';

@@ -69,7 +69,7 @@ export function ProjectHeroTeam({}: Props) {
 
   return (
     <Card
-      className='absolute right-[20px] top-4 w-80 flex flex-col justify-center items-center drop-shadow-xl shadow-black/10 dark:shadow-white/10
+      className='absolute right-4 top-4 w-72 flex flex-col justify-center items-center drop-shadow-xl shadow-black/10 dark:shadow-white/10
       md:static md:w-full md:mt-8'
       headerClassName='relative mt-8 flex justify-center items-center pb-2'
       title='Leo Miranda'

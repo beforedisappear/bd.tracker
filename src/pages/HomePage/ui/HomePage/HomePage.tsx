@@ -1,13 +1,19 @@
 import { AboutProject } from '@/widgets/AboutProject';
-// import { ProjectFeatures } from '@/widgets/ProjectFeatures';
+import { NewsLetter } from '@/widgets/NewsLetter';
+import { ProjectFaq } from '@/widgets/ProjectFaq';
+import { ProjectFeatures } from '@/widgets/ProjectFeatures';
 import { ProjectHero } from '@/widgets/ProjectHero';
+import { ProjectTestimonials } from '@/widgets/ProjectTestimonials';
 
 export async function HomePage() {
   return (
     <>
       <ProjectHero />
+      <ProjectFeatures />
       <AboutProject />
-      {/* <ProjectFeatures /> */}
+      <NewsLetter />
+      <ProjectTestimonials />
+      <ProjectFaq />
     </>
   );
 }

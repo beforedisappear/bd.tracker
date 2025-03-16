@@ -1,4 +1,6 @@
 //CLIENT COMPONENTS PUBLIC API
+
+//primitive
 export { Button } from './Button/Button';
 export { Input } from './Input/Input';
 export { Dialog } from './Dialog/Dialog';
@@ -11,3 +13,7 @@ export { NavigationMenu } from './NavigationMenu/NavigationMenu';
 export { Sheet } from './Sheet/Sheet';
 export { Switch } from './Switch/Switch';
 export { Drawer } from './Drawer/Drawer';
+export { Accordion } from './Accordion/Accordion';
+
+//types
+export type { IAccordionItem } from './Accordion/Accordion.types';

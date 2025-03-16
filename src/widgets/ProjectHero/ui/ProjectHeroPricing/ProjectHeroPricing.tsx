@@ -36,12 +36,12 @@ export function ProjectHeroPricing({}: Props) {
 
   return (
     <Card
+      className='absolute top-[148px] left-8 w-72  drop-shadow-xl shadow-black/10 dark:shadow-white/10
+    md:static md:w-full'
       title={cardTitle}
       titleClassName='flex item-center justify-between order-0'
       description='Lorem ipsum dolor sit, amet ipsum consectetur adipisicing elit.'
       descClassName='order-2'
-      className='absolute top-[150px] left-[50px] w-72  drop-shadow-xl shadow-black/10 dark:shadow-white/10
-      md:static md:w-full'
       headerContent={headerContent}
       footerContent={footerContent}
     >

@@ -16,7 +16,7 @@ export function ProjectHeroService({}: Props) {
 
   return (
     <Card
-      className='absolute w-[350px] -right-[10px] bottom-[35px]  drop-shadow-xl shadow-black/10 dark:shadow-white/10
+      className='absolute w-[320px] -right-4 bottom-11  drop-shadow-xl shadow-black/10 dark:shadow-white/10
       md:static md:w-full'
       title={titleContent}
       titleClassName='col-start-2 row-start-1'

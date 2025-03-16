@@ -1,18 +1,14 @@
 export const routes = [
   {
     href: '#features',
-    label: 'Features',
+    label: 'Возможности',
   },
   {
     href: '#testimonials',
-    label: 'Testimonials',
-  },
-  {
-    href: '#pricing',
-    label: 'Pricing',
+    label: 'Рекомендации',
   },
   {
     href: '#faq',
-    label: 'FAQ',
+    label: 'Частые вопросы',
   },
 ];
