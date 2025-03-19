@@ -7,13 +7,13 @@ export function ProjectFeatures({}: Props) {
   return (
     <section
       id='features'
-      className='container py-32 space-y-8
+      className='container py-20 space-y-8      
       xl:py-16
-      lg:py-8'
+      lg:py-10'
     >
       <h2
-        className='text-4xl font-bold text-center
-        lg:text-3xl'
+        className='text-3xl font-bold text-center
+        md:text-2xl'
       >
         Many{' '}
         <span className='bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text'>

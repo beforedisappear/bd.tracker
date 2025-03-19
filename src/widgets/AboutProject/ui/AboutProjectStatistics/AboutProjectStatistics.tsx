@@ -32,9 +32,11 @@ export function AboiutProjectStatistics({}: Props) {
         lg:grid-cols-2'
       >
         {statList.map(({ quantity, description }: Stat) => (
-          <div key={description} className='space-y-2 text-center'>
-            <h2 className='text-4xl font-bold sm:text-3xl'>{quantity}</h2>
-            <p className='text-xl text-muted-foreground'>{description}</p>
+          <div key={description} className='space-y-0.5 text-center'>
+            <h2 className='text-4xl font-bold sm:text-2xl'>{quantity}</h2>
+            <p className='text-xl text-muted-foreground sm:text-base'>
+              {description}
+            </p>
           </div>
         ))}
       </div>

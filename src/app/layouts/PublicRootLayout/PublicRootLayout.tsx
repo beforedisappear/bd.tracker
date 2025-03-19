@@ -7,7 +7,7 @@ export function PublicRootLayout({ children }: PropsWithChildren) {
   return (
     <>
       <Header />
-      <main className='container flex flex-col flex-grow'>{children}</main>
+      <main className='container flex flex-col flex-grow px-0'>{children}</main>
       <Footer />
     </>
   );

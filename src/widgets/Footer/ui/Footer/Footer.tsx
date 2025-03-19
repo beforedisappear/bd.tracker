@@ -1,7 +1,7 @@
 import Logo from '@/shared/assets/icons/Logo.svgr';
 import Link from 'next/link';
 
-import { SITE_NAME } from '@/shared/constants';
+import { GITHUB_URL, SITE_NAME } from '@/shared/constants';
 
 interface Props {}
 
@@ -11,8 +11,9 @@ export function Footer({}: Props) {
       <hr className='w-11/12 mx-auto' />
 
       <section
-        className='container py-20 grid grid-cols-6 gap-x-12 gap-y-8 
-        xl:grid-cols-4
+        className='container py-24 grid grid-cols-6 gap-x-12 gap-y-8 
+        xl:grid-cols-4 xl:py-16
+        lg:py-12
         md:grid-cols-2'
       >
         <div className='col-span-2 xl:col-span-full'>
@@ -165,7 +166,7 @@ export function Footer({}: Props) {
           <Link
             rel='noreferrer noopener'
             target='_blank'
-            href='https://www.linkedin.com/in/leopoldo-miranda/'
+            href={GITHUB_URL}
             className='text-primary transition-all border-primary hover:border-b-2'
           >
             Roman Kleshchev

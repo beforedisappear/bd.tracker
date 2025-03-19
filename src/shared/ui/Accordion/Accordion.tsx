@@ -17,6 +17,8 @@ export function Accordion(props: AccordionProps) {
     value,
     defaultValue,
     onValueChange,
+    triggerClassName,
+    contentClassName,
     ...restProps
   } = props;
 
@@ -46,8 +48,12 @@ export function Accordion(props: AccordionProps) {
     >
       {items.map(el => (
         <AccordionItem key={el.value} value={el.value}>
-          <AccordionTrigger>{el.trigger}</AccordionTrigger>
-          <AccordionContent>{el.content}</AccordionContent>
+          <AccordionTrigger className={triggerClassName}>
+            {el.trigger}
+          </AccordionTrigger>
+          <AccordionContent className={contentClassName}>
+            {el.content}
+          </AccordionContent>
         </AccordionItem>
       ))}
     </AccordionContainer>

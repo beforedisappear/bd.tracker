@@ -1,8 +1,11 @@
-import { Button } from '@/shared/ui/c';
+import { GitHubLogoIcon } from '@radix-ui/react-icons';
+
 import { buttonVariants } from '@/shared/ui/s';
 import Link from 'next/link';
 
-import { GitHubLogoIcon } from '@radix-ui/react-icons';
+import { GITHUB_REPO_URL } from '@/shared/constants';
+import { getLoginRoute } from '@/shared/config/routes';
+import { cn } from '@/shared/lib/css';
 
 interface Props {}
 
@@ -20,16 +23,16 @@ export function ProjectHeroMain({}: Props) {
       >
         <h1 className='inline'>
           <span className='inline bg-gradient-to-r from-[#F596D3]  to-[#D247BF] text-transparent bg-clip-text'>
-            Awesome
+            Простой
           </span>{' '}
-          task tracker
+          трекер
         </h1>{' '}
-        for{' '}
+        для{' '}
         <h2 className='inline'>
           <span className='inline bg-gradient-to-r from-[#61DAFB] via-[#1fc0f1] to-[#03a3d7] text-transparent bg-clip-text'>
-            React
+            Небольших
           </span>{' '}
-          developers
+          команд
         </h2>
       </div>
 
@@ -38,8 +41,7 @@ export function ProjectHeroMain({}: Props) {
         xl:mx-auto 
         md:w-full'
       >
-        Build your React landing page effortlessly with the required sections to
-        your project.
+        Управляй проектом, отслеживай задачи.
       </p>
 
       <div
@@ -47,11 +49,16 @@ export function ProjectHeroMain({}: Props) {
         xl:justify-center
         md:flex-col md:space-x-0 md:gap-y-3'
       >
-        <Button className='w-1/3 md:w-full'>Начать</Button>
+        <Link
+          href={getLoginRoute()}
+          className={cn(buttonVariants(), 'w-1/3 md:w-full')}
+        >
+          Начать
+        </Link>
 
         <Link
           rel='noreferrer noopener'
-          href='https://github.com/leoMirandaa/shadcn-landing-page.git'
+          href={GITHUB_REPO_URL}
           target='_blank'
           className={`w-1/3 md:w-full ${buttonVariants({
             variant: 'outline',

@@ -12,6 +12,8 @@ export interface IAccordionItem {
 interface IBaseProps {
   collapsible?: boolean;
   items: IAccordionItem[];
+  triggerClassName?: string;
+  contentClassName?: string;
 }
 
 interface ISingleProps extends Omit<AccordionSingleProps, 'type'>, IBaseProps {

@@ -4,8 +4,16 @@ import { testimonialList } from './ProjectTestimonials.data';
 
 export const ProjectTestimonials = () => {
   return (
-    <section id='testimonials' className='container py-24 sm:py-32'>
-      <h2 className='text-3xl md:text-4xl font-bold'>
+    <section
+      id='testimonials'
+      className='container py-20 space-y-4       
+      xl:py-16
+      lg:py-10'
+    >
+      <h2
+        className='text-3xl font-bold
+        md:text-2xl'
+      >
         Discover Why
         <span className='bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text'>
           {' '}
@@ -14,7 +22,7 @@ export const ProjectTestimonials = () => {
         This Landing Page
       </h2>
 
-      <p className='text-xl text-muted-foreground pt-4 pb-8'>
+      <p className='text-base text-muted-foreground'>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non unde error
         facere hic reiciendis illo
       </p>

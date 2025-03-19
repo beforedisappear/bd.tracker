@@ -11,3 +11,9 @@ export {
   REQUIRED_FIELD_MESSAGE,
   INCORRECT_VALUE_FIELD_MESSAGE,
 } from './form.constants';
+
+export {
+  GITHUB_URL,
+  GITHUB_REPO_URL,
+  TELEGRAM_CONTACT_URL,
+} from './url.constants';

@@ -8,9 +8,11 @@ interface Props {}
 export function ProjectFaqAccordion({}: Props) {
   return (
     <Accordion
-      type='multiple'
+      type='single'
       items={faqList}
       className='w-full AccordionRoot'
+      triggerClassName='text-base md:text-sm'
+      contentClassName='text-base md:text-sm'
     />
   );
 }
