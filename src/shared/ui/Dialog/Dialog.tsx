@@ -5,45 +5,46 @@ import { DialogContent } from './DialogContent';
 import { DialogDescription } from './DialogDescription';
 import { DialogTitle } from './DialogTitle';
 import { DialogHeader } from './DialogHeader';
-import { Button } from '../Button/Button';
+
+import type { ComponentProps } from 'react';
 
 const DialogContainer = DialogPrimitive.Root;
-
 const DialogTrigger = DialogPrimitive.Trigger;
 
-interface IProps {
-  defaultOpen?: boolean;
-  trigger?: {
-    type: 'button';
-    label: React.ReactNode;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    props?: { [key: string]: any };
-  };
+interface IProps extends ComponentProps<typeof DialogContainer> {
+  trigger?: React.ReactNode;
   title: string;
   description?: string;
-  children?: React.ReactNode;
-  onOpenChange?: (payloda: boolean) => void;
+  className?: string;
+  titleClassName?: string;
+  descClassName?: string;
 }
 
 export function Dialog(props: IProps) {
-  const { title, description, trigger, defaultOpen, children, onOpenChange } =
-    props;
+  const {
+    title,
+    description,
+    trigger,
+    defaultOpen,
+    children,
+    className,
+    titleClassName,
+    descClassName,
+    onOpenChange,
+  } = props;
 
   return (
     <DialogContainer defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>
-        {trigger && trigger.type === 'button' && (
-          <Button variant='outline' {...trigger.props}>
-            {trigger.label}
-          </Button>
-        )}
-      </DialogTrigger>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
 
-      <DialogContent>
+      <DialogContent className={className}>
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-
-          {description && <DialogDescription>{description}</DialogDescription>}
+          <DialogTitle className={titleClassName}>{title}</DialogTitle>
+          {description && (
+            <DialogDescription className={descClassName}>
+              {description}
+            </DialogDescription>
+          )}
         </DialogHeader>
 
         {children}

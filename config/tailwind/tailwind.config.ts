@@ -5,6 +5,7 @@ import { borderRadius } from './borderRadius';
 import { screens } from './screens';
 import { keyframes } from './keyframes';
 import { animation } from './animation';
+import { container } from './container';
 
 import type { Config } from 'tailwindcss';
 
@@ -18,6 +19,7 @@ export const tailwindConfig: Config = {
       screens,
       keyframes,
       animation,
+      container,
     },
   },
   plugins: [TailwindAnimate],

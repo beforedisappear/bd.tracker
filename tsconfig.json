@@ -38,7 +38,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "eslint.config.mjs"
+    "eslint.config.mjs",
+    "src/widgets/Header/ui/HeaderSheet/HeaderSheet.mobile.tsx"
   ],
   "exclude": ["node_modules"]
 }

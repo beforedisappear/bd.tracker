@@ -8,9 +8,6 @@ const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger;
 
 const DropdownMenuGroup = DropdownMenuPrimitive.Group;
 
-// const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup;
-
-import { Button } from '../Button/Button';
 import { DropdownMenuContent } from './DropdownMenuContent';
 import { DropdownMenuLabel } from './DropdownMenuLabel';
 import { DropdownMenuSeparator } from './DropdownMenuSeparator';
@@ -25,12 +22,7 @@ import {
 import type { Options } from './DropdownMenu.types';
 
 interface IProps {
-  trigger?: {
-    type: 'button';
-    label: React.ReactNode;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    props?: { [key: string]: any };
-  };
+  trigger: React.ReactNode;
   align?: DropdownMenuPrimitive.DropdownMenuContentProps['align'];
   label?: string;
   options: Options;
@@ -42,13 +34,7 @@ export function DropdownMenu(props: IProps) {
 
   return (
     <DropdownMenuContainer>
-      <DropdownMenuTrigger asChild>
-        {trigger && trigger.type === 'button' && (
-          <Button variant='outline' {...trigger.props}>
-            {trigger.label}
-          </Button>
-        )}
-      </DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
 
       <DropdownMenuContent className={className} align={align}>
         {label && (

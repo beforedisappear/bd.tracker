@@ -1,6 +1,7 @@
 'use client';
 
 import { Button, Input, InputOTP, Form } from '@/shared/ui/c';
+
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
@@ -10,6 +11,7 @@ import { getErrorMessage } from '@/shared/lib/error';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { queries } from '../../api';
 import { getProfileRoute } from '@/shared/config/routes';
+import { saveJwt } from '@/shared/lib/cookies';
 
 import {
   AuthFormFirstStepSchema,
@@ -18,7 +20,6 @@ import {
 } from '../../model/schemes';
 
 import type { AnyZodObject } from 'zod';
-import { saveJwt } from '@/shared/lib/cookies';
 
 type FormStep = '1' | '2';
 
@@ -74,12 +75,16 @@ export function AuthByEmail({}: Props) {
 
   return (
     <Form {...methods}>
-      <form className='container max-w-80 m-auto' onSubmit={onSubmit}>
+      <form
+        className='container flex flex-col flex-grow items-center max-w-80'
+        onSubmit={onSubmit}
+      >
         {currentStep === '1' && (
           <Input
             name='email'
-            fieldLabel='Адрес электронной почты'
+            label='Адрес электронной почты'
             disabled={isAuthing}
+            className='w-full'
           />
         )}
 
@@ -88,12 +93,16 @@ export function AuthByEmail({}: Props) {
             name='code'
             length={6}
             groupSize={3}
-            fieldLabel='Код подтверждения'
+            label='Код подтверждения'
             disabled={isLogging || isLoggedIn}
           />
         )}
 
-        <Button type='submit' disabled={isAuthing || isLogging || isLoggedIn}>
+        <Button
+          type='submit'
+          className='mt-auto w-full'
+          disabled={isAuthing || isLogging || isLoggedIn}
+        >
           Отправить
         </Button>
       </form>

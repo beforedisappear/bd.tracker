@@ -1,18 +1,17 @@
 'use client';
 
-import * as React from 'react';
 import * as PopoverPrimitive from '@radix-ui/react-popover';
 
 import { PopoverContent } from './PopoverContent';
+import type { PropsWithChildren } from 'react';
 
-const PopoverContainer = PopoverPrimitive.Root;
-
-const PopoverTrigger = PopoverPrimitive.Trigger;
-
-interface IProps extends React.PropsWithChildren {
+interface IProps extends PropsWithChildren {
   trigger: React.ReactNode;
   className?: string;
 }
+
+const PopoverContainer = PopoverPrimitive.Root;
+const PopoverTrigger = PopoverPrimitive.Trigger;
 
 export function Popover(props: IProps) {
   const { trigger, children, ...rest } = props;
