@@ -14,6 +14,7 @@ export { Sheet } from './Sheet/Sheet';
 export { Switch } from './Switch/Switch';
 export { Drawer } from './Drawer/Drawer';
 export { Accordion } from './Accordion/Accordion';
+export { DatePicker } from './DatePicker/DatePicker';
 
 //types
 export type { IAccordionItem } from './Accordion/Accordion.types';

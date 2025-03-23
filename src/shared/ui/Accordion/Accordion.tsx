@@ -13,7 +13,7 @@ export function Accordion(props: AccordionProps) {
   const {
     type = 'single',
     collapsible = true,
-    items,
+    items = [],
     value,
     defaultValue,
     onValueChange,
