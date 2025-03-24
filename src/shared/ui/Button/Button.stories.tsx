@@ -8,7 +8,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 type Story = StoryObj<typeof Button>;
 
 const meta: Meta<typeof Button> = {
-  title: 'shared/Button',
+  title: 'shared-ui/Button',
   component: Button,
   args: { children: 'Some content' },
 };

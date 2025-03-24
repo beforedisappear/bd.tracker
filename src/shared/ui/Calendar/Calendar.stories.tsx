@@ -5,7 +5,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 type Story = StoryObj<typeof Calendar>;
 
 const meta: Meta<typeof Calendar> = {
-  title: 'shared/Calendar',
+  title: 'shared-ui/Calendar',
   component: Calendar,
   render: () => (
     <div className='flex'>

@@ -6,7 +6,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 type Story = StoryObj<typeof Card>;
 
 const meta: Meta<typeof Card> = {
-  title: 'shared/Card',
+  title: 'shared-ui/Card',
   component: Card,
   args: { title: 'Card title' },
 };

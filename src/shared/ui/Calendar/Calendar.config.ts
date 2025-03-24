@@ -2,7 +2,7 @@ import { cn } from '@/shared/lib/css';
 import { buttonVariants } from '../s';
 
 export const calendarClassNames = (mode?: string) => ({
-  months: 'flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0',
+  months: 'flex flex-row space-x-4 space-y-0 sm:flex-col sm:space-y-4',
   month: 'space-y-4',
   caption: 'flex justify-center pt-1 relative items-center',
   caption_label: 'fl-upc text-sm font-medium',

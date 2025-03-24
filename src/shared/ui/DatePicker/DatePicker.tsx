@@ -24,11 +24,13 @@ type Props = {
   name: string;
   label?: string;
   description?: string;
-  disabled?: DayPickerBase['disabled'];
+  disabled?: boolean;
+  disabledDates?: DayPickerBase['disabled'];
 } & CalendarProps;
 
 export function DatePicker(props: Props) {
-  const { name, label, description, disabled, ...restProps } = props;
+  const { name, label, description, disabled, disabledDates, ...restProps } =
+    props;
 
   const { control } = useFormContext();
 
@@ -45,6 +47,7 @@ export function DatePicker(props: Props) {
                 'w-full pl-3 text-left font-normal',
                 !field.value && 'text-muted-foreground',
               )}
+              disabled={disabled}
             >
               {field.value ? (
                 format(field.value, 'dd.MM.yyyy')
@@ -66,7 +69,7 @@ export function DatePicker(props: Props) {
                 mode='single'
                 selected={field.value}
                 onDayClick={field.onChange}
-                disabled={disabled}
+                disabled={disabledDates}
                 initialFocus
                 {...restProps}
               />

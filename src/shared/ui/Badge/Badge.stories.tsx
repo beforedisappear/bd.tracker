@@ -8,7 +8,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 type Story = StoryObj<typeof Badge>;
 
 const meta: Meta<typeof Badge> = {
-  title: 'shared/Badge',
+  title: 'shared-ui/Badge',
   component: Badge,
   args: { children: 'Some content' },
 };

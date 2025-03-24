@@ -7,7 +7,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 type Story = StoryObj<typeof Accordion>;
 
 const meta: Meta<typeof Accordion> = {
-  title: 'shared/Accordion',
+  title: 'shared-ui/Accordion',
   component: Accordion,
   args: { items: accordionDataList },
 };

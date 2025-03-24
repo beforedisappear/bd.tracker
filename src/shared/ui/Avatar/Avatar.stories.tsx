@@ -5,7 +5,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 type Story = StoryObj<typeof Avatar>;
 
 const meta: Meta<typeof Avatar> = {
-  title: 'shared/Avatar',
+  title: 'shared-ui/Avatar',
   component: Avatar,
   args: { src: 'https://github.com/shadcn.png', alt: '123' },
 };
