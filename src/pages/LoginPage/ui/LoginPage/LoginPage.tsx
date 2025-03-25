@@ -9,17 +9,17 @@ interface Props {}
 
 export function LoginPage({}: Props) {
   return (
-    <>
+    <div className='container flex flex-grow items-center'>
       <Card
         title={AUTH_FORM_TITLE}
         description={AUTH_FORM_DESC}
-        className='m-auto min-h-[17rem] h-auto w-full max-w-[25rem]'
+        className='m-auto h-auto w-full max-w-[25rem]'
         titleClassName='text-center'
         descClassName='text-center whitespace-pre-line'
         contentClassName='flex flex-grow'
       >
         <AuthByEmail />
       </Card>
-    </>
+    </div>
   );
 }

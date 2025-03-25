@@ -23,7 +23,14 @@ interface IProps extends ComponentProps<typeof PureInput> {
 }
 
 const Input = (props: IProps) => {
-  const { name, label, description, className, ...restProps } = props;
+  const {
+    name,
+    type = 'text',
+    label,
+    description,
+    className,
+    ...restProps
+  } = props;
 
   const { control } = useFormContext();
 
@@ -37,7 +44,7 @@ const Input = (props: IProps) => {
           {label && <FormLabel>{label}</FormLabel>}
 
           <FormControl>
-            <PureInput {...restProps} {...field} />
+            <PureInput type={type} {...restProps} {...field} />
           </FormControl>
 
           {description && <FormDescription>{description}</FormDescription>}
