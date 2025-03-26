@@ -19,18 +19,18 @@ import {
   getMenuSeparator,
   getMenuSubItem,
 } from './DropdownMenu.utils';
-import type { Options } from './DropdownMenu.types';
+import type { DropDownMenuOptions } from './DropdownMenu.types';
 
 interface IProps {
   trigger: React.ReactNode;
   align?: DropdownMenuPrimitive.DropdownMenuContentProps['align'];
   label?: string;
-  options: Options;
+  options: DropDownMenuOptions;
   className?: string;
 }
 
 export function DropdownMenu(props: IProps) {
-  const { trigger, label, options, align, className } = props;
+  const { trigger, label, options = [], align, className } = props;
 
   return (
     <DropdownMenuContainer>

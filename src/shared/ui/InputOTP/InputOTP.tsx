@@ -32,8 +32,8 @@ type Props = {
 export function InputOTP(props: Props) {
   const {
     name,
-    length,
-    groupSize = 3,
+    length = 4,
+    groupSize = 4,
     label,
     description,
     disabled,

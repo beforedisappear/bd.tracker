@@ -9,6 +9,10 @@ export const FormDecorator: Decorator = StoryComponent => {
   const methods = useForm({
     defaultValues: {
       error: undefined,
+      inputValue: 'value 123124',
+      inputOtpValue: '1243',
+      selectValue: 'value_1',
+      switchValue: true,
       dateValue: new Date(),
       dateRangeValue: { from: new Date(), to: addDays(new Date(), 10) },
     },
@@ -17,7 +21,7 @@ export const FormDecorator: Decorator = StoryComponent => {
   useEffect(() => {
     methods.setError('error', {
       type: 'required',
-      message: 'This fiels is required!',
+      message: 'This field is required!',
     });
   }, [methods]);
 

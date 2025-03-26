@@ -29,6 +29,7 @@ const Input = (props: IProps) => {
     label,
     description,
     className,
+    onChange,
     ...restProps
   } = props;
 
@@ -44,7 +45,15 @@ const Input = (props: IProps) => {
           {label && <FormLabel>{label}</FormLabel>}
 
           <FormControl>
-            <PureInput type={type} {...restProps} {...field} />
+            <PureInput
+              {...restProps}
+              {...field}
+              type={type}
+              onChange={v => {
+                field.onChange(v);
+                if (onChange) onChange(v);
+              }}
+            />
           </FormControl>
 
           {description && <FormDescription>{description}</FormDescription>}

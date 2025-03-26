@@ -6,7 +6,6 @@ import { DrawerTitle } from './DrawerTitle';
 import { DrawerDescription } from './DrawerDescription';
 import { DrawerFooter } from './DrawerFooter';
 import { DrawerContainer } from './DrawerContainer';
-
 import { Drawer as DrawerPrimitive } from 'vaul';
 import { Button } from '../Button/Button';
 
@@ -63,6 +62,7 @@ export function Drawer(props: Props) {
 
         <DrawerFooter>
           {footerContent}
+
           <DrawerClose asChild>
             {withCloseBtn && (
               <Button variant='outline' className='w-40 mx-auto'>

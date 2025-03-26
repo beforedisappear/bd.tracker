@@ -1,4 +1,3 @@
-// import { FormDecorator } from '@/shared/lib/storybook/decorators';
 import { FormDecorator } from '@/shared/lib/storybook/decorators';
 import { DateRangePicker } from './DateRangePicker';
 

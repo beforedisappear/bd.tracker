@@ -5,11 +5,8 @@ import { CalendarIcon } from 'lucide-react';
 
 import { DateRange } from 'react-day-picker';
 import { Button } from '../Button/Button';
-import { Calendar } from '../Calendar/Calendar';
+import { Calendar, type CalendarProps } from '../Calendar/Calendar';
 import { Popover } from '../Popover/Popover';
-
-import { format } from 'date-fns';
-import { useState, type HTMLAttributes } from 'react';
 import {
   FormControl,
   FormDescription,
@@ -18,16 +15,23 @@ import {
   FormLabel,
   FormMessage,
 } from '../Form';
+
+import { useState, type HTMLAttributes } from 'react';
 import { useFormContext } from 'react-hook-form';
+
+import { format } from 'date-fns';
+
+type ExcludedProps = 'mode' | 'selected' | 'onSelect' | 'numberOfMonths';
 
 type Props = HTMLAttributes<HTMLDivElement> & {
   name: string;
   label?: string;
   description?: string;
+  calendar?: Omit<CalendarProps, ExcludedProps>;
 };
 
 export function DateRangePicker(props: Props) {
-  const { name, label, description, className } = props;
+  const { name, label, description, calendar, className } = props;
 
   const {
     control,
@@ -78,11 +82,12 @@ export function DateRangePicker(props: Props) {
           </FormControl>
         );
         return (
-          <FormItem className='flex flex-col w-full'>
+          <FormItem className={cn('flex flex-col w-full', className)}>
             {label && <FormLabel>{label}</FormLabel>}
 
             <Popover trigger={trigger} className='w-fit'>
               <Calendar
+                {...calendar}
                 initialFocus
                 mode='range'
                 defaultMonth={range?.from}
