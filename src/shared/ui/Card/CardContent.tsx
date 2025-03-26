@@ -1,4 +1,5 @@
 import { cn } from '@/shared/lib/css';
+
 import { forwardRef, type HTMLAttributes } from 'react';
 
 export const CardContent = forwardRef<

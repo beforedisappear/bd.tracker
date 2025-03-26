@@ -26,9 +26,7 @@ export function MobileAuthModal({}: Props) {
       open={showDrawer}
       onOpenChange={setShowDrawer}
       onAnimationEnd={back}
-      className='h-[20rem]'
-      // className='min-h-[17rem] h-auto w-full max-w-[25rem]
-      //   md:max-w-[22rem]'
+      className='h-[24rem]'
       titleClassName='text-center'
       descClassName='text-center whitespace-pre-line'
     >

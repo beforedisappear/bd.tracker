@@ -1,33 +1,86 @@
 'use client';
 
-import * as React from 'react';
-import { format } from 'date-fns';
-import { Calendar as CalendarIcon } from 'lucide-react';
-
 import { cn } from '@/shared/lib/css';
+
+import { format } from 'date-fns';
+import { CalendarIcon } from 'lucide-react';
+import { useFormContext } from 'react-hook-form';
+
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '../Form';
 import { Button } from '../Button/Button';
-import { Calendar } from '../Calendar/Calendar';
 import { Popover } from '../Popover/Popover';
+import { Calendar, type CalendarProps } from '../Calendar/Calendar';
 
-export function DatePickerDemo() {
-  const [date, setDate] = React.useState<Date>();
+import type { DayPickerBase } from 'react-day-picker';
 
-  const trigger = (
-    <Button
-      variant={'outline'}
-      className={cn(
-        'w-[280px] justify-start text-left font-normal',
-        !date && 'text-muted-foreground',
-      )}
-    >
-      <CalendarIcon className='mr-2 h-4 w-4' />
-      {date ? format(date, 'PPP') : <span>Pick a date</span>}
-    </Button>
-  );
+type Props = {
+  name: string;
+  label?: string;
+  description?: string;
+  disabled?: boolean;
+  disabledDates?: DayPickerBase['disabled'];
+} & CalendarProps;
+
+export function DatePicker(props: Props) {
+  const { name, label, description, disabled, disabledDates, ...restProps } =
+    props;
+
+  const { control } = useFormContext();
 
   return (
-    <Popover className='w-auto p-0' trigger={trigger}>
-      <Calendar mode='single' selected={date} onSelect={setDate} initialFocus />
-    </Popover>
+    <FormField
+      name={name}
+      control={control}
+      render={({ field }) => {
+        const trigger = (
+          <FormControl>
+            <Button
+              variant={'outline'}
+              className={cn(
+                'w-full pl-3 text-left font-normal',
+                !field.value && 'text-muted-foreground',
+              )}
+              disabled={disabled}
+            >
+              {field.value ? (
+                format(field.value, 'dd.MM.yyyy')
+              ) : (
+                <span>Выбрать дату</span>
+              )}
+
+              <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
+            </Button>
+          </FormControl>
+        );
+
+        return (
+          <FormItem className='flex flex-col w-full'>
+            {label && <FormLabel>{label}</FormLabel>}
+
+            <Popover trigger={trigger}>
+              <Calendar
+                mode='single'
+                selected={field.value}
+                onDayClick={field.onChange}
+                disabled={disabledDates}
+                initialFocus
+                {...restProps}
+              />
+            </Popover>
+
+            {description && <FormDescription>{description}</FormDescription>}
+
+            <FormMessage />
+          </FormItem>
+        );
+      }}
+    />
   );
 }

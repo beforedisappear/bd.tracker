@@ -2,7 +2,7 @@
 
 import { Moon, Sun } from 'lucide-react';
 
-import { Button, DropdownMenu } from '@/shared/ui/c';
+import { Button, DropdownMenu, type DropDownMenuOptions } from '@/shared/ui/c';
 
 import { useTheme } from 'next-themes';
 
@@ -20,19 +20,15 @@ export function SwitchTheme() {
     </Button>
   );
 
-  return (
-    <DropdownMenu
-      align='end'
-      trigger={trigger}
-      options={[
-        { type: 'item', label: 'Светлая', onSelect: () => setTheme('light') },
-        { type: 'item', label: 'Темная', onSelect: () => setTheme('dark') },
-        {
-          type: 'item',
-          label: 'Системная',
-          onSelect: () => setTheme('system'),
-        },
-      ]}
-    />
-  );
+  const options: DropDownMenuOptions = [
+    { type: 'item', label: 'Светлая', onSelect: () => setTheme('light') },
+    { type: 'item', label: 'Темная', onSelect: () => setTheme('dark') },
+    {
+      type: 'item',
+      label: 'Системная',
+      onSelect: () => setTheme('system'),
+    },
+  ];
+
+  return <DropdownMenu align='end' trigger={trigger} options={options} />;
 }

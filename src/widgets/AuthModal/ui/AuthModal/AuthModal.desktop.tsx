@@ -18,7 +18,7 @@ export function DesktopAuthModal({}: Props) {
       description={AUTH_FORM_DESC}
       onOpenChange={open => (open ? null : back())}
       defaultOpen
-      className='min-h-[17rem] h-auto w-full max-w-[25rem]
+      className='h-auto w-full max-w-[25rem]
         md:max-w-[22rem]'
       titleClassName='text-center'
       descClassName='text-center whitespace-pre-line'

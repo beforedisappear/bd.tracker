@@ -3,23 +3,32 @@
 import * as PopoverPrimitive from '@radix-ui/react-popover';
 
 import { PopoverContent } from './PopoverContent';
-import type { PropsWithChildren } from 'react';
+import type { ComponentProps } from 'react';
 
-interface IProps extends PropsWithChildren {
+interface IProps extends ComponentProps<typeof PopoverContainer> {
   trigger: React.ReactNode;
   className?: string;
+  content?: ComponentProps<typeof PopoverContent>;
 }
 
 const PopoverContainer = PopoverPrimitive.Root;
 const PopoverTrigger = PopoverPrimitive.Trigger;
 
 export function Popover(props: IProps) {
-  const { trigger, children, ...rest } = props;
+  const {
+    trigger,
+    children,
+    className,
+    content: contentProps,
+    ...restProps
+  } = props;
 
   return (
-    <PopoverContainer>
+    <PopoverContainer {...restProps}>
       <PopoverTrigger asChild>{trigger}</PopoverTrigger>
-      <PopoverContent {...rest}>{children}</PopoverContent>
+      <PopoverContent className={className} {...contentProps}>
+        {children}
+      </PopoverContent>
     </PopoverContainer>
   );
 }

@@ -1,6 +1,5 @@
 'use client';
 
-import { Fragment } from 'react';
 import { InputOTPContainer } from './InputOTPContainer';
 import { InputOTPGroup } from './InputOTPGroup';
 import { InputOTPSeparator } from './InputOTPSeparator';
@@ -17,17 +16,30 @@ import {
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
 import { useFormContext } from 'react-hook-form';
 
-interface IProps {
+import { type ComponentProps, Fragment } from 'react';
+
+type ExcludedProps = 'maxLength' | 'render' | 'pattern';
+
+type Props = {
   name: string;
   length: number;
   groupSize?: number;
   label?: string;
   description?: string;
   disabled?: boolean;
-}
+} & Omit<ComponentProps<typeof InputOTPContainer>, ExcludedProps>;
 
-export function InputOTP(props: IProps) {
-  const { name, length, groupSize = 3, label, description, disabled } = props;
+export function InputOTP(props: Props) {
+  const {
+    name,
+    length = 4,
+    groupSize = 4,
+    label,
+    description,
+    disabled,
+    onChange,
+    ...restProps
+  } = props;
 
   if (length <= 0 || groupSize <= 0) {
     throw new Error('groupSize и separatorStep can only be positive ');
@@ -47,10 +59,15 @@ export function InputOTP(props: IProps) {
 
           <FormControl>
             <InputOTPContainer
+              {...restProps}
               {...field}
               maxLength={length}
               pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
               disabled={disabled}
+              onChange={v => {
+                field.onChange(v);
+                if (onChange) onChange(v);
+              }}
             >
               {new Array(numberOfGroups).fill('_').map((_, groupIndex) => {
                 const slotsInGroup =

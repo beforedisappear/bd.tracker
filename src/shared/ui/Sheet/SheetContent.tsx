@@ -3,13 +3,17 @@ import { X } from 'lucide-react';
 import { cn } from '@/shared/lib/css';
 
 import * as SheetPrimitive from '@radix-ui/react-dialog';
-import { forwardRef, type ComponentRef } from 'react';
+import {
+  forwardRef,
+  type ComponentRef,
+  type ComponentPropsWithoutRef,
+} from 'react';
 import { sheetVariants } from './Sheet.utils';
 import { VariantProps } from 'class-variance-authority';
 import { SheetOverlay } from './SheetOverlay';
 
-interface SheetContentProps
-  extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
+export interface SheetContentProps
+  extends ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
     VariantProps<typeof sheetVariants> {}
 
 const SheetPortal = SheetPrimitive.Portal;

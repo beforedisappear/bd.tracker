@@ -17,6 +17,10 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+  .fl-upc::first-letter {
+    text-transform: uppercase;
+  }
 }
 
 @layer base {

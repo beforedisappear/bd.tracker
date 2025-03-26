@@ -21,4 +21,4 @@ export type MenuGroup = {
   subItems: (MenuItem | MenuSubItem)[];
 };
 
-export type Options = (MenuItem | MenuGroup | MenuSeparator)[];
+export type DropDownMenuOptions = (MenuItem | MenuGroup | MenuSeparator)[];

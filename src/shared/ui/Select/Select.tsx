@@ -5,7 +5,6 @@ import { SelectTrigger } from './SelectTrigger';
 import { SelectContent } from './SelectContent';
 import { SelectLabel } from './SelectLabel';
 import { SelectItem } from './SelectItem';
-import { useFormContext } from 'react-hook-form';
 import {
   FormControl,
   FormDescription,
@@ -15,16 +14,24 @@ import {
   FormMessage,
 } from '../Form';
 
-type Option = { value: string; name: string };
+import { useFormContext } from 'react-hook-form';
 
-type IProps = {
+import type { ComponentProps } from 'react';
+import type { SelectOption } from './Select.types';
+
+type BaseProps = Omit<
+  ComponentProps<typeof SelectContainer>,
+  'onValueChange' | 'defaultValue'
+>;
+
+interface IProps extends BaseProps {
   name: string;
   placeholder?: string;
-  fieldLabel?: string;
-  fieldDescription?: string;
   label?: string;
-  options: Option[];
-};
+  description?: string;
+  selectLabel?: string;
+  options: SelectOption[];
+}
 
 const SelectContainer = SelectPrimitive.Root;
 
@@ -35,11 +42,12 @@ const SelectValue = SelectPrimitive.Value;
 export function Select(props: IProps) {
   const {
     name,
-    fieldLabel,
-    placeholder,
-    fieldDescription,
     label,
+    placeholder,
+    description,
+    selectLabel,
     options = [],
+    ...restProps
   } = props;
 
   const { control } = useFormContext();
@@ -50,20 +58,22 @@ export function Select(props: IProps) {
       control={control}
       render={({ field }) => (
         <FormItem>
-          {fieldLabel && <FormLabel>{fieldLabel}</FormLabel>}
+          {label && <FormLabel>{label}</FormLabel>}
+
           <SelectContainer
+            {...restProps}
             onValueChange={field.onChange}
             defaultValue={field.value}
           >
             <FormControl>
-              <SelectTrigger className='w-[180px]'>
+              <SelectTrigger className='w-full'>
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>
 
             <SelectContent>
               <SelectGroup>
-                {label && <SelectLabel>{label}</SelectLabel>}
+                {selectLabel && <SelectLabel>{selectLabel}</SelectLabel>}
 
                 {options.map(({ value, name }) => (
                   <SelectItem key={value} value={value}>
@@ -74,9 +84,7 @@ export function Select(props: IProps) {
             </SelectContent>
           </SelectContainer>
 
-          {fieldDescription && (
-            <FormDescription>{fieldDescription}</FormDescription>
-          )}
+          {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />
         </FormItem>
       )}

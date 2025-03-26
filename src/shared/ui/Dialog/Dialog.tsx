@@ -12,7 +12,7 @@ const DialogContainer = DialogPrimitive.Root;
 const DialogTrigger = DialogPrimitive.Trigger;
 
 interface IProps extends ComponentProps<typeof DialogContainer> {
-  trigger?: React.ReactNode;
+  trigger: React.ReactNode;
   title: string;
   description?: string;
   className?: string;

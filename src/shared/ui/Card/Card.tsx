@@ -16,6 +16,7 @@ interface Props extends PropsWithChildren {
   headerClassName?: string;
   headerContent?: React.ReactNode;
   footerContent?: React.ReactNode;
+  footerClassName?: string;
 }
 
 export function Card(props: Props) {
@@ -30,6 +31,7 @@ export function Card(props: Props) {
     headerClassName,
     headerContent,
     footerContent,
+    footerClassName,
   } = props;
 
   return (
@@ -48,7 +50,9 @@ export function Card(props: Props) {
         <CardContent className={contentClassName}>{children}</CardContent>
       )}
 
-      {footerContent && <CardFooter>{footerContent}</CardFooter>}
+      {footerContent && (
+        <CardFooter className={footerClassName}>{footerContent}</CardFooter>
+      )}
     </CardContainer>
   );
 }

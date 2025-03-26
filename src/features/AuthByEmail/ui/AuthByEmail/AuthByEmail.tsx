@@ -3,7 +3,7 @@
 import { Button, Input, InputOTP, Form } from '@/shared/ui/c';
 
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
@@ -20,6 +20,7 @@ import {
 } from '../../model/schemes';
 
 import type { AnyZodObject } from 'zod';
+import { AuthByEmailAgain } from '../AuthByEmailAgain/AuthByEmailAgain';
 
 type FormStep = '1' | '2';
 
@@ -73,10 +74,15 @@ export function AuthByEmail({}: Props) {
     }
   });
 
+  const onSendAgain = useCallback(() => {
+    const email = methods.getValues('email');
+    onAuth({ email });
+  }, [methods, onAuth]);
+
   return (
     <Form {...methods}>
       <form
-        className='container flex flex-col flex-grow items-center max-w-80'
+        className='container flex flex-col flex-grow items-center max-w-80 h-48'
         onSubmit={onSubmit}
       >
         {currentStep === '1' && (
@@ -95,16 +101,24 @@ export function AuthByEmail({}: Props) {
             groupSize={3}
             label='Код подтверждения'
             disabled={isLogging || isLoggedIn}
+            className='text-md'
+            onChange={v => v.length === 6 && onSubmit()}
           />
         )}
 
-        <Button
-          type='submit'
-          className='mt-auto w-full'
-          disabled={isAuthing || isLogging || isLoggedIn}
-        >
-          Отправить
-        </Button>
+        <div className='flex flex-col items-center gap-y-2 w-full mt-auto'>
+          <Button
+            type='submit'
+            className='w-full'
+            disabled={isAuthing || isLogging || isLoggedIn}
+          >
+            Отправить
+          </Button>
+
+          {currentStep === '2' && (
+            <AuthByEmailAgain onSendAgain={onSendAgain} />
+          )}
+        </div>
       </form>
     </Form>
   );
