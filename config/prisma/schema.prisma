@@ -7,15 +7,68 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum PermissionType {
+  //TEAM management
+  TEAM_CREATE
+  TEAM_EDIT //изменение названия, добавление проектов
+  TEAM_DELETE
+  TEAM_INVITE_USERS
+  TEAM_REMOVE_USERS
+
+  //PROJECT management 
+  PROJECT_CREATE
+  PROJECT_EDIT //изменение названия, доавление колонок
+  PROJECT_DELETE
+  PROJECT_VIEW
+
+  //BOARD management
+  BOARD_CREATE
+  BOARD_EDIT
+  BOARD_DELETE
+  BOARD_VIEW
+  BOARD_MOVE
+
+  //COLUMN management
+  COLUMN_CREATE
+  COLUMN_EDIT //перемещение, изменение названия, добавление задач
+  COLUMN_DELETE
+
+  //TASK management
+  TASK_CREATE
+  TASK_EDIT
+  TASK_DELETE
+  TASK_MOVE // Перемещение между колонками
+  TASK_ASSIGN_USERS // Назначение исполнителей
+  TASK_CHANGE_STATUS // Изменение статуса
+  TASK_VIEW
+
+  // Управление стикерами (тегами)
+  STICKER_CREATE
+  STICKER_EDIT
+  STICKER_DELETE
+  STICKER_ATTACH_TO_TASK
+  STICKER_REMOVE_FROM_TASK
+
+  //USER management
+  USER_MANAGE_ROLES
+  USER_VIEW
+}
+
 model User {
   //name / data type / type modifiers / optional attributes 
-  id        String   @id @default(uuid())
-  name      String?
-  email     String   @unique
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @map("updated_at")
+  id         String   @id @default(uuid())
+  name       String?
+  email      String   @unique
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @default(now()) @map("updated_at")
   //one user to many tokens
-  JWT       JWT[]
+  JWT        JWT[]
+  //many users to many teams
+  teams      Team[]   @relation("TeamUsers")
+  //many users to many tasks
+  tasks      Task[]   @relation("TaskAssignees")
+  //one user to many teams
+  ownedTeams Team[]   @relation("TeamOwner")
 
   @@map("users")
 }
@@ -28,4 +81,101 @@ model JWT {
   userAgent String   @map("user_agent")
 
   @@map("jwt")
+}
+
+model Team {
+  id        String    @id @default(uuid())
+  name      String
+  createdAt DateTime  @default(now()) @map("created_at")
+  //many teams to many projects
+  projects  Project[]
+  //one user to many teams
+  ownerId   String
+  owner     User      @relation("TeamOwner", fields: [ownerId], references: [id])
+  //many teams to many users
+  users     User[]    @relation("TeamUsers")
+}
+
+model Project {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  //one team to many projects
+  teamId    String
+  team      Team     @relation(fields: [teamId], references: [id])
+  //one project to many boards
+  boards    Board[]
+}
+
+model Board {
+  id        String    @id @default(uuid())
+  name      String
+  projectId String
+  createdAt DateTime  @default(now())
+  //one project to many boards
+  project   Project   @relation(fields: [projectId], references: [id])
+  //one board to many columns
+  columns   Column[]
+  //one board to many stickers
+  stickers  Sticker[]
+}
+
+model Column {
+  id        String   @id @default(uuid())
+  name      String
+  position  Int      @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  //one board to many columns
+  boardId   String
+  board     Board    @relation(fields: [boardId], references: [id])
+  //one column to many tasks
+  tasks     Task[]
+}
+
+model Task {
+  id           String    @id @default(uuid())
+  title        String
+  description  String?
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  //to keep the max nesting = 1
+  isSubtask    Boolean   @default(false)
+  //to place subtask on board
+  isStandalone Boolean   @default(false)
+  //one column to many tasks
+  columnId     String
+  column       Column    @relation(fields: [columnId], references: [id])
+  //many users to many tasks
+  assignees    User[]    @relation("TaskAssignees")
+  //one task to many tasks (subtasks) by self-referencing relationship
+  parentTaskId String?
+  parentTask   Task?     @relation("TaskHierarchy", fields: [parentTaskId], references: [id])
+  subtasks     Task[]    @relation("TaskHierarchy")
+  //many stickers to many tasks
+  stickers     Sticker[] @relation("TaskStickers")
+}
+
+enum StickerType {
+  TEXT
+  DATE
+  DATE_RANGE
+}
+
+model Sticker {
+  id        String      @id @default(uuid())
+  name      String?
+  type      StickerType
+  textValue String? // Для текстовых стикеров
+  dateValue DateTime? // Для дедлайнов
+  startDate DateTime? // Начало интервала дат
+  endDate   DateTime? // Конец интервала дат
+  color     String
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime    @updatedAt @map("updated_at")
+  //one board to many stickers 
+  boardId   String
+  board     Board       @relation(fields: [boardId], references: [id])
+  //many stickers to many tasks
+  tasks     Task[]      @relation("TaskStickers")
 }
