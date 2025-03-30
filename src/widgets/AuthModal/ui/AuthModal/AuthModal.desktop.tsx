@@ -7,14 +7,19 @@ import { Dialog } from '@/shared/ui/c';
 
 import { useRouter } from 'next/navigation';
 
-interface Props {}
+import type { ReactNode } from 'react';
 
-export function DesktopAuthModal({}: Props) {
+interface Props {
+  trigger?: ReactNode;
+}
+
+export function DesktopAuthModal({ trigger }: Props) {
   const { back } = useRouter();
 
   return (
     <Dialog
       title={AUTH_FORM_TITLE}
+      trigger={trigger}
       description={AUTH_FORM_DESC}
       onOpenChange={open => (open ? null : back())}
       defaultOpen

@@ -6,9 +6,11 @@ import {
 import { Drawer } from '@/shared/ui/c';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 
-interface Props {}
+interface Props {
+  trigger?: ReactNode;
+}
 
 export function MobileAuthModal({}: Props) {
   const { back } = useRouter();
