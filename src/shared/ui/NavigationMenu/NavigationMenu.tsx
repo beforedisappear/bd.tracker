@@ -10,35 +10,22 @@ import { NavigationMenuListItem } from './NavigationMenuListItem';
 
 import { navigationMenuTriggerStyle } from './NavigationMenu.utils';
 
-type PureListItem = { type: 'pure'; content: React.ReactNode };
+import type { NavigationMenuItems } from './NavigationMenu.types';
+import { ComponentProps } from 'react';
 
-type SimpleListitem = { label: React.ReactNode; href: string };
-
-type ListItem = { title: string; href: string; description?: string };
-
-type SimpleItem = { type: 'simple'; content: SimpleListitem };
-
-type ExpandedItem = {
-  type: 'expanded';
-  trigger: React.ReactNode;
-  content: ListItem[];
-};
-
-interface IProps {
-  items: (PureListItem | SimpleItem | ExpandedItem)[];
+interface IProps extends ComponentProps<typeof NavigationMenuContainer> {
+  items: NavigationMenuItems;
   className?: string;
-  childrenBeforeList?: React.ReactNode;
-  childrenAfterItemList?: React.ReactNode;
 }
 
 const NavigationMenuItem = NavigationMenuPrimitive.Item;
 const NavigationMenuLink = NavigationMenuPrimitive.Link;
 
 export function NavigationMenu(props: IProps) {
-  const { items = [], className } = props;
+  const { items = [], className, ...restProps } = props;
 
   return (
-    <NavigationMenuContainer className={className}>
+    <NavigationMenuContainer {...restProps} className={className}>
       <NavigationMenuList>
         {items.map((item, i) => {
           return (
@@ -53,17 +40,19 @@ export function NavigationMenu(props: IProps) {
                 </Link>
               )}
 
-              {item.type === 'expanded' && (
+              {item.type === 'extended' && (
                 <>
-                  <NavigationMenuTrigger>{item.trigger}</NavigationMenuTrigger>
+                  <NavigationMenuTrigger>
+                    {item.triggerLabel}
+                  </NavigationMenuTrigger>
 
                   <NavigationMenuContent>
                     <ul className='grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] '>
                       {item.content.map(el => {
                         return (
                           <NavigationMenuListItem
-                            key={el.title}
-                            title={el.title}
+                            key={el.label}
+                            title={el.label}
                             href={el.href}
                           >
                             {el.description}

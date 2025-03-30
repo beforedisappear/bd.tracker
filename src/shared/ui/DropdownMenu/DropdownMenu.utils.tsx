@@ -16,7 +16,7 @@ const DropdownMenuSub = DropdownMenuPrimitive.Sub;
 export const getMenuSeparator = () => <DropdownMenuSeparator key={uuidv4()} />;
 
 export const getMenuItem = (el: MenuItem) => (
-  <DropdownMenuItem key={uuidv4()} onClick={el.onSelect}>
+  <DropdownMenuItem key={uuidv4()} onClick={el.onSelect} disabled={el.disabled}>
     {el.label}
     {el.shortcut && <DropdownMenuShortcut>{el.shortcut}</DropdownMenuShortcut>}
   </DropdownMenuItem>

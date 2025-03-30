@@ -26,7 +26,7 @@ interface IProps extends BaseProps {
 }
 
 export function Switch(props: IProps) {
-  const { name, label, description, className, ...restProps } = props;
+  const { name, label, description, className, onChange, ...restProps } = props;
   const { control } = useFormContext();
 
   const isWrapperExists = !!label || !!description;
@@ -53,6 +53,10 @@ export function Switch(props: IProps) {
           <FormControl>
             <PureSwitch
               {...restProps}
+              onChange={v => {
+                field.onChange(v);
+                if (onChange) onChange(v);
+              }}
               checked={field.value}
               onCheckedChange={field.onChange}
             />

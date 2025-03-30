@@ -6,9 +6,11 @@ import {
 import { Drawer } from '@/shared/ui/c';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 
-interface Props {}
+interface Props {
+  trigger?: ReactNode;
+}
 
 export function MobileAuthModal({}: Props) {
   const { back } = useRouter();
@@ -26,9 +28,7 @@ export function MobileAuthModal({}: Props) {
       open={showDrawer}
       onOpenChange={setShowDrawer}
       onAnimationEnd={back}
-      className='h-[20rem]'
-      // className='min-h-[17rem] h-auto w-full max-w-[25rem]
-      //   md:max-w-[22rem]'
+      className='h-[24rem]'
       titleClassName='text-center'
       descClassName='text-center whitespace-pre-line'
     >

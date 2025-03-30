@@ -17,7 +17,7 @@ export function Avatar(props: Props) {
   return (
     <AvatarContainer className={className} {...restProps}>
       <AvatarImage src={src} alt={alt} />
-      {fallback && <AvatarFallback>{fallback}</AvatarFallback>}
+      {fallback && <AvatarFallback asChild>{fallback}</AvatarFallback>}
     </AvatarContainer>
   );
 }
