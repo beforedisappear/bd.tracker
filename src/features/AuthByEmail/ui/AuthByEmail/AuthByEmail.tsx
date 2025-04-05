@@ -1,6 +1,7 @@
 'use client';
 
 import { Button, Input, InputOTP, Form } from '@/shared/ui/c';
+import { AuthByEmailAgain } from '../AuthByEmailAgain/AuthByEmailAgain';
 
 import { useForm } from 'react-hook-form';
 import { useCallback, useState } from 'react';
@@ -10,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import { getErrorMessage } from '@/shared/lib/error';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { queries } from '../../api';
-import { getProfileRoute } from '@/shared/config/routes';
+import { getHomeRoute } from '@/shared/config/routes';
 import { saveJwt } from '@/shared/lib/cookies';
 
 import {
@@ -20,7 +21,6 @@ import {
 } from '../../model/schemes';
 
 import type { AnyZodObject } from 'zod';
-import { AuthByEmailAgain } from '../AuthByEmailAgain/AuthByEmailAgain';
 
 type FormStep = '1' | '2';
 
@@ -66,7 +66,7 @@ export function AuthByEmail({}: Props) {
       onLogin({ ...data, email })
         .then(res => {
           saveJwt(res.data.accessToken, res.data.refreshToken);
-          push(getProfileRoute());
+          push(getHomeRoute());
         })
         .catch(e => {
           methods.setError('code', { message: getErrorMessage(e) });

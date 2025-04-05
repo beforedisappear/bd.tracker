@@ -3,6 +3,7 @@ export enum AppRoutes {
   MAIN = 'main',
   LOGIN = 'login',
   //private
+  HOME = 'home',
   PROFILE = 'profile',
 
   // EMPLOYEE_BY_ID = 'employee_by_id',

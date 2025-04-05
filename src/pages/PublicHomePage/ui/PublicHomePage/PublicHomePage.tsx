@@ -5,7 +5,7 @@ import { ProjectFeatures } from '@/widgets/ProjectFeatures';
 import { ProjectHero } from '@/widgets/ProjectHero';
 import { ProjectTestimonials } from '@/widgets/ProjectTestimonials';
 
-export async function HomePage() {
+export async function PublicHomePage() {
   return (
     <>
       <ProjectHero />
