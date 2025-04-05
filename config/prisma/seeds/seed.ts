@@ -1,13 +1,13 @@
 import { PrismaClient } from '@prisma/client';
+import { createUsers } from './user.seed';
+import { createTeam } from './team.seed';
 
 const prisma = new PrismaClient();
 
 async function main() {
-  const user = await prisma.user.create({
-    data: { email: `${Math.random()}@gmail.com` },
-  });
+  const { user1 } = await createUsers();
 
-  console.log(user);
+  await createTeam({ ownerId: user1.id });
 }
 
 main()
