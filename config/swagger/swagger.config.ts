@@ -11,6 +11,13 @@ import { PostLoginDoc } from '$/routeHandlers/login/doc';
 import { PostRefreshTokensDoc } from '$/routeHandlers/refreshTokens/doc';
 import { PostLogoutDoc } from '$/routeHandlers/logout/doc';
 import { GetProfileDoc } from '$/routeHandlers/profile/doc';
+import {
+  PostCreateTeamDoc,
+  DeleteTeamDoc,
+  GetTeamByIdOrSlug,
+} from '$/routeHandlers/team/doc';
+import { PatchTeamRenameDoc } from '$/routeHandlers/team/rename/doc';
+import { GetTeamListDoc } from '$/routeHandlers/team/list/doc';
 
 extendZodWithOpenApi(z);
 
@@ -34,6 +41,13 @@ openAPIRegistry.registerPath(PostLogoutDoc);
 
 //profile
 openAPIRegistry.registerPath(GetProfileDoc(bearerAuth.name));
+
+//team
+openAPIRegistry.registerPath(PostCreateTeamDoc(bearerAuth.name));
+openAPIRegistry.registerPath(PatchTeamRenameDoc(bearerAuth.name));
+openAPIRegistry.registerPath(GetTeamListDoc(bearerAuth.name));
+openAPIRegistry.registerPath(GetTeamByIdOrSlug(bearerAuth.name));
+openAPIRegistry.registerPath(DeleteTeamDoc(bearerAuth.name));
 
 function getOpenApiDocumentation() {
   const generator = new OpenApiGeneratorV3(openAPIRegistry.definitions);

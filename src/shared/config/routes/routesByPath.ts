@@ -15,3 +15,5 @@ export const privateRoutesByPath: Record<string, AppRoutes> = {
   [getProfileRoute()]: AppRoutes.PROFILE,
   [getHomeRoute()]: AppRoutes.HOME,
 };
+
+export const serviceRoutesByPath: Record<string, AppRoutes> = {};

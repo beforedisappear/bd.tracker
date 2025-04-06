@@ -6,7 +6,7 @@ interface Props {
   onSendAgain: () => void;
 }
 
-const TIMER_VALUE = 10;
+const TIMER_VALUE = 120;
 
 export function AuthByEmailAgain(props: Props) {
   const { onSendAgain } = props;

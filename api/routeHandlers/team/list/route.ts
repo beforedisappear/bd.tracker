@@ -1,20 +1,20 @@
-import { ErrorResponse } from '$/errors/errorResponse';
 import { authService } from '$/services/auth.service';
-import { userService } from '$/services/user.service';
+import { teamService } from '$/services/team.service';
 
-import { getAccessTokenFromReq } from '$/utils';
+import { ErrorResponse } from '$/errors/errorResponse';
 
 import { type NextRequest, NextResponse } from 'next/server';
+import { getAccessTokenFromReq } from '$/utils';
 
-export async function GetProfile(request: NextRequest) {
+export async function GetTeamList(request: NextRequest) {
   try {
     const accessToken = getAccessTokenFromReq(request);
 
     const { userId } = await authService.verifyJwt(accessToken);
 
-    const data = await userService.findOne(userId);
+    const teamList = await teamService.getUserTeamsByUserId(userId);
 
-    return NextResponse.json(data, {
+    return NextResponse.json(teamList, {
       status: 200,
     });
   } catch (e) {

@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "./client"
+  output   = "./generated/client"
 }
 
 datasource db {
@@ -10,9 +10,11 @@ datasource db {
 
 enum PermissionType {
   //TEAM management
+  TEAM_CREATE
+  TEAM_DELETE
   TEAM_RENAME //TEAM_EDIT
   TEAM_ADD_PROJECT //TEAM_EDIT
-  TEAM_DELETE
+  TEAM_REMOVE_PROJECT //TEAM_EDIT
   TEAM_INVITE_USER
   TEAM_REMOVE_USER
 
@@ -77,23 +79,33 @@ enum StickerType {
   DATE_RANGE
 }
 
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
 model User {
   //name / data type / type modifiers / optional attributes 
-  id         String   @id @default(uuid())
-  name       String?
-  email      String   @unique
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @default(now()) @map("updated_at")
+  id                      String           @id @default(uuid())
+  name                    String?
+  email                   String           @unique
+  createdAt               DateTime         @default(now()) @map("created_at")
+  updatedAt               DateTime         @default(now()) @map("updated_at")
   //many tokens to one user
-  JWT        JWT[]
+  JWT                     JWT[]
   //many users to many teams
-  teams      Team[]   @relation("TeamUsers")
+  teams                   Team[]           @relation("TeamUsers")
   //many users to many tasks
-  tasks      Task[]   @relation("TaskAssignees")
+  tasks                   Task[]           @relation("TaskAssignees")
   //many teams to one user (owner)
-  ownedTeams Team[]   @relation("TeamOwner")
+  ownedTeams              Team[]           @relation("TeamOwner")
   //many users to many roles
-  roles      Role[]   @relation("UserRoles")
+  roles                   Role[]           @relation("UserRoles")
+  //many teamInvitations to one user
+  receivedTeamInvitations TeamInvitation[] @relation("TeamInvitee")
+  //many teamInvitations to one user
+  sentTeamInvitations     TeamInvitation[] @relation("TeamInviter")
 
   @@map("users")
 }
@@ -131,16 +143,40 @@ model Role {
 
 //as Tenant
 model Team {
-  id        String    @id @default(uuid())
-  name      String    @unique
-  createdAt DateTime  @default(now()) @map("created_at")
+  id          String           @id @default(uuid())
+  name        String           @unique
+  slug        String           @unique
+  createdAt   DateTime         @default(now()) @map("created_at")
   //many teams to many projects
-  projects  Project[]
+  projects    Project[]
   //many teams to one user (owner)
-  ownerId   String
-  owner     User      @relation("TeamOwner", fields: [ownerId], references: [id])
+  ownerId     String
+  owner       User             @relation("TeamOwner", fields: [ownerId], references: [id])
   //many teams to many users
-  users     User[]    @relation("TeamUsers")
+  users       User[]           @relation("TeamUsers")
+  //many invitations to one team
+  invitations TeamInvitation[] @relation("TeamInvitations")
+}
+
+model TeamInvitation {
+  id        String           @id @default(uuid())
+  status    InvitationStatus @default(PENDING)
+  createdAt DateTime         @default(now())
+  expiresAt DateTime
+
+  //many teamInvitation to one team
+  teamId String
+  team   Team   @relation("TeamInvitations", fields: [teamId], references: [id])
+
+  //many teamInvitations to one user (inviter)
+  inviterId String
+  inviter   User   @relation("TeamInviter", fields: [inviterId], references: [id])
+
+  //many teamInvitations to one user (invitee)
+  invitee   User?   @relation("TeamInvitee", fields: [inviteeId], references: [id])
+  inviteeId String?
+
+  inviteeEmail String? @unique
 }
 
 model Project {

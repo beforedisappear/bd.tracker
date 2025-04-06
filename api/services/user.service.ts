@@ -1,18 +1,18 @@
 import 'server-only';
 
-import { prismaService } from '@/shared/lib/db/postgres';
+import { prismaService } from '&/prisma';
 
-import type { UpdateUser, CreateUser } from '../types';
+import type { CreateUserDto, UpdateUserDto } from '../types';
 
 class UserService {
-  create(user: CreateUser) {
+  create(user: CreateUserDto) {
     return prismaService.user.create({
-      data: user,
+      data: { ...user, name: user.email.replace(/@.*$/, '') },
     });
   }
 
-  //email
-  update(id: string, user: UpdateUser) {
+  //TODO: смена мыла
+  update(id: string, user: UpdateUserDto) {
     return prismaService.user.update({
       where: { id },
       data: user,

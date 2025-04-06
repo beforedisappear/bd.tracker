@@ -5,13 +5,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { add } from 'date-fns';
 import { SignJWT, jwtVerify } from 'jose';
 
-import { redisService } from '@/shared/lib/db/redis';
+import { redisService } from '&/redis';
+import { prismaService } from '&/prisma';
 import { userService } from './user.service';
 import { mailService } from './mail.service';
-import { prismaService } from '@/shared/lib/db/postgres';
 
 import type {
-  CreateUser,
+  CreateUserDto,
   IJwtPayload,
   LoginDto,
   LogoutDto,
@@ -24,7 +24,7 @@ const secretKey = process.env.JWT_SECRET;
 const key = new TextEncoder().encode(secretKey);
 
 class AuthService {
-  async auth(data: CreateUser) {
+  async auth(data: CreateUserDto) {
     let user = await userService.findOne(data.email);
 
     if (!user) {
@@ -124,7 +124,7 @@ class AuthService {
     return new SignJWT(payload)
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
-      .setExpirationTime('5 min')
+      .setExpirationTime(process.env.JWT_EXPIRE as string)
       .sign(key);
   }
 

@@ -3,7 +3,7 @@ import 'server-only';
 import nodemailer, { Transporter } from 'nodemailer';
 import { ApiError } from '$/errors/apiError';
 
-import type { EmailOptions } from '../types';
+import type { EmailOptions, IAuthMail, IInvitationMail } from '../types';
 
 class MailService {
   private transporter: Transporter;
@@ -20,8 +20,19 @@ class MailService {
     });
   }
 
-  async sendAuthMail({ email, code }: { email: string; code: string }) {
+  async sendAuthMail({ email, code }: IAuthMail) {
     return this.sendMail({ to: email, text: code });
+  }
+
+  async sendInvitationMail(props: IInvitationMail) {
+    const { email, teamName, invitationId } = props;
+
+    const message = `Команда ${teamName} приглашает тебя присоединиться. Для этого перейди по ссылке - ${process.env.NEXT_PUBLIC_URL}/invite?id=${invitationId}`;
+
+    return this.sendMail({
+      to: email,
+      text: message,
+    });
   }
 
   private async sendMail(options: EmailOptions): Promise<void> {
