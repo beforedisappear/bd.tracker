@@ -52,6 +52,8 @@ enum PermissionType {
   TASK_CREATE
   TASK_VIEW
   TASK_DELETE
+  TASK_ACCOMPLISHMENT //TASK_EDIT
+  TASK_ARCHIVING //TASK_EDIT
   TASK_RENAME //TASK_EDIT
   TASK_CHANGE_DESCRIPTION //TASK_EDIT
   TASK_REPOSITION //TASK_EDIT
@@ -87,25 +89,25 @@ enum InvitationStatus {
 
 model User {
   //name / data type / type modifiers / optional attributes 
-  id                      String           @id @default(uuid())
-  name                    String?
-  email                   String           @unique
-  createdAt               DateTime         @default(now()) @map("created_at")
-  updatedAt               DateTime         @default(now()) @map("updated_at")
+  id                  String           @id @default(uuid())
+  name                String?
+  email               String           @unique
+  createdAt           DateTime         @default(now()) @map("created_at")
+  updatedAt           DateTime         @default(now()) @map("updated_at")
   //many tokens to one user
-  JWT                     JWT[]
+  JWT                 JWT[]
   //many users to many teams
-  teams                   Team[]           @relation("TeamUsers")
+  teams               Team[]           @relation("TeamMembers")
   //many users to many tasks
-  tasks                   Task[]           @relation("TaskAssignees")
+  tasks               Task[]           @relation("TaskAssignees")
   //many teams to one user (owner)
-  ownedTeams              Team[]           @relation("TeamOwner")
+  ownedTeams          Team[]           @relation("TeamOwner")
   //many users to many roles
-  roles                   Role[]           @relation("UserRoles")
+  roles               Role[]           @relation("UserRoles")
   //many teamInvitations to one user
-  receivedTeamInvitations TeamInvitation[] @relation("TeamInvitee")
-  //many teamInvitations to one user
-  sentTeamInvitations     TeamInvitation[] @relation("TeamInviter")
+  sentTeamInvitations TeamInvitation[] @relation("TeamInviter")
+  //many users (admins) to many teams
+  adminTeams          Team[]           @relation("TeamAdmins")
 
   @@map("users")
 }
@@ -152,15 +154,18 @@ model Team {
   //many teams to one user (owner)
   ownerId     String
   owner       User             @relation("TeamOwner", fields: [ownerId], references: [id])
-  //many teams to many users
-  users       User[]           @relation("TeamUsers")
+  //many teams to many users (members)
+  members     User[]           @relation("TeamMembers")
   //many invitations to one team
   invitations TeamInvitation[] @relation("TeamInvitations")
+  //many users (admins) to many teams
+  admins      User[]           @relation("TeamAdmins")
 }
 
 model TeamInvitation {
   id        String           @id @default(uuid())
   status    InvitationStatus @default(PENDING)
+  token     String
   createdAt DateTime         @default(now())
   expiresAt DateTime
 
@@ -172,11 +177,7 @@ model TeamInvitation {
   inviterId String
   inviter   User   @relation("TeamInviter", fields: [inviterId], references: [id])
 
-  //many teamInvitations to one user (invitee)
-  invitee   User?   @relation("TeamInvitee", fields: [inviteeId], references: [id])
-  inviteeId String?
-
-  inviteeEmail String? @unique
+  inviteeEmail String @unique
 }
 
 model Project {
@@ -227,6 +228,8 @@ model Task {
   title          String
   description    String?
   columnPosition Int       @unique
+  isDone         Boolean   @default(false)
+  isInArchieve   Boolean   @default(false)
   createdAt      DateTime  @default(now()) @map("created_at")
   updatedAt      DateTime  @updatedAt @map("updated_at")
   //to keep the max nesting = 1

@@ -4,11 +4,12 @@ import { prismaService } from '&/prisma';
 import { userService } from './user.service';
 import { mailService } from './mail.service';
 
+import { v4 as uuidv4 } from 'uuid';
 import { getSlug } from '$/utils/getSlug';
 import { ApiError } from '$/errors/apiError';
 
 import type { CreateTeamReqDto, RenameTeamReqDto } from '$/types/team.types';
-import { Team } from '&/prisma/client';
+import type { Team } from '&/prisma/generated/client';
 
 class TeamService {
   async getTeamByIdOrSlug(IdOrTeamName: string) {
@@ -19,7 +20,9 @@ class TeamService {
 
   getUserTeamsByUserId(userId: string) {
     return prismaService.team.findMany({
-      where: { OR: [{ users: { some: { id: userId } } }, { ownerId: userId }] },
+      where: {
+        OR: [{ members: { some: { id: userId } } }, { ownerId: userId }],
+      },
     });
   }
 
@@ -39,12 +42,12 @@ class TeamService {
     //TODO: check permisson
 
     const team = await this.getTeamByIdOrSlugWithOptions(teamIdOrName, {
-      withUsers: true,
+      withMembers: true,
       withOwner: true,
     });
 
     const isUserInTeam =
-      !!team.users.find(el => el.id === userId) || team.owner.id === userId;
+      !!team.members.find(el => el.id === userId) || team.owner.id === userId;
 
     if (!isUserInTeam)
       throw ApiError.forbidden('User is not a member of this team');
@@ -83,59 +86,112 @@ class TeamService {
     return deletedTeam;
   }
 
-  async inviteUserToTeam(
-    teamIdOrName: string,
-    inviterId: string,
+  async checkInvitationExistsByInviteeEmail(
+    idOrSlug: string,
     inviteeEmail: string,
+    checkerId: string,
   ) {
-    //TODO: check permisson
-    const team = await this.getTeamByIdOrSlugWithOptions(teamIdOrName);
+    // TODO: add permission check
 
-    const existingInvite = await prismaService.teamInvitation.findFirst({
+    const { inTeam: isCheckerInTeam } = await this.checkIsUserInTeam(
+      idOrSlug,
+      checkerId,
+    );
+
+    if (!isCheckerInTeam)
+      throw ApiError.forbidden(
+        'You are not allowed to check invitations for this team',
+      );
+
+    const invitation = await prismaService.teamInvitation.findFirst({
       where: {
-        teamId: team.id,
         inviteeEmail,
-        status: 'PENDING',
+        team: { OR: [{ id: idOrSlug }, { slug: idOrSlug }] },
       },
     });
 
-    if (existingInvite) throw ApiError.conflict('User already invited');
+    if (!invitation) return false;
 
+    if (invitation.status === 'ACCEPTED')
+      throw ApiError.conflict('User has already accepted the invitation');
+
+    return true;
+  }
+
+  async sendInvitation(
+    idOrSlug: string,
+    inviteeEmail: string,
+    inviterId: string,
+  ) {
+    // TODO: add permission check
+
+    const { inTeam: isInviterInTeam, team } = await this.checkIsUserInTeam(
+      idOrSlug,
+      inviterId,
+    );
+
+    if (!isInviterInTeam)
+      throw ApiError.forbidden(
+        'You are not allowed to send invitations from this team',
+      );
+
+    const existingUser = await userService.findOne(inviteeEmail);
+
+    if (existingUser) {
+      await prismaService.team.update({
+        where: { id: team.id },
+        data: {
+          members: {
+            connect: { id: existingUser.id },
+          },
+        },
+      });
+
+      await mailService.sendNotificationOfInvitationMail({
+        email: inviteeEmail,
+        teamName: team.name,
+      });
+
+      return { result: 'notification' };
+    }
+
+    const token = uuidv4();
     const expSeconds = Number(process.env.TEAM_INVITATION_EXPIRATION);
     const expiresAt = new Date(Date.now() + expSeconds);
-
-    let inviteeId: string | null = null;
-
-    const user = await userService.findOne(inviteeEmail);
-
-    if (user) inviteeId = user.id; //user already registred
 
     const invitation = await prismaService.teamInvitation.create({
       data: {
         teamId: team.id,
-        inviterId,
-        ...(inviteeId ? { inviteeId } : { inviteeEmail }),
+        inviterId: inviterId,
+        inviteeEmail,
+        token,
         expiresAt,
       },
     });
 
-    mailService.sendInvitationMail({
+    await mailService.sendProposalOfInvitationMail({
       email: inviteeEmail,
       teamName: team.name,
       invitationId: invitation.id,
+      token,
     });
 
-    return invitation;
+    return { result: 'proposal' };
   }
 
-  async respondToInvitation(invitationId: string, userId: string) {
-    const invitation = await prismaService.teamInvitation.findUnique({
-      where: { id: invitationId },
+  async acceptInvitaion(invitationId: string, token: string) {
+    const invitation = await prismaService.teamInvitation.findFirst({
+      where: { AND: [{ id: invitationId }, { token }] },
     });
 
-    if (!invitation || invitation.status !== 'PENDING') {
-      throw ApiError.notFound('Invitation not found');
-    }
+    if (!invitation) throw ApiError.notFound('Invitation not found');
+
+    if (
+      invitation.status === 'DECLINED' ||
+      invitation.status === 'ACCEPTED' ||
+      invitation.token !== token
+    )
+      throw ApiError.badRequest('Invitation is invalid');
 
     if (invitation.expiresAt < new Date()) {
       prismaService.teamInvitation
@@ -149,31 +205,38 @@ class TeamService {
     }
 
     prismaService.$transaction(async tx => {
-      //добавляем нового пользователя
+      const [user] = await Promise.all([
+        userService.createWithTx(tx, {
+          email: invitation.inviteeEmail,
+        }),
+        tx.teamInvitation.update({
+          where: { id: invitationId },
+          data: { status: 'ACCEPTED' },
+        }),
+      ]);
+
       await tx.team.update({
         where: { id: invitation.teamId },
-        data: { users: { connect: { id: userId } } },
-      });
-
-      //обновляем приглашение
-      await tx.teamInvitation.update({
-        where: { id: invitation.id },
-        data: { status: 'ACCEPTED', inviteeId: userId },
+        data: {
+          members: {
+            connect: { id: user.id },
+          },
+        },
       });
     });
   }
 
-  async removeUserFromTeam(teamIdOrName: string, userId: string) {
+  async removeMemberFromTeam(teamIdOrName: string, userId: string) {
     //TODO: check permisson
     const team = await this.getTeamByIdOrSlugWithOptions(teamIdOrName, {
-      withUsers: true,
+      withMembers: true,
     });
 
     if (team.ownerId === userId) {
       throw ApiError.forbidden('Owner cannot be removed');
     }
 
-    const isUserInTeam = !!team.users.find(user => user.id === userId);
+    const isUserInTeam = !!team.members.find(user => user.id === userId);
 
     if (!isUserInTeam) {
       throw ApiError.notFound('User is not a member of this team');
@@ -182,7 +245,7 @@ class TeamService {
     prismaService.team.update({
       where: { id: team.id },
       data: {
-        users: {
+        members: {
           disconnect: { id: userId },
         },
       },
@@ -191,21 +254,48 @@ class TeamService {
 
   private async getTeamByIdOrSlugWithOptions(
     IdOrSlug: string,
-    options?: { withUsers?: boolean; withOwner?: boolean },
+    options?: {
+      withMembers?: boolean;
+      withOwner?: boolean;
+      withAdmins?: boolean;
+    },
   ) {
-    const { withOwner, withUsers } = options ?? {
-      withUsers: false,
+    const { withOwner, withMembers, withAdmins } = options ?? {
+      withMembers: false,
       withOwner: false,
+      withAdmins: false,
     };
 
     const team = await prismaService.team.findFirst({
       where: { OR: [{ id: IdOrSlug }, { slug: IdOrSlug }] },
-      include: { users: withUsers, owner: withOwner },
+      include: { members: withMembers, owner: withOwner, admins: withAdmins },
     });
 
     if (!team) throw ApiError.notFound('Team not found');
 
     return team;
+  }
+
+  private async checkIsUserInTeam(idOrSlug: string, userId: string) {
+    const team = await this.getTeamByIdOrSlugWithOptions(idOrSlug, {
+      withAdmins: true,
+      withMembers: true,
+      withOwner: true,
+    });
+
+    if (!team) throw ApiError.notFound('Provided team not found');
+
+    const isMember = team.members.some(member => member.id === userId);
+    const isOwner = team.owner.id === userId;
+    const isAdmin = team.admins.some(admin => admin.id === userId);
+
+    if (!isMember && !isOwner && !isAdmin) {
+      throw ApiError.forbidden(
+        'You are not allowed to check invitations for this team',
+      );
+    }
+
+    return { inTeam: isMember || isOwner || isAdmin, team };
   }
 }
 

@@ -1,13 +1,32 @@
 import 'server-only';
 
+import { Prisma } from '@prisma/client';
+
 import { prismaService } from '&/prisma';
 
 import type { CreateUserDto, UpdateUserDto } from '../types';
+import type { PrismaClient } from '&/prisma/generated/client';
+import type { DefaultArgs } from '@prisma/client/runtime/library';
+
+type TX = Omit<
+  PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
+  '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
+>;
 
 class UserService {
+  private getUserName(email: string) {
+    return email.replace(/@.*$/, '');
+  }
+
   create(user: CreateUserDto) {
     return prismaService.user.create({
-      data: { ...user, name: user.email.replace(/@.*$/, '') },
+      data: { ...user, name: this.getUserName(user.email) },
+    });
+  }
+
+  async createWithTx(tx: TX, user: CreateUserDto) {
+    return tx.user.create({
+      data: { ...user, name: this.getUserName(user.email) },
     });
   }
 

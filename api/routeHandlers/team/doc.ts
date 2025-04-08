@@ -1,49 +1,10 @@
 import {
-  CreateTeamDataReqSchema,
-  CreateTeamDataResSchema,
-  DeleteTeamDataReqSchema,
-  DeleteTeamDataResSchema,
-  GetTeamByIdOrTeamNameDataReqQuerySchema,
-  GetTeamByIdOrTeamNameDataResSchema,
+  CreateTeamReqBodySchema,
+  CreateTeamResSchema,
+  TeamListResSchema,
 } from '$/dto/team.dto';
 
 import { type RouteConfig } from '@asteasolutions/zod-to-openapi';
-
-export const GetTeamByIdOrSlug = (bearerName: string): RouteConfig => ({
-  method: 'get',
-  path: '/team',
-  tags: ['team'],
-  description: 'to get team by id or slug (team name)',
-  security: [{ [bearerName]: [] }],
-  request: {
-    query: GetTeamByIdOrTeamNameDataReqQuerySchema,
-  },
-  responses: {
-    200: {
-      content: {
-        'application/json': { schema: GetTeamByIdOrTeamNameDataResSchema },
-      },
-      description: '',
-    },
-  },
-});
-
-export const DeleteTeamDoc = (bearerName: string): RouteConfig => ({
-  method: 'delete',
-  path: '/team',
-  tags: ['team'],
-  description: 'to allow the owner to delete his team',
-  security: [{ [bearerName]: [] }],
-  request: {
-    params: DeleteTeamDataReqSchema,
-  },
-  responses: {
-    200: {
-      content: { 'application/json': { schema: DeleteTeamDataResSchema } },
-      description: '',
-    },
-  },
-});
 
 export const PostCreateTeamDoc = (bearerName: string): RouteConfig => ({
   method: 'post',
@@ -53,12 +14,27 @@ export const PostCreateTeamDoc = (bearerName: string): RouteConfig => ({
   security: [{ [bearerName]: [] }],
   request: {
     body: {
-      content: { 'application/json': { schema: CreateTeamDataReqSchema } },
+      content: { 'application/json': { schema: CreateTeamReqBodySchema } },
     },
   },
   responses: {
     200: {
-      content: { 'application/json': { schema: CreateTeamDataResSchema } },
+      content: { 'application/json': { schema: CreateTeamResSchema } },
+      description: '',
+    },
+  },
+});
+
+export const GetTeamListDoc = (bearerName: string): RouteConfig => ({
+  method: 'get',
+  path: '/team',
+  tags: ['team'],
+  description: `to get list of user teams (as an owner and member)`,
+  security: [{ [bearerName]: [] }],
+  request: {},
+  responses: {
+    200: {
+      content: { 'application/json': { schema: TeamListResSchema } },
       description: '',
     },
   },

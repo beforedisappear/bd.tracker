@@ -11,7 +11,11 @@ export interface IAuthMail extends BaseMailProps {
 }
 
 export interface IInvitationMail extends BaseMailProps {
-  teamName: string;
-
   invitationId: string;
+  token: string;
+  teamName: string;
+}
+
+export interface IProposalMail extends BaseMailProps {
+  teamName: string;
 }

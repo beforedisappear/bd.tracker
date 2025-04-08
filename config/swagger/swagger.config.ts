@@ -11,13 +11,13 @@ import { PostLoginDoc } from '$/routeHandlers/login/doc';
 import { PostRefreshTokensDoc } from '$/routeHandlers/refreshTokens/doc';
 import { PostLogoutDoc } from '$/routeHandlers/logout/doc';
 import { GetProfileDoc } from '$/routeHandlers/profile/doc';
+import { PostCreateTeamDoc, GetTeamListDoc } from '$/routeHandlers/team/doc';
+import { PatchTeamRenameByIdOrSlugDoc } from '$/routeHandlers/team/[idOrSlug]/rename/doc';
 import {
-  PostCreateTeamDoc,
-  DeleteTeamDoc,
-  GetTeamByIdOrSlug,
-} from '$/routeHandlers/team/doc';
-import { PatchTeamRenameDoc } from '$/routeHandlers/team/rename/doc';
-import { GetTeamListDoc } from '$/routeHandlers/team/list/doc';
+  DeleteTeamByIdOrSlugDoc,
+  GetTeamByIdOrSlugDoc,
+} from '$/routeHandlers/team/[idOrSlug]/doc';
+import { PostInviteUserToTeamDoc } from '$/routeHandlers/team/[idOrSlug]/invite/doc';
 
 extendZodWithOpenApi(z);
 
@@ -44,10 +44,11 @@ openAPIRegistry.registerPath(GetProfileDoc(bearerAuth.name));
 
 //team
 openAPIRegistry.registerPath(PostCreateTeamDoc(bearerAuth.name));
-openAPIRegistry.registerPath(PatchTeamRenameDoc(bearerAuth.name));
 openAPIRegistry.registerPath(GetTeamListDoc(bearerAuth.name));
-openAPIRegistry.registerPath(GetTeamByIdOrSlug(bearerAuth.name));
-openAPIRegistry.registerPath(DeleteTeamDoc(bearerAuth.name));
+openAPIRegistry.registerPath(GetTeamByIdOrSlugDoc(bearerAuth.name));
+openAPIRegistry.registerPath(DeleteTeamByIdOrSlugDoc(bearerAuth.name));
+openAPIRegistry.registerPath(PatchTeamRenameByIdOrSlugDoc(bearerAuth.name));
+openAPIRegistry.registerPath(PostInviteUserToTeamDoc(bearerAuth.name));
 
 function getOpenApiDocumentation() {
   const generator = new OpenApiGeneratorV3(openAPIRegistry.definitions);

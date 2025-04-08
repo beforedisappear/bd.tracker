@@ -3,11 +3,11 @@ import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 
 extendZodWithOpenApi(z);
 
-export const GetTeamByIdOrTeamNameDataReqQuerySchema = z.object({
-  teamIdOrSlug: z.string(),
+export const GetTeamByIdOrSlugReqParamsSchema = z.object({
+  idOrSlug: z.string(),
 });
 
-export const GetTeamByIdOrTeamNameDataResSchema = z.object({
+export const GetTeamByIdOrSlugResSchema = z.object({
   id: z.string().uuid(),
   name: z.string(),
   slug: z.string(),
@@ -15,27 +15,27 @@ export const GetTeamByIdOrTeamNameDataResSchema = z.object({
   ownerId: z.string(),
 });
 
-export const CreateTeamDataReqSchema = z.object({
+export const CreateTeamReqBodySchema = z.object({
   name: z.string(),
 });
 
-export const CreateTeamDataResSchema = z.object({
+export const CreateTeamResSchema = z.object({
   name: z.string(),
 });
 
-export const RenameTeamDataReqSchema = z.object({
+export const RenameTeamByIdOrSlugReqBodySchema = z.object({
   name: z.string(),
 });
 
-export const RenameTeamDataReqQuerySchema = z.object({
-  id: z.string(),
+export const RenameTeamByIdOrSlugReqParamsSchema = z.object({
+  idOrSlug: z.string(),
 });
 
-export const RenameTeamDataResSchema = z.object({
+export const RenameTeamResSchema = z.object({
   name: z.string(),
 });
 
-export const TeamListDataResSchema = z.array(
+export const TeamListResSchema = z.array(
   z.object({
     name: z.string(),
     id: z.string().uuid(),
@@ -45,10 +45,27 @@ export const TeamListDataResSchema = z.array(
   }),
 );
 
-export const DeleteTeamDataReqSchema = z.object({
-  id: z.string(),
+export const DeleteTeamByIdOrSlugReqParamsSchema = z.object({
+  idOrSlug: z.string(),
 });
 
-export const DeleteTeamDataResSchema = z.object({
-  id: z.string(),
+export const DeleteTeamByIdOrSlugResSchema = z.object({
+  idOrSlug: z.string(),
+});
+
+export const InviteUserToTeamReqParamsSchema = z.object({
+  idOrSlug: z.string(),
+});
+
+export const InviteUserToTeamReqBodySchema = z.object({
+  inviteeEmail: z.string().email(),
+});
+
+export const InviteUserToTeamResSchema = z.object({
+  invitationId: z.string().uuid(),
+});
+
+export const RespondToInvitationReqQuerySchema = z.object({
+  invitationId: z.string().uuid(),
+  token: z.string(),
 });
