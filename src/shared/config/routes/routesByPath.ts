@@ -3,6 +3,7 @@ import {
   getLoginRoute,
   getProfileRoute,
   getHomeRoute,
+  getInviteRoute,
 } from './routes';
 import { AppRoutes } from './routes.types';
 
@@ -16,4 +17,6 @@ export const privateRoutesByPath: Record<string, AppRoutes> = {
   [getHomeRoute()]: AppRoutes.HOME,
 };
 
-export const serviceRoutesByPath: Record<string, AppRoutes> = {};
+export const serviceRoutesByPath: Record<string, AppRoutes> = {
+  [getInviteRoute()]: AppRoutes.INVITE,
+};

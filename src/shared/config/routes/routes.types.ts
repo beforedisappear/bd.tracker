@@ -5,6 +5,8 @@ export enum AppRoutes {
   //private
   HOME = 'home',
   PROFILE = 'profile',
+  //service
+  INVITE = 'invite',
 
   // EMPLOYEE_BY_ID = 'employee_by_id',
   // CREATE_EMPLOYEE = 'create_employee',
