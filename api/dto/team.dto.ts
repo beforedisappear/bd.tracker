@@ -15,6 +15,18 @@ export const GetTeamByIdOrSlugResSchema = z.object({
   ownerId: z.string(),
 });
 
+export const GetTeamMembersReqParamsSchema = z.object({
+  idOrSlug: z.string(),
+});
+
+export const GetTeamMembersResSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string().nullable(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  email: z.string().email(),
+});
+
 export const CreateTeamReqBodySchema = z.object({
   name: z.string(),
 });
@@ -65,7 +77,28 @@ export const InviteUserToTeamResSchema = z.object({
   invitationId: z.string().uuid(),
 });
 
-export const RespondToInvitationReqQuerySchema = z.object({
+export const AcceptInvitationToTeamReqQuerySchema = z.object({
   invitationId: z.string().uuid(),
   token: z.string(),
+});
+
+export const CheckInvitationExistsReqParamsSchema = z.object({
+  idOrSlug: z.string().uuid(),
+});
+
+export const CheckInvitationExistsReqBodySchema = z.object({
+  idOrSlug: z.string().uuid(),
+  inviteeEmail: z.string().email(),
+});
+
+export const CheckInvitationExistsResSchema = z.object({
+  exists: z.boolean(),
+});
+
+export const DeleteMemberFromTeamReqParamsSchema = z.object({
+  idOrSlug: z.string().uuid(),
+});
+
+export const DeleteMemberFromTeamReqBodySchema = z.object({
+  memberId: z.string().uuid(),
 });

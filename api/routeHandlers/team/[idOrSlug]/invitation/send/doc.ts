@@ -7,7 +7,7 @@ import type { RouteConfig } from '@asteasolutions/zod-to-openapi';
 
 export const PostInviteUserToTeamDoc = (bearerName: string): RouteConfig => ({
   method: 'post',
-  path: `/team/{idOrSlug}/invite`,
+  path: `/team/{idOrSlug}/invitation/send`,
   tags: ['team'],
   description: 'to invite user to team by id or slug',
   security: [{ [bearerName]: [] }],

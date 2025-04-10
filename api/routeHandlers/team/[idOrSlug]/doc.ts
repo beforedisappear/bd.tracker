@@ -8,7 +8,7 @@ import type { RouteConfig } from '@asteasolutions/zod-to-openapi';
 
 export const GetTeamByIdOrSlugDoc = (bearerName: string): RouteConfig => ({
   method: 'get',
-  path: `/team/{teamIdOrSlug}`,
+  path: `/team/{idOrSlug}`,
   tags: ['team'],
   description: 'to get team by id or slug (team name)',
   security: [{ [bearerName]: [] }],

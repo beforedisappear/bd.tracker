@@ -1,23 +1,26 @@
-import { RespondToInvitationReqQuerySchema } from '$/dto/team.dto';
-import { teamService } from '$/services/team.service';
-import type { RespondToInvitationReqQuery } from '$/types/team.types';
 import { redirect } from 'next/navigation';
 
+import { teamService } from '$/services/team.service';
+
+import type { AcceptInvitationToTeamReqQuery } from '$/types/team.types';
+import { AcceptInvitationToTeamReqQuerySchema } from '$/dto/team.dto';
+
 interface IProps {
-  searchParams: Promise<RespondToInvitationReqQuery>;
+  searchParams: Promise<AcceptInvitationToTeamReqQuery>;
 }
 
 export default async function InvitePage({ searchParams }: IProps) {
   const { invitationId, token } = await searchParams;
 
+  let redirectPath = '/login';
+
   try {
-    RespondToInvitationReqQuerySchema.parse({ invitationId, token });
-
-    teamService.acceptInvitaion(invitationId, token);
-
-    return redirect('/login');
+    AcceptInvitationToTeamReqQuerySchema.parse({ invitationId, token });
+    await teamService.acceptInvitaion(invitationId, token);
   } catch (e) {
     console.error(e);
-    return redirect('/');
+    redirectPath = '/';
   }
+
+  return redirect(redirectPath);
 }

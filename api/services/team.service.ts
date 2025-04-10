@@ -12,8 +12,8 @@ import type { CreateTeamReqDto, RenameTeamReqDto } from '$/types/team.types';
 import type { Team } from '&/prisma/generated/client';
 
 class TeamService {
-  async getTeamByIdOrSlug(IdOrTeamName: string) {
-    const team: Team = await this.getTeamByIdOrSlugWithOptions(IdOrTeamName);
+  async getTeamByIdOrSlug(idOrSlug: string) {
+    const team: Team = await this.getTeamByIdOrSlugWithOptions(idOrSlug);
 
     return team;
   }
@@ -26,6 +26,18 @@ class TeamService {
     });
   }
 
+  async getTeamMembers(idOrSlug: string, userId: string) {
+    const { inTeam: isUserInTeam, team } = await this.checkIsUserInTeam(
+      idOrSlug,
+      userId,
+    );
+
+    if (!isUserInTeam)
+      throw ApiError.forbidden('User is not a member of this team');
+
+    return team.members;
+  }
+
   createTeam(ownerId: string, data: CreateTeamReqDto) {
     //TODO: check permisson
 
@@ -34,20 +46,18 @@ class TeamService {
     });
   }
 
-  async renameTeam(
-    teamIdOrName: string,
-    userId: string,
-    data: RenameTeamReqDto,
-  ) {
+  async renameTeam(idOrSlug: string, userId: string, data: RenameTeamReqDto) {
     //TODO: check permisson
 
-    const team = await this.getTeamByIdOrSlugWithOptions(teamIdOrName, {
+    const team = await this.getTeamByIdOrSlugWithOptions(idOrSlug, {
       withMembers: true,
       withOwner: true,
     });
 
-    const isUserInTeam =
-      !!team.members.find(el => el.id === userId) || team.owner.id === userId;
+    const { inTeam: isUserInTeam } = await this.checkIsUserInTeam(
+      idOrSlug,
+      userId,
+    );
 
     if (!isUserInTeam)
       throw ApiError.forbidden('User is not a member of this team');
@@ -226,34 +236,38 @@ class TeamService {
     });
   }
 
-  async removeMemberFromTeam(teamIdOrName: string, userId: string) {
+  async removeMemberFromTeam(
+    idOrSlug: string,
+    memberId: string,
+    userId: string,
+  ) {
     //TODO: check permisson
-    const team = await this.getTeamByIdOrSlugWithOptions(teamIdOrName, {
+    const team = await this.getTeamByIdOrSlugWithOptions(idOrSlug, {
       withMembers: true,
     });
 
-    if (team.ownerId === userId) {
+    if (team.ownerId === memberId) {
       throw ApiError.forbidden('Owner cannot be removed');
     }
 
-    const isUserInTeam = !!team.members.find(user => user.id === userId);
+    const isUserInTeam = !!team.members.find(user => user.id === memberId);
 
     if (!isUserInTeam) {
       throw ApiError.notFound('User is not a member of this team');
     }
 
-    prismaService.team.update({
+    await prismaService.team.update({
       where: { id: team.id },
       data: {
         members: {
-          disconnect: { id: userId },
+          disconnect: { id: memberId },
         },
       },
     });
   }
 
   private async getTeamByIdOrSlugWithOptions(
-    IdOrSlug: string,
+    idOrSlug: string,
     options?: {
       withMembers?: boolean;
       withOwner?: boolean;
@@ -267,7 +281,7 @@ class TeamService {
     };
 
     const team = await prismaService.team.findFirst({
-      where: { OR: [{ id: IdOrSlug }, { slug: IdOrSlug }] },
+      where: { OR: [{ id: idOrSlug }, { slug: idOrSlug }] },
       include: { members: withMembers, owner: withOwner, admins: withAdmins },
     });
 

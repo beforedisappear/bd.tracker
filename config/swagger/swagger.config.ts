@@ -17,7 +17,13 @@ import {
   DeleteTeamByIdOrSlugDoc,
   GetTeamByIdOrSlugDoc,
 } from '$/routeHandlers/team/[idOrSlug]/doc';
-import { PostInviteUserToTeamDoc } from '$/routeHandlers/team/[idOrSlug]/invite/doc';
+import { PostInviteUserToTeamDoc } from '$/routeHandlers/team/[idOrSlug]/invitation/send/doc';
+import { PostAcceptInvitationToTeamDoc } from '$/routeHandlers/team/accept-invitation/doc';
+import { GetCheckInvitationExistsDoc } from '$/routeHandlers/team/[idOrSlug]/invitation/check/doc';
+import {
+  DeleteMemberFromTeamDoc,
+  GetTeamMembersDoc,
+} from '$/routeHandlers/team/[idOrSlug]/members/doc';
 
 extendZodWithOpenApi(z);
 
@@ -46,9 +52,13 @@ openAPIRegistry.registerPath(GetProfileDoc(bearerAuth.name));
 openAPIRegistry.registerPath(PostCreateTeamDoc(bearerAuth.name));
 openAPIRegistry.registerPath(GetTeamListDoc(bearerAuth.name));
 openAPIRegistry.registerPath(GetTeamByIdOrSlugDoc(bearerAuth.name));
+openAPIRegistry.registerPath(GetTeamMembersDoc(bearerAuth.name));
+openAPIRegistry.registerPath(DeleteMemberFromTeamDoc(bearerAuth.name));
 openAPIRegistry.registerPath(DeleteTeamByIdOrSlugDoc(bearerAuth.name));
 openAPIRegistry.registerPath(PatchTeamRenameByIdOrSlugDoc(bearerAuth.name));
+openAPIRegistry.registerPath(GetCheckInvitationExistsDoc(bearerAuth.name));
 openAPIRegistry.registerPath(PostInviteUserToTeamDoc(bearerAuth.name));
+openAPIRegistry.registerPath(PostAcceptInvitationToTeamDoc(bearerAuth.name));
 
 function getOpenApiDocumentation() {
   const generator = new OpenApiGeneratorV3(openAPIRegistry.definitions);
