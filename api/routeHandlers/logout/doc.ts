@@ -1,4 +1,4 @@
-import { LogoutDataReqSchema } from '$/dto/auth.dto';
+import { LogoutReqBodySchema } from './dto';
 
 import { type RouteConfig } from '@asteasolutions/zod-to-openapi';
 
@@ -9,7 +9,7 @@ export const PostLogoutDoc: RouteConfig = {
   description: 'to logout from profile',
   request: {
     body: {
-      content: { 'application/json': { schema: LogoutDataReqSchema } },
+      content: { 'application/json': { schema: LogoutReqBodySchema } },
     },
   },
   responses: {

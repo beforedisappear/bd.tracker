@@ -1,4 +1,4 @@
-import { AuthDataReqSchema } from '$/dto/auth.dto';
+import { AuthReqBodySchema } from './dto';
 
 import { type RouteConfig } from '@asteasolutions/zod-to-openapi';
 
@@ -8,7 +8,7 @@ export const PostAuthDoc: RouteConfig = {
   tags: ['auth'],
   description: 'to get auth data',
   request: {
-    body: { content: { email: { schema: AuthDataReqSchema } } },
+    body: { content: { email: { schema: AuthReqBodySchema } } },
   },
   responses: {
     204: {

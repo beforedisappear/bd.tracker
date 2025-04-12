@@ -3,7 +3,8 @@ import {
   DeleteTeamByIdOrSlugResSchema,
   GetTeamByIdOrSlugReqParamsSchema,
   GetTeamByIdOrSlugResSchema,
-} from '$/dto/team.dto';
+} from './dto';
+
 import type { RouteConfig } from '@asteasolutions/zod-to-openapi';
 
 export const GetTeamByIdOrSlugDoc = (bearerName: string): RouteConfig => ({

@@ -1,16 +1,19 @@
+import { ErrorResponse } from '$/errors/errorResponse';
+import { NextRequest, NextResponse } from 'next/server';
+
+import { authService } from '$/services/auth.service';
+import { teamService } from '$/services/team.service';
+
 import {
   GetTeamMemberByIdReqParamsSchema,
   RemoveTeamMemberByIdReqParamsSchema,
-} from '$/dto/team.dto';
-import { ErrorResponse } from '$/errors/errorResponse';
-import { authService } from '$/services/auth.service';
-import { teamService } from '$/services/team.service';
-import {
+} from './dto';
+import { getAccessTokenFromReq } from '$/utils';
+
+import type {
   GetTeamMemberByIdReqParams,
   RemoveTeamMemberByIdReqParams,
-} from '$/types/team.types';
-import { getAccessTokenFromReq } from '$/utils';
-import { NextRequest, NextResponse } from 'next/server';
+} from './types';
 
 export async function GetTeamMemberById(
   request: NextRequest,

@@ -9,12 +9,12 @@ import { getAccessTokenFromReq } from '$/utils';
 import {
   CheckInvitationExistsReqBodySchema,
   CheckInvitationExistsReqParamsSchema,
-} from '$/dto/team.dto';
+} from './dto';
 
 import type {
   CheckInvitationExistsReqParams,
   CheckInvitationExistsReqDto,
-} from '$/types/team.types';
+} from './types';
 
 export async function GetCheckInvitationExists(
   request: NextRequest,
@@ -22,15 +22,13 @@ export async function GetCheckInvitationExists(
 ) {
   try {
     const accessToken = getAccessTokenFromReq(request);
-
     const { userId } = await authService.verifyJwt(accessToken);
 
     const { idOrSlug } = await params;
+    CheckInvitationExistsReqParamsSchema.parse({ idOrSlug });
 
     const dto: CheckInvitationExistsReqDto = await request.json();
-
     CheckInvitationExistsReqBodySchema.parse(dto);
-    CheckInvitationExistsReqParamsSchema.parse({ idOrSlug });
 
     const isInvitationExists =
       await teamService.checkInvitationExistsByInviteeEmail(

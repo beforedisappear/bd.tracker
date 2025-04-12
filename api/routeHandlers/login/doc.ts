@@ -1,4 +1,4 @@
-import { LoginDataReqSchema, LoginDataResSchema } from '$/dto/auth.dto';
+import { LoginReqBodySchema, LoginResSchema } from './dto';
 
 import { type RouteConfig } from '@asteasolutions/zod-to-openapi';
 
@@ -8,11 +8,11 @@ export const PostLoginDoc: RouteConfig = {
   tags: ['auth'],
   description: 'to send auth code on email',
   request: {
-    body: { content: { 'application/json': { schema: LoginDataReqSchema } } },
+    body: { content: { 'application/json': { schema: LoginReqBodySchema } } },
   },
   responses: {
     200: {
-      content: { 'application/json': { schema: LoginDataResSchema } },
+      content: { 'application/json': { schema: LoginResSchema } },
       description: '',
     },
   },

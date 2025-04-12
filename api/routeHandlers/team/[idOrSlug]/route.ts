@@ -4,10 +4,11 @@ import { teamService } from '$/services/team.service';
 import { getAccessTokenFromReq } from '$/utils';
 import { NextRequest, NextResponse } from 'next/server';
 
-import type {
-  DeleteTeamReqParams,
-  GetTeamByIdOrSlugReqParams,
-} from '$/types/team.types';
+import {
+  GetTeamByIdOrSlugReqParamsSchema,
+  DeleteTeamByIdOrSlugReqParamsSchema,
+} from './dto';
+import type { GetTeamByIdOrSlugReqParams, DeleteTeamReqParams } from './types';
 
 export async function GetTeamByIdOrSlug(
   request: NextRequest,
@@ -19,6 +20,8 @@ export async function GetTeamByIdOrSlug(
     await authService.verifyJwt(accessToken);
 
     const { idOrSlug } = await params;
+
+    GetTeamByIdOrSlugReqParamsSchema.parse({ idOrSlug });
 
     const team = await teamService.getTeamByIdOrSlug(idOrSlug);
 
@@ -40,6 +43,8 @@ export async function DeleteTeamByIdOrSlug(
     const { userId } = await authService.verifyJwt(accessToken);
 
     const { idOrSlug } = await params;
+
+    DeleteTeamByIdOrSlugReqParamsSchema.parse({ idOrSlug });
 
     const deletedTeam = await teamService.deleteTeamByOwner(idOrSlug, userId);
 

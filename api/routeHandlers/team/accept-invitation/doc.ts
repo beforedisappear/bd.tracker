@@ -1,4 +1,4 @@
-import { AcceptInvitationToTeamReqQuerySchema } from '$/dto/team.dto';
+import { AcceptInvitationToTeamReqQuerySchema } from './dto';
 import type { RouteConfig } from '@asteasolutions/zod-to-openapi';
 
 export const PostAcceptInvitationToTeamDoc = (

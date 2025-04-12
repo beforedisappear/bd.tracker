@@ -4,6 +4,6 @@ type UserFields = Prisma.UserGetPayload<true>;
 
 type User = Exclude<UserFields, 'createdAt' | 'updatedAt' | 'id'>;
 
-export type CreateUserDto = { email: string };
+export type CreateUser = { email: string };
 
-export type UpdateUserDto = Exclude<User, 'email'>;
+export type UpdateUser = Exclude<User, 'email'>;

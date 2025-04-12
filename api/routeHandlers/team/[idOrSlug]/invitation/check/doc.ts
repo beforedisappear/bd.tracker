@@ -2,7 +2,7 @@ import {
   CheckInvitationExistsReqBodySchema,
   CheckInvitationExistsReqParamsSchema,
   CheckInvitationExistsResSchema,
-} from '$/dto/team.dto';
+} from './dto';
 import type { RouteConfig } from '@asteasolutions/zod-to-openapi';
 
 export const GetCheckInvitationExistsDoc = (

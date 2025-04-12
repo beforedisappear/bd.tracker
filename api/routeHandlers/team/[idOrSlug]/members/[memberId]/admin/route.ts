@@ -1,16 +1,16 @@
+import { ErrorResponse } from '$/errors/errorResponse';
+import { NextRequest, NextResponse } from 'next/server';
+
+import { authService } from '$/services/auth.service';
+import { teamService } from '$/services/team.service';
+
 import {
   RemoveTeamAdminReqParamsSchema,
   SetTeamAdminReqParamsSchema,
-} from '$/dto/team.dto';
-import { ErrorResponse } from '$/errors/errorResponse';
-import { authService } from '$/services/auth.service';
-import { teamService } from '$/services/team.service';
-import type {
-  RemoveTeamAdminReqParams,
-  SetTeamAdminReqParams,
-} from '$/types/team.types';
+} from './dto';
 import { getAccessTokenFromReq } from '$/utils';
-import { NextRequest, NextResponse } from 'next/server';
+
+import type { RemoveTeamAdminReqParams, SetTeamAdminReqParams } from './types';
 
 export async function PatchSetTeamAdmin(
   request: NextRequest,

@@ -1,4 +1,4 @@
-import { RefreshTokensReqSchema, RefreshTokensResSchema } from '$/dto/auth.dto';
+import { RefreshTokensReqSchema, RefreshTokensResSchema } from './dto';
 
 import { type RouteConfig } from '@asteasolutions/zod-to-openapi';
 

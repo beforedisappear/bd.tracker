@@ -2,7 +2,7 @@ import {
   InviteUserToTeamReqBodySchema,
   InviteUserToTeamReqParamsSchema,
   InviteUserToTeamResSchema,
-} from '$/dto/team.dto';
+} from './dto';
 import type { RouteConfig } from '@asteasolutions/zod-to-openapi';
 
 export const PostInviteUserToTeamDoc = (bearerName: string): RouteConfig => ({

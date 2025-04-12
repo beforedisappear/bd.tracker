@@ -5,8 +5,9 @@ import { getQueryParams } from '$/utils';
 
 import { type NextRequest, NextResponse } from 'next/server';
 
-import { AcceptInvitationToTeamReqQuerySchema } from '$/dto/team.dto';
-import type { AcceptInvitationToTeamReqQuery } from '$/types/team.types';
+import { AcceptInvitationToTeamReqQuerySchema } from './dto';
+
+import type { AcceptInvitationToTeamReqQuery } from './types';
 
 export async function PostAcceptInvitationToTeam(request: NextRequest) {
   try {

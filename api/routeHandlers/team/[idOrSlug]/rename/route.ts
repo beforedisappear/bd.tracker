@@ -5,12 +5,12 @@ import { authService } from '$/services/auth.service';
 import { teamService } from '$/services/team.service';
 
 import { getAccessTokenFromReq } from '$/utils';
-import { RenameTeamByIdOrSlugReqBodySchema } from '$/dto/team.dto';
+import {
+  RenameTeamByIdOrSlugReqBodySchema,
+  RenameTeamByIdOrSlugReqParamsSchema,
+} from './dto';
 
-import type {
-  RenameTeamReqDto,
-  RenameTeamByIdOrSlugReqParams,
-} from '$/types/team.types';
+import type { RenameTeamReqDto, RenameTeamByIdOrSlugReqParams } from './types';
 
 export async function PatchTeamRename(
   request: NextRequest,
@@ -22,6 +22,8 @@ export async function PatchTeamRename(
     const { userId } = await authService.verifyJwt(accessToken);
 
     const { idOrSlug } = await params;
+
+    RenameTeamByIdOrSlugReqParamsSchema.parse({ idOrSlug });
 
     const dto: RenameTeamReqDto = await request.json();
 

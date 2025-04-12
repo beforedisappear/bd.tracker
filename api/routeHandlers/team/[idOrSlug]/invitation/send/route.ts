@@ -6,11 +6,11 @@ import { ErrorResponse } from '$/errors/errorResponse';
 import { type NextRequest, NextResponse } from 'next/server';
 import { getAccessTokenFromReq } from '$/utils';
 
-import { InviteUserToTeamReqBodySchema } from '$/dto/team.dto';
+import { InviteUserToTeamReqBodySchema } from './dto';
 import type {
   InviteUserToTeamReqDto,
   InviteUserToTeamReqParams,
-} from '$/types/team.types';
+} from './types';
 
 export async function PostInviteUserToTeam(
   request: NextRequest,

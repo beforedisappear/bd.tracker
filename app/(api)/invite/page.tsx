@@ -1,9 +1,8 @@
 import { redirect } from 'next/navigation';
 
 import { teamService } from '$/services/team.service';
-
-import type { AcceptInvitationToTeamReqQuery } from '$/types/team.types';
-import { AcceptInvitationToTeamReqQuerySchema } from '$/dto/team.dto';
+import { AcceptInvitationToTeamReqQuerySchema } from '$/routeHandlers/team/accept-invitation/dto';
+import type { AcceptInvitationToTeamReqQuery } from '$/routeHandlers/team/accept-invitation/types';
 
 interface IProps {
   searchParams: Promise<AcceptInvitationToTeamReqQuery>;

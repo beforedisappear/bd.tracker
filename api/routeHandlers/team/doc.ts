@@ -1,8 +1,8 @@
 import {
   CreateTeamReqBodySchema,
   CreateTeamResSchema,
-  TeamListResSchema,
-} from '$/dto/team.dto';
+  GetTeamListResSchema,
+} from './dto';
 
 import { type RouteConfig } from '@asteasolutions/zod-to-openapi';
 
@@ -34,7 +34,7 @@ export const GetTeamListDoc = (bearerName: string): RouteConfig => ({
   request: {},
   responses: {
     200: {
-      content: { 'application/json': { schema: TeamListResSchema } },
+      content: { 'application/json': { schema: GetTeamListResSchema } },
       description: '',
     },
   },

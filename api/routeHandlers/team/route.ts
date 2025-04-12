@@ -6,8 +6,8 @@ import { ErrorResponse } from '$/errors/errorResponse';
 import { type NextRequest, NextResponse } from 'next/server';
 import { getAccessTokenFromReq } from '$/utils';
 
-import { CreateTeamReqBodySchema } from '$/dto/team.dto';
-import type { CreateTeamReqDto } from '$/types/team.types';
+import { CreateTeamReqBodySchema } from './dto';
+import type { CreateTeamReqDto } from './types';
 
 export async function PostCreateTeam(request: NextRequest) {
   try {

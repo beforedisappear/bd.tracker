@@ -2,7 +2,7 @@ import {
   RenameTeamResSchema,
   RenameTeamByIdOrSlugReqBodySchema,
   RenameTeamByIdOrSlugReqParamsSchema,
-} from '$/dto/team.dto';
+} from './dto';
 
 import { type RouteConfig } from '@asteasolutions/zod-to-openapi';
 

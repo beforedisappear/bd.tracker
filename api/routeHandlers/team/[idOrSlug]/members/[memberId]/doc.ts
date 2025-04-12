@@ -2,7 +2,7 @@ import {
   GetTeamMemberByIdReqParamsSchema,
   GetTeamMemberByIdResSchema,
   RemoveTeamMemberByIdReqParamsSchema,
-} from '$/dto/team.dto';
+} from './dto';
 import { RouteConfig } from '@asteasolutions/zod-to-openapi';
 
 export const GetTeamMemberByIdDoc = (bearerName: string): RouteConfig => ({

@@ -10,21 +10,18 @@ import { prismaService } from '&/prisma';
 import { userService } from './user.service';
 import { mailService } from './mail.service';
 
-import type {
-  CreateUserDto,
-  IJwtPayload,
-  LoginDto,
-  LogoutDto,
-  RefreshTokensDto,
-} from '../types';
+import type { CreateUser, IJwtPayload } from '../types';
 import { ApiError } from '$/errors/apiError';
+import { LoginDto } from '$/routeHandlers/login/types';
+import { RefreshTokensDto } from '$/routeHandlers/refreshTokens/types';
+import { LogoutDto } from '$/routeHandlers/logout/types';
 
 const secretKey = process.env.JWT_SECRET;
 
 const key = new TextEncoder().encode(secretKey);
 
 class AuthService {
-  async auth(data: CreateUserDto) {
+  async auth(data: CreateUser) {
     let user = await userService.findOne(data.email);
 
     if (!user) {

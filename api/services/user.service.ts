@@ -4,7 +4,7 @@ import { Prisma } from '@prisma/client';
 
 import { prismaService } from '&/prisma';
 
-import type { CreateUserDto, UpdateUserDto } from '../types';
+import type { CreateUser, UpdateUser } from '../types';
 import type { PrismaClient } from '&/prisma/generated/client';
 import type { DefaultArgs } from '@prisma/client/runtime/library';
 
@@ -18,20 +18,20 @@ class UserService {
     return email.replace(/@.*$/, '');
   }
 
-  create(user: CreateUserDto) {
+  create(user: CreateUser) {
     return prismaService.user.create({
       data: { ...user, name: this.getUserName(user.email) },
     });
   }
 
-  async createWithTx(tx: TX, user: CreateUserDto) {
+  async createWithTx(tx: TX, user: CreateUser) {
     return tx.user.create({
       data: { ...user, name: this.getUserName(user.email) },
     });
   }
 
   //TODO: смена мыла
-  update(id: string, user: UpdateUserDto) {
+  update(id: string, user: UpdateUser) {
     return prismaService.user.update({
       where: { id },
       data: user,

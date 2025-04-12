@@ -1,4 +1,1 @@
-export {
-  GetTeamMembers as GET,
-  DeleteMemberFromTeam as DELETE,
-} from '$/routeHandlers/team/[idOrSlug]/members/route';
+export { GetTeamMembers as GET } from '$/routeHandlers/team/[idOrSlug]/members/route';

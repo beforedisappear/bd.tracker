@@ -8,8 +8,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { getSlug } from '$/utils/getSlug';
 import { ApiError } from '$/errors/apiError';
 
-import type { CreateTeamReqDto, RenameTeamReqDto } from '$/types/team.types';
 import type { Team } from '&/prisma/generated/client';
+import type { CreateTeamReqDto } from '$/routeHandlers/team/types';
+import type { RenameTeamReqDto } from '$/routeHandlers/team/[idOrSlug]/rename/types';
 
 class TeamService {
   async getTeamByIdOrSlug(idOrSlug: string) {

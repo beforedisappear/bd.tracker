@@ -1,7 +1,7 @@
 import { apiClient } from '@/shared/api';
 
-import type { AuthDto } from '$/types';
+import type { AuthDtoReq } from './types';
 
-export function auth(dto: AuthDto) {
+export function auth(dto: AuthDtoReq) {
   return apiClient.noAuth.post<unknown>('/auth', dto);
 }

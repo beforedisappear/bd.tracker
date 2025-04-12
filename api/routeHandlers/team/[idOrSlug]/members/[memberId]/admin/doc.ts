@@ -1,7 +1,7 @@
 import {
   RemoveTeamAdminReqParamsSchema,
   SetTeamAdminReqParamsSchema,
-} from '$/dto/team.dto';
+} from './dto';
 import { RouteConfig } from '@asteasolutions/zod-to-openapi';
 
 export const PatchSetTeamAdminDoc = (bearerName: string): RouteConfig => ({

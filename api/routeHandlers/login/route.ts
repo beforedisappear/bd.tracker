@@ -1,16 +1,16 @@
-import { LoginDataReqSchema } from '$/dto/auth.dto';
+import { LoginReqBodySchema } from './dto';
 import { authService } from '$/services/auth.service';
 
 import { NextResponse, type NextRequest, userAgent } from 'next/server';
 import { ErrorResponse } from '$/errors/errorResponse';
 
-import type { LoginDto } from '$/types';
+import type { LoginDto } from './types';
 
 export async function PostLogin(request: NextRequest) {
   try {
     const data: LoginDto = await request.json();
 
-    LoginDataReqSchema.parse(data);
+    LoginReqBodySchema.parse(data);
 
     const agent = userAgent(request);
 
