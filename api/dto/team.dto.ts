@@ -27,6 +27,21 @@ export const GetTeamMembersResSchema = z.object({
   email: z.string().email(),
 });
 
+export const GetTeamMemberByIdReqParamsSchema = z.object({
+  idOrSlug: z.string(),
+  memberId: z.string().uuid(),
+});
+
+export const GetTeamMemberByIdResSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string().nullable(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  email: z.string().email(),
+  isOwner: z.string(),
+  isAdmin: z.boolean(),
+});
+
 export const CreateTeamReqBodySchema = z.object({
   name: z.string(),
 });
@@ -95,10 +110,25 @@ export const CheckInvitationExistsResSchema = z.object({
   exists: z.boolean(),
 });
 
-export const DeleteMemberFromTeamReqParamsSchema = z.object({
-  idOrSlug: z.string().uuid(),
-});
-
-export const DeleteMemberFromTeamReqBodySchema = z.object({
+export const RemoveTeamMemberByIdReqParamsSchema = z.object({
+  idOrSlug: z.string(),
   memberId: z.string().uuid(),
 });
+
+export const SetTeamAdminReqParamsSchema = z.object({
+  idOrSlug: z.string(),
+  memberId: z.string().uuid(),
+});
+
+export const RemoveTeamAdminReqParamsSchema = z.object({
+  idOrSlug: z.string(),
+  memberId: z.string().uuid(),
+});
+
+// export const RemoveTeamMemberByIdResSchema = z.object({
+//   id: z.string().uuid(),
+//   name: z.string().nullable(),
+//   createdAt: z.string(),
+//   updatedAt: z.string(),
+//   email: z.string().email(),
+// });

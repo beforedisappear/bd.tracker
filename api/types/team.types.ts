@@ -12,8 +12,11 @@ import {
   CheckInvitationExistsResSchema,
   CheckInvitationExistsReqParamsSchema,
   CheckInvitationExistsReqBodySchema,
-  DeleteMemberFromTeamReqBodySchema,
-  DeleteMemberFromTeamReqParamsSchema,
+  GetTeamMemberByIdReqParamsSchema,
+  GetTeamMemberByIdResSchema,
+  RemoveTeamMemberByIdReqParamsSchema,
+  SetTeamAdminReqParamsSchema,
+  RemoveTeamAdminReqParamsSchema,
 } from '$/dto/team.dto';
 
 export type GetTeamByIdOrSlugReqParams = z.infer<
@@ -22,6 +25,24 @@ export type GetTeamByIdOrSlugReqParams = z.infer<
 
 export type GetTeamMembersReqParams = z.infer<
   typeof GetTeamMembersReqParamsSchema
+>;
+
+export type GetTeamMemberByIdReqParams = z.infer<
+  typeof GetTeamMemberByIdReqParamsSchema
+>;
+
+export type GetTeamMemberByIdResDto = z.infer<
+  typeof GetTeamMemberByIdResSchema
+>;
+
+export type RemoveTeamMemberByIdReqParams = z.infer<
+  typeof RemoveTeamMemberByIdReqParamsSchema
+>;
+
+export type SetTeamAdminReqParams = z.infer<typeof SetTeamAdminReqParamsSchema>;
+
+export type RemoveTeamAdminReqParams = z.infer<
+  typeof RemoveTeamAdminReqParamsSchema
 >;
 
 export type CreateTeamReqDto = z.infer<typeof CreateTeamReqBodySchema>;
@@ -60,12 +81,4 @@ export type CheckInvitationExistsReqDto = z.infer<
 
 export type CheckInvitationExistsResDto = z.infer<
   typeof CheckInvitationExistsResSchema
->;
-
-export type DeleteMemberFromTeamReqParams = z.infer<
-  typeof DeleteMemberFromTeamReqParamsSchema
->;
-
-export type DeleteMemberFromTeamReqBodyDto = z.infer<
-  typeof DeleteMemberFromTeamReqBodySchema
 >;

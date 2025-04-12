@@ -9,7 +9,7 @@ import { type RouteConfig } from '@asteasolutions/zod-to-openapi';
 export const PostCreateTeamDoc = (bearerName: string): RouteConfig => ({
   method: 'post',
   path: '/team',
-  tags: ['team'],
+  tags: ['team main'],
   description: 'to create team by user',
   security: [{ [bearerName]: [] }],
   request: {
@@ -28,7 +28,7 @@ export const PostCreateTeamDoc = (bearerName: string): RouteConfig => ({
 export const GetTeamListDoc = (bearerName: string): RouteConfig => ({
   method: 'get',
   path: '/team',
-  tags: ['team'],
+  tags: ['team main'],
   description: `to get list of user teams (as an owner and member)`,
   security: [{ [bearerName]: [] }],
   request: {},

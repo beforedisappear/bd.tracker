@@ -20,10 +20,15 @@ import {
 import { PostInviteUserToTeamDoc } from '$/routeHandlers/team/[idOrSlug]/invitation/send/doc';
 import { PostAcceptInvitationToTeamDoc } from '$/routeHandlers/team/accept-invitation/doc';
 import { GetCheckInvitationExistsDoc } from '$/routeHandlers/team/[idOrSlug]/invitation/check/doc';
+import { GetTeamMembersDoc } from '$/routeHandlers/team/[idOrSlug]/members/doc';
 import {
-  DeleteMemberFromTeamDoc,
-  GetTeamMembersDoc,
-} from '$/routeHandlers/team/[idOrSlug]/members/doc';
+  GetTeamMemberByIdDoc,
+  RemoveTeamMemberByIdDoc,
+} from '$/routeHandlers/team/[idOrSlug]/members/[memberId]/doc';
+import {
+  DeleteRemoveTeamAdminDoc,
+  PatchSetTeamAdminDoc,
+} from '$/routeHandlers/team/[idOrSlug]/members/[memberId]/admin/doc';
 
 extendZodWithOpenApi(z);
 
@@ -48,14 +53,20 @@ openAPIRegistry.registerPath(PostLogoutDoc);
 //profile
 openAPIRegistry.registerPath(GetProfileDoc(bearerAuth.name));
 
-//team
+//team main
 openAPIRegistry.registerPath(PostCreateTeamDoc(bearerAuth.name));
 openAPIRegistry.registerPath(GetTeamListDoc(bearerAuth.name));
 openAPIRegistry.registerPath(GetTeamByIdOrSlugDoc(bearerAuth.name));
-openAPIRegistry.registerPath(GetTeamMembersDoc(bearerAuth.name));
-openAPIRegistry.registerPath(DeleteMemberFromTeamDoc(bearerAuth.name));
 openAPIRegistry.registerPath(DeleteTeamByIdOrSlugDoc(bearerAuth.name));
 openAPIRegistry.registerPath(PatchTeamRenameByIdOrSlugDoc(bearerAuth.name));
+//team member
+openAPIRegistry.registerPath(GetTeamMembersDoc(bearerAuth.name));
+openAPIRegistry.registerPath(GetTeamMemberByIdDoc(bearerAuth.name));
+openAPIRegistry.registerPath(RemoveTeamMemberByIdDoc(bearerAuth.name));
+//team admin
+openAPIRegistry.registerPath(PatchSetTeamAdminDoc(bearerAuth.name));
+openAPIRegistry.registerPath(DeleteRemoveTeamAdminDoc(bearerAuth.name));
+//team invitation
 openAPIRegistry.registerPath(GetCheckInvitationExistsDoc(bearerAuth.name));
 openAPIRegistry.registerPath(PostInviteUserToTeamDoc(bearerAuth.name));
 openAPIRegistry.registerPath(PostAcceptInvitationToTeamDoc(bearerAuth.name));

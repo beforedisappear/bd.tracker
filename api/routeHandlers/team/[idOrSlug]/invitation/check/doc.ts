@@ -10,7 +10,7 @@ export const GetCheckInvitationExistsDoc = (
 ): RouteConfig => ({
   method: 'get',
   path: `/team/{idOrSlug}/invitation/check`,
-  tags: ['team'],
+  tags: ['team invitation'],
   description: 'to check if an invitation exists by invitee email',
   security: [{ [bearerName]: [] }],
   request: {

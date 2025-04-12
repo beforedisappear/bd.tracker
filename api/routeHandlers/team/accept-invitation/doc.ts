@@ -6,7 +6,7 @@ export const PostAcceptInvitationToTeamDoc = (
 ): RouteConfig => ({
   method: 'post',
   path: `/team/accept-invitation`,
-  tags: ['team'],
+  tags: ['team invitation'],
   description: 'to accept invitation (from email)',
   security: [{ [bearerName]: [] }],
   request: {

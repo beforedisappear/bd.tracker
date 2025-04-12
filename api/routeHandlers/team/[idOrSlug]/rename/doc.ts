@@ -11,7 +11,7 @@ export const PatchTeamRenameByIdOrSlugDoc = (
 ): RouteConfig => ({
   method: 'patch',
   path: '/team/{idOrSlug}/rename',
-  tags: ['team'],
+  tags: ['team main'],
   description: 'to rename team by id or slug',
   security: [{ [bearerName]: [] }],
   request: {

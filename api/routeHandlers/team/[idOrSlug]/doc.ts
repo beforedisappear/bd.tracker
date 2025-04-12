@@ -9,7 +9,7 @@ import type { RouteConfig } from '@asteasolutions/zod-to-openapi';
 export const GetTeamByIdOrSlugDoc = (bearerName: string): RouteConfig => ({
   method: 'get',
   path: `/team/{idOrSlug}`,
-  tags: ['team'],
+  tags: ['team main'],
   description: 'to get team by id or slug (team name)',
   security: [{ [bearerName]: [] }],
   request: {
@@ -28,7 +28,7 @@ export const GetTeamByIdOrSlugDoc = (bearerName: string): RouteConfig => ({
 export const DeleteTeamByIdOrSlugDoc = (bearerName: string): RouteConfig => ({
   method: 'delete',
   path: '/team/{idOrSlug}',
-  tags: ['team'],
+  tags: ['team main'],
   description: 'to allow the owner to delete his team by id',
   security: [{ [bearerName]: [] }],
   request: {

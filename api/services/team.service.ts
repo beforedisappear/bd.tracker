@@ -72,12 +72,14 @@ class TeamService {
     return updatedTeam;
   }
 
-  async deleteTeamByOwner(teamIdOrName: string, ownerId: string) {
+  async deleteTeamByOwner(idOrSlug: string, ownerId: string) {
     //TODO: add permisson
 
-    const team = await this.getTeamByIdOrSlugWithOptions(teamIdOrName, {
+    const team = await this.getTeamByIdOrSlugWithOptions(idOrSlug, {
       withOwner: true,
     });
+
+    if (!team) throw ApiError.notFound('Team not found');
 
     if (team.ownerId !== ownerId)
       throw ApiError.forbidden('The team cannot be deleted by non-owner');
@@ -236,6 +238,49 @@ class TeamService {
     });
   }
 
+  async getTeamMemberById(idOrSlug: string, memberId: string, userId: string) {
+    //TODO: check permisson
+
+    const conditional = { OR: [{ id: idOrSlug }, { slug: idOrSlug }] };
+
+    const member = await prismaService.user.findFirst({
+      where: {
+        AND: [
+          { id: memberId },
+          {
+            OR: [
+              { teams: { some: conditional } },
+              { adminTeams: { some: conditional } },
+              { ownedTeams: { some: conditional } },
+            ],
+          },
+        ],
+      },
+      include: {
+        adminTeams: {
+          where: conditional,
+          select: { id: true },
+        },
+        ownedTeams: {
+          where: conditional,
+          select: { id: true },
+        },
+      },
+    });
+
+    console.log('teamWithMember', member);
+
+    if (!member) throw ApiError.notFound('Member not found');
+
+    const { adminTeams, ownedTeams, ...data } = member;
+
+    return {
+      ...data,
+      isOwner: !!ownedTeams.length,
+      isAdmin: !!adminTeams.length,
+    };
+  }
+
   async removeMemberFromTeam(
     idOrSlug: string,
     memberId: string,
@@ -261,6 +306,42 @@ class TeamService {
       data: {
         members: {
           disconnect: { id: memberId },
+        },
+      },
+    });
+  }
+
+  async setAdmin(idOrSlug: string, memberId: string, ownerId: string) {
+    const { inTeam, team } = await this.checkIsUserInTeam(idOrSlug, memberId);
+
+    if (!inTeam) throw ApiError.notFound('User is not a member of this team');
+
+    if (team.ownerId !== ownerId)
+      throw ApiError.forbidden('Admin cannot be appointed by a non-owner');
+
+    await prismaService.user.update({
+      where: { id: memberId },
+      data: {
+        adminTeams: {
+          connect: { id: team.id },
+        },
+      },
+    });
+  }
+
+  async removeAdmin(idOrSlug: string, memberId: string, ownerId: string) {
+    const { inTeam, team } = await this.checkIsUserInTeam(idOrSlug, memberId);
+
+    if (!inTeam) throw ApiError.notFound('User is not a member of this team');
+
+    if (team.ownerId !== ownerId)
+      throw ApiError.forbidden('Admin cannot be removed by a non-owner');
+
+    await prismaService.user.update({
+      where: { id: memberId },
+      data: {
+        adminTeams: {
+          disconnect: { id: team.id },
         },
       },
     });
@@ -297,17 +378,11 @@ class TeamService {
       withOwner: true,
     });
 
-    if (!team) throw ApiError.notFound('Provided team not found');
+    if (!team) throw ApiError.notFound('Team not found');
 
     const isMember = team.members.some(member => member.id === userId);
     const isOwner = team.owner.id === userId;
     const isAdmin = team.admins.some(admin => admin.id === userId);
-
-    if (!isMember && !isOwner && !isAdmin) {
-      throw ApiError.forbidden(
-        'You are not allowed to check invitations for this team',
-      );
-    }
 
     return { inTeam: isMember || isOwner || isAdmin, team };
   }
