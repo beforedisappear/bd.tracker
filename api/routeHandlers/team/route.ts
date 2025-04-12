@@ -15,11 +15,14 @@ export async function PostCreateTeam(request: NextRequest) {
 
     const { userId } = await authService.verifyJwt(accessToken);
 
-    const dto: CreateTeamReqDto = await request.json();
+    const data: CreateTeamReqDto = await request.json();
 
-    CreateTeamReqBodySchema.parse(dto);
+    CreateTeamReqBodySchema.parse(data);
 
-    const newTeam = await teamService.createTeam(userId, dto);
+    const newTeam = await teamService.createTeam({
+      ownerId: userId,
+      data,
+    });
 
     return NextResponse.json(newTeam, {
       status: 200,
@@ -35,7 +38,7 @@ export async function GetTeamList(request: NextRequest) {
 
     const { userId } = await authService.verifyJwt(accessToken);
 
-    const teamList = await teamService.getUserTeamsByUserId(userId);
+    const teamList = await teamService.getUserTeamsByUserId({ userId });
 
     return NextResponse.json(teamList, {
       status: 200,

@@ -25,11 +25,11 @@ export async function PatchTeamRename(
 
     RenameTeamByIdOrSlugReqParamsSchema.parse({ idOrSlug });
 
-    const dto: RenameTeamReqDto = await request.json();
+    const data: RenameTeamReqDto = await request.json();
 
-    RenameTeamByIdOrSlugReqBodySchema.parse(dto);
+    RenameTeamByIdOrSlugReqBodySchema.parse(data);
 
-    const newTeam = await teamService.renameTeam(idOrSlug, userId, dto);
+    const newTeam = await teamService.renameTeam({ idOrSlug, data, userId });
 
     return NextResponse.json(
       { name: newTeam.name },

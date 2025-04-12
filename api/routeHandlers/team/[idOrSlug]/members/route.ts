@@ -1,10 +1,16 @@
 import { ErrorResponse } from '$/errors/errorResponse';
+import { NextRequest, NextResponse } from 'next/server';
+
 import { authService } from '$/services/auth.service';
 import { teamService } from '$/services/team.service';
-import type { GetTeamMembersReqParams } from './types';
-import { getAccessTokenFromReq } from '$/utils';
-import { NextRequest, NextResponse } from 'next/server';
-import { GetTeamMembersReqParamsSchema } from './dto';
+
+import { getAccessTokenFromReq, getQueryParams } from '$/utils';
+
+import {
+  GetTeamMembersReqParamsSchema,
+  GetTeamMembersReqQuerySchema,
+} from './dto';
+import type { GetTeamMembersReqParams, GetTeamMembersReqQuery } from './types';
 
 export async function GetTeamMembers(
   request: NextRequest,
@@ -12,14 +18,22 @@ export async function GetTeamMembers(
 ) {
   try {
     const accessToken = getAccessTokenFromReq(request);
-
     const { userId } = await authService.verifyJwt(accessToken);
 
     const { idOrSlug } = await params;
-
     GetTeamMembersReqParamsSchema.parse({ idOrSlug });
 
-    const members = await teamService.getTeamMembers(idOrSlug, userId);
+    const query = getQueryParams(request, [
+      'keyword',
+    ]) as GetTeamMembersReqQuery;
+
+    GetTeamMembersReqQuerySchema.parse(query);
+
+    const members = await teamService.getTeamMembers({
+      idOrSlug,
+      userId,
+      keyword: query.keyword,
+    });
 
     return NextResponse.json(members, {
       status: 200,

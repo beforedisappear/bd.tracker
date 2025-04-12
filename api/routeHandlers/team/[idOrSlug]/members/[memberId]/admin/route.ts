@@ -25,7 +25,7 @@ export async function PatchSetTeamAdmin(
 
     SetTeamAdminReqParamsSchema.parse({ idOrSlug, memberId });
 
-    await teamService.setAdmin(idOrSlug, memberId, userId);
+    await teamService.setAdmin({ idOrSlug, memberId, ownerId: userId });
 
     return new NextResponse(undefined, { status: 204 });
   } catch (e) {
@@ -46,7 +46,7 @@ export async function DeleteRemoveTeamAdmin(
 
     RemoveTeamAdminReqParamsSchema.parse({ idOrSlug, memberId });
 
-    await teamService.removeAdmin(idOrSlug, memberId, userId);
+    await teamService.removeAdmin({ idOrSlug, memberId, ownerId: userId });
 
     return new NextResponse(undefined, { status: 204 });
   } catch (e) {

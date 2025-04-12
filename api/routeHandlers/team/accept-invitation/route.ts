@@ -18,7 +18,7 @@ export async function PostAcceptInvitationToTeam(request: NextRequest) {
 
     AcceptInvitationToTeamReqQuerySchema.parse(query);
 
-    await teamService.acceptInvitaion(query.invitationId, query.token);
+    await teamService.acceptInvitaion(query);
 
     return new NextResponse(undefined, {
       status: 204,

@@ -23,7 +23,7 @@ export async function GetTeamByIdOrSlug(
 
     GetTeamByIdOrSlugReqParamsSchema.parse({ idOrSlug });
 
-    const team = await teamService.getTeamByIdOrSlug(idOrSlug);
+    const team = await teamService.getTeamByIdOrSlug({ idOrSlug });
 
     return NextResponse.json(team, {
       status: 200,
@@ -46,7 +46,10 @@ export async function DeleteTeamByIdOrSlug(
 
     DeleteTeamByIdOrSlugReqParamsSchema.parse({ idOrSlug });
 
-    const deletedTeam = await teamService.deleteTeamByOwner(idOrSlug, userId);
+    const deletedTeam = await teamService.deleteTeamByOwner({
+      idOrSlug,
+      ownerId: userId,
+    });
 
     return NextResponse.json(
       { id: deletedTeam.id },

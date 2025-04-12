@@ -79,7 +79,7 @@ function getOpenApiDocumentation() {
     info: {
       version: '0.0.1',
       title: 'BD.tracker API',
-      description: 'Doc of api based on Next.js Route Handlers',
+      description: 'Doc of api based on Next.js Route Handlers & Prisma ORM',
     },
     servers: [{ url: process.env.NEXT_PUBLIC_API_URL! }],
   });

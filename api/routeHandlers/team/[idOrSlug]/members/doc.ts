@@ -1,4 +1,8 @@
-import { GetTeamMembersReqParamsSchema, GetTeamMembersResSchema } from './dto';
+import {
+  GetTeamMembersReqParamsSchema,
+  GetTeamMembersReqQuerySchema,
+  GetTeamMembersResSchema,
+} from './dto';
 import type { RouteConfig } from '@asteasolutions/zod-to-openapi';
 
 export const GetTeamMembersDoc = (bearerName: string): RouteConfig => ({
@@ -9,6 +13,7 @@ export const GetTeamMembersDoc = (bearerName: string): RouteConfig => ({
   security: [{ [bearerName]: [] }],
   request: {
     params: GetTeamMembersReqParamsSchema,
+    query: GetTeamMembersReqQuerySchema,
   },
   responses: {
     200: {

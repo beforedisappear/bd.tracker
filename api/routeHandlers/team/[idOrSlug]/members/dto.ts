@@ -7,6 +7,10 @@ export const GetTeamMembersReqParamsSchema = z.object({
   idOrSlug: z.string(),
 });
 
+export const GetTeamMembersReqQuerySchema = z.object({
+  keyword: z.string().optional(),
+});
+
 export const GetTeamMembersResSchema = z.object({
   id: z.string().uuid(),
   name: z.string().nullable(),

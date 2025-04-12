@@ -28,11 +28,11 @@ export async function GetTeamMemberById(
 
     GetTeamMemberByIdReqParamsSchema.parse({ idOrSlug, memberId });
 
-    const member = await teamService.getTeamMemberById(
+    const member = await teamService.getTeamMemberById({
       idOrSlug,
       memberId,
-      userId,
-    );
+      initiatorId: userId,
+    });
 
     return NextResponse.json(member, {
       status: 200,
@@ -55,7 +55,11 @@ export async function DeleteRemoveTeamMemberById(
 
     RemoveTeamMemberByIdReqParamsSchema.parse({ idOrSlug, memberId });
 
-    await teamService.removeMemberFromTeam(idOrSlug, memberId, userId);
+    await teamService.removeMemberFromTeam({
+      idOrSlug,
+      memberId,
+      initiatorId: userId,
+    });
 
     return new NextResponse(undefined, { status: 204 });
   } catch (e) {

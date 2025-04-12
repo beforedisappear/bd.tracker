@@ -27,15 +27,15 @@ export async function GetCheckInvitationExists(
     const { idOrSlug } = await params;
     CheckInvitationExistsReqParamsSchema.parse({ idOrSlug });
 
-    const dto: CheckInvitationExistsReqDto = await request.json();
-    CheckInvitationExistsReqBodySchema.parse(dto);
+    const data: CheckInvitationExistsReqDto = await request.json();
+    CheckInvitationExistsReqBodySchema.parse(data);
 
     const isInvitationExists =
-      await teamService.checkInvitationExistsByInviteeEmail(
+      await teamService.checkInvitationExistsByInviteeEmail({
         idOrSlug,
-        dto.inviteeEmail,
-        userId,
-      );
+        inviteeEmail: data.inviteeEmail,
+        checkerId: userId,
+      });
 
     return NextResponse.json(
       { exists: isInvitationExists },

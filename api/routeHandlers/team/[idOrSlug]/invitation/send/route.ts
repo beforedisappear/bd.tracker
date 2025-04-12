@@ -27,11 +27,11 @@ export async function PostInviteUserToTeam(
 
     InviteUserToTeamReqBodySchema.parse(dto);
 
-    const invitationRes = await teamService.sendInvitation(
+    const invitationRes = await teamService.sendInvitation({
       idOrSlug,
-      dto.inviteeEmail,
-      userId,
-    );
+      inviteeEmail: dto.inviteeEmail,
+      inviterId: userId,
+    });
 
     return NextResponse.json(invitationRes, {
       status: 200,
