@@ -144,7 +144,7 @@ model Permission {
 
 model Role {
   id          String       @id @default(uuid())
-  name        String 
+  name        String
   //many users to many roles
   users       User[]       @relation("UserRoles")
   //many roles to many permissons         
@@ -191,7 +191,7 @@ model TeamInvitation {
   inviteeEmail String @unique
 
   //many teamInvitations to many projects 
-  projectIds      String[]     
+  projectIds String[]
 }
 
 model Project {
@@ -273,7 +273,7 @@ model Sticker {
   id        String      @id @default(uuid())
   name      String?
   type      StickerType
-  textValue String? // текстовые стикеры
+  textValue String?   // текстовые стикеры
   dateValue DateTime? // дедлайны
   startDate DateTime? // начало интервала дат
   endDate   DateTime? // конец интервала дат
