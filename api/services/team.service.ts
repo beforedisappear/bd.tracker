@@ -55,11 +55,39 @@ class TeamService {
     });
   }
 
-  createTeam(args: { ownerId: string; data: CreateTeamReqDto }) {
-    const { ownerId, data } = args;
+  async createTeam(args: { ownerId: string; data: CreateTeamReqDto }) {
+    const {
+      ownerId,
+      data: { name, memberIds = [] },
+    } = args;
+
+    const existingTeam = await prismaService.team.findFirst({
+      where: { name },
+    });
+
+    if (existingTeam) {
+      throw ApiError.conflict('A team with that name already exists');
+    }
+
+    const users = await prismaService.user.findMany({
+      where: { id: { in: memberIds } },
+      select: { id: true },
+    });
+
+    if (users.length !== memberIds.length) {
+      throw ApiError.badRequest('One or more users were not found');
+    }
 
     return prismaService.team.create({
-      data: { name: data.name, slug: getSlug(data.name), ownerId },
+      data: {
+        name,
+        slug: getSlug(name),
+        ownerId,
+        members:
+          memberIds && memberIds.length > 0
+            ? { connect: memberIds.map(userId => ({ id: userId })) }
+            : {},
+      },
     });
   }
 
