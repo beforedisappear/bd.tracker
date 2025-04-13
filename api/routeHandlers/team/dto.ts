@@ -5,7 +5,6 @@ extendZodWithOpenApi(z);
 
 export const CreateTeamReqBodySchema = z.object({
   name: z.string(),
-  memberIds: z.array(z.string()).optional(),
 });
 
 export const CreateTeamResSchema = z.object({

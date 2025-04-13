@@ -9,15 +9,6 @@ datasource db {
 }
 
 enum PermissionType {
-  //TEAM management
-  TEAM_CREATE
-  TEAM_DELETE
-  TEAM_RENAME //TEAM_EDIT
-  TEAM_ADD_PROJECT //TEAM_EDIT
-  TEAM_REMOVE_PROJECT //TEAM_EDIT
-  TEAM_INVITE_USER
-  TEAM_REMOVE_USER
-
   //PROJECT management 
   PROJECT_CREATE
   PROJECT_DELETE
@@ -87,6 +78,24 @@ enum InvitationStatus {
   DECLINED
 }
 
+enum Color {
+  SLATE
+  ROSE
+  AMBER
+  YELLOW
+  LIME
+  GREEN
+  TEAL
+  SKY
+  INDIGO
+  VIOLET
+  GRAY
+  RED
+  ORANGE
+  GOLD
+  EMERALD
+}
+
 model User {
   //name / data type / type modifiers / optional attributes 
   id                  String           @id @default(uuid())
@@ -108,6 +117,8 @@ model User {
   sentTeamInvitations TeamInvitation[] @relation("TeamInviter")
   //many users (admins) to many teams
   adminTeams          Team[]           @relation("TeamAdmins")
+  //many users to many projects
+  projects            Project[]        @relation("ProjectMembers")
 
   @@map("users")
 }
@@ -133,14 +144,14 @@ model Permission {
 
 model Role {
   id          String       @id @default(uuid())
-  name        String       @unique
+  name        String 
   //many users to many roles
   users       User[]       @relation("UserRoles")
   //many roles to many permissons         
   permissions Permission[] @relation("RolePermissions")
-
-  //for Multi-tenant 
-  teamId String //tenantId
+  //many roles to one project
+  projectId   String
+  project     Project      @relation(fields: [projectId], references: [id])
 }
 
 //as Tenant
@@ -169,7 +180,7 @@ model TeamInvitation {
   createdAt DateTime         @default(now())
   expiresAt DateTime
 
-  //many teamInvitation to one team
+  //many teamInvitations to one team
   teamId String
   team   Team   @relation("TeamInvitations", fields: [teamId], references: [id])
 
@@ -178,17 +189,24 @@ model TeamInvitation {
   inviter   User   @relation("TeamInviter", fields: [inviterId], references: [id])
 
   inviteeEmail String @unique
+
+  //many teamInvitations to many projects 
+  projectIds      String[]     
 }
 
 model Project {
   id        String   @id @default(uuid())
   name      String
   createdAt DateTime @default(now()) @map("created_at")
-  //one team to many projects
+  //many projects to one team
   teamId    String
   team      Team     @relation(fields: [teamId], references: [id])
-  //one project to many boards
+  // many boards to one project
   boards    Board[]
+  //many users to many projects
+  members   User[]   @relation("ProjectMembers")
+  //many roles to one project
+  roles     Role[]
 }
 
 model Board {
@@ -202,9 +220,6 @@ model Board {
   columns   Column[]
   //many stickers to one board
   stickers  Sticker[]
-
-  //for Multi-tenant 
-  teamId String //tenantId
 }
 
 model Column {
@@ -220,7 +235,7 @@ model Column {
   tasks         Task[]
 
   //for Multi-tenant 
-  teamId String //tenantId
+  projectId String
 }
 
 model Task {
@@ -228,6 +243,7 @@ model Task {
   title          String
   description    String?
   columnPosition Int       @unique
+  color          Color     @default(GRAY)
   isDone         Boolean   @default(false)
   isInArchieve   Boolean   @default(false)
   createdAt      DateTime  @default(now()) @map("created_at")
@@ -249,18 +265,19 @@ model Task {
   stickers       Sticker[] @relation("TaskStickers")
 
   //for Multi-tenant 
-  teamId String //tenantId
+  projectId String
 }
 
+//TODO: add sticker group
 model Sticker {
   id        String      @id @default(uuid())
   name      String?
   type      StickerType
-  textValue String? // Для текстовых стикеров
-  dateValue DateTime? // Для дедлайнов
-  startDate DateTime? // Начало интервала дат
-  endDate   DateTime? // Конец интервала дат
-  color     String
+  textValue String? // текстовые стикеры
+  dateValue DateTime? // дедлайны
+  startDate DateTime? // начало интервала дат
+  endDate   DateTime? // конец интервала дат
+  color     Color       @default(GRAY)
   createdAt DateTime    @default(now()) @map("created_at")
   updatedAt DateTime    @updatedAt @map("updated_at")
   //many stickers to one board
@@ -270,5 +287,5 @@ model Sticker {
   tasks     Task[]      @relation("TaskStickers")
 
   //for Multi-tenant 
-  teamId String //tenantId
+  projectId String
 }

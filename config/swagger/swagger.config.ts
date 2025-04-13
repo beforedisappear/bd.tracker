@@ -29,6 +29,7 @@ import {
   DeleteRemoveTeamAdminDoc,
   PatchSetTeamAdminDoc,
 } from '$/routeHandlers/team/[idOrSlug]/members/[memberId]/admin/doc';
+import { PostCreateProjectDoc } from '$/routeHandlers/project/doc';
 
 extendZodWithOpenApi(z);
 
@@ -70,6 +71,8 @@ openAPIRegistry.registerPath(DeleteRemoveTeamAdminDoc(bearerAuth.name));
 openAPIRegistry.registerPath(GetCheckInvitationExistsDoc(bearerAuth.name));
 openAPIRegistry.registerPath(PostInviteUserToTeamDoc(bearerAuth.name));
 openAPIRegistry.registerPath(PostAcceptInvitationToTeamDoc(bearerAuth.name));
+//project main
+openAPIRegistry.registerPath(PostCreateProjectDoc(bearerAuth.name));
 
 function getOpenApiDocumentation() {
   const generator = new OpenApiGeneratorV3(openAPIRegistry.definitions);

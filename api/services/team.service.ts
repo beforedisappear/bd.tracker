@@ -1,8 +1,10 @@
 import 'server-only';
 
+import { BaseService } from './base.service';
 import { prismaService } from '&/prisma';
 import { userService } from './user.service';
 import { mailService } from './mail.service';
+import { projectService } from './project.service';
 
 import { v4 as uuidv4 } from 'uuid';
 import { getSlug } from '$/utils/getSlug';
@@ -12,7 +14,7 @@ import type { Team } from '&/prisma/generated/client';
 import type { CreateTeamReqDto } from '$/routeHandlers/team/types';
 import type { RenameTeamReqDto } from '$/routeHandlers/team/[idOrSlug]/rename/types';
 
-class TeamService {
+class TeamService extends BaseService {
   async getTeamByIdOrSlug(args: { idOrSlug: string }) {
     const { idOrSlug } = args;
 
@@ -58,7 +60,7 @@ class TeamService {
   async createTeam(args: { ownerId: string; data: CreateTeamReqDto }) {
     const {
       ownerId,
-      data: { name, memberIds = [] },
+      data: { name },
     } = args;
 
     const existingTeam = await prismaService.team.findFirst({
@@ -69,24 +71,11 @@ class TeamService {
       throw ApiError.conflict('A team with that name already exists');
     }
 
-    const users = await prismaService.user.findMany({
-      where: { id: { in: memberIds } },
-      select: { id: true },
-    });
-
-    if (users.length !== memberIds.length) {
-      throw ApiError.badRequest('One or more users were not found');
-    }
-
     return prismaService.team.create({
       data: {
         name,
         slug: getSlug(name),
         ownerId,
-        members:
-          memberIds && memberIds.length > 0
-            ? { connect: memberIds.map(userId => ({ id: userId })) }
-            : {},
       },
     });
   }
@@ -96,14 +85,17 @@ class TeamService {
     data: RenameTeamReqDto;
     userId: string;
   }) {
-    const { idOrSlug, userId, data } = args;
+    const { idOrSlug, data, userId } = args;
 
-    const { isOwner, team } = await this.checkIsUserInTeam(idOrSlug, {
+    const { isOwner, isAdmin, team } = await this.checkIsUserInTeam(idOrSlug, {
       userId,
     });
 
-    if (!isOwner)
-      throw ApiError.forbidden('The team cannot be renamed by non-owner');
+    //TODO: the ban on editing by the admin
+    if (!isOwner && !isAdmin)
+      throw ApiError.forbidden(
+        'The team cannot be renamed by non-owner or non-admin',
+      );
 
     const newSlug = getSlug(data.name);
 
@@ -115,14 +107,14 @@ class TeamService {
     return updatedTeam;
   }
 
-  async deleteTeamByOwner(args: { idOrSlug: string; ownerId: string }) {
+  async deleteTeam(args: { idOrSlug: string; ownerId: string }) {
     const { idOrSlug, ownerId } = args;
 
     const { team, isOwner } = await this.checkIsUserInTeam(idOrSlug, {
       userId: ownerId,
     });
 
-    if (isOwner)
+    if (!isOwner)
       throw ApiError.forbidden('The team cannot be deleted by non-owner');
 
     const teamCount = await prismaService.team.count({ where: { ownerId } });
@@ -139,7 +131,6 @@ class TeamService {
     return deletedTeam;
   }
 
-  //TODO: check permisson
   async checkInvitationExistsByInviteeEmail(args: {
     idOrSlug: string;
     inviteeEmail: string;
@@ -147,13 +138,14 @@ class TeamService {
   }) {
     const { idOrSlug, inviteeEmail, checkerId } = args;
 
-    const { inTeam: isCheckerInTeam } = await this.checkIsUserInTeam(idOrSlug, {
+    const { isAdmin, isOwner } = await this.checkIsUserInTeam(idOrSlug, {
       userId: checkerId,
     });
 
-    if (!isCheckerInTeam)
+    //TODO: the ban on editing by the admin
+    if (!isOwner && !isAdmin)
       throw ApiError.forbidden(
-        'You are not allowed to check invitations for this team',
+        'The invitation cannot be checked by a non-owner or non-admin',
       );
 
     const invitation = await prismaService.teamInvitation.findFirst({
@@ -163,7 +155,7 @@ class TeamService {
       },
     });
 
-    if (!invitation) return false;
+    if (!invitation || invitation.status === 'DECLINED') return false;
 
     if (invitation.status === 'ACCEPTED')
       throw ApiError.conflict('User has already accepted the invitation');
@@ -171,33 +163,47 @@ class TeamService {
     return true;
   }
 
-  //TODO: check permisson
   async sendInvitation(args: {
     idOrSlug: string;
     inviteeEmail: string;
     inviterId: string;
+    projectIds?: string[];
   }) {
-    const { idOrSlug, inviteeEmail, inviterId } = args;
+    const { idOrSlug, inviteeEmail, inviterId, projectIds = [] } = args;
 
-    const { inTeam: isInviterInTeam, team } = await this.checkIsUserInTeam(
-      idOrSlug,
-      { userId: inviterId },
-    );
+    const { isOwner, isAdmin, team } = await this.checkIsUserInTeam(idOrSlug, {
+      userId: inviterId,
+    });
 
-    if (!isInviterInTeam)
+    //TODO: the ban on editing by the admin
+    if (!isOwner && !isAdmin)
       throw ApiError.forbidden(
-        'You are not allowed to send invitations from this team',
+        'The invitation cannot be sent by a non-owner or non-admin',
       );
 
-    const existingUser = await userService.findOne(inviteeEmail);
+    const existingUser = await userService.findOne({ idOrEmail: inviteeEmail });
+
+    if (projectIds.length > 0) {
+      //проверка на существование проекта + запрет на добавление в чужой проект
+      const allProjectsExists = await projectService.projectExists({
+        ids: projectIds,
+        teamId: idOrSlug,
+      });
+
+      if (!allProjectsExists) {
+        throw ApiError.badRequest('One or more projects were not found');
+      }
+    }
 
     if (existingUser) {
       await prismaService.team.update({
         where: { id: team.id },
         data: {
-          members: {
-            connect: { id: existingUser.id },
-          },
+          members: { connect: { id: existingUser.id } },
+          projects:
+            projectIds.length > 0
+              ? { connect: projectIds.map(id => ({ id })) }
+              : {},
         },
       });
 
@@ -219,6 +225,7 @@ class TeamService {
         inviterId: inviterId,
         inviteeEmail,
         token,
+        projectIds: projectIds.length > 0 ? projectIds : undefined,
         expiresAt,
       },
     });
@@ -260,6 +267,7 @@ class TeamService {
         });
     }
 
+    //TODO: add default project
     prismaService.$transaction(async tx => {
       const [user] = await Promise.all([
         userService.createWithTx(tx, {
@@ -277,6 +285,10 @@ class TeamService {
           members: {
             connect: { id: user.id },
           },
+          projects:
+            invitation.projectIds.length > 0
+              ? { connect: invitation.projectIds.map(id => ({ id })) }
+              : {},
         },
       });
     });
@@ -411,58 +423,6 @@ class TeamService {
         },
       },
     });
-  }
-
-  private async getTeamByIdOrSlugWithOptions(
-    idOrSlug: string,
-    options?: {
-      withMembers?: boolean;
-      withOwner?: boolean;
-      withAdmins?: boolean;
-      keyword?: string;
-    },
-  ) {
-    const { withOwner, withMembers, withAdmins } = options ?? {
-      withMembers: false,
-      withOwner: false,
-      withAdmins: false,
-    };
-
-    const team = await prismaService.team.findFirst({
-      where: { OR: [{ id: idOrSlug }, { slug: idOrSlug }] },
-      include: { members: withMembers, owner: withOwner, admins: withAdmins },
-    });
-
-    if (!team) throw ApiError.notFound('Team not found');
-
-    return team;
-  }
-
-  private async checkIsUserInTeam(
-    idOrSlug: string,
-    options: { userId: string },
-  ) {
-    const { userId } = options;
-
-    const team = await this.getTeamByIdOrSlugWithOptions(idOrSlug, {
-      withAdmins: true,
-      withMembers: true,
-      withOwner: true,
-    });
-
-    if (!team) throw ApiError.notFound('Team not found');
-
-    const isMember = team.members.some(member => member.id === userId);
-    const isOwner = team.owner.id === userId;
-    const isAdmin = team.admins.some(admin => admin.id === userId);
-
-    return {
-      inTeam: isMember || isOwner || isAdmin,
-      isMember,
-      isAdmin,
-      isOwner,
-      team,
-    };
   }
 }
 

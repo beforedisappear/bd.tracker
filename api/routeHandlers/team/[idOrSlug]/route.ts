@@ -46,7 +46,7 @@ export async function DeleteTeamByIdOrSlug(
 
     DeleteTeamByIdOrSlugReqParamsSchema.parse({ idOrSlug });
 
-    const deletedTeam = await teamService.deleteTeamByOwner({
+    const deletedTeam = await teamService.deleteTeam({
       idOrSlug,
       ownerId: userId,
     });

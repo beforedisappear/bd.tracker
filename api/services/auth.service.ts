@@ -22,7 +22,7 @@ const key = new TextEncoder().encode(secretKey);
 
 class AuthService {
   async auth(data: CreateUser) {
-    let user = await userService.findOne(data.email);
+    let user = await userService.findOne({ idOrEmail: data.email });
 
     if (!user) {
       user = await userService.create(data);
@@ -37,7 +37,7 @@ class AuthService {
   }
 
   async login(data: LoginDto, agent: string) {
-    const user = await userService.findOne(data.email);
+    const user = await userService.findOne({ idOrEmail: data.email });
 
     if (!user) throw ApiError.notFound('User not found');
 
@@ -73,7 +73,7 @@ class AuthService {
       throw ApiError.unauthorized('Session expired');
     }
 
-    const user = await userService.findOne(token.userId);
+    const user = await userService.findOne({ idOrEmail: token.userId });
 
     if (!user) throw ApiError.notFound('User not found');
 

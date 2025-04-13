@@ -31,6 +31,7 @@ export async function PostInviteUserToTeam(
       idOrSlug,
       inviteeEmail: dto.inviteeEmail,
       inviterId: userId,
+      projectIds: dto.projectIds,
     });
 
     return NextResponse.json(invitationRes, {

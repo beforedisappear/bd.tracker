@@ -9,6 +9,7 @@ export const InviteUserToTeamReqParamsSchema = z.object({
 
 export const InviteUserToTeamReqBodySchema = z.object({
   inviteeEmail: z.string().email(),
+  projectIds: z.array(z.string()).optional(),
 });
 
 export const InviteUserToTeamResSchema = z.object({
