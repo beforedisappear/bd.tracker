@@ -1,7 +1,9 @@
 import type { NextConfig } from 'next';
 
 type CommonCfg = {
-  [K in keyof NextConfig as K extends 'webpack' ? never : K]: NextConfig[K];
+  [K in keyof NextConfig as K extends 'webpack' | 'turbopack'
+    ? never
+    : K]: NextConfig[K];
 };
 
 export const СommonConfig: CommonCfg = {
