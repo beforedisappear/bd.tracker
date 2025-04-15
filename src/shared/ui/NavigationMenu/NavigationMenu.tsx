@@ -33,11 +33,12 @@ export function NavigationMenu(props: IProps) {
               {item.type === 'pure' && item.content}
 
               {item.type === 'simple' && (
-                <Link href={item.content.href} legacyBehavior passHref>
-                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                    {item.content.label}
-                  </NavigationMenuLink>
-                </Link>
+                <NavigationMenuLink
+                  asChild
+                  className={navigationMenuTriggerStyle()}
+                >
+                  <Link href={item.content.href}>{item.content.label}</Link>
+                </NavigationMenuLink>
               )}
 
               {item.type === 'extended' && (
