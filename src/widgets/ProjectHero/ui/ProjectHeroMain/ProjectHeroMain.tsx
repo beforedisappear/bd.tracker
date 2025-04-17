@@ -1,11 +1,19 @@
 import { GitHubLogoIcon } from '@radix-ui/react-icons';
 
+import { cn } from '@/shared/lib/css';
+
 import { buttonVariants } from '@/shared/ui/s';
 import Link from 'next/link';
 
-import { GITHUB_REPO_URL } from '@/shared/constants';
 import { getLoginRoute } from '@/shared/config/routes';
-import { cn } from '@/shared/lib/css';
+import { GITHUB_REPO_URL } from '@/shared/constants';
+import {
+  HIGHLIGHTED_PART_SUBTITLE,
+  HIGHLIGHTED_PART_TITLE,
+  SIMPLE_PART_SUBTITLE,
+  SIMPLE_PART_TITLE,
+  TITLE_UNION,
+} from './ProjectHeroMain.data';
 
 interface Props {}
 
@@ -23,16 +31,16 @@ export function ProjectHeroMain({}: Props) {
       >
         <h1 className='inline'>
           <span className='inline bg-gradient-to-r from-[#F596D3]  to-[#D247BF] text-transparent bg-clip-text'>
-            Простой
+            {HIGHLIGHTED_PART_TITLE}
           </span>{' '}
-          трекер
+          {SIMPLE_PART_TITLE}
         </h1>{' '}
-        для{' '}
+        {TITLE_UNION}{' '}
         <h2 className='inline'>
           <span className='inline bg-gradient-to-r from-[#61DAFB] via-[#1fc0f1] to-[#03a3d7] text-transparent bg-clip-text'>
-            Небольших
+            {HIGHLIGHTED_PART_SUBTITLE}
           </span>{' '}
-          команд
+          {SIMPLE_PART_SUBTITLE}
         </h2>
       </div>
 
