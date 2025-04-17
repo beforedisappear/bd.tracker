@@ -21,8 +21,3 @@ export const AuthFormSecondStepSchema = z.object({
     })
     .length(6, INCORRECT_VALUE_FIELD_MESSAGE),
 });
-
-type AuthFormFirstStepValues = z.infer<typeof AuthFormFirstStepSchema>;
-type AuthFormSecondStepValues = z.infer<typeof AuthFormSecondStepSchema>;
-
-export type AuthFormValues = AuthFormFirstStepValues | AuthFormSecondStepValues;

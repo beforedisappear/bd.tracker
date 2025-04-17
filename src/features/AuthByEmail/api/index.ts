@@ -1,1 +1,1 @@
-export { queries } from './queries';
+export { authQueries } from './queries';

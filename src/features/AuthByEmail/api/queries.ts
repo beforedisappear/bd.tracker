@@ -3,9 +3,9 @@ import { mutationOptions } from '@/shared/lib/tanstack-query';
 import { auth } from './auth';
 import { login } from './login';
 
-import type { AuthDtoReq, LoginDtoReq } from './types';
+import type { AuthDtoReq, LoginDtoReq } from '../model/types';
 
-export const queries = {
+export const authQueries = {
   auth: () =>
     mutationOptions({
       mutationKey: ['auth'],

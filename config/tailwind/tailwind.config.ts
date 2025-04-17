@@ -1,4 +1,5 @@
 import TailwindAnimate from 'tailwindcss-animate';
+import TailwindLineClamp from '@tailwindcss/line-clamp';
 
 import { colors } from './colors';
 import { borderRadius } from './borderRadius';
@@ -22,5 +23,5 @@ export const tailwindConfig: Config = {
       container,
     },
   },
-  plugins: [TailwindAnimate],
+  plugins: [TailwindAnimate, TailwindLineClamp],
 };

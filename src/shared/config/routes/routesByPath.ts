@@ -4,6 +4,7 @@ import {
   getProfileRoute,
   getHomeRoute,
   getInviteRoute,
+  getTeamRoute,
 } from './routes';
 import { AppRoutes } from './routes.types';
 
@@ -15,6 +16,7 @@ export const publicRoutesByPath: Record<string, AppRoutes> = {
 export const privateRoutesByPath: Record<string, AppRoutes> = {
   [getProfileRoute()]: AppRoutes.PROFILE,
   [getHomeRoute()]: AppRoutes.HOME,
+  [getTeamRoute()]: AppRoutes.TEAM,
 };
 
 export const serviceRoutesByPath: Record<string, AppRoutes> = {

@@ -16,8 +16,10 @@ export { Drawer } from './Drawer/Drawer';
 export { Accordion } from './Accordion/Accordion';
 export { DatePicker } from './DatePicker/DatePicker';
 export { DateRangePicker } from './DateRangePicker/DateRangePicker';
+export { ScrollArea } from './ScrollArea/ScrollArea';
 
 //types
 export type { IAccordionItem } from './Accordion/Accordion.types';
 export type { DropDownMenuOptions } from './DropdownMenu/DropdownMenu.types';
 export type { NavigationMenuItems } from './NavigationMenu';
+export type { ButtonSize } from './Button/Button.types';

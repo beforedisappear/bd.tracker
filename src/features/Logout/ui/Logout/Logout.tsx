@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/shared/ui/c';
+import { Button, type ButtonSize } from '@/shared/ui/c';
 
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
@@ -15,9 +15,12 @@ import {
   SUCCESS_MESSAGE,
 } from '@/shared/constants';
 
-interface Props {}
+interface Props {
+  className?: string;
+  btnSize?: ButtonSize;
+}
 
-export function Logout({}: Props) {
+export function Logout({ className }: Props) {
   const { push } = useRouter();
 
   const { mutateAsync } = useMutation(queries.logout());
@@ -36,5 +39,9 @@ export function Logout({}: Props) {
       .finally(() => push(getMainRoute()));
   };
 
-  return <Button onClick={onLogout}>Выйти</Button>;
+  return (
+    <Button size='lg' onClick={onLogout} className={className}>
+      Выйти
+    </Button>
+  );
 }

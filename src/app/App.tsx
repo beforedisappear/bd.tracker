@@ -3,6 +3,7 @@ import './styles/globals.css';
 import { geistMono } from './fonts/geistMono';
 import { geistSans } from './fonts/geistSans';
 
+import NextTopLoader from 'nextjs-toploader';
 import { ThemeProvider } from './providers/ThemeProvider';
 import { StoreProvider } from './providers/StoreProvider';
 import { QueryProvider } from './providers/QueryProvider';
@@ -17,6 +18,7 @@ export function App({ children }: PropsWithChildren) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <NextTopLoader color='hsl(var(--primary))' />
         <StoreProvider>
           <ThemeProvider>
             <QueryProvider>
