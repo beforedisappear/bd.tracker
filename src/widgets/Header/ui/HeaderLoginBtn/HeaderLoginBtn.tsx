@@ -8,7 +8,11 @@ interface Props {}
 
 export function HeaderLoginBtn({}: Props) {
   return (
-    <Link href={getLoginRoute()} className={cn(buttonVariants(), 'md:hidden')}>
+    <Link
+      href={getLoginRoute()}
+      scroll={false}
+      className={cn(buttonVariants(), 'md:hidden')}
+    >
       Войти
     </Link>
   );

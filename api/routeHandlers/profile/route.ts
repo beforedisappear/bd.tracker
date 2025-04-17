@@ -1,15 +1,14 @@
-import { ApiError } from '$/errors/apiError';
 import { ErrorResponse } from '$/errors/errorResponse';
 import { authService } from '$/services/auth.service';
 import { userService } from '$/services/user.service';
+
+import { getAccessTokenFromReq } from '$/utils';
 
 import { type NextRequest, NextResponse } from 'next/server';
 
 export async function GetProfile(request: NextRequest) {
   try {
-    const accessToken = request.headers.get('Authorization');
-
-    if (!accessToken) throw ApiError.forbidden('Token was not provided');
+    const accessToken = getAccessTokenFromReq(request);
 
     const { userId } = await authService.verifyJwt(accessToken);
 

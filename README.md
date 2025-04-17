@@ -13,12 +13,21 @@ BD.tracker - Fullstack приложение, с упором на Frontend со�
 ## Running the app
 
 ```bash
-# development
+# development with webpack
 $ bun dev
+
+# development with turbopack
+$ bun dev:turbo
 
 # watch mode
 $ npm run start:dev
 
 # production mode
-$ npm run start:prod
+$ bun prod
+
+# production build
+$ bun build
+
+# production start
+$ bun start
 ```

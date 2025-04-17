@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "./generated/client"
 }
 
 datasource db {
@@ -7,15 +8,117 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum PermissionType {
+  //PROJECT management 
+  PROJECT_CREATE
+  PROJECT_DELETE
+  PROJECT_VIEW
+  PROJECT_INVITE_MEMBER
+  PROJECT_REMOVE_MEMBER
+  PROJECT_RENAME //PROJECT_EDIT
+  PROJECT_CREATE_BOARD //PROJECT_EDIT
+  PROJECT_REMOVE_BOARD //PROJECT_EDIT
+
+  //BOARD management
+  BOARD_CREATE
+  BOARD_RENAME
+  BOARD_DELETE
+  BOARD_VIEW
+  BOARD_MOVE
+  BOARD_ADD_COLUMN //BOARD_EDIT
+  BOARD_REMOVE_COLUMN //BOARD_EDIT
+  BOARD_CHANGE_STICKERS //BOARD_EDIT
+  BOARD_CREATE_STICKERS //BOARD_EDIT
+  BOARD_DELETE_STICERS //BOARD_EDIT
+
+  //COLUMN management
+  COLUMN_CREATE
+  COLUMN_DELETE
+  COLUMN_RENAME //COLUMN_EDIT
+  COLUMN_REPOSITION //COLUMN_EDIT
+  COLUMN_CREATE_TASK //COLUMN_EDIT
+  COLUMN_DELETE_TASK //COLUMN_EDIT
+
+  //TASK management
+  TASK_CREATE
+  TASK_VIEW
+  TASK_DELETE
+  TASK_ACCOMPLISHMENT //TASK_EDIT
+  TASK_ARCHIVING //TASK_EDIT
+  TASK_RENAME //TASK_EDIT
+  TASK_CHANGE_DESCRIPTION //TASK_EDIT
+  TASK_REPOSITION //TASK_EDIT
+  TASK_MOVE //TASK_EDIT Перемещение между колонками
+  TASK_ASSIGN_USERS
+  TASK_SUBTASK_MANAGEMENT //TASK EDIT
+  TASK_ADD_STICKER //TASK_EDIT
+  TASK_REMOVE_STICKER //TASK_EDIT
+
+  //STICKERS management
+  STICKER_CREATE
+  STICKER_RENAME
+  STICKER_CHANGE_COLOR
+  STICKER_CHANGE_TYPE
+  STICKER_DELETE
+
+  //USER management
+  USER_MANAGE_ROLES
+  USER_VIEW
+}
+
+enum StickerType {
+  TEXT
+  DATE
+  DATE_RANGE
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
+enum Color {
+  SLATE
+  ROSE
+  AMBER
+  YELLOW
+  LIME
+  GREEN
+  TEAL
+  SKY
+  INDIGO
+  VIOLET
+  GRAY
+  RED
+  ORANGE
+  GOLD
+  EMERALD
+}
+
 model User {
   //name / data type / type modifiers / optional attributes 
-  id        String   @id @default(uuid())
-  name      String?
-  email     String   @unique
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @default(now()) @map("updated_at")
-  //one user to many tokens
-  JWT       JWT[]
+  id                  String           @id @default(uuid())
+  name                String?
+  email               String           @unique
+  createdAt           DateTime         @default(now()) @map("created_at")
+  updatedAt           DateTime         @default(now()) @map("updated_at")
+  //many tokens to one user
+  JWT                 JWT[]
+  //many users to many teams
+  teams               Team[]           @relation("TeamMembers")
+  //many users to many tasks
+  tasks               Task[]           @relation("TaskAssignees")
+  //many teams to one user (owner)
+  ownedTeams          Team[]           @relation("TeamOwner")
+  //many users to many roles
+  roles               Role[]           @relation("UserRoles")
+  //many teamInvitations to one user
+  sentTeamInvitations TeamInvitation[] @relation("TeamInviter")
+  //many users (admins) to many teams
+  adminTeams          Team[]           @relation("TeamAdmins")
+  //many users to many projects
+  projects            Project[]        @relation("ProjectMembers")
 
   @@map("users")
 }
@@ -23,9 +126,166 @@ model User {
 model JWT {
   token     String   @unique
   exp       DateTime
+  //many tokens to one user
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
   userAgent String   @map("user_agent")
 
   @@map("jwt")
+}
+
+// allocated entry to add new permissons, to store their description, dynamic management from ui
+model Permission {
+  id    String         @id @default(uuid())
+  type  PermissionType @unique
+  //many roles to many permissons         
+  roles Role[]         @relation("RolePermissions")
+}
+
+model Role {
+  id          String       @id @default(uuid())
+  name        String
+  //many users to many roles
+  users       User[]       @relation("UserRoles")
+  //many roles to many permissons         
+  permissions Permission[] @relation("RolePermissions")
+  //many roles to one project
+  projectId   String
+  project     Project      @relation(fields: [projectId], references: [id])
+}
+
+//as Tenant
+model Team {
+  id          String           @id @default(uuid())
+  name        String           @unique
+  slug        String           @unique
+  createdAt   DateTime         @default(now()) @map("created_at")
+  //many teams to many projects
+  projects    Project[]
+  //many teams to one user (owner)
+  ownerId     String
+  owner       User             @relation("TeamOwner", fields: [ownerId], references: [id])
+  //many teams to many users (members)
+  members     User[]           @relation("TeamMembers")
+  //many invitations to one team
+  invitations TeamInvitation[] @relation("TeamInvitations")
+  //many users (admins) to many teams
+  admins      User[]           @relation("TeamAdmins")
+}
+
+model TeamInvitation {
+  id        String           @id @default(uuid())
+  status    InvitationStatus @default(PENDING)
+  token     String
+  createdAt DateTime         @default(now())
+  expiresAt DateTime
+
+  //many teamInvitations to one team
+  teamId String
+  team   Team   @relation("TeamInvitations", fields: [teamId], references: [id])
+
+  //many teamInvitations to one user (inviter)
+  inviterId String
+  inviter   User   @relation("TeamInviter", fields: [inviterId], references: [id])
+
+  inviteeEmail String @unique
+
+  //many teamInvitations to many projects 
+  projectIds String[]
+}
+
+model Project {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  //many projects to one team
+  teamId    String
+  team      Team     @relation(fields: [teamId], references: [id])
+  // many boards to one project
+  boards    Board[]
+  //many users to many projects
+  members   User[]   @relation("ProjectMembers")
+  //many roles to one project
+  roles     Role[]
+}
+
+model Board {
+  id        String    @id @default(uuid())
+  name      String
+  projectId String
+  createdAt DateTime  @default(now())
+  //many boards to one project
+  project   Project   @relation(fields: [projectId], references: [id])
+  //many columns to one board
+  columns   Column[]
+  //many stickers to one board
+  stickers  Sticker[]
+}
+
+model Column {
+  id            String   @id @default(uuid())
+  name          String
+  boardPosition Int      @unique
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+  //many columns to one board
+  boardId       String
+  board         Board    @relation(fields: [boardId], references: [id])
+  //many tasks to one column
+  tasks         Task[]
+
+  //for Multi-tenant 
+  projectId String
+}
+
+model Task {
+  id             String    @id @default(uuid())
+  title          String
+  description    String?
+  columnPosition Int       @unique
+  color          Color     @default(GRAY)
+  isDone         Boolean   @default(false)
+  isInArchieve   Boolean   @default(false)
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  //to keep the max nesting = 1
+  isSubtask      Boolean   @default(false)
+  //to place subtask on board
+  isStandalone   Boolean   @default(false)
+  //many tasks to one column
+  columnId       String
+  column         Column    @relation(fields: [columnId], references: [id])
+  //many users to many tasks
+  assignees      User[]    @relation("TaskAssignees")
+  //one task to many tasks (subtasks) by self-referencing relationship
+  parentTaskId   String?
+  parentTask     Task?     @relation("TaskHierarchy", fields: [parentTaskId], references: [id])
+  subtasks       Task[]    @relation("TaskHierarchy")
+  //many stickers to many tasks
+  stickers       Sticker[] @relation("TaskStickers")
+
+  //for Multi-tenant 
+  projectId String
+}
+
+//TODO: add sticker group
+model Sticker {
+  id        String      @id @default(uuid())
+  name      String?
+  type      StickerType
+  textValue String?   // текстовые стикеры
+  dateValue DateTime? // дедлайны
+  startDate DateTime? // начало интервала дат
+  endDate   DateTime? // конец интервала дат
+  color     Color       @default(GRAY)
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime    @updatedAt @map("updated_at")
+  //many stickers to one board
+  boardId   String
+  board     Board       @relation(fields: [boardId], references: [id])
+  //many stickers to many tasks
+  tasks     Task[]      @relation("TaskStickers")
+
+  //for Multi-tenant 
+  projectId String
 }

@@ -1,7 +1,7 @@
 import { apiClient } from '@/shared/api';
 
-import type { LoginDto, LoginResponse } from '$/types';
+import type { LoginDtoReq, LoginDtoRes } from './types';
 
-export function login(dto: LoginDto) {
-  return apiClient.noAuth.post<LoginResponse>('/login', dto);
+export function login(dto: LoginDtoReq) {
+  return apiClient.noAuth.post<LoginDtoRes>('/login', dto);
 }

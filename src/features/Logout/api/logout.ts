@@ -1,7 +1,7 @@
 import { apiClient } from '@/shared/api';
 
-import type { LogoutDto, LogoutResponse } from '$/types';
+import type { LogoutDtoReq } from './types';
 
-export function logout(dto: LogoutDto) {
-  return apiClient.noAuth.post<LogoutResponse>('/logout', dto);
+export function logout(dto: LogoutDtoReq) {
+  return apiClient.noAuth.post('/logout', dto);
 }

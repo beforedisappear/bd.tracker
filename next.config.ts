@@ -6,9 +6,7 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   webpack: WebpackConfig,
-  experimental: {
-    turbo: TurbopackConfig,
-  },
+  turbopack: TurbopackConfig,
 
   ...СommonConfig,
 };

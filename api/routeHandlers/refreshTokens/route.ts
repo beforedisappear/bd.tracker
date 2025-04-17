@@ -1,9 +1,9 @@
-import { RefreshTokensReqSchema } from '$/dto/auth.dto';
+import { RefreshTokensReqSchema } from './dto';
 import { authService } from '$/services/auth.service';
 import { NextRequest, NextResponse, userAgent } from 'next/server';
 import { ErrorResponse } from '$/errors/errorResponse';
 
-import type { RefreshTokensDto } from '$/types';
+import type { RefreshTokensDto } from './types';
 
 export async function PostRefreshTokens(request: NextRequest) {
   try {

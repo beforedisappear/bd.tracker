@@ -8,9 +8,9 @@ import {
   removeJwt,
 } from '../lib/cookies';
 import { REQUEST_TIMEOUT } from './constants';
-import type { RefreshTokensResponse } from '$/types';
+import { RefreshTokensRes } from './types';
 
-type Refresh = Promise<AxiosResponse<RefreshTokensResponse>>;
+type Refresh = Promise<AxiosResponse<RefreshTokensRes>>;
 
 class ApiClient {
   public withAuth: AxiosInstance;
@@ -33,10 +33,8 @@ class ApiClient {
     this.initializeInterceptors();
   }
 
-  private async refreshTokens(
-    refreshToken: RefreshTokensResponse['refreshToken'],
-  ) {
-    const response = await this.noAuth.post<RefreshTokensResponse>(
+  private async refreshTokens(refreshToken: RefreshTokensRes['refreshToken']) {
+    const response = await this.noAuth.post<RefreshTokensRes>(
       `/refresh-tokens`,
       {
         refreshToken,

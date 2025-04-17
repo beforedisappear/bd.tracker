@@ -5,19 +5,16 @@ import { v4 as uuidv4 } from 'uuid';
 import { add } from 'date-fns';
 import { SignJWT, jwtVerify } from 'jose';
 
-import { redisService } from '@/shared/lib/db/redis';
+import { redisService } from '&/redis';
+import { prismaService } from '&/prisma';
 import { userService } from './user.service';
 import { mailService } from './mail.service';
-import { prismaService } from '@/shared/lib/db/postgres';
 
-import type {
-  CreateUser,
-  IJwtPayload,
-  LoginDto,
-  LogoutDto,
-  RefreshTokensDto,
-} from '../types';
+import type { CreateUser, IJwtPayload } from '../types';
 import { ApiError } from '$/errors/apiError';
+import { LoginDto } from '$/routeHandlers/login/types';
+import { RefreshTokensDto } from '$/routeHandlers/refreshTokens/types';
+import { LogoutDto } from '$/routeHandlers/logout/types';
 
 const secretKey = process.env.JWT_SECRET;
 
@@ -25,7 +22,7 @@ const key = new TextEncoder().encode(secretKey);
 
 class AuthService {
   async auth(data: CreateUser) {
-    let user = await userService.findOne(data.email);
+    let user = await userService.findOne({ idOrEmail: data.email });
 
     if (!user) {
       user = await userService.create(data);
@@ -40,7 +37,7 @@ class AuthService {
   }
 
   async login(data: LoginDto, agent: string) {
-    const user = await userService.findOne(data.email);
+    const user = await userService.findOne({ idOrEmail: data.email });
 
     if (!user) throw ApiError.notFound('User not found');
 
@@ -76,7 +73,7 @@ class AuthService {
       throw ApiError.unauthorized('Session expired');
     }
 
-    const user = await userService.findOne(token.userId);
+    const user = await userService.findOne({ idOrEmail: token.userId });
 
     if (!user) throw ApiError.notFound('User not found');
 
@@ -124,7 +121,7 @@ class AuthService {
     return new SignJWT(payload)
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
-      .setExpirationTime('5 min')
+      .setExpirationTime(process.env.JWT_EXPIRE as string)
       .sign(key);
   }
 

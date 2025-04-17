@@ -1,10 +1,13 @@
-import { HOME_PAGE_TITLE, HOME_PAGE_DESC } from '@/pages/HomePage';
+import {
+  PUBLIC_HOME_PAGE_DESC,
+  PUBLIC_HOME_PAGE_TITLE,
+} from '@/pages/PublicHomePage';
 
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: HOME_PAGE_TITLE,
-  description: HOME_PAGE_DESC,
+  title: PUBLIC_HOME_PAGE_TITLE,
+  description: PUBLIC_HOME_PAGE_DESC,
 };
 
-export { HomePage as default } from '@/pages/HomePage';
+export { PublicHomePage as default } from '@/pages/PublicHomePage';
