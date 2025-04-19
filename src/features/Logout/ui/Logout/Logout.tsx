@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, type ButtonSize } from '@/shared/ui/c';
+import { Button, type ButtonSize, type ButtonVariant } from '@/shared/ui/c';
 
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
@@ -18,9 +18,10 @@ import {
 interface Props {
   className?: string;
   btnSize?: ButtonSize;
+  btnVariant?: ButtonVariant;
 }
 
-export function Logout({ className }: Props) {
+export function Logout({ className, btnSize = 'default' }: Props) {
   const { push } = useRouter();
 
   const { mutateAsync } = useMutation(queries.logout());
@@ -40,7 +41,12 @@ export function Logout({ className }: Props) {
   };
 
   return (
-    <Button size='lg' onClick={onLogout} className={className}>
+    <Button
+      size={btnSize}
+      variant='secondary'
+      onClick={onLogout}
+      className={className}
+    >
       Выйти
     </Button>
   );

@@ -8,6 +8,7 @@ export interface Team {
   slug: string;
   createdAt: string;
   ownerId: string;
+  owned: boolean;
 }
 
 export type GetUserTeamListDtoRes = Team[];

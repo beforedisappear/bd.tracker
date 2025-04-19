@@ -4,7 +4,7 @@ import { teamQueries } from '@/entities/Team';
 import { useQuery } from '@tanstack/react-query';
 
 import { Card } from '@/shared/ui/s';
-import { ScrollArea } from '@/shared/ui/c';
+import { ErrorBoundary, ScrollArea } from '@/shared/ui/c';
 import { SelectTeamItem } from '../SelectTeamItem/SelectTeamItem';
 import { SelectTeamItemLoading } from '../SelectTeamItem/SelectTeamItem.loading';
 
@@ -16,12 +16,11 @@ export function SelectTeam({}: Props) {
     isLoading,
     isError,
     isSuccess,
+    error,
+    refetch,
   } = useQuery(teamQueries.getUserTeamList());
 
-  console.log(userTeamList);
-
-  // if (isLoading) return <SelectTeamLoading />;
-  // else if (isError || !userTeamList) return <span>Ошибка!</span>;
+  if (isError) return <ErrorBoundary error={error} reset={refetch} />;
 
   return (
     <Card
