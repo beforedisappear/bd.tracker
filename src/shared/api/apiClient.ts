@@ -8,7 +8,8 @@ import {
   removeJwt,
 } from '../lib/cookies';
 import { REQUEST_TIMEOUT } from './constants';
-import { RefreshTokensRes } from './types';
+
+import type { RefreshTokensRes } from './types';
 
 type Refresh = Promise<AxiosResponse<RefreshTokensRes>>;
 

@@ -23,14 +23,19 @@ class TeamService extends BaseService {
     return team;
   }
 
-  getUserTeamsByUserId(args: { userId: string }) {
+  async getUserTeamsByUserId(args: { userId: string }) {
     const { userId } = args;
 
-    return prismaService.team.findMany({
+    const teams = await prismaService.team.findMany({
       where: {
         OR: [{ members: { some: { id: userId } } }, { ownerId: userId }],
       },
     });
+
+    return teams.map(team => ({
+      ...team,
+      owned: team.ownerId === userId,
+    }));
   }
 
   async getTeamMembers(args: {
@@ -328,8 +333,6 @@ class TeamService extends BaseService {
         },
       },
     });
-
-    console.log('teamWithMember', member);
 
     if (!member) throw ApiError.notFound('Member not found');
 

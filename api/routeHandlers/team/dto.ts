@@ -18,5 +18,6 @@ export const GetTeamListResSchema = z.array(
     slug: z.string(),
     createdAt: z.string(),
     ownerId: z.string().uuid(),
+    owned: z.boolean(),
   }),
 );

@@ -10,16 +10,16 @@ import { useRouter } from 'next/navigation';
 
 import { getErrorMessage } from '@/shared/lib/error';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { queries } from '../../api';
+import { authQueries } from '../../api';
 import { getHomeRoute } from '@/shared/config/routes';
 import { saveJwt } from '@/shared/lib/cookies';
 
 import {
   AuthFormFirstStepSchema,
   AuthFormSecondStepSchema,
-  type AuthFormValues,
 } from '../../model/schemes';
 
+import type { AuthFormValues } from '../../model/types';
 import type { AnyZodObject } from 'zod';
 
 type FormStep = '1' | '2';
@@ -42,13 +42,13 @@ export function AuthByEmail({}: Props) {
   });
 
   const { mutateAsync: onAuth, isPending: isAuthing } = useMutation(
-    queries.auth(),
+    authQueries.auth(),
   );
   const {
     mutateAsync: onLogin,
     isPending: isLogging,
     isSuccess: isLoggedIn,
-  } = useMutation(queries.login());
+  } = useMutation(authQueries.login());
 
   const onSubmit = methods.handleSubmit(data => {
     //first step
