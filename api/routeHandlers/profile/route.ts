@@ -12,7 +12,7 @@ export async function GetProfile(request: NextRequest) {
 
     const { userId } = await authService.verifyJwt(accessToken);
 
-    const data = await userService.findOne(userId);
+    const data = await userService.findOne({ idOrEmail: userId });
 
     return NextResponse.json(data, {
       status: 200,
