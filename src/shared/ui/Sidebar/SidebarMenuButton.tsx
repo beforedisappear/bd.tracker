@@ -1,12 +1,12 @@
-import { cn } from "@/shared/lib/css";
-import { sidebarMenuButtonVariants } from "./Sidebar.utils";
-import { forwardRef } from "react";
-import { VariantProps } from "class-variance-authority";
-import { Slot } from "@radix-ui/react-slot";
+import { cn } from '@/shared/lib/css';
+import { sidebarMenuButtonVariants } from './Sidebar.utils';
+import { forwardRef } from 'react';
+import { VariantProps } from 'class-variance-authority';
+import { Slot } from '@radix-ui/react-slot';
 
 export const SidebarMenuButton = forwardRef<
   HTMLButtonElement,
-  React.ComponentProps<"button"> & {
+  React.ComponentProps<'button'> & {
     asChild?: boolean;
     isActive?: boolean;
   } & VariantProps<typeof sidebarMenuButtonVariants>
@@ -15,19 +15,19 @@ export const SidebarMenuButton = forwardRef<
     {
       asChild = false,
       isActive = false,
-      variant = "default",
-      size = "default",
+      variant = 'default',
+      size = 'default',
       className,
       ...props
     },
     ref,
   ) => {
-    const Comp = asChild ? Slot : "button";
+    const Comp = asChild ? Slot : 'button';
 
     const button = (
       <Comp
         ref={ref}
-        data-sidebar="menu-button"
+        data-sidebar='menu-button'
         data-size={size}
         data-active={isActive}
         className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
@@ -38,4 +38,4 @@ export const SidebarMenuButton = forwardRef<
     return button;
   },
 );
-SidebarMenuButton.displayName = "SidebarMenuButton";
+SidebarMenuButton.displayName = 'SidebarMenuButton';

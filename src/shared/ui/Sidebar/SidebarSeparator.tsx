@@ -1,6 +1,6 @@
-import { cn } from "@/shared/lib/css";
-import { Separator } from "../Separator/Separator";
-import { forwardRef, type ComponentProps, type ComponentRef } from "react";
+import { cn } from '@/shared/lib/css';
+import { Separator } from '../Separator/Separator';
+import { forwardRef, type ComponentProps, type ComponentRef } from 'react';
 
 export const SidebarSeparator = forwardRef<
   ComponentRef<typeof Separator>,
@@ -9,10 +9,10 @@ export const SidebarSeparator = forwardRef<
   return (
     <Separator
       ref={ref}
-      data-sidebar="separator"
-      className={cn("mx-2 w-auto bg-sidebar-border", className)}
+      data-sidebar='separator'
+      className={cn('mx-2 w-auto bg-sidebar-border', className)}
       {...props}
     />
   );
 });
-SidebarSeparator.displayName = "SidebarSeparator";
+SidebarSeparator.displayName = 'SidebarSeparator';

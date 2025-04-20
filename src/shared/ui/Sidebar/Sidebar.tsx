@@ -1,41 +1,41 @@
-import { SidebarContainer } from "./SidebarContainer";
-import { SidebarContent } from "./SidebarContent";
-import { SidebarFooter } from "./SidebarFooter";
-import { SidebarGroup } from "./SidebarGroup";
-import { SidebarGroupContent } from "./SidebarGroupContent";
-import { SidebarGroupLabel } from "./SidebarGroupLabel";
-import { SidebarHeader } from "./SidebarHeader";
+import { SidebarContainer } from './SidebarContainer';
+import { SidebarContent } from './SidebarContent';
+import { SidebarFooter } from './SidebarFooter';
+import { SidebarGroup } from './SidebarGroup';
+import { SidebarGroupContent } from './SidebarGroupContent';
+import { SidebarGroupLabel } from './SidebarGroupLabel';
+import { SidebarHeader } from './SidebarHeader';
 
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
-import { SidebarMenu } from "./SidebarMenu";
-import { SidebarMenuItem } from "./SidebarMenuItem";
-import { SidebarMenuButton } from "./SidebarMenuButton";
+import { Calendar, Home, Inbox, Search, Settings } from 'lucide-react';
+import { SidebarMenu } from './SidebarMenu';
+import { SidebarMenuItem } from './SidebarMenuItem';
+import { SidebarMenuButton } from './SidebarMenuButton';
 
 // Menu items.
 const items = [
   {
-    title: "Home",
-    url: "#",
+    title: 'Home',
+    url: '#',
     icon: Home,
   },
   {
-    title: "Inbox",
-    url: "#",
+    title: 'Inbox',
+    url: '#',
     icon: Inbox,
   },
   {
-    title: "Calendar",
-    url: "#",
+    title: 'Calendar',
+    url: '#',
     icon: Calendar,
   },
   {
-    title: "Search",
-    url: "#",
+    title: 'Search',
+    url: '#',
     icon: Search,
   },
   {
-    title: "Settings",
-    url: "#",
+    title: 'Settings',
+    url: '#',
     icon: Settings,
   },
 ];
@@ -48,7 +48,7 @@ export function Sidebar() {
           <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {items.map(item => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <a href={item.url}>

@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import * as SheetPrimitive from "@radix-ui/react-dialog";
+import * as SheetPrimitive from '@radix-ui/react-dialog';
 
-import { SheetContent, type SheetContentProps } from "./SheetContent";
-import { SheetHeader } from "./SheetHeader";
-import { SheetDescription } from "./SheetDescription";
-import { SheetFooter } from "./SheetFooter";
-import { SheetTitle } from "./SheetTitle";
+import { SheetContent, type SheetContentProps } from './SheetContent';
+import { SheetHeader } from './SheetHeader';
+import { SheetDescription } from './SheetDescription';
+import { SheetFooter } from './SheetFooter';
+import { SheetTitle } from './SheetTitle';
 // import { Button } from '../Button/Button';
 
-import type { ComponentProps } from "react";
+import type { ComponentProps } from 'react';
 
 type BaseProps = ComponentProps<typeof SheetContainer>;
 
@@ -38,7 +38,7 @@ export function Sheet(props: IProps) {
     ...restProps
   } = props;
 
-  const { side = "left", ...contentProps } = content || {};
+  const { side = 'left', ...contentProps } = content || {};
 
   return (
     <SheetContainer {...restProps}>
@@ -46,7 +46,7 @@ export function Sheet(props: IProps) {
 
       <SheetContent side={side} className={className} {...contentProps}>
         <SheetHeader className={headerClassName}>
-          <SheetTitle className="text-center">{title}</SheetTitle>
+          <SheetTitle className='text-center'>{title}</SheetTitle>
 
           {description && <SheetDescription>{description}</SheetDescription>}
         </SheetHeader>
