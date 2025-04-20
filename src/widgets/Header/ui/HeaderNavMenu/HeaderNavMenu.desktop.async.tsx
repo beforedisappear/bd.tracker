@@ -2,10 +2,10 @@
 
 import dynamic from 'next/dynamic';
 
-export const LazyDesktopHeaderNavMenu = dynamic(
+export const LazyHeaderNavMenuDesktop = dynamic(
   () =>
     import('./HeaderNavMenu.desktop').then(mod => ({
-      default: mod.DesktopHeaderNavMenu,
+      default: mod.HeaderNavMenuDesktop,
     })),
   { ssr: false },
 );

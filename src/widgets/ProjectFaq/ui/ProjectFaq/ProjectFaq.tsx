@@ -9,7 +9,7 @@ export function ProjectFaq({}: Props) {
   return (
     <section
       id='faq'
-      className='container py-20 space-y-4      
+      className='container py-20 space-y-4  scroll-m-6
       xl:py-16
       lg:py-10'
     >

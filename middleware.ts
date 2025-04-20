@@ -1,3 +1,4 @@
+import { deviceTypeMiddleware } from './middleware/deviceTypeMiddleware';
 import { protectionMiddleware } from './middleware/protectionMiddleware';
 
 import type { NextRequest } from 'next/server';
@@ -7,7 +8,7 @@ export function middleware(request: NextRequest) {
 
   if (protectionRes) return protectionRes;
 
-  return null;
+  return deviceTypeMiddleware(request);
 }
 
 export const config = {

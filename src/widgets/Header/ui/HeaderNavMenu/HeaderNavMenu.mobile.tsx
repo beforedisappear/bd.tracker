@@ -9,7 +9,7 @@ interface Props {
   onSetShowSheet?: (state: boolean) => void;
 }
 
-export function MobileHeaderNavMenu({ onSetShowSheet }: Props) {
+export function HeaderNavMenuMobile({ onSetShowSheet }: Props) {
   const items = [...routes, { label: 'Войти', href: getLoginRoute() }];
 
   return (

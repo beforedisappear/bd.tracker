@@ -18,7 +18,7 @@ import {
   SIDEBAR_COOKIE_MAX_AGE,
 } from './Sidebar.constants';
 import { cn } from '@/shared/lib/css';
-import { useIsMobile } from '@/shared/lib/react/use-mobile';
+import { useDeviceType } from '@/shared/lib/deviceType/c';
 
 type SidebarContextProps = {
   state: 'expanded' | 'collapsed';
@@ -51,7 +51,7 @@ export const SidebarProvider = forwardRef<
 >(
   (
     {
-      defaultOpen = true,
+      defaultOpen = false,
       open: openProp,
       onOpenChange: setOpenProp,
       className,
@@ -61,13 +61,12 @@ export const SidebarProvider = forwardRef<
     },
     ref,
   ) => {
-    const isMobile = useIsMobile();
+    const { isMobile } = useDeviceType();
     const [openMobile, setOpenMobile] = useState(false);
 
     // This is the internal state of the sidebar.
     // We use openProp and setOpenProp for control from outside the component.
     const [_open, _setOpen] = useState(defaultOpen);
-    console.log(_open);
 
     const open = openProp ?? _open;
     const setOpen = useCallback(

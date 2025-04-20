@@ -1,11 +1,11 @@
-import { AuthModal } from '@/widgets/AuthModal';
+import { DesktopAuthModal } from '@/widgets/AuthModal';
 
 interface Props {}
 
 export default function Page({}: Props) {
   return (
     <>
-      <AuthModal />
+      <DesktopAuthModal />
     </>
   );
 }

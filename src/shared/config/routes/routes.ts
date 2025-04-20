@@ -4,9 +4,10 @@ export const getLoginRoute = () => '/login';
 
 //private
 export const getHomeRoute = () => '/home';
-export const getProfileRoute = (tenant: string = '[tenants]') =>
-  `/${tenant}/profile`;
-export const getTeamRoute = (tenant: string = '[tenants]') => `/${tenant}/team`;
+export const getProfileRoute = (tenant?: string) =>
+  tenant ? `/${tenant}/profile` : '/profile';
+export const getTeamRoute = (tenant?: string) =>
+  tenant ? `/${tenant}/team` : '/team';
 
 //service
 export const getInviteRoute = () => '/invite';

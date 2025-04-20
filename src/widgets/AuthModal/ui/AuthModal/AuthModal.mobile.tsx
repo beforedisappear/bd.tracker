@@ -1,3 +1,5 @@
+'use client';
+
 import {
   AUTH_FORM_DESC,
   AUTH_FORM_TITLE,
@@ -6,7 +8,7 @@ import {
 import { Drawer } from '@/shared/ui/c';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useState, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 
 interface Props {
   trigger?: ReactNode;
@@ -15,11 +17,7 @@ interface Props {
 export function MobileAuthModal({}: Props) {
   const { back } = useRouter();
 
-  const [showDrawer, setShowDrawer] = useState(false);
-
-  useEffect(() => {
-    setShowDrawer(true);
-  }, []);
+  const [showDrawer, setShowDrawer] = useState(true);
 
   return (
     <Drawer

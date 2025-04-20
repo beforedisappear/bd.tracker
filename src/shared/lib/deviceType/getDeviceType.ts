@@ -1,9 +1,9 @@
-import { headers } from 'next/headers';
-import { userAgent } from 'next/server';
+import 'server-only';
 
-export async function getDeviceType() {
-  const headersList = await headers();
-  const { device } = userAgent({ headers: headersList });
+import { NextRequest, userAgent } from 'next/server';
+
+export async function getDeviceType(req: NextRequest) {
+  const { device } = userAgent({ headers: req.headers });
 
   const isMobile = device.type === 'mobile' || device.type === 'tablet';
 

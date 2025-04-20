@@ -1,18 +1,15 @@
+'use client';
+
 import { getLoginRoute } from '@/shared/config/routes';
-import { cn } from '@/shared/lib/css';
 import { buttonVariants } from '@/shared/ui/s';
 
 import Link from 'next/link';
 
 interface Props {}
 
-export function HeaderLoginBtn({}: Props) {
+export function HeaderLoginBtnDesktop({}: Props) {
   return (
-    <Link
-      href={getLoginRoute()}
-      scroll={false}
-      className={cn(buttonVariants(), 'md:hidden')}
-    >
+    <Link href={getLoginRoute()} scroll={false} className={buttonVariants()}>
       Войти
     </Link>
   );

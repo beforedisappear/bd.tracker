@@ -7,24 +7,21 @@ import {
   publicRoutesByPath,
 } from '@/shared/config/routes';
 import { REFRESH_TOKEN_NAME } from '@/shared/constants/cookie.constants';
-
-const getLastPath = (path: string) => {
-  const pathParts = path.split('/').filter(Boolean);
-  const route = pathParts[pathParts.length - 1];
-  return `/${route}`;
-};
+import { getCurrentPath, getPathTail } from './middleware.utils';
 
 export const protectionMiddleware = (req: NextRequest) => {
   const { cookies } = req;
 
-  const isAuth = cookies.get(REFRESH_TOKEN_NAME)?.value;
+  const isAuth = !!cookies.get(REFRESH_TOKEN_NAME)?.value;
+
+  const currentPath = getCurrentPath(req.nextUrl.pathname);
 
   //is authenticated and public url
-  if (isAuth && publicRoutesByPath[req.nextUrl.pathname]) {
+  if (isAuth && publicRoutesByPath[currentPath]) {
     return NextResponse.redirect(new URL(getHomeRoute(), req.url));
   }
   //is not authenticated and private url
-  else if (!isAuth && privateRoutesByPath[getLastPath(req.nextUrl.pathname)]) {
+  else if (!isAuth && privateRoutesByPath[getPathTail(currentPath)]) {
     return NextResponse.redirect(new URL(getMainRoute(), req.url));
   }
 
