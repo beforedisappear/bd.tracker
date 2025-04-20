@@ -1,10 +1,10 @@
 import { SidebarContainer } from './SidebarContainer';
 import { SidebarContent } from './SidebarContent';
-import { SidebarFooter } from './SidebarFooter';
+// import { SidebarFooter } from './SidebarFooter';
 import { SidebarGroup } from './SidebarGroup';
 import { SidebarGroupContent } from './SidebarGroupContent';
 import { SidebarGroupLabel } from './SidebarGroupLabel';
-import { SidebarHeader } from './SidebarHeader';
+// import { SidebarHeader } from './SidebarHeader';
 
 import { Calendar, Home, Inbox, Search, Settings } from 'lucide-react';
 import { SidebarMenu } from './SidebarMenu';

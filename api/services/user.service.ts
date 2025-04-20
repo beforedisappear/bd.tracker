@@ -1,17 +1,9 @@
 import 'server-only';
 
-import { Prisma } from '@prisma/client';
-
 import { prismaService } from '&/prisma';
 
 import type { CreateUser, UpdateUser } from '../types';
-import type { PrismaClient } from '&/prisma/generated/client';
-import type { DefaultArgs } from '@prisma/client/runtime/library';
-
-type TX = Omit<
-  PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
-  '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'
->;
+import type { Prisma } from '&/prisma/generated/client';
 
 class UserService {
   private getUserName(email: string) {
@@ -24,7 +16,7 @@ class UserService {
     });
   }
 
-  async createWithTx(tx: TX, user: CreateUser) {
+  async createWithTx(tx: Prisma.TransactionClient, user: CreateUser) {
     return tx.user.create({
       data: { ...user, name: this.getUserName(user.email) },
     });

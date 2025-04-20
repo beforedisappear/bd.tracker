@@ -1,6 +1,6 @@
 import { cn } from '@/shared/lib/css';
 import { forwardRef, useMemo, type ComponentProps } from 'react';
-import { Skeleton } from '../skeleton';
+import { Skeleton } from '../Skeleton/Skeleton';
 
 export const SidebarMenuSkeleton = forwardRef<
   HTMLDivElement,

@@ -8,6 +8,7 @@ interface IProps extends PropsWithChildren {}
 
 export async function PrivateRootLayout({ children }: IProps) {
   const { deviceType } = await getDeviceType();
+  console.log('deviceType', deviceType);
 
   return (
     <SidebarProvider>

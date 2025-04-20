@@ -4,8 +4,9 @@ export const getLoginRoute = () => '/login';
 
 //private
 export const getHomeRoute = () => '/home';
-export const getProfileRoute = (tenant: string) => `/${tenant}/profile`;
-export const getTeamRoute = (tenant: string) => `/${tenant}/team`;
+export const getProfileRoute = (tenant: string = '[tenants]') =>
+  `/${tenant}/profile`;
+export const getTeamRoute = (tenant: string = '[tenants]') => `/${tenant}/team`;
 
 //service
 export const getInviteRoute = () => '/invite';
