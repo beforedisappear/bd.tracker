@@ -6,7 +6,7 @@ import {
   privateRoutesByPath,
   publicRoutesByPath,
 } from '@/shared/config/routes';
-import { refreshTokenName } from '@/shared/lib/cookies/config';
+import { REFRESH_TOKEN_NAME } from '@/shared/constants/cookie.constants';
 
 const getLastPath = (path: string) => {
   const pathParts = path.split('/').filter(Boolean);
@@ -17,7 +17,7 @@ const getLastPath = (path: string) => {
 export const protectionMiddleware = (req: NextRequest) => {
   const { cookies } = req;
 
-  const isAuth = cookies.get(refreshTokenName)?.value;
+  const isAuth = cookies.get(REFRESH_TOKEN_NAME)?.value;
 
   //is authenticated and public url
   if (isAuth && publicRoutesByPath[req.nextUrl.pathname]) {
