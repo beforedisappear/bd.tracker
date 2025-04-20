@@ -1,2 +1,1 @@
-npx prettier $(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g') --write --config ./config/prettier/.prettierrc --ignore-path ./config/prettier/.prettierignore
-git update-index --again
+npx lint-staged
