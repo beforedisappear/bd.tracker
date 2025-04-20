@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import * as SheetPrimitive from '@radix-ui/react-dialog';
+import * as SheetPrimitive from "@radix-ui/react-dialog";
 
-import { SheetContent, type SheetContentProps } from './SheetContent';
-import { SheetHeader } from './SheetHeader';
-import { SheetDescription } from './SheetDescription';
-import { SheetFooter } from './SheetFooter';
-import { SheetTitle } from './SheetTitle';
+import { SheetContent, type SheetContentProps } from "./SheetContent";
+import { SheetHeader } from "./SheetHeader";
+import { SheetDescription } from "./SheetDescription";
+import { SheetFooter } from "./SheetFooter";
+import { SheetTitle } from "./SheetTitle";
 // import { Button } from '../Button/Button';
 
-import type { ComponentProps } from 'react';
+import type { ComponentProps } from "react";
 
 type BaseProps = ComponentProps<typeof SheetContainer>;
 
@@ -19,6 +19,7 @@ interface IProps extends BaseProps {
   description?: string;
   className?: string;
   content?: SheetContentProps;
+  headerClassName?: string;
 }
 
 const SheetContainer = SheetPrimitive.Root;
@@ -33,18 +34,19 @@ export function Sheet(props: IProps) {
     children,
     className,
     content,
+    headerClassName,
     ...restProps
   } = props;
 
-  const { side = 'left', ...contentProps } = content || {};
+  const { side = "left", ...contentProps } = content || {};
 
   return (
     <SheetContainer {...restProps}>
       <SheetTrigger asChild>{trigger}</SheetTrigger>
 
       <SheetContent side={side} className={className} {...contentProps}>
-        <SheetHeader>
-          <SheetTitle className='text-center'>{title}</SheetTitle>
+        <SheetHeader className={headerClassName}>
+          <SheetTitle className="text-center">{title}</SheetTitle>
 
           {description && <SheetDescription>{description}</SheetDescription>}
         </SheetHeader>

@@ -1,12 +1,18 @@
-import type { PropsWithChildren } from 'react';
+import { Sidebar } from "@/shared/ui/Sidebar/Sidebar";
+import { SidebarProvider } from "@/shared/ui/Sidebar/Sidebar.state";
+import { SidebarTrigger } from "@/shared/ui/Sidebar/SidebarTrigger";
+import type { PropsWithChildren } from "react";
 
 interface IProps extends PropsWithChildren {}
 
 export function PrivateRootLayout({ children }: IProps) {
   return (
-    <div>
-      <span>PrivateRootLayout</span>
-      {children}
-    </div>
+    <SidebarProvider>
+      <Sidebar />
+      <main>
+        <SidebarTrigger />
+        {children}
+      </main>
+    </SidebarProvider>
   );
 }
