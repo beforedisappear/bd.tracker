@@ -10,7 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "types": "bun x tsc",
+    "types": "tsc",
     "format": "prettier \"**/*.{js,cjs,mjs,jsx,ts,tsx,json}\" -w --config ./config/prettier/.prettierrc --ignore-path ./config/prettier/.prettierignore",
     "prepare": "husky",
     "test:unit": "jest --config ./config/jest/jest.config.ts",

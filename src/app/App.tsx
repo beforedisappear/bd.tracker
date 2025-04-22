@@ -18,7 +18,7 @@ export function App({ children }: PropsWithChildren) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NextTopLoader color='hsl(var(--primary))' />
+        <NextTopLoader color='hsl(var(--primary))' showSpinner={false} />
         <StoreProvider>
           <ThemeProvider>
             <QueryProvider>

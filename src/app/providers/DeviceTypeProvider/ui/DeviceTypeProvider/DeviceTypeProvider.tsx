@@ -10,6 +10,6 @@ interface Props extends PropsWithChildren {
   value: DeviceContext;
 }
 
-export function DeviceTypeProdiver({ value, children }: Props) {
+export function DeviceTypeProvider({ value, children }: Props) {
   return <DeviceTypeContext value={value}>{children}</DeviceTypeContext>;
 }

@@ -2,7 +2,7 @@
 
 import { cn } from '@/shared/lib/css';
 
-import { useSidebar } from './Sidebar.state';
+import { useSidebar } from './Sidebar.hooks';
 import { SIDEBAR_WIDTH_MOBILE } from './Sidebar.constants';
 import { Sheet } from '../c';
 import { CSSProperties, forwardRef } from 'react';

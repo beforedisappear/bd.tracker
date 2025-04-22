@@ -1,14 +1,14 @@
 'use client';
 
+import { SidebarContext } from './Sidebar.context';
+
 import {
-  ComponentProps,
   forwardRef,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useState,
-  createContext,
+  type ComponentProps,
 } from 'react';
 import {
   SIDEBAR_KEYBOARD_SHORTCUT,
@@ -30,37 +30,24 @@ type SidebarContextProps = {
   toggleSidebar: () => void;
 };
 
-const SidebarContext = createContext<SidebarContextProps | null>(null);
+type Props = ComponentProps<'div'> & {
+  defaultOpen?: boolean;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+};
 
-export function useSidebar() {
-  const context = useContext(SidebarContext);
-  if (!context) {
-    throw new Error('useSidebar must be used within a SidebarProvider.');
-  }
-
-  return context;
-}
-
-export const SidebarProvider = forwardRef<
-  HTMLDivElement,
-  ComponentProps<'div'> & {
-    defaultOpen?: boolean;
-    open?: boolean;
-    onOpenChange?: (open: boolean) => void;
-  }
->(
-  (
-    {
+export const SidebarProvider = forwardRef<HTMLDivElement, Props>(
+  (props, ref) => {
+    const {
       defaultOpen = false,
       open: openProp,
       onOpenChange: setOpenProp,
       className,
       style,
       children,
-      ...props
-    },
-    ref,
-  ) => {
+      ...restProps
+    } = props;
+
     const { isMobile } = useDeviceType();
     const [openMobile, setOpenMobile] = useState(false);
 
@@ -145,7 +132,7 @@ export const SidebarProvider = forwardRef<
             className,
           )}
           ref={ref}
-          {...props}
+          {...restProps}
         >
           {children}
         </div>

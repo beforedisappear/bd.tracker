@@ -2,7 +2,7 @@ import { cn } from '@/shared/lib/css';
 import { Slot } from '@radix-ui/react-slot';
 import { forwardRef, type ComponentProps } from 'react';
 
-const SidebarGroupAction = forwardRef<
+export const SidebarGroupAction = forwardRef<
   HTMLButtonElement,
   ComponentProps<'button'> & { asChild?: boolean }
 >(({ className, asChild = false, ...props }, ref) => {

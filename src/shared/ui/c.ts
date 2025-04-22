@@ -17,6 +17,9 @@ export { Accordion } from './Accordion/Accordion';
 export { DatePicker } from './DatePicker/DatePicker';
 export { DateRangePicker } from './DateRangePicker/DateRangePicker';
 export { ScrollArea } from './ScrollArea/ScrollArea';
+export { Sidebar } from './Sidebar/Sidebar';
+export { SidebarProvider } from './Sidebar/SidebarProvider';
+export { useSidebar } from './Sidebar/Sidebar.hooks';
 
 //custom
 export { ErrorBoundary } from './ErrorBoundary/ErrorBoundary';
