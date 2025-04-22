@@ -1,3 +1,5 @@
+'use client';
+
 import { cn } from '@/shared/lib/css';
 
 import Link from 'next/link';
@@ -68,8 +70,10 @@ export function Sidebar(props: IProps) {
             return <SidebarSeparator key={i} />;
 
           return (
-            <SidebarGroup key={groupItem.label}>
-              <SidebarGroupLabel>{groupItem.label}</SidebarGroupLabel>
+            <SidebarGroup key={i}>
+              {groupItem.label && (
+                <SidebarGroupLabel>{groupItem.label}</SidebarGroupLabel>
+              )}
 
               {groupItem.action && (
                 <SidebarGroupAction

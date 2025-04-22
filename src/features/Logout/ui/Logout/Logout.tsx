@@ -14,14 +14,25 @@ import {
   SENDING_DATA_MESSAGE,
   SUCCESS_MESSAGE,
 } from '@/shared/constants';
+import { LogOut } from 'lucide-react';
 
 interface Props {
   className?: string;
   btnSize?: ButtonSize;
   btnVariant?: ButtonVariant;
+  withLabel?: boolean;
+  withIcon?: boolean;
 }
 
-export function Logout({ className, btnSize = 'default' }: Props) {
+export function Logout(props: Props) {
+  const {
+    className,
+    btnSize = 'default',
+    btnVariant = 'secondary',
+    withLabel = true,
+    withIcon = false,
+  } = props;
+
   const { push } = useRouter();
 
   const { mutateAsync } = useMutation(queries.logout());
@@ -43,11 +54,12 @@ export function Logout({ className, btnSize = 'default' }: Props) {
   return (
     <Button
       size={btnSize}
-      variant='secondary'
+      variant={btnVariant}
       onClick={onLogout}
       className={className}
     >
-      Выйти
+      {withLabel && <span>Выйти</span>}
+      {withIcon && <LogOut />}
     </Button>
   );
 }

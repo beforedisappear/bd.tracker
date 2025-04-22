@@ -6,6 +6,7 @@ export enum AppRoutes {
   HOME = 'home',
   PROFILE = 'profile',
   TEAM = 'team',
+  PROJECT = 'project',
   //service
   INVITE = 'invite',
 
