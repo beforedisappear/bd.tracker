@@ -1,8 +1,11 @@
 'use client';
 
+import { cn } from '@/shared/lib/css';
+
 import { SidebarContext } from './Sidebar.context';
 
 import {
+  CSSProperties,
   forwardRef,
   useCallback,
   useEffect,
@@ -10,6 +13,7 @@ import {
   useState,
   type ComponentProps,
 } from 'react';
+import { useDeviceType } from '@/shared/lib/deviceType/c';
 import {
   SIDEBAR_KEYBOARD_SHORTCUT,
   SIDEBAR_WIDTH,
@@ -17,15 +21,11 @@ import {
   SIDEBAR_COOKIE_NAME,
   SIDEBAR_COOKIE_MAX_AGE,
 } from './Sidebar.constants';
-import { cn } from '@/shared/lib/css';
-import { useDeviceType } from '@/shared/lib/deviceType/c';
 
 type SidebarContextProps = {
   state: 'expanded' | 'collapsed';
   open: boolean;
   setOpen: (open: boolean) => void;
-  openMobile: boolean;
-  setOpenMobile: (open: boolean) => void;
   isMobile: boolean;
   toggleSidebar: () => void;
 };
@@ -49,7 +49,6 @@ export const SidebarProvider = forwardRef<HTMLDivElement, Props>(
     } = props;
 
     const { isMobile } = useDeviceType();
-    const [openMobile, setOpenMobile] = useState(false);
 
     // This is the internal state of the sidebar.
     // We use openProp and setOpenProp for control from outside the component.
@@ -73,8 +72,8 @@ export const SidebarProvider = forwardRef<HTMLDivElement, Props>(
 
     // Helper to toggle the sidebar.
     const toggleSidebar = useCallback(() => {
-      return isMobile ? setOpenMobile(open => !open) : setOpen(open => !open);
-    }, [isMobile, setOpen, setOpenMobile]);
+      return setOpen(open => !open);
+    }, [setOpen]);
 
     // Adds a keyboard shortcut to toggle the sidebar.
     useEffect(() => {
@@ -102,19 +101,9 @@ export const SidebarProvider = forwardRef<HTMLDivElement, Props>(
         open,
         setOpen,
         isMobile,
-        openMobile,
-        setOpenMobile,
         toggleSidebar,
       }),
-      [
-        state,
-        open,
-        setOpen,
-        isMobile,
-        openMobile,
-        setOpenMobile,
-        toggleSidebar,
-      ],
+      [state, open, setOpen, isMobile, toggleSidebar],
     );
 
     return (
@@ -125,10 +114,10 @@ export const SidebarProvider = forwardRef<HTMLDivElement, Props>(
               '--sidebar-width': SIDEBAR_WIDTH,
               '--sidebar-width-icon': SIDEBAR_WIDTH_ICON,
               ...style,
-            } as React.CSSProperties
+            } as CSSProperties
           }
           className={cn(
-            'group/sidebar-wrapper flex min-h-svh w-full has-[[data-variant=inset]]:bg-sidebar',
+            'group/sidebar-wrapper flex min-h-svh w-full has-[[data-variant=inset]]:bg-sidebar-background',
             className,
           )}
           ref={ref}

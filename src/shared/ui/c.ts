@@ -18,11 +18,12 @@ export { DatePicker } from './DatePicker/DatePicker';
 export { DateRangePicker } from './DateRangePicker/DateRangePicker';
 export { ScrollArea } from './ScrollArea/ScrollArea';
 export { Sidebar } from './Sidebar/Sidebar';
-export { SidebarProvider } from './Sidebar/SidebarProvider';
-export { useSidebar } from './Sidebar/Sidebar.hooks';
+export { Collapsible } from './Collapsible/Collapsible';
 
 //custom
 export { ErrorBoundary } from './ErrorBoundary/ErrorBoundary';
+export { SidebarProvider } from './Sidebar/SidebarProvider';
+export { useSidebar } from './Sidebar/Sidebar.hooks';
 
 //types
 export type { IAccordionItem } from './Accordion/Accordion.types';

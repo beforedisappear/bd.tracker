@@ -2,9 +2,9 @@ import { mutationOptions } from '@/shared/lib/tanstack-query';
 
 import { logout } from './logout';
 
-import type { LogoutDtoReq } from './types';
+import type { LogoutDtoReq } from '../model/types';
 
-export const queries = {
+export const logoutQueries = {
   logout: () =>
     mutationOptions({
       mutationKey: ['logout'],

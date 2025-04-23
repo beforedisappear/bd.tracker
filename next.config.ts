@@ -1,4 +1,4 @@
-import { СommonConfig } from '&/common/common.config';
+import { NextСommonConfig } from '&/nextCommon/nextCommon.config';
 import { TurbopackConfig } from '&/turbopack/turbopack.config';
 import { WebpackConfig } from '&/webpack/webpack.config';
 
@@ -29,7 +29,7 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  ...СommonConfig,
+  ...NextСommonConfig,
 };
 
 export default nextConfig;

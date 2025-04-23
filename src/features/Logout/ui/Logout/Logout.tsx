@@ -7,7 +7,7 @@ import { useMutation } from '@tanstack/react-query';
 
 import { getMainRoute } from '@/shared/config/routes';
 import { getRefreshToken, removeJwt } from '@/shared/lib/cookies';
-import { queries } from '../../api/queries';
+import { logoutQueries } from '../../api/queries';
 import { toast } from 'sonner';
 import {
   ERROR_MESSAGE,
@@ -30,12 +30,12 @@ export function Logout(props: Props) {
     btnSize = 'default',
     btnVariant = 'secondary',
     withLabel = true,
-    withIcon = false,
+    withIcon = true,
   } = props;
 
   const { push } = useRouter();
 
-  const { mutateAsync } = useMutation(queries.logout());
+  const { mutateAsync } = useMutation(logoutQueries.logout());
 
   const onLogout = () => {
     const refreshToken = getRefreshToken();
@@ -58,8 +58,8 @@ export function Logout(props: Props) {
       onClick={onLogout}
       className={className}
     >
-      {withLabel && <span>Выйти</span>}
       {withIcon && <LogOut />}
+      {withLabel && <span>Выйти</span>}
     </Button>
   );
 }

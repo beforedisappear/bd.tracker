@@ -1,12 +1,12 @@
 import type { NextConfig } from 'next';
 
-type CommonCfg = {
+type NextCommonCfg = {
   [K in keyof NextConfig as K extends 'webpack' | 'turbopack'
     ? never
     : K]: NextConfig[K];
 };
 
-export const СommonConfig: CommonCfg = {
+export const NextСommonConfig: NextCommonCfg = {
   reactStrictMode: true,
   images: {
     remotePatterns: [
@@ -17,4 +17,5 @@ export const СommonConfig: CommonCfg = {
       },
     ],
   },
+  devIndicators: { position: 'top-right' },
 };

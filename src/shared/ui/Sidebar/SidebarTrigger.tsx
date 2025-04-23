@@ -13,23 +13,21 @@ export const SidebarTrigger = forwardRef<
   const { toggleSidebar, open } = useSidebar();
 
   return (
-    <div className='flex p-2'>
-      <Button
-        ref={ref}
-        data-sidebar='trigger'
-        variant='ghost'
-        size='icon'
-        className={cn('h-8 w-8 ml-auto', className)}
-        onClick={event => {
-          onClick?.(event);
-          toggleSidebar();
-        }}
-        {...props}
-      >
-        {open ? <PanelLeftClose /> : <PanelLeftOpen />}
-        <span className='sr-only'>Toggle Sidebar</span>
-      </Button>
-    </div>
+    <Button
+      ref={ref}
+      data-sidebar='trigger'
+      variant='ghost'
+      size='icon'
+      className={cn('h-8 w-8 ml-auto', className)}
+      onClick={event => {
+        onClick?.(event);
+        toggleSidebar();
+      }}
+      {...props}
+    >
+      {open ? <PanelLeftClose /> : <PanelLeftOpen />}
+      <span className='sr-only'>Toggle Sidebar</span>
+    </Button>
   );
 });
 SidebarTrigger.displayName = 'SidebarTrigger';

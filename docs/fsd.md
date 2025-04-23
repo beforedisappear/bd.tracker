@@ -2,12 +2,18 @@
 
 ## Common rules
 
-• app - Next.js App Router dir
-• src/pages - independent of NextJS dir to reduce coupling with framework
+• app - Next.js App Router директория
+• pages - Next.js Pages Router директория (создана, чтобы Next.js не распознавал src/pages как pages директорию)
+• src/app & src/pages - независимые от Next.js директории (FSD слои) для уменьшения связности с фреймворком
 
 ## Designations
 
-• shared/config - ...  
-• shared/assets - ...  
-• shared/lib - ...  
-• shared/api - ...
+• \*/assets - ...
+
+• \*/config - ...
+
+• \*/lib - код, предназначенный для библиотек (не путать с кодом для библиотек). Здесь также можно разместить код для расширения возможностей библиотеки.
+
+• \*/api - ...
+
+• \*/model - модель того, как изменяются данные.

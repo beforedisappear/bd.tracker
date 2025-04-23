@@ -19,38 +19,38 @@ import { SidebarGroupEl } from './Sidebar.types';
 export default { tags: ['hidden'] };
 
 const sidebarGroupElement1: SidebarGroupEl = {
-  type: 'item' as const,
+  type: 'group' as const,
   label: 'First Group',
   items: [
     {
-      type: 'item' as const,
+      type: 'item-link' as const,
       link: { title: 'Item №1', url: '#', icon: <House /> },
     },
     {
-      type: 'item' as const,
+      type: 'item-link' as const,
       link: { title: 'Item №2', url: '#', icon: <Filter /> },
     },
     {
-      type: 'item' as const,
+      type: 'item-link' as const,
       link: { title: 'Item №3', url: '#', icon: <Plane /> },
     },
   ],
 };
 
 const sidebarGroupElement2: SidebarGroupEl = {
-  type: 'item' as const,
+  type: 'group' as const,
   label: 'Second Group',
   items: [
     {
-      type: 'item' as const,
+      type: 'item-link' as const,
       link: { title: 'Item №1', url: '#', icon: <Search /> },
     },
     {
-      type: 'item' as const,
+      type: 'item-link' as const,
       link: { title: 'Item №2', url: '#', icon: <Timer /> },
     },
     {
-      type: 'item' as const,
+      type: 'item-link' as const,
       link: { title: 'Item №3', url: '#', icon: <Umbrella /> },
     },
   ],
@@ -58,16 +58,16 @@ const sidebarGroupElement2: SidebarGroupEl = {
 
 const sidebarGroupElementSubItems = [
   {
-    type: 'item' as const,
+    type: 'item-link' as const,
     link: { title: 'SubItem №1', icon: <Subtitles />, url: '#' },
   },
   {
-    type: 'item' as const,
+    type: 'item-link' as const,
     link: { title: 'SubItem №2', icon: <Circle />, url: '#' },
   },
   {
-    type: 'item' as const,
-    link: { title: 'SubItem №3', icon: <Map />, url: '#' },
+    type: 'item-link' as const,
+    link: { title: 'SubItem №3', icon: <Map />, url: '#', isActive: true },
   },
 ];
 
@@ -79,6 +79,28 @@ export const simpleGroupItems: SidebarGroupEl[] = [
   sidebarGroupElement1,
   sidebarGroupElement2,
 ];
+
+export const getSimpleGroupItemsWithActive = (): SidebarGroupEl[] => {
+  const itemsLength = sidebarGroupElement1.items.length;
+  const items = sidebarGroupElement1.items.slice(0, itemsLength - 1);
+  const lastItem = sidebarGroupElement1.items[itemsLength - 1];
+
+  if (lastItem.type === 'separator' || lastItem.type === 'item-sub') return [];
+
+  return [
+    {
+      ...sidebarGroupElement1,
+      items: [
+        ...items,
+        {
+          ...lastItem,
+          type: 'item-link',
+          link: { ...lastItem.link, isActive: true },
+        },
+      ],
+    },
+  ];
+};
 
 export const simpleGroupItemsWithSeparator: SidebarGroupEl[] = [
   sidebarGroupElement1,
@@ -94,6 +116,11 @@ export const simpleGroupItemsWithBadge: SidebarGroupEl[] = [
       badge: Math.floor(Math.random() * 10),
     })),
   },
+];
+
+export const simpleGroupItemsWithSkeleton: SidebarGroupEl[] = [
+  sidebarGroupElement1,
+  ...new Array(5).fill('_').map(() => ({ type: 'skeleton' as const })),
 ];
 
 export const simpleGroupItemsWithGroupAction: SidebarGroupEl[] = [
@@ -115,18 +142,23 @@ export const simpleGroupItemsWithActions: SidebarGroupEl[] = [
 
 export const groupItemsWithSubItems: SidebarGroupEl[] = [
   {
-    type: 'item' as const,
+    type: 'group' as const,
     label: 'Group',
     items: [
       {
-        type: 'item' as const,
-        link: { title: 'Item №1', url: '#', icon: <ChevronDownCircleIcon /> },
+        type: 'item-sub' as const,
+        trigger: {
+          label: 'Item №1',
+          icon: <ChevronDownCircleIcon />,
+        },
         subItems: sidebarGroupElementSubItems,
+        isDefaultOpen: true,
       },
       {
-        type: 'item' as const,
-        link: { title: 'Item №2', url: '#', icon: <Option /> },
+        type: 'item-sub' as const,
+        trigger: { label: 'Item №2', icon: <Option /> },
         subItems: sidebarGroupElementSubItems,
+        isDefaultOpen: false,
       },
     ],
   },

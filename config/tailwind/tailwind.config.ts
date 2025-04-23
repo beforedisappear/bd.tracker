@@ -1,5 +1,5 @@
 import TailwindAnimate from 'tailwindcss-animate';
-import TailwindLineClamp from '@tailwindcss/line-clamp';
+import plugin from 'tailwindcss/plugin';
 
 import { colors } from './colors';
 import { borderRadius } from './borderRadius';
@@ -23,5 +23,10 @@ export const tailwindConfig: Config = {
       container,
     },
   },
-  plugins: [TailwindAnimate, TailwindLineClamp],
+  plugins: [
+    TailwindAnimate,
+    plugin(function ({ addVariant }) {
+      addVariant('hover', '@media (hover: hover) { &:hover }');
+    }),
+  ],
 };

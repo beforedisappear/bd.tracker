@@ -15,59 +15,62 @@ import { SidebarHeader } from './SidebarHeader';
 import { SidebarSeparator } from './SidebarSeparator';
 import { SidebarMenuBadge } from './SidebarMenuBadge';
 import { SidebarMenuAction } from './SidebarMenuAction';
-import { SidebarMenuSubItem } from './SidebarMenuSubItem';
-import { SidebarMenuSubButton } from './SidebarMenuSubButton';
-import { SidebarMenuSub } from './SidebarMenuSub';
 import { SidebarFooter } from './SidebarFooter';
 import { SidebarTrigger } from './SidebarTrigger';
+import { SidebarGroupAction } from './SidebarGroupAction';
+import { SidebarMenuSkeleton } from './SidebarMenuSkeleton';
+import { SidebarMenuSubItemList } from './SidebarMenuSubItemList';
+import { SidebarCollapsibleMenuItem } from './SidebarCollapsibleMenuItem';
 
 import type { ComponentProps, ReactNode } from 'react';
 import type { SidebarGroupEl } from './Sidebar.types';
-import { SidebarGroupAction } from './SidebarGroupAction';
+import { ChevronRight } from 'lucide-react';
 
-interface IProps extends ComponentProps<typeof SidebarContainer> {
-  headerContent?: ReactNode;
+interface IProps
+  extends Omit<ComponentProps<typeof SidebarContainer>, 'collapsible'> {
+  headerItems?: ReactNode[];
   headerClassName?: string;
-  footerContent?: ReactNode;
+  footerItems?: ReactNode[];
   footerClassName?: string;
   groupItems: SidebarGroupEl[];
 }
 
 export function Sidebar(props: IProps) {
   const {
-    headerContent,
+    headerItems,
     headerClassName,
-    footerContent,
+    footerItems,
     footerClassName,
     variant = 'sidebar',
-    collapsible = 'icon',
     groupItems = [],
     ...restProps
   } = props;
 
   return (
-    <SidebarContainer
-      variant={variant}
-      collapsible={collapsible}
-      {...restProps}
-    >
-      <SidebarTrigger />
+    <SidebarContainer variant={variant} {...restProps}>
+      <SidebarHeader className={cn(headerClassName)}>
+        <SidebarMenu>
+          <SidebarMenuItem className='flex md:absolute md:right-[-40px]'>
+            <SidebarTrigger />
+          </SidebarMenuItem>
 
-      {headerContent && (
-        <SidebarHeader
-          className={cn(
-            headerClassName,
-            'group-data-[collapsible=icon]:hidden',
-          )}
-        >
-          {headerContent}
-        </SidebarHeader>
-      )}
+          {headerItems &&
+            headerItems.length > 0 &&
+            headerItems.map((child, i) => (
+              <SidebarMenuItem key={i}>
+                <SidebarMenuButton asChild>{child}</SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+        </SidebarMenu>
+      </SidebarHeader>
 
       <SidebarContent>
         {groupItems.map((groupItem, i) => {
           if (groupItem.type === 'separator')
             return <SidebarSeparator key={i} />;
+
+          if (groupItem.type === 'skeleton')
+            return <SidebarMenuSkeleton key={i} />;
 
           return (
             <SidebarGroup key={i}>
@@ -91,47 +94,55 @@ export function Sidebar(props: IProps) {
                     if (item.type === 'separator')
                       return <SidebarSeparator key={i} />;
 
-                    return (
-                      <SidebarMenuItem key={item.link.title}>
-                        <SidebarMenuButton asChild>
-                          <Link href={item.link.url}>
-                            {item.link.icon}
-                            <span>{item.link.title}</span>
-                          </Link>
-                        </SidebarMenuButton>
-
-                        {item.action && (
-                          <SidebarMenuAction
-                            title={item.action.title}
-                            onClick={item.action.onClick}
+                    if (item.type === 'item-link')
+                      return (
+                        <SidebarMenuItem key={item.link.title}>
+                          <SidebarMenuButton
+                            asChild
+                            isActive={item.link.isActive}
                           >
-                            {item.action.icon}
-                            <span className='sr-only'>{item.action.title}</span>
-                          </SidebarMenuAction>
-                        )}
+                            <Link href={item.link.url}>
+                              {item.link.icon}
+                              <span>{item.link.title}</span>
+                            </Link>
+                          </SidebarMenuButton>
 
-                        {item.badge && (
-                          <SidebarMenuBadge>{item.badge}</SidebarMenuBadge>
-                        )}
+                          {item.action && (
+                            <SidebarMenuAction
+                              title={item.action.title}
+                              onClick={item.action.onClick}
+                            >
+                              {item.action.icon}
+                              <span className='sr-only'>
+                                {item.action.title}
+                              </span>
+                            </SidebarMenuAction>
+                          )}
 
-                        {item.subItems && (
-                          <SidebarMenuSub>
-                            {item.subItems.map(subItem => {
-                              return (
-                                <SidebarMenuSubItem key={subItem.link.title}>
-                                  <SidebarMenuSubButton asChild>
-                                    <Link href={subItem.link.url}>
-                                      {subItem.link.icon}
-                                      <span>{subItem.link.title}</span>
-                                    </Link>
-                                  </SidebarMenuSubButton>
-                                </SidebarMenuSubItem>
-                              );
-                            })}
-                          </SidebarMenuSub>
-                        )}
-                      </SidebarMenuItem>
-                    );
+                          {item.badge !== undefined && (
+                            <SidebarMenuBadge>{item.badge}</SidebarMenuBadge>
+                          )}
+                        </SidebarMenuItem>
+                      );
+
+                    if (item.type === 'item-sub')
+                      return (
+                        <SidebarCollapsibleMenuItem
+                          key={item.trigger.label}
+                          defaultOpen={item.isDefaultOpen}
+                          trigger={
+                            <SidebarMenuButton>
+                              {item.trigger.icon}
+                              <span className='text-nowrap'>
+                                {item.trigger.label}
+                              </span>
+                              <ChevronRight className='ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90' />
+                            </SidebarMenuButton>
+                          }
+                        >
+                          <SidebarMenuSubItemList data={item.subItems} />
+                        </SidebarCollapsibleMenuItem>
+                      );
                   })}
                 </SidebarMenu>
               </SidebarGroupContent>
@@ -140,16 +151,17 @@ export function Sidebar(props: IProps) {
         })}
       </SidebarContent>
 
-      {footerContent && (
-        <SidebarFooter
-          className={cn(
-            footerClassName,
-            'group-data-[collapsible=icon]:hidden',
-          )}
-        >
-          {footerContent}
-        </SidebarFooter>
-      )}
+      <SidebarFooter className={cn(footerClassName)}>
+        <SidebarMenu>
+          {footerItems &&
+            footerItems.length > 0 &&
+            footerItems.map((child, i) => (
+              <SidebarMenuItem key={i}>
+                <SidebarMenuButton asChild>{child}</SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+        </SidebarMenu>
+      </SidebarFooter>
     </SidebarContainer>
   );
 }

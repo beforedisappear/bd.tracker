@@ -7,6 +7,8 @@ import {
   simpleGroupItemsWithBadge,
   simpleGroupItemsWithSeparator,
   simpleGroupItemsWithActions,
+  getSimpleGroupItemsWithActive,
+  simpleGroupItemsWithSkeleton,
 } from './Sidebar.config.stories';
 import { SidebarProvider } from './SidebarProvider';
 
@@ -38,6 +40,12 @@ export const Simple: Story = {
   },
 };
 
+export const withActive: Story = {
+  args: {
+    groupItems: getSimpleGroupItemsWithActive(),
+  },
+};
+
 export const WithSeparator: Story = {
   args: {
     groupItems: simpleGroupItemsWithSeparator,
@@ -47,6 +55,12 @@ export const WithSeparator: Story = {
 export const WithBadge: Story = {
   args: {
     groupItems: simpleGroupItemsWithBadge,
+  },
+};
+
+export const WithSkeleton: Story = {
+  args: {
+    groupItems: simpleGroupItemsWithSkeleton,
   },
 };
 
@@ -69,9 +83,9 @@ export const WithSubitems: Story = {
 };
 
 export const WithHeader: Story = {
-  args: { headerContent: <div>Header</div> },
+  args: { headerItems: [<div key='first-h'>Header</div>] },
 };
 
 export const WithFooter: Story = {
-  args: { footerContent: <div>Footer</div> },
+  args: { footerItems: [<div key='first-f'>Footer</div>] },
 };
