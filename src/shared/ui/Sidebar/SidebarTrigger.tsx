@@ -18,7 +18,7 @@ export const SidebarTrigger = forwardRef<
       data-sidebar='trigger'
       variant='ghost'
       size='icon'
-      className={cn('h-8 w-8 ml-auto', className)}
+      className={cn('h-8 w-8', className)}
       onClick={event => {
         onClick?.(event);
         toggleSidebar();

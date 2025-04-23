@@ -9,7 +9,7 @@ export const getProfileRoute = (tenant?: string) =>
 export const getTeamRoute = (tenant?: string) =>
   tenant ? `/${tenant}/team` : '/team';
 export const getProjectByIdRoute = (tenant?: string, projectId?: string) =>
-  tenant && projectId ? `/${tenant}/${projectId}` : `/project`;
+  tenant && projectId ? `/${tenant}/project/${projectId}` : `/project`;
 
 //service
 export const getInviteRoute = () => '/invite';

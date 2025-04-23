@@ -6,7 +6,11 @@ import {
 } from 'lucide-react';
 
 import { Logout } from '@/features/Logout';
-import { getTeamRoute, getProfileRoute } from '@/shared/config/routes';
+import {
+  getTeamRoute,
+  getProfileRoute,
+  getProjectByIdRoute,
+} from '@/shared/config/routes';
 
 import type { SidebarGroupEl } from '@/shared/ui/c';
 
@@ -47,8 +51,20 @@ export const getMainSidebarGroupItems = (
           },
           isDefaultOpen: true,
           subItems: [
-            { type: 'item-link', link: { title: 'Проект №1', url: '1' } },
-            { type: 'item-link', link: { title: 'Проект №2', url: '1' } },
+            {
+              type: 'item-link',
+              link: {
+                title: 'Проект №1',
+                url: getProjectByIdRoute(tenant, '1'),
+              },
+            },
+            {
+              type: 'item-link',
+              link: {
+                title: 'Проект №2',
+                url: getProjectByIdRoute(tenant, '2'),
+              },
+            },
           ],
         },
         {
@@ -73,10 +89,6 @@ export const getMainSidebarGroupItems = (
 
 export const getSideBarFooterItems = (): React.ReactNode[] => {
   return [
-    <Logout
-      key='sb-logout'
-      btnVariant={null}
-      className='justify-start'
-    ></Logout>,
+    <Logout key='sb-logout' btnVariant={null} className='justify-start' />,
   ];
 };

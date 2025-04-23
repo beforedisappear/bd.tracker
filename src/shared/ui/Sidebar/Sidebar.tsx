@@ -50,8 +50,8 @@ export function Sidebar(props: IProps) {
     <SidebarContainer variant={variant} {...restProps}>
       <SidebarHeader className={cn(headerClassName)}>
         <SidebarMenu>
-          <SidebarMenuItem className='flex md:absolute md:right-[-40px]'>
-            <SidebarTrigger />
+          <SidebarMenuItem className='flex md:absolute md:z-50 md:right-[-40px]'>
+            <SidebarTrigger className='ml-auto' />
           </SidebarMenuItem>
 
           {headerItems &&
