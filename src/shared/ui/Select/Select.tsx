@@ -19,10 +19,7 @@ import { useFormContext } from 'react-hook-form';
 import type { ComponentProps } from 'react';
 import type { SelectOption } from './Select.types';
 
-type BaseProps = Omit<
-  ComponentProps<typeof SelectContainer>,
-  'onValueChange' | 'defaultValue'
->;
+type BaseProps = Omit<ComponentProps<typeof SelectContainer>, 'defaultValue'>;
 
 interface IProps extends BaseProps {
   name: string;
@@ -30,6 +27,7 @@ interface IProps extends BaseProps {
   label?: string;
   description?: string;
   selectLabel?: string;
+  className?: string;
   options: SelectOption[];
 }
 
@@ -46,7 +44,9 @@ export function Select(props: IProps) {
     placeholder,
     description,
     selectLabel,
+    className,
     options = [],
+    onValueChange,
     ...restProps
   } = props;
 
@@ -57,12 +57,15 @@ export function Select(props: IProps) {
       name={name}
       control={control}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className={className}>
           {label && <FormLabel>{label}</FormLabel>}
 
           <SelectContainer
             {...restProps}
-            onValueChange={field.onChange}
+            onValueChange={v => {
+              field.onChange(v);
+              onValueChange?.(v);
+            }}
             defaultValue={field.value}
           >
             <FormControl>

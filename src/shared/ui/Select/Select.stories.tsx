@@ -20,6 +20,10 @@ export const Simple: Story = {
   args: {},
 };
 
+export const WithClassname: Story = {
+  args: { className: 'border border-red-900' },
+};
+
 export const WithPlaceholder: Story = {
   args: { placeholder: 'Select value' },
 };

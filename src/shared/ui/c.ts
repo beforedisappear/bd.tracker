@@ -31,3 +31,4 @@ export type { DropDownMenuOptions } from './DropdownMenu/DropdownMenu.types';
 export type { NavigationMenuItems } from './NavigationMenu';
 export type { ButtonSize, ButtonVariant } from './Button/Button.types';
 export type { SidebarGroupEl } from './Sidebar/Sidebar.types';
+export type { SelectOption } from './Select/Select.types';

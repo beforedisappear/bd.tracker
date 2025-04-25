@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 
 import { Logout } from '@/features/Logout';
+import { SelectTeamQuick } from '@/features/SelectTeam';
 import {
   getTeamRoute,
   getProfileRoute,
@@ -86,6 +87,7 @@ export const getMainSidebarGroupItems = (
 
 export const getSideBarFooterItems = (): React.ReactNode[] => {
   return [
+    <SelectTeamQuick key='sb-select-team' />,
     <Logout key='sb-logout' btnVariant={null} className='justify-start' />,
   ];
 };

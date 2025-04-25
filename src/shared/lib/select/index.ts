@@ -1,0 +1,1 @@
+export { selectAdapter } from './selectAdapter';
