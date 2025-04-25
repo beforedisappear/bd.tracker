@@ -3,9 +3,10 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '../Collapsible/Collapsible';
+import { useSidebar } from './Sidebar.hooks';
 import { SidebarMenuItem } from './SidebarMenuItem';
 
-import type { PropsWithChildren } from 'react';
+import { useState, type MouseEvent, type PropsWithChildren } from 'react';
 
 interface Props extends PropsWithChildren {
   trigger: React.ReactNode;
@@ -15,30 +16,31 @@ interface Props extends PropsWithChildren {
 export function SidebarCollapsibleMenuItem(props: Props) {
   const { children, trigger, defaultOpen = false } = props;
 
+  const { setIsSidebarOpen, isSidebarOpen } = useSidebar();
+  const [openCol, setOpenCol] = useState(defaultOpen);
+
+  const onOpenCol = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setIsSidebarOpen(true);
+    if (!openCol) setOpenCol(true);
+  };
+
   return (
     <CollapsibleContainer
       defaultOpen={defaultOpen}
+      open={openCol}
+      onOpenChange={setOpenCol}
       className='group/collapsible'
     >
       <SidebarMenuItem>
-        <CollapsibleTrigger asChild>{trigger}</CollapsibleTrigger>
+        <CollapsibleTrigger
+          asChild
+          onClick={isSidebarOpen ? undefined : onOpenCol}
+        >
+          {trigger}
+        </CollapsibleTrigger>
         <CollapsibleContent>{children}</CollapsibleContent>
       </SidebarMenuItem>
     </CollapsibleContainer>
   );
 }
-
-/* <SidebarMenu>
-  <Collapsible defaultOpen className="group/collapsible">
-    <SidebarMenuItem>
-      <CollapsibleTrigger asChild>
-        <SidebarMenuButton />
-      </CollapsibleTrigger>
-      <CollapsibleContent>
-        <SidebarMenuSub>
-          <SidebarMenuSubItem />
-        </SidebarMenuSub>
-      </CollapsibleContent>
-    </SidebarMenuItem>
-  </Collapsible>
-</SidebarMenu> */

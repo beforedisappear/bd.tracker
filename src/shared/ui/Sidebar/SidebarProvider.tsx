@@ -24,8 +24,8 @@ import {
 
 type SidebarContextProps = {
   state: 'expanded' | 'collapsed';
-  open: boolean;
-  setOpen: (open: boolean) => void;
+  isSidebarOpen: boolean;
+  setIsSidebarOpen: (open: boolean) => void;
   isMobile: boolean;
   toggleSidebar: () => void;
 };
@@ -98,8 +98,8 @@ export const SidebarProvider = forwardRef<HTMLDivElement, Props>(
     const contextValue = useMemo<SidebarContextProps>(
       () => ({
         state,
-        open,
-        setOpen,
+        isSidebarOpen: open,
+        setIsSidebarOpen: setOpen,
         isMobile,
         toggleSidebar,
       }),

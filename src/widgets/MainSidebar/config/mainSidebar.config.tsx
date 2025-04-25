@@ -75,11 +75,8 @@ export const getMainSidebarGroupItems = (
           },
           isDefaultOpen: true,
           subItems: [
-            {
-              type: 'item-link',
-              link: { title: 'Чат №1', url: '1' },
-            },
-            { type: 'item-link', link: { title: 'Чат №2', url: '1' } },
+            { type: 'item-link', link: { title: 'Чат №1', url: '#' } },
+            { type: 'item-link', link: { title: 'Чат №2', url: '#' } },
           ],
         },
       ],

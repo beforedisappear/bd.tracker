@@ -10,7 +10,7 @@ export const SidebarTrigger = forwardRef<
   ComponentRef<typeof Button>,
   ComponentProps<typeof Button>
 >(({ className, onClick, ...props }, ref) => {
-  const { toggleSidebar, open } = useSidebar();
+  const { toggleSidebar, isSidebarOpen } = useSidebar();
 
   return (
     <Button
@@ -25,7 +25,7 @@ export const SidebarTrigger = forwardRef<
       }}
       {...props}
     >
-      {open ? <PanelLeftClose /> : <PanelLeftOpen />}
+      {isSidebarOpen ? <PanelLeftClose /> : <PanelLeftOpen />}
       <span className='sr-only'>Toggle Sidebar</span>
     </Button>
   );

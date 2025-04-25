@@ -1,6 +1,7 @@
 'use client';
 
 import { cn } from '@/shared/lib/css';
+import { ChevronRight } from 'lucide-react';
 
 import Link from 'next/link';
 import { SidebarContainer } from './SidebarContainer';
@@ -24,7 +25,6 @@ import { SidebarCollapsibleMenuItem } from './SidebarCollapsibleMenuItem';
 
 import type { ComponentProps, ReactNode } from 'react';
 import type { SidebarGroupEl } from './Sidebar.types';
-import { ChevronRight } from 'lucide-react';
 
 interface IProps
   extends Omit<ComponentProps<typeof SidebarContainer>, 'collapsible'> {
