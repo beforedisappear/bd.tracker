@@ -2,13 +2,14 @@ import { Logout } from '@/features/Logout';
 import { SelectTeam } from '@/features/SelectTeam';
 
 import { HomePageContainer } from '../HomePageContainer/HomePageContainer';
+import { CreateTeam } from '@/features/CreateTeam';
 
 interface Props {}
 
 export function HomePage({}: Props) {
   return (
     <HomePageContainer>
-      <SelectTeam />
+      <SelectTeam actionSlot={<CreateTeam />} />
 
       <Logout
         btnSize='lg'

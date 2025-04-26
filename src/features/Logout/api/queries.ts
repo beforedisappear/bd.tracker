@@ -1,3 +1,4 @@
+import { queryClient } from '@/shared/config/query';
 import { mutationOptions } from '@/shared/lib/tanstack-query';
 
 import { logout } from './logout';
@@ -9,5 +10,6 @@ export const logoutQueries = {
     mutationOptions({
       mutationKey: ['logout'],
       mutationFn: (data: LogoutDtoReq) => logout(data),
+      onSuccess: () => queryClient.clear(),
     }),
 };

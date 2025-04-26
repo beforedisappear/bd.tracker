@@ -9,6 +9,10 @@ export const CreateTeamReqBodySchema = z.object({
 
 export const CreateTeamResSchema = z.object({
   name: z.string(),
+  id: z.string().uuid(),
+  slug: z.string(),
+  createdAt: z.string(),
+  ownerId: z.string(),
 });
 
 export const GetTeamListResSchema = z.array(
