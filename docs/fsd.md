@@ -6,6 +6,12 @@
 • pages - Next.js Pages Router директория (создана, чтобы Next.js не распознавал src/pages как pages директорию)
 • src/app & src/pages - независимые от Next.js директории (FSD слои) для уменьшения связности с фреймворком
 
+## Layers
+
+• features -
+
+• widgets - самостоятельные блоки кода, служающие для композиции features
+
 ## Designations
 
 • \*/assets - ...

@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Input } from '@/shared/ui/c';
+import { Button, Dialog, Input } from '@/shared/ui/c';
 import { useMutation } from '@tanstack/react-query';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
@@ -18,6 +18,7 @@ import {
 
 import { CreateTeamSchema } from '../../model/schemes';
 import type { CreateTeam } from '../../model/types';
+import { CREATE_TEAM_DESCRIPTION } from '../../constants';
 
 interface Props {}
 
@@ -39,13 +40,30 @@ export function CreateTeam({}: Props) {
       .catch(() => toast.error(ERROR_MESSAGE, { id: toastId }));
   });
 
-  return (
-    <FormProvider {...form}>
-      <form onSubmit={onSubmit}>
-        <Input name='name' label='Название команды' />
+  const trigger = (
+    <Button variant={null} className='mx-auto mt-2 w-fit'>
+      Создать команду
+    </Button>
+  );
 
-        <Button>Создать</Button>
-      </form>
-    </FormProvider>
+  return (
+    <Dialog
+      title='Создать команду'
+      titleClassName='text-center'
+      trigger={trigger}
+      className='h-80 max-w-96'
+    >
+      <FormProvider {...form}>
+        <form onSubmit={onSubmit} className='flex flex-col gap-2 h-full'>
+          <p className='text-center text-sm text-zinc-500'>
+            {CREATE_TEAM_DESCRIPTION}
+          </p>
+
+          <Input name='name' label='Название команды' autoComplete='off' />
+
+          <Button className='mt-auto'>Создать</Button>
+        </form>
+      </FormProvider>
+    </Dialog>
   );
 }
