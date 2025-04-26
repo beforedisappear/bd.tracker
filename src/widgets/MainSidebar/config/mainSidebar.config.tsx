@@ -8,9 +8,9 @@ import {
 import { Logout } from '@/features/Logout';
 import { SelectTeamQuick } from '@/features/SelectTeam';
 import {
-  getTeamRoute,
-  getProfileRoute,
-  getProjectByIdRoute,
+  getTeamRoutePath,
+  getProfileRoutePath,
+  getProjectByIdRoutePath,
 } from '@/shared/config/routes';
 
 import type { SidebarGroupEl } from '@/shared/ui/c';
@@ -19,8 +19,8 @@ export const getMainSidebarGroupItems = (
   tenant: string,
   pathname: string,
 ): SidebarGroupEl[] => {
-  const profileRoute = getProfileRoute(tenant);
-  const teamRoute = getTeamRoute(tenant);
+  const profileRoute = getProfileRoutePath(tenant);
+  const teamRoute = getTeamRoutePath(tenant);
 
   return [
     {
@@ -56,14 +56,14 @@ export const getMainSidebarGroupItems = (
               type: 'item-link',
               link: {
                 title: 'Проект №1',
-                url: getProjectByIdRoute(tenant, '1'),
+                url: getProjectByIdRoutePath(tenant, '1'),
               },
             },
             {
               type: 'item-link',
               link: {
                 title: 'Проект №2',
-                url: getProjectByIdRoute(tenant, '2'),
+                url: getProjectByIdRoutePath(tenant, '2'),
               },
             },
           ],

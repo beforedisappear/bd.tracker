@@ -5,7 +5,7 @@ import { cn } from '@/shared/lib/css';
 import { buttonVariants } from '@/shared/ui/s';
 import Link from 'next/link';
 
-import { getLoginRoute } from '@/shared/config/routes';
+import { getLoginRoutePath } from '@/shared/config/routes';
 import { GITHUB_REPO_URL } from '@/shared/constants';
 import {
   HIGHLIGHTED_PART_SUBTITLE,
@@ -58,7 +58,7 @@ export function ProjectHeroMain({}: Props) {
         md:flex-col md:space-x-0 md:gap-y-3'
       >
         <Link
-          href={getLoginRoute()}
+          href={getLoginRoutePath()}
           className={cn(buttonVariants(), 'w-1/3 md:w-full')}
         >
           Начать

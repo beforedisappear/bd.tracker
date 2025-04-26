@@ -1,19 +1,19 @@
 import { Logout } from '@/features/Logout';
 import { SelectTeam } from '@/features/SelectTeam';
 
-import { PrivateHomePageContainer } from '../PrivateHomePageContainer/PrivateHomePageContainer';
+import { HomePageContainer } from '../HomePageContainer/HomePageContainer';
 
 interface Props {}
 
-export function PrivateHomePage({}: Props) {
+export function HomePage({}: Props) {
   return (
-    <PrivateHomePageContainer>
+    <HomePageContainer>
       <SelectTeam />
 
       <Logout
         btnSize='lg'
         className='text-base w-full max-w-[400px] rounded-lg'
       />
-    </PrivateHomePageContainer>
+    </HomePageContainer>
   );
 }

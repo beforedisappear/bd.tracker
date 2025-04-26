@@ -3,14 +3,14 @@
 import Link from 'next/link';
 import { routes } from '../../config';
 import { buttonVariants } from '@/shared/ui/s';
-import { getLoginRoute } from '@/shared/config/routes';
+import { getLoginRoutePath } from '@/shared/config/routes';
 
 interface Props {
   onSetShowSheet?: (state: boolean) => void;
 }
 
 export function HeaderNavMenuMobile({ onSetShowSheet }: Props) {
-  const items = [...routes, { label: 'Войти', href: getLoginRoute() }];
+  const items = [...routes, { label: 'Войти', href: getLoginRoutePath() }];
 
   return (
     <nav className='flex flex-col justify-center items-center gap-2 mt-4'>

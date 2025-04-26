@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import { getErrorMessage } from '@/shared/lib/error';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { authQueries } from '../../api';
-import { getHomeRoute } from '@/shared/config/routes';
+import { getHomeRoutePath } from '@/shared/config/routes';
 import { saveJwt } from '@/shared/lib/cookies';
 
 import {
@@ -66,7 +66,7 @@ export function AuthByEmail({}: Props) {
       onLogin({ ...data, email })
         .then(res => {
           saveJwt(res.data.accessToken, res.data.refreshToken);
-          push(getHomeRoute());
+          push(getHomeRoutePath());
         })
         .catch(e => {
           methods.setError('code', { message: getErrorMessage(e) });

@@ -5,7 +5,7 @@ import { Button, type ButtonSize, type ButtonVariant } from '@/shared/ui/c';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 
-import { getMainRoute } from '@/shared/config/routes';
+import { getMainRoutePath } from '@/shared/config/routes';
 import { getRefreshToken, removeJwt } from '@/shared/lib/cookies';
 import { logoutQueries } from '../../api/queries';
 import { toast } from 'sonner';
@@ -48,7 +48,7 @@ export function Logout(props: Props) {
       .then(() => toast.success(SUCCESS_MESSAGE, { id: toastId }))
       .catch(() => toast.error(ERROR_MESSAGE, { id: toastId }))
       .finally(() => removeJwt())
-      .finally(() => push(getMainRoute()));
+      .finally(() => push(getMainRoutePath()));
   };
 
   return (

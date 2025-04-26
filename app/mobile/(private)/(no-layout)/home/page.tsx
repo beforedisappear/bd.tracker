@@ -1,9 +1,9 @@
-import { PRIVATE_HOME_PAGE_TITLE } from '@/pages/PrivateHomePage';
+import { AppRoutes, routesMetadata } from '@/shared/config/routes';
 
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: PRIVATE_HOME_PAGE_TITLE,
+  ...routesMetadata[AppRoutes.HOME],
 };
 
-export { PrivateHomePage as default } from '@/pages/PrivateHomePage';
+export { HomePage as default } from '@/pages/HomePage';

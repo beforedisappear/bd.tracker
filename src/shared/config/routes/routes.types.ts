@@ -16,3 +16,10 @@ export enum AppRoutes {
   // last
   NOT_FOUND = 'not_found',
 }
+
+export type RoutesMetadata = {
+  title: string;
+  description: string;
+};
+
+export type RouteAccess = 'public' | 'private' | 'service';

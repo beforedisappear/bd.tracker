@@ -3,7 +3,7 @@ import { AppRoutes, routesMetadata } from '@/shared/config/routes';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  ...routesMetadata[AppRoutes.HOME],
+  ...routesMetadata[AppRoutes.MAIN],
 };
 
-export { HomePage as default } from '@/pages/HomePage';
+export { MainPage as default } from '@/pages/MainPage';

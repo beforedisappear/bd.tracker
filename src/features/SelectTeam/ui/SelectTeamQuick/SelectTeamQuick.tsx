@@ -6,8 +6,8 @@ import { useForm } from 'react-hook-form';
 import { useParams, useRouter } from 'next/navigation';
 
 import { teamQueries } from '@/entities/Team';
-import { selectAdapter } from '@/shared/lib/select';
-import { getTeamRoute } from '@/shared/config/routes';
+import { selectAdapter } from '@/shared/lib/input';
+import { getTeamRoutePath } from '@/shared/config/routes';
 
 interface Props {}
 
@@ -45,7 +45,7 @@ export function SelectTeamQuick({}: Props) {
           name='team'
           options={options}
           className='group-data-[collapsible=icon]:hidden'
-          onValueChange={v => push(getTeamRoute(v))}
+          onValueChange={v => push(getTeamRoutePath(v))}
         />
       </form>
     </Form>
