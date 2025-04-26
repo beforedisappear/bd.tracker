@@ -1,3 +1,2 @@
-'use client';
-
-export { LazyHeaderNavMenu as HeaderNavMenu } from './HeaderNavMenu.async';
+export { LazyHeaderNavMenuMobile as HeaderNavMenuMobile } from './HeaderNavMenu.mobile.async';
+export { LazyHeaderNavMenuDesktop as HeaderNavMenuDesktop } from './HeaderNavMenu.desktop.async';

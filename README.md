@@ -8,7 +8,7 @@ BD.tracker - Fullstack приложение, с упором на Frontend со�
 
 ## App Features
 
-📦 FSD - 🍌 Light & Dark mode - 🥕 Storybook UI Doc - ⭐️ Full Test coverage - 🕊️ Swagger API doc - 🌴 - Render View by device type - 🔫 WS chat? - 💧 PWA? - ...
+📦 [FSD](./docs/fsd.md) - 🍌 Light & Dark mode - 🥕 Storybook UI Doc - ⭐️ Full Test coverage - 🕊️ Swagger API doc - 🌴 [Device type view](./docs/device.md) - 🔫 WS chat? - 💧 PWA? - ...
 
 ## Running the app
 

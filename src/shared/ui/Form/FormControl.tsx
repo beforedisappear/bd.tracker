@@ -1,4 +1,4 @@
-import { useFormField } from '../../config/form';
+import { useFormField } from '../../lib/rhf';
 import { Slot } from '@radix-ui/react-slot';
 import {
   forwardRef,

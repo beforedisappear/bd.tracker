@@ -7,7 +7,7 @@ export function ProjectFeatures({}: Props) {
   return (
     <section
       id='features'
-      className='container py-20 space-y-8      
+      className='container py-20 space-y-8 scroll-m-6
       xl:py-16
       lg:py-10'
     >

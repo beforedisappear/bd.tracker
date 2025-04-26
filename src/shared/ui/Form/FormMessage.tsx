@@ -1,6 +1,6 @@
 import { cn } from '../../lib/css';
 import { forwardRef, type HTMLAttributes } from 'react';
-import { useFormField } from '../../config/form';
+import { useFormField } from '../../lib/rhf';
 
 export const FormMessage = forwardRef<
   HTMLParagraphElement,

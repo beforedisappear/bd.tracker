@@ -17,12 +17,18 @@ export { Accordion } from './Accordion/Accordion';
 export { DatePicker } from './DatePicker/DatePicker';
 export { DateRangePicker } from './DateRangePicker/DateRangePicker';
 export { ScrollArea } from './ScrollArea/ScrollArea';
+export { Sidebar } from './Sidebar/Sidebar';
+export { Collapsible } from './Collapsible/Collapsible';
 
 //custom
 export { ErrorBoundary } from './ErrorBoundary/ErrorBoundary';
+export { SidebarProvider } from './Sidebar/SidebarProvider';
+export { useSidebar } from './Sidebar/Sidebar.hooks';
 
 //types
 export type { IAccordionItem } from './Accordion/Accordion.types';
 export type { DropDownMenuOptions } from './DropdownMenu/DropdownMenu.types';
 export type { NavigationMenuItems } from './NavigationMenu';
 export type { ButtonSize, ButtonVariant } from './Button/Button.types';
+export type { SidebarGroupEl } from './Sidebar/Sidebar.types';
+export type { SelectOption } from './Select/Select.types';

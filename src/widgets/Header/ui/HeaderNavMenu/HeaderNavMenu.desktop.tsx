@@ -6,10 +6,9 @@ import { routes } from '../../config';
 
 interface Props {}
 
-export function DesktopHeaderNavMenu({}: Props) {
+export function HeaderNavMenuDesktop({}: Props) {
   return (
     <NavigationMenu
-      className='md:hidden'
       items={routes.map(el => ({
         type: 'simple' as const,
         content: el,

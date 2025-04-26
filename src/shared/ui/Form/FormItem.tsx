@@ -1,5 +1,5 @@
 import { forwardRef, useId } from 'react';
-import { FormItemContext } from '../../config/form';
+import { FormItemContext } from '../../lib/rhf';
 import { cn } from '../../lib/css';
 
 export const FormItem = forwardRef<

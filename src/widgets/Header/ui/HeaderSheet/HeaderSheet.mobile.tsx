@@ -3,7 +3,7 @@
 import { Menu } from 'lucide-react';
 
 import { Button, Sheet } from '@/shared/ui/c';
-import { HeaderNavMenu } from '../HeaderNavMenu';
+import { HeaderNavMenuMobile } from '../HeaderNavMenu';
 
 import { useState, useCallback } from 'react';
 
@@ -11,7 +11,7 @@ import { SITE_NAME } from '@/shared/constants';
 
 interface Props {}
 
-export function MobileHeaderSheet({}: Props) {
+export function HeaderSheetMobile({}: Props) {
   const [showSheet, setShowSheet] = useState(false);
 
   const onSetShowSheet = useCallback(
@@ -20,7 +20,7 @@ export function MobileHeaderSheet({}: Props) {
   );
 
   return (
-    <div className='hidden md:flex'>
+    <div className='flex'>
       <Sheet
         open={showSheet}
         onOpenChange={setShowSheet}
@@ -33,7 +33,7 @@ export function MobileHeaderSheet({}: Props) {
           </Button>
         }
       >
-        <HeaderNavMenu onSetShowSheet={onSetShowSheet} />
+        <HeaderNavMenuMobile onSetShowSheet={onSetShowSheet} />
       </Sheet>
     </div>
   );

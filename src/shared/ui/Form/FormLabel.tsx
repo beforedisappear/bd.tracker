@@ -1,6 +1,6 @@
 import { cn } from '../../lib/css';
 
-import { useFormField } from '../../config/form';
+import { useFormField } from '../../lib/rhf';
 import * as LabelPrimitive from '@radix-ui/react-label';
 import {
   forwardRef,

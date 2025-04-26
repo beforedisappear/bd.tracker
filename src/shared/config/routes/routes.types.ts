@@ -6,6 +6,7 @@ export enum AppRoutes {
   HOME = 'home',
   PROFILE = 'profile',
   TEAM = 'team',
+  PROJECT = 'project',
   //service
   INVITE = 'invite',
 
@@ -15,3 +16,10 @@ export enum AppRoutes {
   // last
   NOT_FOUND = 'not_found',
 }
+
+export type RoutesMetadata = {
+  title: string;
+  description: string;
+};
+
+export type RouteAccess = 'public' | 'private' | 'service';

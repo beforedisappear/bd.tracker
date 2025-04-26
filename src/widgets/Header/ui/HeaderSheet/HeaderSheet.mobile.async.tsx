@@ -2,10 +2,10 @@
 
 import dynamic from 'next/dynamic';
 
-export const LazyMobileHeaderSheet = dynamic(
+export const LazyHeaderSheetMobile = dynamic(
   () =>
     import('./HeaderSheet.mobile').then(mod => ({
-      default: mod.MobileHeaderSheet,
+      default: mod.HeaderSheetMobile,
     })),
   { ssr: false },
 );

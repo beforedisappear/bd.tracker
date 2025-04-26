@@ -1,23 +1,27 @@
 import Cookies from 'js-cookie';
-import { accessTokenName, getCookieConfig, refreshTokenName } from './config';
+import { getCookieConfig } from './getCookieConfig';
+import {
+  ACCESS_TOKEN_NAME,
+  REFRESH_TOKEN_NAME,
+} from '../../constants/cookie.constants';
 
 export const getAccessToken = () => {
-  return Cookies.get(accessTokenName) ?? null;
+  return Cookies.get(ACCESS_TOKEN_NAME) ?? null;
 };
 
 export const getRefreshToken = () => {
-  return Cookies.get(refreshTokenName) ?? null;
+  return Cookies.get(REFRESH_TOKEN_NAME) ?? null;
 };
 
 export const saveJwt = (accessToken: string, refreshToken: string) => {
-  Cookies.set(accessTokenName, accessToken, getCookieConfig());
+  Cookies.set(ACCESS_TOKEN_NAME, accessToken, getCookieConfig());
 
-  Cookies.set(refreshTokenName, refreshToken, getCookieConfig());
+  Cookies.set(REFRESH_TOKEN_NAME, refreshToken, getCookieConfig());
 };
 
 export const removeJwt = () => {
   const expiredDate = new Date(0);
 
-  Cookies.set(accessTokenName, '', getCookieConfig(expiredDate));
-  Cookies.set(refreshTokenName, '', getCookieConfig(expiredDate));
+  Cookies.set(ACCESS_TOKEN_NAME, '', getCookieConfig(expiredDate));
+  Cookies.set(REFRESH_TOKEN_NAME, '', getCookieConfig(expiredDate));
 };

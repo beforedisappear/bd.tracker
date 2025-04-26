@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import { useFormField } from '../../config/form';
+import { useFormField } from '../../lib/rhf';
 import { cn } from '../../lib/css';
 
 export const FormDescription = forwardRef<

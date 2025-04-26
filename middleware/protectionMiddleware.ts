@@ -1,31 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import {
-  getMainRoute,
-  getHomeRoute,
-  privateRoutesByPath,
-  publicRoutesByPath,
+  getMainRoutePath,
+  getHomeRoutePath,
+  routesAccess,
 } from '@/shared/config/routes';
-import { refreshTokenName } from '@/shared/lib/cookies/config';
+import { getRouteByPath } from '@/shared/lib/routes';
+import { getCleanPath } from './middleware.utils';
 
-const getLastPath = (path: string) => {
-  const pathParts = path.split('/').filter(Boolean);
-  const route = pathParts[pathParts.length - 1];
-  return `/${route}`;
-};
+import { REFRESH_TOKEN_NAME } from '@/shared/constants/cookie.constants';
 
 export const protectionMiddleware = (req: NextRequest) => {
   const { cookies } = req;
 
-  const isAuth = cookies.get(refreshTokenName)?.value;
+  const isAuth = !!cookies.get(REFRESH_TOKEN_NAME)?.value;
+
+  const currentRoute = getRouteByPath(getCleanPath(req.nextUrl.pathname));
 
   //is authenticated and public url
-  if (isAuth && publicRoutesByPath[req.nextUrl.pathname]) {
-    return NextResponse.redirect(new URL(getHomeRoute(), req.url));
+  if (isAuth && routesAccess[currentRoute] === 'public') {
+    return NextResponse.redirect(new URL(getHomeRoutePath(), req.url));
   }
   //is not authenticated and private url
-  else if (!isAuth && privateRoutesByPath[getLastPath(req.nextUrl.pathname)]) {
-    return NextResponse.redirect(new URL(getMainRoute(), req.url));
+  else if (!isAuth && routesAccess[currentRoute] === 'private') {
+    return NextResponse.redirect(new URL(getMainRoutePath(), req.url));
   }
 
   return null;

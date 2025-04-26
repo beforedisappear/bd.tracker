@@ -39,7 +39,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "**/*.mjs",
-    "**/*.cjs"
+    "**/*.cjs",
+    "src/widgets/MainSidebar/config/mainSidebar.config.tsz"
   ],
   "exclude": ["node_modules"]
 }

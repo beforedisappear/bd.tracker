@@ -1,1 +1,1 @@
-export { GetCheckInvitationExistsDoc as GET } from '$/routeHandlers/team/[idOrSlug]/invitation/check/doc';
+export { GetCheckInvitationExists as GET } from '$/routeHandlers/team/[idOrSlug]/invitation/check/route';

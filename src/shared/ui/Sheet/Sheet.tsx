@@ -19,6 +19,7 @@ interface IProps extends BaseProps {
   description?: string;
   className?: string;
   content?: SheetContentProps;
+  headerClassName?: string;
 }
 
 const SheetContainer = SheetPrimitive.Root;
@@ -33,6 +34,7 @@ export function Sheet(props: IProps) {
     children,
     className,
     content,
+    headerClassName,
     ...restProps
   } = props;
 
@@ -43,7 +45,7 @@ export function Sheet(props: IProps) {
       <SheetTrigger asChild>{trigger}</SheetTrigger>
 
       <SheetContent side={side} className={className} {...contentProps}>
-        <SheetHeader>
+        <SheetHeader className={headerClassName}>
           <SheetTitle className='text-center'>{title}</SheetTitle>
 
           {description && <SheetDescription>{description}</SheetDescription>}

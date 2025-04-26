@@ -1,14 +1,19 @@
+import { getMainRoutePath } from '@/shared/config/routes';
+
 export const routes = [
   {
-    href: '#features',
+    id: 1,
+    href: `${getMainRoutePath()}#features`,
     label: 'Возможности',
   },
   {
-    href: '#testimonials',
+    id: 2,
+    href: `${getMainRoutePath()}#testimonials`,
     label: 'Рекомендации',
   },
   {
-    href: '#faq',
+    id: 3,
+    href: `${getMainRoutePath()}#faq`,
     label: 'Частые вопросы',
   },
 ];

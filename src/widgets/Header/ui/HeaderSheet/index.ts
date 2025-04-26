@@ -1,3 +1,1 @@
-'use client';
-
-export { LazyHeaderSheet as HeaderSheet } from './HeaderSheet.async';
+export { LazyHeaderSheetMobile as HeaderSheetMobile } from './HeaderSheet.mobile.async';

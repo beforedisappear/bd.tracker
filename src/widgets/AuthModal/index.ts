@@ -1,1 +1,2 @@
-export { AuthModal } from './ui/AuthModal/AuthModal';
+export { DesktopAuthModal } from './ui/AuthModal/AuthModal.desktop';
+export { MobileAuthModal } from './ui/AuthModal/AuthModal.mobile';
