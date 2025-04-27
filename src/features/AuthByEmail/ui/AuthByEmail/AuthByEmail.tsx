@@ -14,10 +14,7 @@ import { authQueries } from '../../api';
 import { getHomeRoutePath } from '@/shared/config/routes';
 import { saveJwt } from '@/shared/lib/cookies';
 
-import {
-  AuthFormFirstStepSchema,
-  AuthFormSecondStepSchema,
-} from '../../model/schemes';
+import { AuthFirstStepSchema, AuthSecondStepSchema } from '../../model/schemes';
 
 import type { AuthFormValues } from '../../model/types';
 import type { AnyZodObject } from 'zod';
@@ -31,8 +28,8 @@ export function AuthByEmail({}: Props) {
   const [currentStep, setCurrentStep] = useState<FormStep>('1');
 
   const schema: { [Key in FormStep]: AnyZodObject } = {
-    '1': AuthFormFirstStepSchema,
-    '2': AuthFormSecondStepSchema,
+    '1': AuthFirstStepSchema,
+    '2': AuthSecondStepSchema,
   };
 
   const methods = useForm<AuthFormValues>({
@@ -44,6 +41,7 @@ export function AuthByEmail({}: Props) {
   const { mutateAsync: onAuth, isPending: isAuthing } = useMutation(
     authQueries.auth(),
   );
+
   const {
     mutateAsync: onLogin,
     isPending: isLogging,
@@ -64,10 +62,8 @@ export function AuthByEmail({}: Props) {
       const email = methods.getValues('email');
 
       onLogin({ ...data, email })
-        .then(res => {
-          saveJwt(res.data.accessToken, res.data.refreshToken);
-          push(getHomeRoutePath());
-        })
+        .then(({ data }) => saveJwt(data.accessToken, data.refreshToken))
+        .then(() => push(getHomeRoutePath()))
         .catch(e => {
           methods.setError('code', { message: getErrorMessage(e) });
         });

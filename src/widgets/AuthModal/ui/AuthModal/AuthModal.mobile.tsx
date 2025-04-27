@@ -14,7 +14,7 @@ interface Props {
   trigger?: ReactNode;
 }
 
-export function MobileAuthModal({}: Props) {
+export function AuthModalMobile({}: Props) {
   const { back } = useRouter();
 
   const [showDrawer, setShowDrawer] = useState(true);

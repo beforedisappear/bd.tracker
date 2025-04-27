@@ -1,4 +1,1 @@
-export {
-  AuthFormFirstStepSchema,
-  AuthFormSecondStepSchema,
-} from './AuthFormSchema';
+export { AuthFirstStepSchema, AuthSecondStepSchema } from './AuthSchema';

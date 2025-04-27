@@ -4,10 +4,10 @@ import Link from 'next/link';
 
 import { getTeamRoutePath } from '@/shared/config/routes';
 
-import type { Team } from '@/entities/Team';
+import type { UserTeam } from '@/entities/Team';
 
 interface Props {
-  data: Team;
+  data: UserTeam;
 }
 
 export function SelectTeamItem({ data }: Props) {
