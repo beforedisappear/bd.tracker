@@ -3,4 +3,4 @@ export {
   type DeviceType,
   type DeviceContext,
 } from './contexts';
-export { useDeviceType } from './hooks';
+export { useDeviceType } from './useDeviceType';

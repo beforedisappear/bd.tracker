@@ -1,1 +1,1 @@
-export { getRouteByPath } from './getRouteByPath';
+export { getRouteByPath } from './getRouteByPath/getRouteByPath';

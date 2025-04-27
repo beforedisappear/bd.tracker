@@ -26,6 +26,7 @@ const config: Config = {
   ],
   testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)'],
   testEnvironment: 'jsdom',
+  setupFilesAfterEnv: ['<rootDir>/config/jest/jest.setup.ts'],
 };
 
 export default createJestConfig(config);

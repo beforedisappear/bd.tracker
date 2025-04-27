@@ -1,4 +1,4 @@
-import { AppRoutes, routePatterns } from '../../config/routes';
+import { AppRoutes, routePatterns } from '../../../config/routes';
 import { match } from 'path-to-regexp';
 
 export const getRouteByPath = (pathname: string): AppRoutes => {
