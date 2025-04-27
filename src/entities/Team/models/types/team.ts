@@ -8,7 +8,15 @@ export interface Team {
   slug: string;
   createdAt: string;
   ownerId: string;
+}
+
+export interface UserTeam {
+  name: string;
+  id: string;
+  slug: string;
+  createdAt: string;
+  ownerId: string;
   owned: boolean;
 }
 
-export type GetUserTeamListDtoRes = Team[];
+export type GetUserTeamListDtoRes = UserTeam[];

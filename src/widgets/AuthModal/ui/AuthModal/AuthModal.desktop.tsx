@@ -15,7 +15,7 @@ interface Props {
   trigger?: ReactNode;
 }
 
-export function DesktopAuthModal({ trigger }: Props) {
+export function AuthModalDesktop({ trigger }: Props) {
   const { back } = useRouter();
 
   return (
