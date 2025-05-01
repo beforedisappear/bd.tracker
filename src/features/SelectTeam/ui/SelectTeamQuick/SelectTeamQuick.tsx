@@ -1,3 +1,5 @@
+'use client';
+
 import { Select, Form } from '@/shared/ui/c';
 import { Skeleton } from '@/shared/ui/s';
 
