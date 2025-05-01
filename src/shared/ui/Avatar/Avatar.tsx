@@ -1,4 +1,5 @@
 import { AvatarFallback } from '@radix-ui/react-avatar';
+import Image from 'next/image';
 import { AvatarImage } from './AvatarImage';
 import { AvatarContainer } from './AvatarContainer';
 
@@ -16,7 +17,9 @@ export function Avatar(props: Props) {
 
   return (
     <AvatarContainer className={className} {...restProps}>
-      <AvatarImage src={src} alt={alt} />
+      <AvatarImage asChild src={src}>
+        <Image src={src} alt={alt} width={40} height={40} />
+      </AvatarImage>
       {fallback && <AvatarFallback asChild>{fallback}</AvatarFallback>}
     </AvatarContainer>
   );

@@ -1,4 +1,4 @@
-import { RefreshTokensRes } from '@/shared/api';
+import type { RefreshTokensRes } from '@/shared/api/c';
 
 export type LoginDtoRes = RefreshTokensRes;
 

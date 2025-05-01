@@ -1,4 +1,4 @@
-import { apiClient } from '@/shared/api';
+import { apiClient } from '@/shared/api/c';
 
 import type { GetUserTeamListDtoRes } from '../models/types';
 
