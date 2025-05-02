@@ -46,7 +46,7 @@ export function Drawer(props: Props) {
 
   return (
     <DrawerContainer {...restProps} repositionInputs={false}>
-      <DrawerTrigger>{trigger}</DrawerTrigger>
+      <DrawerTrigger asChild>{trigger}</DrawerTrigger>
 
       <DrawerContent className={className}>
         <DrawerHeader>

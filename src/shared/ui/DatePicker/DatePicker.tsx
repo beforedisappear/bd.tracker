@@ -47,6 +47,7 @@ export function DatePicker(props: Props) {
                 'w-full pl-3 text-left font-normal',
                 !field.value && 'text-muted-foreground',
               )}
+              data-testid='date-picker-trigger'
               disabled={disabled}
             >
               {field.value ? (
@@ -71,6 +72,7 @@ export function DatePicker(props: Props) {
                 onDayClick={field.onChange}
                 disabled={disabledDates}
                 initialFocus
+                defaultMonth={field.value}
                 {...restProps}
               />
             </Popover>

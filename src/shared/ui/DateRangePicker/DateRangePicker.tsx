@@ -20,6 +20,7 @@ import { useState, type HTMLAttributes } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { format } from 'date-fns';
+import { isDisabledDateInRange } from './DateRangePicker.utils';
 
 type ExcludedProps = 'mode' | 'selected' | 'onSelect' | 'numberOfMonths';
 
@@ -36,12 +37,11 @@ export function DateRangePicker(props: Props) {
   const {
     control,
     setValue,
+    resetField,
     formState: { defaultValues },
   } = useFormContext<{
     [key: string]: DateRange;
   }>();
-
-  console.log('defaultValues', defaultValues);
 
   const [range, setRange] = useState<DateRange | undefined>(
     defaultValues ? (defaultValues[name] as DateRange) : undefined,
@@ -49,6 +49,21 @@ export function DateRangePicker(props: Props) {
 
   const handleSelect = (newSelected: DateRange | undefined) => {
     if (!newSelected) return;
+
+    //reset field if disabled date is in selected range
+    if (newSelected.from && newSelected.to && calendar?.disabled) {
+      const disabledDate = isDisabledDateInRange(
+        { from: newSelected.from, to: newSelected.to },
+        calendar.disabled,
+      );
+
+      if (disabledDate) {
+        setRange({ from: undefined, to: undefined });
+        resetField(name);
+        return;
+      }
+    }
+
     setRange(newSelected);
     setValue(name, newSelected);
   };

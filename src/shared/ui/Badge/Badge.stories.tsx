@@ -29,10 +29,20 @@ export const WithVariant: Story = {
   args: { variant: 'destructive' },
 };
 
+export const AsChild: Story = {
+  name: 'As child (Button)',
+  args: { asChild: true },
+  render: () => (
+    <Badge asChild>
+      <button>Button</button>
+    </Badge>
+  ),
+};
+
 export const LinkAsBadge: Story = {
   name: 'With custom tag (e.g Link)',
   render: () => (
-    <Link href={'#'} className={badgeVariants()}>
+    <Link href='#' className={badgeVariants()}>
       Link
     </Link>
   ),
