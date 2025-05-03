@@ -5,7 +5,7 @@ export {
   ERROR_MESSAGE,
 } from './toast.constants';
 
-export { SITE_NAME } from './seo.constants';
+export { SITE_NAME, SITE_DESCRIPTION } from './seo.constants';
 
 export {
   REQUIRED_FIELD_MESSAGE,

@@ -16,7 +16,7 @@ export const NavigationMenuListItem = forwardRef<
   ComponentPropsWithoutRef<typeof Link>
 >(({ className, title, children, ...props }, ref) => {
   return (
-    <li>
+    <li data-testid='navigation-menu-item'>
       <NavigationMenuLink asChild>
         <Link
           ref={ref}

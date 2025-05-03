@@ -20,7 +20,10 @@ export function SelectTeam({}: Props) {
     refetch,
   } = useQuery(teamQueries.getUserTeamList());
 
-  if (isError) return <ErrorBoundary error={error} reset={refetch} />;
+  if (isError)
+    return (
+      <ErrorBoundary error={error} reset={refetch} className='h-48 mx-auto' />
+    );
 
   return (
     <ScrollArea type='always' className='h-48 -mr-4'>

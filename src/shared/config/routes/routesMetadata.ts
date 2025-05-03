@@ -34,7 +34,7 @@ export const routesMetadata: Record<AppRoutes, RoutesMetadata> = {
     description: '',
   },
   [AppRoutes.NOT_FOUND]: {
-    title: '',
+    title: 'Страница не найдена',
     description: '',
   },
 };

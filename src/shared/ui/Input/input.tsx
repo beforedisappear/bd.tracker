@@ -49,6 +49,7 @@ const Input = (props: IProps) => {
               {...restProps}
               {...field}
               type={type}
+              data-testid='input'
               onChange={v => {
                 field.onChange(v);
                 if (onChange) onChange(v);

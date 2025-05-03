@@ -7,7 +7,6 @@ import { SheetHeader } from './SheetHeader';
 import { SheetDescription } from './SheetDescription';
 import { SheetFooter } from './SheetFooter';
 import { SheetTitle } from './SheetTitle';
-// import { Button } from '../Button/Button';
 
 import type { ComponentProps } from 'react';
 

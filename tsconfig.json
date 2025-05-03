@@ -20,11 +20,7 @@
     "noImplicitAny": true,
     "strictNullChecks": true,
 
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "plugins": [{ "name": "next" }],
     "paths": {
       "@/*": ["./src/*"],
       "$/*": ["./api/*"],
@@ -39,8 +35,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "**/*.mjs",
-    "**/*.cjs",
-    "src/widgets/MainSidebar/config/mainSidebar.config.tsz"
+    "**/*.cjs"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "**/cypress.config.ts", "cypress", "**/*.cy.tsx"]
 }

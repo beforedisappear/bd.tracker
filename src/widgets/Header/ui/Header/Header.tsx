@@ -6,7 +6,7 @@ import { HeaderLoginBtnDesktop } from '../HeaderLoginBtn';
 import { HeaderSheetMobile } from '../HeaderSheet';
 
 import { HeaderNavMenuDesktop } from '../HeaderNavMenu';
-import { useDeviceType } from '@/shared/lib/deviceType/hooks';
+import { useDeviceType } from '@/shared/lib/deviceType/c';
 
 interface Props {}
 

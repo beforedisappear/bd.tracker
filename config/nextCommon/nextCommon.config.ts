@@ -15,6 +15,11 @@ export const NextСommonConfig: NextCommonCfg = {
         hostname: 'i.pravatar.cc',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'github.com',
+        pathname: '/**',
+      },
     ],
   },
   devIndicators: { position: 'top-right' },

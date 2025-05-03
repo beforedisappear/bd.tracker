@@ -21,7 +21,7 @@ export const Simple: Story = {
 };
 
 export const WithSpecifiedGroupSize = {
-  args: { groupSize: 2 },
+  args: { groupSize: 4, length: 7 },
 };
 
 export const WithClassName: Story = {

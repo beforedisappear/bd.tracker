@@ -19,6 +19,7 @@ export const ScrollBar = forwardRef<
   <ScrollAreaPrimitive.ScrollAreaScrollbar
     ref={ref}
     orientation={orientation}
+    data-testid='scroll-area-scrollbar'
     className={cn(
       'flex touch-none select-none transition-colors',
       orientation === 'vertical' &&

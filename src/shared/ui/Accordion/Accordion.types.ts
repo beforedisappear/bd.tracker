@@ -10,7 +10,6 @@ export interface IAccordionItem {
 }
 
 interface IBaseProps {
-  collapsible?: boolean;
   items: IAccordionItem[];
   triggerClassName?: string;
   contentClassName?: string;
@@ -18,6 +17,7 @@ interface IBaseProps {
 
 interface ISingleProps extends Omit<AccordionSingleProps, 'type'>, IBaseProps {
   type?: 'single';
+  collapsible?: boolean;
 }
 
 interface IMultipleProps

@@ -21,3 +21,11 @@ export const Simple: Story = {
 export const WithDefaultValue: Story = {
   args: { name: 'dateRangeValue' },
 };
+
+export const WithDisabledDates: Story = {
+  args: {
+    calendar: {
+      disabled: date => date.getDate() % 5 === 0,
+    },
+  },
+};

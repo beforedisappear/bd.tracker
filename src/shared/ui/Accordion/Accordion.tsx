@@ -12,7 +12,6 @@ const AccordionContainer = AccordionPrimitive.Root;
 export function Accordion(props: AccordionProps) {
   const {
     type = 'single',
-    collapsible = true,
     items = [],
     value,
     defaultValue,
@@ -27,7 +26,6 @@ export function Accordion(props: AccordionProps) {
     value: typeof value === 'string' ? value : undefined,
     defaultValue: typeof defaultValue === 'string' ? defaultValue : undefined,
     onValueChange: onValueChange as ((value: string) => void) | undefined,
-    collapsible,
   };
 
   const multipleProps = {

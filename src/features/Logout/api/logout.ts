@@ -1,4 +1,4 @@
-import { apiClient } from '@/shared/api';
+import { apiClient } from '@/shared/api/c';
 
 import type { LogoutDtoReq } from '../model/types/logout';
 

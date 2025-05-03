@@ -39,13 +39,13 @@ function Calendar(props: CalendarProps) {
   };
 
   if (isDayPickerMultiple(restProps))
-    return <DayPicker {...baseProps} {...restProps} mode='multiple' />;
+    return <DayPicker {...restProps} {...baseProps} mode='multiple' />;
   else if (isDayPickerDefault(restProps))
-    return <DayPicker {...baseProps} {...restProps} mode='default' />;
+    return <DayPicker {...restProps} {...baseProps} mode='default' />;
   else if (isDayPickerRange(restProps))
-    return <DayPicker {...baseProps} {...restProps} mode='range' />;
+    return <DayPicker {...restProps} {...baseProps} mode='range' />;
   else if (isDayPickerSingle(restProps))
-    return <DayPicker {...baseProps} {...restProps} mode='single' />;
+    return <DayPicker {...restProps} {...baseProps} mode='single' />;
 }
 Calendar.displayName = 'Calendar';
 

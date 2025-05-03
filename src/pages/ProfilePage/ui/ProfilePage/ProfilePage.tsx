@@ -1,6 +1,6 @@
 'use client';
 
-import { apiClient } from '@/shared/api';
+import { apiClient } from '@/shared/api/c';
 import { useQuery } from '@tanstack/react-query';
 
 interface Props {}
