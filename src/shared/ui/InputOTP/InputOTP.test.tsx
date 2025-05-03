@@ -1,55 +1,53 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { InputOTP } from './InputOTP';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useEffect } from 'react';
-
-// Mock elementFromPoint
-Object.defineProperty(document, 'elementFromPoint', {
-  value: () => null,
-  writable: true,
-});
-
-const TestWrapper = ({ children }: { children: React.ReactNode }) => {
-  const methods = useForm({
-    defaultValues: {
-      test: '',
-      error: '',
-    },
-  });
-
-  useEffect(() => {
-    methods.setError('error', { type: 'required', message: errorMessage });
-  }, [methods]);
-
-  return <FormProvider {...methods}>{children}</FormProvider>;
-};
+import { renderWithFormProvider } from '@/shared/lib/testing';
 
 const defaultProps = {
   name: 'test',
   length: 4,
 };
 
-const errorMessage = 'test error';
+const defaultValues = {
+  test: '',
+  error: '',
+};
 
 describe('InputOTP ui component', () => {
+  const originalElementFromPoint = document.elementFromPoint;
+
+  beforeEach(() => {
+    Object.defineProperty(document, 'elementFromPoint', {
+      value: () => null,
+      writable: true,
+    });
+  });
+
+  afterEach(() => {
+    Object.defineProperty(document, 'elementFromPoint', {
+      value: originalElementFromPoint,
+      writable: true,
+    });
+  });
+
+  afterAll(() => {
+    jest.clearAllMocks();
+  });
+
   it('renders input with label', () => {
     const label = 'Test Label';
-    render(
-      <TestWrapper>
-        <InputOTP {...defaultProps} label={label} />
-      </TestWrapper>,
-    );
+    renderWithFormProvider(<InputOTP {...defaultProps} label={label} />, {
+      defaultValues,
+    });
 
     expect(screen.getByLabelText(label)).toBeInTheDocument();
   });
 
   it('renders input with description', () => {
     const description = 'Test Description';
-    render(
-      <TestWrapper>
-        <InputOTP {...defaultProps} description={description} />
-      </TestWrapper>,
+    renderWithFormProvider(
+      <InputOTP {...defaultProps} description={description} />,
+      { defaultValues },
     );
 
     expect(screen.getByText(description)).toBeInTheDocument();
@@ -57,11 +55,9 @@ describe('InputOTP ui component', () => {
 
   it('renders correct number of input slots', () => {
     const length = 6;
-    render(
-      <TestWrapper>
-        <InputOTP {...defaultProps} length={length} />
-      </TestWrapper>,
-    );
+    renderWithFormProvider(<InputOTP {...defaultProps} length={length} />, {
+      defaultValues,
+    });
 
     const input = screen.getByRole('textbox');
     expect(input).toHaveAttribute('maxlength', length.toString());
@@ -70,10 +66,9 @@ describe('InputOTP ui component', () => {
   it('renders with correct group size', () => {
     const length = 10;
     const groupSize = 4;
-    render(
-      <TestWrapper>
-        <InputOTP {...defaultProps} length={length} groupSize={groupSize} />
-      </TestWrapper>,
+    renderWithFormProvider(
+      <InputOTP {...defaultProps} length={length} groupSize={groupSize} />,
+      { defaultValues },
     );
 
     const separators = screen.getAllByRole('separator');
@@ -84,11 +79,9 @@ describe('InputOTP ui component', () => {
 
   it('handles input changes', async () => {
     const onChange = jest.fn();
-    render(
-      <TestWrapper>
-        <InputOTP {...defaultProps} onChange={onChange} />
-      </TestWrapper>,
-    );
+    renderWithFormProvider(<InputOTP {...defaultProps} onChange={onChange} />, {
+      defaultValues,
+    });
 
     const input = screen.getByRole('textbox');
     await userEvent.type(input, '1234');
@@ -98,22 +91,21 @@ describe('InputOTP ui component', () => {
   });
 
   it('handles disabled state', () => {
-    render(
-      <TestWrapper>
-        <InputOTP {...defaultProps} disabled />
-      </TestWrapper>,
-    );
+    renderWithFormProvider(<InputOTP {...defaultProps} disabled />, {
+      defaultValues,
+    });
 
     const input = screen.getByRole('textbox');
     expect(input).toBeDisabled();
   });
 
   it('shows validation error', async () => {
-    render(
-      <TestWrapper>
-        <InputOTP {...defaultProps} name='error' />
-      </TestWrapper>,
-    );
+    const errorMessage = 'test error';
+
+    renderWithFormProvider(<InputOTP {...defaultProps} name='error' />, {
+      defaultValues,
+      errorMessage,
+    });
 
     await waitFor(() => {
       const error = screen.getByText(errorMessage);
@@ -127,11 +119,9 @@ describe('InputOTP ui component', () => {
       .mockImplementation(() => {});
 
     expect(() => {
-      render(
-        <TestWrapper>
-          <InputOTP {...defaultProps} length={0} />
-        </TestWrapper>,
-      );
+      renderWithFormProvider(<InputOTP {...defaultProps} length={0} />, {
+        defaultValues,
+      });
     }).toThrow('groupSize и separatorStep can only be positive');
 
     consoleError.mockRestore();
@@ -143,11 +133,9 @@ describe('InputOTP ui component', () => {
       .mockImplementation(() => {});
 
     expect(() => {
-      render(
-        <TestWrapper>
-          <InputOTP {...defaultProps} groupSize={0} />
-        </TestWrapper>,
-      );
+      renderWithFormProvider(<InputOTP {...defaultProps} groupSize={0} />, {
+        defaultValues,
+      });
     }).toThrow('groupSize и separatorStep can only be positive');
 
     consoleError.mockRestore();

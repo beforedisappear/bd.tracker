@@ -30,6 +30,7 @@ const Input = (props: IProps) => {
     description,
     className,
     onChange,
+    disabled,
     ...restProps
   } = props;
 
@@ -50,6 +51,7 @@ const Input = (props: IProps) => {
               {...field}
               type={type}
               data-testid='input'
+              disabled={disabled}
               onChange={v => {
                 field.onChange(v);
                 if (onChange) onChange(v);

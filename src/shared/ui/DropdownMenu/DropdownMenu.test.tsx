@@ -59,6 +59,7 @@ describe('DropdownMenu ui component', () => {
 
   it('renders label when provided', async () => {
     const label = 'Menu Label';
+
     render(<DropdownMenu {...defaultProps} label={label} />);
 
     const trigger = screen.getByRole('button', { name: 'Open Menu' });
@@ -102,6 +103,7 @@ describe('DropdownMenu ui component', () => {
 
   it('applies custom class name', async () => {
     const className = 'custom-menu';
+
     render(<DropdownMenu {...defaultProps} className={className} />);
 
     const trigger = screen.getByRole('button', { name: 'Open Menu' });
