@@ -40,3 +40,9 @@ export const WithDescription: Story = {
     description: TEST_DESCRIPTION,
   },
 };
+
+export const WithCustomClass: Story = {
+  args: {
+    className: 'border border-red-500',
+  },
+};

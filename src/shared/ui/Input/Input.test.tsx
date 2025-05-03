@@ -8,25 +8,28 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
   const methods = useForm({
     defaultValues: {
       test: '',
+      error: '',
     },
   });
 
   useEffect(() => {
-    methods.setError('test', {
+    methods.setError('error', {
       type: 'required',
-      message: 'This field is required',
+      message: errorMessage,
     });
   }, [methods]);
 
   return <FormProvider {...methods}>{children}</FormProvider>;
 };
 
-describe('Input ui component', () => {
-  const defaultProps = {
-    name: 'test',
-    type: 'text',
-  };
+const errorMessage = 'test error';
 
+const defaultProps = {
+  name: 'test',
+  type: 'text',
+};
+
+describe('Input ui component', () => {
   it('renders input with label', () => {
     const label = 'Test Label';
     render(
@@ -118,13 +121,13 @@ describe('Input ui component', () => {
   it('shows validation error', async () => {
     render(
       <TestWrapper>
-        <Input {...defaultProps} />
+        <Input {...defaultProps} name='error' />
       </TestWrapper>,
     );
 
     await waitFor(() => {
-      const errorMessage = screen.getByText('This field is required');
-      expect(errorMessage).toBeInTheDocument();
+      const error = screen.getByText(errorMessage);
+      expect(error).toBeInTheDocument();
     });
   });
 });

@@ -1,5 +1,7 @@
 'use client';
 
+import { cn } from '@/shared/lib/css';
+
 import { PureSwitch } from './PureSwitch';
 import {
   FormControl,
@@ -10,13 +12,12 @@ import {
 } from '../Form';
 
 import { useFormContext } from 'react-hook-form';
-import { cn } from '@/shared/lib/css';
 
 import type { ComponentProps } from 'react';
 
 type BaseProps = Omit<
   ComponentProps<typeof PureSwitch>,
-  'checked' | 'onCheckedChange'
+  'checked' | 'onChange'
 >;
 
 interface IProps extends BaseProps {
@@ -26,7 +27,8 @@ interface IProps extends BaseProps {
 }
 
 export function Switch(props: IProps) {
-  const { name, label, description, className, onChange, ...restProps } = props;
+  const { name, label, description, className, onCheckedChange, ...restProps } =
+    props;
   const { control } = useFormContext();
 
   const isWrapperExists = !!label || !!description;
@@ -37,11 +39,13 @@ export function Switch(props: IProps) {
       control={control}
       render={({ field }) => (
         <FormItem
-          className={cn({
-            ['flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm']:
-              isWrapperExists,
+          className={cn(
+            {
+              ['flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm']:
+                isWrapperExists,
+            },
             className,
-          })}
+          )}
         >
           {isWrapperExists && (
             <div className='space-y-0.5'>
@@ -53,12 +57,11 @@ export function Switch(props: IProps) {
           <FormControl>
             <PureSwitch
               {...restProps}
-              onChange={v => {
+              onCheckedChange={v => {
                 field.onChange(v);
-                if (onChange) onChange(v);
+                if (onCheckedChange) onCheckedChange(v);
               }}
               checked={field.value}
-              onCheckedChange={field.onChange}
             />
           </FormControl>
         </FormItem>

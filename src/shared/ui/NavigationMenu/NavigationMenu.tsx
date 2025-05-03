@@ -11,7 +11,7 @@ import { NavigationMenuListItem } from './NavigationMenuListItem';
 import { navigationMenuTriggerStyle } from './NavigationMenu.utils';
 
 import type { NavigationMenuItems } from './NavigationMenu.types';
-import { ComponentProps } from 'react';
+import type { ComponentProps } from 'react';
 
 interface IProps extends ComponentProps<typeof NavigationMenuContainer> {
   items: NavigationMenuItems;
