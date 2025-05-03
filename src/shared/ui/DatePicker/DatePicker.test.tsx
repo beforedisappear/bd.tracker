@@ -1,68 +1,54 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { FormProvider, useForm } from 'react-hook-form';
 import { DatePicker } from './DatePicker';
+import { renderWithFormProvider } from '@/shared/lib/testing';
 import { getDate } from 'date-fns';
 
 const defaultDate = new Date('2024-03-15');
 
-const TestWrapper = ({ children }: { children: React.ReactNode }) => {
-  const methods = useForm({
-    defaultValues: {
-      date: defaultDate,
-    },
-  });
-
-  return <FormProvider {...methods}>{children}</FormProvider>;
+const defaultValues = {
+  date: defaultDate,
 };
 
 describe('DatePicker ui component', () => {
   it('renders with default value', () => {
-    render(
-      <TestWrapper>
-        <DatePicker name='date' />
-      </TestWrapper>,
-    );
+    renderWithFormProvider(<DatePicker name='date' />, {
+      defaultValues,
+    });
     const button = screen.getByRole('button', { name: /15\.03\.2024/ });
     expect(button).toBeInTheDocument();
   });
 
   it('renders with label', () => {
     const label = 'Select date';
-    render(
-      <TestWrapper>
-        <DatePicker name='date' label={label} />
-      </TestWrapper>,
-    );
+    renderWithFormProvider(<DatePicker name='date' label={label} />, {
+      defaultValues,
+    });
     expect(screen.getByText(label)).toBeInTheDocument();
   });
 
   it('renders with description', () => {
     const description = 'Choose a date';
-    render(
-      <TestWrapper>
-        <DatePicker name='date' description={description} />
-      </TestWrapper>,
+    renderWithFormProvider(
+      <DatePicker name='date' description={description} />,
+      { defaultValues },
     );
     expect(screen.getByText(description)).toBeInTheDocument();
   });
 
   it('renders with disabled trigger', () => {
-    render(
-      <TestWrapper>
-        <DatePicker name='date' disabled />
-      </TestWrapper>,
-    );
+    renderWithFormProvider(<DatePicker name='date' disabled />, {
+      defaultValues,
+    });
 
     const trigger = screen.getByTestId('date-picker-trigger');
     expect(trigger).toBeDisabled();
   });
 
   it('handles disabled dates', async () => {
-    render(
-      <TestWrapper>
-        <DatePicker name='date' disabledDates={defaultDate} />
-      </TestWrapper>,
+    renderWithFormProvider(
+      <DatePicker name='date' disabledDates={defaultDate} />,
+      { defaultValues },
     );
 
     const trigger = screen.getByTestId('date-picker-trigger');
@@ -79,10 +65,9 @@ describe('DatePicker ui component', () => {
 
   it('handles disabled dates function', async () => {
     const isDivisibleBy5 = (date: Date) => getDate(date) % 5 === 0;
-    render(
-      <TestWrapper>
-        <DatePicker name='date' disabledDates={isDivisibleBy5} />
-      </TestWrapper>,
+    renderWithFormProvider(
+      <DatePicker name='date' disabledDates={isDivisibleBy5} />,
+      { defaultValues },
     );
 
     const trigger = screen.getByTestId('date-picker-trigger');
@@ -102,11 +87,9 @@ describe('DatePicker ui component', () => {
   });
 
   it('handles date selection', async () => {
-    render(
-      <TestWrapper>
-        <DatePicker name='date' />
-      </TestWrapper>,
-    );
+    renderWithFormProvider(<DatePicker name='date' />, {
+      defaultValues,
+    });
 
     const trigger = screen.getByTestId('date-picker-trigger');
     await userEvent.click(trigger);
@@ -119,11 +102,9 @@ describe('DatePicker ui component', () => {
   });
 
   it('handles keyboard navigation', async () => {
-    render(
-      <TestWrapper>
-        <DatePicker name='date' />
-      </TestWrapper>,
-    );
+    renderWithFormProvider(<DatePicker name='date' />, {
+      defaultValues,
+    });
 
     const button = screen.getByRole('button');
     await userEvent.click(button);

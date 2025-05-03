@@ -1,27 +1,21 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Switch } from './Switch';
-import { FormProvider, useForm } from 'react-hook-form';
+import { renderWithFormProvider } from '@/shared/lib/testing';
 
 const defaultProps = {
   name: 'test',
 };
 
-const TestWrapper = ({ children }: { children: React.ReactNode }) => {
-  const methods = useForm({
-    defaultValues: { test: false },
-  });
-
-  return <FormProvider {...methods}>{children}</FormProvider>;
+const defaultValues = {
+  test: false,
 };
 
 describe('Switch ui component', () => {
   it('renders simple switch', () => {
-    render(
-      <TestWrapper>
-        <Switch {...defaultProps} />
-      </TestWrapper>,
-    );
+    renderWithFormProvider(<Switch {...defaultProps} />, {
+      defaultValues,
+    });
 
     const switchElement = screen.getByRole('switch');
     expect(switchElement).toBeInTheDocument();
@@ -30,32 +24,29 @@ describe('Switch ui component', () => {
 
   it('renders with label', () => {
     const label = 'Test Label';
-    render(
-      <TestWrapper>
-        <Switch {...defaultProps} label={label} />
-      </TestWrapper>,
-    );
+
+    renderWithFormProvider(<Switch {...defaultProps} label={label} />, {
+      defaultValues,
+    });
 
     expect(screen.getByText(label)).toBeInTheDocument();
   });
 
   it('renders with description', () => {
     const description = 'Test Description';
-    render(
-      <TestWrapper>
-        <Switch {...defaultProps} description={description} />
-      </TestWrapper>,
+
+    renderWithFormProvider(
+      <Switch {...defaultProps} description={description} />,
+      { defaultValues },
     );
 
     expect(screen.getByText(description)).toBeInTheDocument();
   });
 
   it('toggles state when clicked', async () => {
-    render(
-      <TestWrapper>
-        <Switch {...defaultProps} />
-      </TestWrapper>,
-    );
+    renderWithFormProvider(<Switch {...defaultProps} />, {
+      defaultValues,
+    });
 
     const switchElement = screen.getByRole('switch');
     expect(switchElement).not.toBeChecked();
@@ -69,10 +60,10 @@ describe('Switch ui component', () => {
 
   it('calls onChange when toggled', async () => {
     const onChange = jest.fn();
-    render(
-      <TestWrapper>
-        <Switch {...defaultProps} onCheckedChange={onChange} />
-      </TestWrapper>,
+
+    renderWithFormProvider(
+      <Switch {...defaultProps} onCheckedChange={onChange} />,
+      { defaultValues: { test: false } },
     );
 
     const switchElement = screen.getByRole('switch');
@@ -82,22 +73,18 @@ describe('Switch ui component', () => {
   });
 
   it('renders in disabled state', () => {
-    render(
-      <TestWrapper>
-        <Switch {...defaultProps} disabled />
-      </TestWrapper>,
-    );
+    renderWithFormProvider(<Switch {...defaultProps} disabled />, {
+      defaultValues,
+    });
 
     const switchElement = screen.getByRole('switch');
     expect(switchElement).toBeDisabled();
   });
 
   it('cannot be toggled when disabled', async () => {
-    render(
-      <TestWrapper>
-        <Switch {...defaultProps} disabled />
-      </TestWrapper>,
-    );
+    renderWithFormProvider(<Switch {...defaultProps} disabled />, {
+      defaultValues,
+    });
 
     const switchElement = screen.getByRole('switch');
     expect(switchElement).not.toBeChecked();
@@ -108,10 +95,9 @@ describe('Switch ui component', () => {
 
   it('applies custom className', () => {
     const customClass = 'custom-class';
-    render(
-      <TestWrapper>
-        <Switch {...defaultProps} className={customClass} />
-      </TestWrapper>,
+    renderWithFormProvider(
+      <Switch {...defaultProps} className={customClass} />,
+      { defaultValues },
     );
 
     const formItem = screen.getByRole('switch').parentElement;

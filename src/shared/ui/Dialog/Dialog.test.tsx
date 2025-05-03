@@ -2,14 +2,20 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Dialog } from './Dialog';
 
-describe('Dialog ui component', () => {
-  const defaultProps = {
-    title: 'Test Dialog',
-    trigger: <button>Open Dialog</button>,
-  };
+const defaultProps = {
+  title: 'Test Dialog',
+  trigger: <button>Open Dialog</button>,
+};
 
-  beforeAll(() => {
-    jest.spyOn(console, 'warn').mockImplementation(() => {});
+describe('Dialog ui component', () => {
+  let consoleWarnSpy: jest.SpyInstance;
+
+  beforeEach(() => {
+    consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    consoleWarnSpy.mockRestore();
   });
 
   it('renders trigger button', () => {
@@ -31,6 +37,7 @@ describe('Dialog ui component', () => {
 
   it('renders dialog with description when provided', async () => {
     const description = 'Test Description';
+
     render(
       <Dialog {...defaultProps} description={description}>
         Content
@@ -45,6 +52,7 @@ describe('Dialog ui component', () => {
 
   it('renders dialog content', async () => {
     const content = 'Dialog Content';
+
     render(<Dialog {...defaultProps}>{content}</Dialog>);
 
     const trigger = screen.getByRole('button', { name: 'Open Dialog' });
@@ -94,6 +102,7 @@ describe('Dialog ui component', () => {
 
   it('calls onOpenChange when dialog is closed', async () => {
     const onOpenChange = jest.fn();
+
     render(
       <Dialog {...defaultProps} onOpenChange={onOpenChange}>
         Content

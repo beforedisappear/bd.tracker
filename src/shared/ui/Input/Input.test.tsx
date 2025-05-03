@@ -1,28 +1,12 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Input } from './Input';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useEffect } from 'react';
+import { renderWithFormProvider } from '@/shared/lib/testing';
 
-const TestWrapper = ({ children }: { children: React.ReactNode }) => {
-  const methods = useForm({
-    defaultValues: {
-      test: '',
-      error: '',
-    },
-  });
-
-  useEffect(() => {
-    methods.setError('error', {
-      type: 'required',
-      message: errorMessage,
-    });
-  }, [methods]);
-
-  return <FormProvider {...methods}>{children}</FormProvider>;
+const defaultValues = {
+  test: '',
+  error: '',
 };
-
-const errorMessage = 'test error';
 
 const defaultProps = {
   name: 'test',
@@ -32,21 +16,22 @@ const defaultProps = {
 describe('Input ui component', () => {
   it('renders input with label', () => {
     const label = 'Test Label';
-    render(
-      <TestWrapper>
-        <Input {...defaultProps} label={label} />
-      </TestWrapper>,
-    );
+
+    renderWithFormProvider(<Input {...defaultProps} label={label} />, {
+      defaultValues,
+    });
 
     expect(screen.getByLabelText(label)).toBeInTheDocument();
   });
 
   it('renders input with description', () => {
     const description = 'Test Description';
-    render(
-      <TestWrapper>
-        <Input {...defaultProps} description={description} />
-      </TestWrapper>,
+
+    renderWithFormProvider(
+      <Input {...defaultProps} description={description} />,
+      {
+        defaultValues,
+      },
     );
 
     expect(screen.getByText(description)).toBeInTheDocument();
@@ -54,11 +39,10 @@ describe('Input ui component', () => {
 
   it('handles input changes', async () => {
     const onChange = jest.fn();
-    render(
-      <TestWrapper>
-        <Input {...defaultProps} onChange={onChange} />
-      </TestWrapper>,
-    );
+
+    renderWithFormProvider(<Input {...defaultProps} onChange={onChange} />, {
+      defaultValues,
+    });
 
     const input = screen.getByTestId('input');
     await userEvent.type(input, 'test value');
@@ -69,11 +53,10 @@ describe('Input ui component', () => {
 
   it('applies custom class name', () => {
     const className = 'custom-input';
-    render(
-      <TestWrapper>
-        <Input {...defaultProps} className={className} />
-      </TestWrapper>,
-    );
+
+    renderWithFormProvider(<Input {...defaultProps} className={className} />, {
+      defaultValues,
+    });
 
     const inputWrapper = screen.getByTestId('input').parentElement;
     expect(inputWrapper).toHaveClass(className);
@@ -83,24 +66,24 @@ describe('Input ui component', () => {
     const types = ['text', 'password', 'email', 'number'] as const;
 
     types.forEach(type => {
-      const { unmount } = render(
-        <TestWrapper>
-          <Input {...defaultProps} type={type} />
-        </TestWrapper>,
+      const { unmount } = renderWithFormProvider(
+        <Input {...defaultProps} type={type} />,
+        {
+          defaultValues,
+        },
       );
 
       const input = screen.getByTestId('input');
       expect(input).toHaveAttribute('type', type);
+
       unmount();
     });
   });
 
   it('handles disabled state', () => {
-    render(
-      <TestWrapper>
-        <Input {...defaultProps} disabled />
-      </TestWrapper>,
-    );
+    renderWithFormProvider(<Input {...defaultProps} disabled />, {
+      defaultValues,
+    });
 
     const input = screen.getByTestId('input');
     expect(input).toBeDisabled();
@@ -108,10 +91,12 @@ describe('Input ui component', () => {
 
   it('handles placeholder', () => {
     const placeholder = 'Enter text here';
-    render(
-      <TestWrapper>
-        <Input {...defaultProps} placeholder={placeholder} />
-      </TestWrapper>,
+
+    renderWithFormProvider(
+      <Input {...defaultProps} placeholder={placeholder} />,
+      {
+        defaultValues,
+      },
     );
 
     const input = screen.getByPlaceholderText(placeholder);
@@ -119,11 +104,12 @@ describe('Input ui component', () => {
   });
 
   it('shows validation error', async () => {
-    render(
-      <TestWrapper>
-        <Input {...defaultProps} name='error' />
-      </TestWrapper>,
-    );
+    const errorMessage = 'test error';
+
+    renderWithFormProvider(<Input {...defaultProps} name='error' />, {
+      defaultValues,
+      errorMessage,
+    });
 
     await waitFor(() => {
       const error = screen.getByText(errorMessage);

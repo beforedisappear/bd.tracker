@@ -10,8 +10,14 @@ const defaultProps = {
 };
 
 describe('Sheet ui component', () => {
-  beforeAll(() => {
-    jest.spyOn(console, 'warn').mockImplementation(() => {});
+  let consoleWarnSpy: jest.SpyInstance;
+
+  beforeEach(() => {
+    consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    consoleWarnSpy.mockRestore();
   });
 
   it('renders trigger button', () => {

@@ -2,13 +2,15 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Drawer } from './Drawer';
 
-describe('Drawer ui component', () => {
-  const defaultProps = {
-    title: 'Test Drawer',
-    trigger: <button>Open Drawer</button>,
-  };
+const defaultProps = {
+  title: 'Test Drawer',
+  trigger: <button>Open Drawer</button>,
+};
 
-  beforeAll(() => {
+describe('Drawer ui component', () => {
+  let consoleWarnSpy: jest.SpyInstance;
+
+  beforeEach(() => {
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
       value: jest.fn().mockImplementation(query => ({
@@ -27,7 +29,11 @@ describe('Drawer ui component', () => {
     Element.prototype.releasePointerCapture = jest.fn();
     Element.prototype.hasPointerCapture = jest.fn();
 
-    jest.spyOn(console, 'warn').mockImplementation(() => {});
+    consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    consoleWarnSpy.mockRestore();
   });
 
   it('renders trigger button', () => {

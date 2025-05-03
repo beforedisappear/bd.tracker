@@ -1,102 +1,80 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Select } from './Select';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useEffect } from 'react';
+import { renderWithFormProvider } from '@/shared/lib/testing';
 
 const mockOptions = [
-  { value: '1', name: 'Option 1' },
-  { value: '2', name: 'Option 2' },
-  { value: '3', name: 'Option 3' },
+  { name: 'Option 1', value: '1' },
+  { name: 'Option 2', value: '2' },
+  { name: 'Option 3', value: '3' },
 ];
-
-const errorMessage = 'This is an error message';
-
-const TestWrapper = ({ children }: { children: React.ReactNode }) => {
-  const methods = useForm({
-    defaultValues: { test: mockOptions[0].value, error: undefined },
-  });
-
-  useEffect(() => {
-    methods.setError('error', { message: errorMessage });
-  }, [methods]);
-
-  return <FormProvider {...methods}>{children}</FormProvider>;
-};
 
 const defaultProps = {
   name: 'test',
   options: mockOptions,
 };
 
+const defaultValues = {
+  test: '',
+  error: '',
+};
+
 describe('Select ui component', () => {
-  beforeAll(() => {
+  beforeEach(() => {
     window.HTMLElement.prototype.scrollIntoView = jest.fn();
     window.HTMLElement.prototype.releasePointerCapture = jest.fn();
     window.HTMLElement.prototype.hasPointerCapture = jest.fn();
   });
 
-  it('renders with label', () => {
-    const label = 'Test Label';
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
-    render(
-      <TestWrapper>
-        <Select {...defaultProps} name='placeholder' label={label} />
-      </TestWrapper>,
-    );
+  it('renders select with label', () => {
+    const label = 'Test Label';
+    renderWithFormProvider(<Select {...defaultProps} label={label} />, {
+      defaultValues: { test: '' },
+    });
 
     expect(screen.getByText(label)).toBeInTheDocument();
   });
 
-  it('renders with placeholder', () => {
-    const placeholder = 'Select an option';
-
-    render(
-      <TestWrapper>
-        <Select
-          {...defaultProps}
-          name='placeholder'
-          placeholder={placeholder}
-        />
-      </TestWrapper>,
-    );
-
-    expect(screen.getByText(placeholder)).toBeInTheDocument();
-  });
-
-  it('renders with description', () => {
+  it('renders select with description', () => {
     const description = 'Test Description';
-
-    render(
-      <TestWrapper>
-        <Select {...defaultProps} description={description} />
-      </TestWrapper>,
+    renderWithFormProvider(
+      <Select {...defaultProps} description={description} />,
+      {
+        defaultValues: { test: '' },
+      },
     );
 
     expect(screen.getByText(description)).toBeInTheDocument();
   });
 
-  it('renders with select label', async () => {
-    const selectLabel = 'Test Select Label';
-
-    render(
-      <TestWrapper>
-        <Select {...defaultProps} selectLabel={selectLabel} />
-      </TestWrapper>,
+  it('renders placeholder when no value selected', () => {
+    const placeholder = 'Select an option';
+    renderWithFormProvider(
+      <Select {...defaultProps} placeholder={placeholder} />,
+      {
+        defaultValues: { test: '' },
+      },
     );
 
-    const trigger = screen.getByRole('combobox');
-    await userEvent.click(trigger);
+    expect(screen.getByText(placeholder)).toBeInTheDocument();
+  });
 
-    expect(screen.getByText(selectLabel)).toBeInTheDocument();
+  it('renders selected value', () => {
+    renderWithFormProvider(<Select {...defaultProps} />, {
+      defaultValues: { test: '2' },
+    });
+
+    expect(screen.getByText('Option 2')).toBeInTheDocument();
   });
 
   it('renders all options when opened', async () => {
-    render(
-      <TestWrapper>
-        <Select name='test' options={mockOptions} />
-      </TestWrapper>,
-    );
+    renderWithFormProvider(<Select {...defaultProps} />, {
+      defaultValues: { test: '' },
+    });
 
     const trigger = screen.getByRole('combobox');
     await userEvent.click(trigger);
@@ -111,10 +89,11 @@ describe('Select ui component', () => {
 
   it('calls onChange when value is selected', async () => {
     const onChange = jest.fn();
-    render(
-      <TestWrapper>
-        <Select {...defaultProps} onValueChange={onChange} />
-      </TestWrapper>,
+    renderWithFormProvider(
+      <Select {...defaultProps} onValueChange={onChange} />,
+      {
+        defaultValues: { test: '' },
+      },
     );
 
     const trigger = screen.getByRole('combobox');
@@ -127,11 +106,9 @@ describe('Select ui component', () => {
   });
 
   it('selects value when option is clicked', async () => {
-    render(
-      <TestWrapper>
-        <Select {...defaultProps} />
-      </TestWrapper>,
-    );
+    renderWithFormProvider(<Select {...defaultProps} />, {
+      defaultValues: { test: '' },
+    });
 
     const trigger = screen.getByRole('combobox');
     await userEvent.click(trigger);
@@ -143,32 +120,29 @@ describe('Select ui component', () => {
   });
 
   it('renders in disabled state', () => {
-    render(
-      <TestWrapper>
-        <Select {...defaultProps} disabled />
-      </TestWrapper>,
-    );
+    renderWithFormProvider(<Select {...defaultProps} disabled />, {
+      defaultValues: { test: '' },
+    });
 
     const trigger = screen.getByRole('combobox');
     expect(trigger).toBeDisabled();
   });
 
   it('displays error message', () => {
-    render(
-      <TestWrapper>
-        <Select {...defaultProps} name='error' />
-      </TestWrapper>,
-    );
+    const errorMessage = 'test error';
+
+    renderWithFormProvider(<Select {...defaultProps} name='error' />, {
+      defaultValues: { error: '' },
+      errorMessage,
+    });
 
     expect(screen.getByText(errorMessage)).toBeInTheDocument();
   });
 
   it('cannot be opened when disabled', async () => {
-    render(
-      <TestWrapper>
-        <Select {...defaultProps} disabled />
-      </TestWrapper>,
-    );
+    renderWithFormProvider(<Select {...defaultProps} disabled />, {
+      defaultValues,
+    });
 
     const trigger = screen.getByRole('combobox');
     await userEvent.click(trigger);
