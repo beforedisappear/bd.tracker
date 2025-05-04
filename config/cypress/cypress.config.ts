@@ -1,8 +1,8 @@
+import dotenv from 'dotenv';
+import path from 'path';
 import { defineConfig } from 'cypress';
 import webpackPreprocessor from '@cypress/webpack-preprocessor';
 import { CypressWebpackConfig } from './webpack.config';
-import dotenv from 'dotenv';
-import path from 'path';
 
 //load env variables
 dotenv.config({
@@ -17,9 +17,16 @@ export default defineConfig({
     },
   },
 
+  env: {
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PUBLIC_URL: process.env.NEXT_PUBLIC_URL,
+    TEST_USER_AUTH_CODE: process.env.TEST_USER_AUTH_CODE,
+    TEST_USER_EMAIL: process.env.TEST_USER_EMAIL,
+  },
+
   e2e: {
     baseUrl: process.env.NEXT_PUBLIC_URL,
-    specPattern: 'src/**/*.cy.{js,jsx,ts,tsx}',
+    specPattern: '**/*.cy.{js,jsx,ts,tsx}',
     supportFile: 'config/cypress/support/e2e.ts',
     fixturesFolder: 'config/cypress/fixtures',
     videosFolder: 'config/cypress/videos',

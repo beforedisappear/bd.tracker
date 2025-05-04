@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "composite": true,
     "target": "es5",
     "lib": ["es5", "dom"],
     "sourceMap": true,
@@ -13,5 +12,14 @@
       "#/*": ["../../app/*"]
     }
   },
-  "include": ["../../src/**/*.cy.ts", "../../src/**/*.cy.tsx", "../../src/**/*"]
+  "include": [
+    "e2e/**/*.cy.ts",
+    "e2e/**/*.cy.tsx",
+    "support/**/*.ts",
+    "support/**/*.tsx",
+    "helpers/**/*.ts",
+    "helpers/**/*.tsx",
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ]
 }

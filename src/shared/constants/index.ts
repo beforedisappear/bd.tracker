@@ -17,3 +17,8 @@ export {
   GITHUB_REPO_URL,
   TELEGRAM_CONTACT_URL,
 } from './url.constants';
+
+export {
+  ACCESS_TOKEN_COOKIE_NAME,
+  REFRESH_TOKEN_COOKIE_NAME,
+} from './cookie.constants';

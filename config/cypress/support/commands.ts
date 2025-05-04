@@ -1,37 +1,29 @@
-/// <reference types="cypress" />
-// ***********************************************
-// This example commands.ts shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-//
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }
+import { auth, mockAuth } from './commands/auth';
+import { login, mockLogin, mockLoginInvalidCode } from './commands/login';
+import { loginAndAuth, mockLoginAndAuth } from './commands/loginAndAuth';
+import { selectByTestId } from '../helpers/getByTestId';
+import { logout, mockLogout } from './commands/logout';
+import { setJwt } from './commands/common';
+// requests
+Cypress.Commands.add('auth', auth);
+Cypress.Commands.add('mockAuth', mockAuth);
+Cypress.Commands.add('login', login);
+Cypress.Commands.add('mockLogin', mockLogin);
+Cypress.Commands.add('mockLoginInvalidCode', mockLoginInvalidCode);
+Cypress.Commands.add('loginAndAuth', loginAndAuth);
+Cypress.Commands.add('mockLoginAndAuth', mockLoginAndAuth);
+Cypress.Commands.add('logout', logout);
+Cypress.Commands.add('mockLogout', mockLogout);
+Cypress.Commands.add('setJwt', setJwt);
+// helpers
+Cypress.Commands.add('getByTestId', (testId: string) =>
+  cy.get(selectByTestId(testId)),
+);
+
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      getByTestId(testId: string): Chainable<JQuery<HTMLElement>>;
+    }
+  }
+}

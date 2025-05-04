@@ -87,11 +87,13 @@ export function AuthByEmail({}: Props) {
             label='Адрес электронной почты'
             disabled={isAuthing}
             className='w-full'
+            errorMessageTestId='auth-by-email-first-step-error-message'
           />
         )}
 
         {currentStep === '2' && (
           <InputOTP
+            type='tel'
             name='code'
             length={6}
             groupSize={3}
@@ -99,6 +101,7 @@ export function AuthByEmail({}: Props) {
             disabled={isLogging || isLoggedIn}
             className='text-md'
             onChange={v => v.length === 6 && onSubmit()}
+            errorMessageTestId='auth-by-email-second-step-error-message'
           />
         )}
 

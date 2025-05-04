@@ -8,12 +8,12 @@ import {
 import { getRouteByPath } from '@/shared/lib/routes';
 import { getCleanPath } from './middleware.utils';
 
-import { REFRESH_TOKEN_NAME } from '@/shared/constants/cookie.constants';
+import { REFRESH_TOKEN_COOKIE_NAME } from '@/shared/constants';
 
 export const protectionMiddleware = (req: NextRequest) => {
   const { cookies } = req;
 
-  const isAuth = !!cookies.get(REFRESH_TOKEN_NAME)?.value;
+  const isAuth = !!cookies.get(REFRESH_TOKEN_COOKIE_NAME)?.value;
 
   const currentRoute = getRouteByPath(getCleanPath(req.nextUrl.pathname));
 

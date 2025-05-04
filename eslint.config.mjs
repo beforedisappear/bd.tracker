@@ -32,6 +32,7 @@ const eslintConfig = [
         },
       ],
       '@typescript-eslint/no-empty-object-type': 'off',
+      '@typescript-eslint/no-namespace': 'off',
     },
     settings: {
       'import/resolver': {
