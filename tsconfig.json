@@ -37,5 +37,5 @@
     "**/*.mjs",
     "**/*.cjs"
   ],
-  "exclude": ["node_modules", "**/cypress.config.ts", "cypress", "**/*.cy.tsx"]
+  "exclude": ["node_modules", "config/cypress/**/*"]
 }
