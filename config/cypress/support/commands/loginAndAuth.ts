@@ -9,7 +9,8 @@ export const loginAndAuth = (data: AuthDtoReq) => {
     .auth({ email: data.email })
     .then(() =>
       cy.login({ email: data.email, code: Cypress.env('TEST_USER_AUTH_CODE') }),
-    );
+    )
+    .then(response => cy.setJwt(response).then(() => response));
 };
 
 export const mockLoginAndAuth = () => {

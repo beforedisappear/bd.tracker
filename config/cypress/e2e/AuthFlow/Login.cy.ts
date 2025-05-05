@@ -1,32 +1,24 @@
-import { getLoginRoutePath } from '@/shared/config/routes';
 import { getRandomCode } from '../../helpers/getRandomCode';
-import {
-  ACCESS_TOKEN_COOKIE_NAME,
-  REFRESH_TOKEN_COOKIE_NAME,
-} from '@/shared/constants/cookie.constants';
-
+import { LoginPage } from '../../pageObjects/LoginPage';
+import { HomePage } from '../../pageObjects/HomePage';
 describe('Auth Flow | login page form', () => {
-  const emailField = 'input[name="email"]';
-  const codeField = 'input[name="code"]';
-  const submitButton = 'button[type="submit"]';
-  const loginRoute = getLoginRoutePath();
+  const loginPage = new LoginPage();
+  const homePage = new HomePage();
 
   beforeEach(() => {
-    cy.visit(loginRoute);
+    loginPage.visit();
   });
 
   context('ui', () => {
     it('should show email input on first step', () => {
-      cy.get(emailField).should('be.visible');
+      loginPage.isEmailStep();
     });
 
     it('should validate email format', () => {
-      cy.get(emailField).type('invalid-email');
-      cy.get(submitButton).click();
+      loginPage.fillEmail('invalid-email');
+      loginPage.clickSubmit();
 
-      cy.getByTestId('auth-by-email-first-step-error-message').should(
-        'be.visible',
-      );
+      loginPage.isFirstStepError();
     });
 
     it('should proceed to second step with valid email', () => {
@@ -34,14 +26,11 @@ describe('Auth Flow | login page form', () => {
 
       cy.mockAuth();
 
-      cy.get(emailField).type(email);
-      cy.get(submitButton).click();
+      loginPage.fillEmail(email).clickSubmit();
 
-      // Wait for the auth request to complete
       cy.wait('@authRequest');
 
-      // Verify we're on the second step
-      cy.get(codeField).should('be.visible');
+      loginPage.isCodeStep();
     });
 
     it('should show resend code button with timer on second step', () => {
@@ -49,50 +38,64 @@ describe('Auth Flow | login page form', () => {
 
       cy.mockAuth();
 
-      cy.get(emailField).type(email);
-      cy.get(submitButton).click();
+      loginPage.fillEmail(email).clickSubmit();
 
       cy.wait('@authRequest');
 
-      cy.getByTestId('auth-by-email-again-button').should('be.visible');
+      loginPage.isResendCodeButtonVisible();
     });
 
     it('should show error message for invalid code', () => {
       cy.mockAuth().as('authRequest');
       cy.mockLoginInvalidCode().as('loginRequest');
 
-      cy.get(emailField).type(Cypress.env('TEST_USER_EMAIL'));
-      cy.get(submitButton).click();
+      loginPage.fillEmail(Cypress.env('TEST_USER_EMAIL')).clickSubmit();
 
       cy.wait('@authRequest');
-      // Second step with invalid code
-      cy.get(codeField).type(
-        getRandomCode(Cypress.env('TEST_USER_AUTH_CODE')!),
-      );
-      cy.get(submitButton).click();
+
+      loginPage
+        .fillCode(getRandomCode(Cypress.env('TEST_USER_AUTH_CODE')!))
+        .clickSubmit();
 
       cy.wait('@loginRequest');
 
-      // Should show error message
-      cy.getByTestId('auth-by-email-second-step-error-message').should(
-        'be.visible',
-      );
+      loginPage.isSecondStepError();
+    });
+
+    it('should proceed to the home page after login', () => {
+      cy.mockAuth();
+      cy.mockLogin();
+
+      loginPage.fillEmail(Cypress.env('TEST_USER_EMAIL')).clickSubmit();
+
+      cy.wait('@authRequest');
+
+      loginPage.fillCode(Cypress.env('TEST_USER_AUTH_CODE'));
+
+      homePage.isHomePage();
     });
   });
 
   context('api', () => {
-    it('should redirect to the home page after login', () => {
+    it('should redirect to the home page after login request', () => {
       cy.loginAndAuth({
         email: Cypress.env('TEST_USER_EMAIL'),
         code: Cypress.env('TEST_USER_AUTH_CODE'),
-      }).then(res => {
-        cy.setCookie(ACCESS_TOKEN_COOKIE_NAME, res.accessToken);
-        cy.setCookie(REFRESH_TOKEN_COOKIE_NAME, res.refreshToken);
       });
 
       cy.reload();
 
-      cy.url().should('not.include', loginRoute);
+      homePage.isHomePage();
+    });
+
+    it('should redirect to the home page after login form submit', () => {
+      cy.mockGetUserTeamList(); // не относится к сценарию
+
+      loginPage.fillEmail(Cypress.env('TEST_USER_EMAIL')).clickSubmit();
+
+      loginPage.fillCode(Cypress.env('TEST_USER_AUTH_CODE'));
+
+      homePage.isHomePage();
     });
   });
 });

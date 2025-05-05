@@ -1,37 +1,37 @@
-import { getHomeRoutePath, getMainRoutePath } from '@/shared/config/routes';
 import {
   ACCESS_TOKEN_COOKIE_NAME,
   REFRESH_TOKEN_COOKIE_NAME,
 } from '@/shared/constants';
+import { HomePage } from '../../pageObjects/HomePage';
 
 describe('Auth Flow | logout', () => {
-  const homeRoute = getHomeRoutePath();
-  const mainRoute = getMainRoutePath();
-
-  beforeEach(() => {
-    cy.loginAndAuth({
-      email: Cypress.env('TEST_USER_EMAIL'),
-      code: Cypress.env('TEST_USER_AUTH_CODE'),
-    }).then(res => {
-      cy.setJwt(res);
-    });
-
-    cy.visit(homeRoute);
-  });
+  const homePage = new HomePage();
 
   context('ui', () => {
     it('should logout user when clicking logout button', () => {
-      cy.visit(homeRoute);
+      cy.mockLoginAndAuth();
+      cy.mockGetUserTeamList();
+      cy.mockLogout();
 
-      cy.getByTestId('logout-button').click();
+      homePage.visit();
 
-      cy.url().should('not.include', homeRoute);
-      cy.url().should('include', mainRoute);
+      homePage.clickLogoutBtn();
+
+      homePage.isNotHomePage();
     });
   });
 
   context('api', () => {
-    it('should logout user', () => {
+    beforeEach(() => {
+      cy.loginAndAuth({
+        email: Cypress.env('TEST_USER_EMAIL'),
+        code: Cypress.env('TEST_USER_AUTH_CODE'),
+      });
+
+      homePage.visit();
+    });
+
+    it('app should redirect to the login page after logout request', () => {
       cy.getCookie(REFRESH_TOKEN_COOKIE_NAME).then(cookie =>
         cy.logout({ refreshToken: cookie.value }),
       );
@@ -41,6 +41,12 @@ describe('Auth Flow | logout', () => {
 
       cy.getCookie(REFRESH_TOKEN_COOKIE_NAME).should('be.null');
       cy.getCookie(ACCESS_TOKEN_COOKIE_NAME).should('be.null');
+    });
+
+    it('should redirect to the login page after logout form submit', () => {
+      homePage.clickLogoutBtn();
+
+      homePage.isNotHomePage();
     });
   });
 });

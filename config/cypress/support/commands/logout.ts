@@ -16,8 +16,6 @@ export const logout = (data: LogoutDtoReq) => {
 export const mockLogout = () => {
   cy.intercept('POST', `${Cypress.env('NEXT_PUBLIC_API_URL')}/logout`, {
     statusCode: 204,
-  }).then(() => {
-    cy.clearCookies();
   });
 };
 

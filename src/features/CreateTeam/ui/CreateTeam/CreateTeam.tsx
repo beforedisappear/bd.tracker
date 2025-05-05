@@ -41,7 +41,12 @@ export function CreateTeam({}: Props) {
   });
 
   const trigger = (
-    <Button variant={null} className='mx-auto mt-2 w-fit'>
+    <Button
+      type='button'
+      variant={null}
+      className='mx-auto mt-2 w-fit'
+      data-testid='create-team-button'
+    >
       Создать команду
     </Button>
   );
@@ -52,6 +57,7 @@ export function CreateTeam({}: Props) {
       titleClassName='text-center'
       trigger={trigger}
       className='h-80 max-w-96'
+      data-testid='create-team-dialog'
     >
       <FormProvider {...form}>
         <form onSubmit={onSubmit} className='flex flex-col gap-2 h-full'>
@@ -61,7 +67,9 @@ export function CreateTeam({}: Props) {
 
           <Input name='name' label='Название команды' autoComplete='off' />
 
-          <Button className='mt-auto'>Создать</Button>
+          <Button className='mt-auto' type='submit'>
+            Создать
+          </Button>
         </form>
       </FormProvider>
     </Dialog>

@@ -52,7 +52,6 @@ const Input = (props: IProps) => {
               {...restProps}
               {...field}
               type={type}
-              data-testid='input'
               disabled={disabled}
               onChange={v => {
                 field.onChange(v);
