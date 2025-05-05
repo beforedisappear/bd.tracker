@@ -20,6 +20,7 @@ interface IProps extends ComponentProps<typeof PureInput> {
   name: string;
   label?: string;
   description?: string;
+  errorMessageTestId?: string;
 }
 
 const Input = (props: IProps) => {
@@ -31,6 +32,7 @@ const Input = (props: IProps) => {
     className,
     onChange,
     disabled,
+    errorMessageTestId,
     ...restProps
   } = props;
 
@@ -50,7 +52,6 @@ const Input = (props: IProps) => {
               {...restProps}
               {...field}
               type={type}
-              data-testid='input'
               disabled={disabled}
               onChange={v => {
                 field.onChange(v);
@@ -61,7 +62,7 @@ const Input = (props: IProps) => {
 
           {description && <FormDescription>{description}</FormDescription>}
 
-          <FormMessage />
+          <FormMessage data-testid={errorMessageTestId} />
         </FormItem>
       )}
     />

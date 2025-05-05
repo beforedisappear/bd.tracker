@@ -87,11 +87,14 @@ export function AuthByEmail({}: Props) {
             label='Адрес электронной почты'
             disabled={isAuthing}
             className='w-full'
+            data-testid='auth-by-email-email-input'
+            errorMessageTestId='auth-by-email-first-step-error-message'
           />
         )}
 
         {currentStep === '2' && (
           <InputOTP
+            type='tel'
             name='code'
             length={6}
             groupSize={3}
@@ -99,6 +102,8 @@ export function AuthByEmail({}: Props) {
             disabled={isLogging || isLoggedIn}
             className='text-md'
             onChange={v => v.length === 6 && onSubmit()}
+            data-testid='auth-by-email-code-input'
+            errorMessageTestId='auth-by-email-second-step-error-message'
           />
         )}
 
@@ -107,6 +112,7 @@ export function AuthByEmail({}: Props) {
             type='submit'
             className='w-full'
             disabled={isAuthing || isLogging || isLoggedIn}
+            data-testid='auth-by-email-submit-button'
           >
             Отправить
           </Button>

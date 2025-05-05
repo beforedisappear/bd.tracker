@@ -57,6 +57,7 @@ export function Logout(props: Props) {
       variant={btnVariant}
       onClick={onLogout}
       className={className}
+      data-testid='logout-button'
     >
       {withIcon && <LogOut />}
       {withLabel && <span>Выйти</span>}

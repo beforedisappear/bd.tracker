@@ -5,9 +5,10 @@ import { createTeam } from './team.seed';
 const prisma = new PrismaClient();
 
 async function main() {
-  const { user1 } = await createUsers();
+  const { user1, testUser } = await createUsers();
 
   await createTeam({ ownerId: user1.id });
+  await createTeam({ ownerId: testUser.id });
 }
 
 main()

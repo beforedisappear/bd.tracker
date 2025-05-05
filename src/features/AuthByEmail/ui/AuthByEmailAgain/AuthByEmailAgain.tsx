@@ -30,6 +30,7 @@ export function AuthByEmailAgain(props: Props) {
       type='button'
       variant={null}
       className='w-fit'
+      data-testid='auth-by-email-again-button'
       onClick={() => {
         onSendAgain();
         setTimer(TIMER_VALUE);

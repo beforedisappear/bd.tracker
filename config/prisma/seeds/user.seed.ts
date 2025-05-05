@@ -7,5 +7,9 @@ export const createUsers = async () => {
     data: { email: `${Math.random()}@gmail.com` },
   });
 
-  return { user1 };
+  const testUser = await prisma.user.create({
+    data: { email: process.env.TEST_USER_EMAIL },
+  });
+
+  return { user1, testUser };
 };

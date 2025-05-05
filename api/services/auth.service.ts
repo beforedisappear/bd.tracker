@@ -28,7 +28,7 @@ class AuthService {
       user = await userService.create(data);
     }
 
-    const authCode = await this.generateAuthCode(user.id);
+    const authCode = await this.generateAuthCode(user.id, user.email);
 
     await mailService.sendAuthMail({
       email: user.email,
@@ -155,9 +155,14 @@ class AuthService {
     return redisService.del(userId);
   }
 
-  private async generateAuthCode(userId: string) {
+  private async generateAuthCode(userId: string, email: string) {
     try {
-      const code = crypto.randomInt(100000, 1000000).toString();
+      let code = crypto.randomInt(100000, 1000000).toString();
+      const testCode = process.env.TEST_USER_AUTH_CODE;
+
+      if (email === process.env.TEST_USER_EMAIL && testCode) {
+        code = testCode;
+      }
 
       const res = await redisService.set(userId, code, { EX: 300 });
 

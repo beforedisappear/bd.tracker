@@ -27,6 +27,7 @@ type Props = {
   label?: string;
   description?: string;
   disabled?: boolean;
+  errorMessageTestId?: string;
 } & Omit<ComponentProps<typeof InputOTPContainer>, ExcludedProps>;
 
 export function InputOTP(props: Props) {
@@ -38,6 +39,7 @@ export function InputOTP(props: Props) {
     description,
     disabled,
     onChange,
+    errorMessageTestId,
     ...restProps
   } = props;
 
@@ -96,7 +98,7 @@ export function InputOTP(props: Props) {
 
           {description && <FormDescription>{description}</FormDescription>}
 
-          <FormMessage />
+          <FormMessage data-testid={errorMessageTestId} />
         </FormItem>
       )}
     />

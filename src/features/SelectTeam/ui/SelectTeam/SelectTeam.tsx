@@ -26,7 +26,7 @@ export function SelectTeam({}: Props) {
     );
 
   return (
-    <ScrollArea type='always' className='h-48 -mr-4'>
+    <ScrollArea type='always' className='h-48 -mr-4' data-testid='team-list'>
       <div className='flex flex-col gap-y-3 pr-4'>
         {isSuccess &&
           userTeamList.map(el => <SelectTeamItem key={el.id} data={el} />)}
