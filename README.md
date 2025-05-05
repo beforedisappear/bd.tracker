@@ -8,7 +8,7 @@ BD.tracker - Fullstack приложение, с упором на Frontend со�
 
 ## App Features
 
-📦 [FSD](./docs/fsd.md) - 🍌 Light & Dark mode - 🥕 Storybook UI Doc - ⭐️ Full Test coverage - 🕊️ Swagger API doc - 🌴 [Device type view](./docs/device.md) - 🔫 WS chat? - 💧 PWA? - ...
+📦 [FSD](./docs/fsd.md) - 🍌 Light & Dark mode - 🥕 Storybook UI Doc - ⭐️ [Full Test coverage](./docs/testing.md) - 🕊️ Swagger API doc - 🌴 [Device type view](./docs/device.md) - 🔫 WS chat? - 💧 PWA? - ...
 
 ## Running the app
 
@@ -19,10 +19,7 @@ $ bun dev
 # development with turbopack
 $ bun dev:turbo
 
-# watch mode
-$ npm run start:dev
-
-# production mode
+# start app with production mode
 $ bun prod
 
 # production build

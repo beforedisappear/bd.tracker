@@ -1,4 +1,4 @@
-### App FSD
+# App FSD
 
 ## Common rules
 

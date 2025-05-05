@@ -1,4 +1,4 @@
-### Tailwind Rules
+# Tailwind Rules
 
 tailwind classes
 
