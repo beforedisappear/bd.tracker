@@ -274,7 +274,6 @@ model Sticker {
   name      String?
   type      StickerType
   textValue String?   // текстовые стикеры
-  dateValue DateTime? // дедлайны
   startDate DateTime? // начало интервала дат
   endDate   DateTime? // конец интервала дат
   color     Color       @default(GRAY)
