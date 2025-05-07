@@ -47,19 +47,16 @@ class TeamService extends BaseService {
 
     const { inTeam: isUserInTeam, team } = await this.checkIsUserInTeam(
       idOrSlug,
-      { userId },
+      { userId, membersKeyword: keyword },
     );
 
     if (!isUserInTeam)
       throw ApiError.forbidden('User is not a member of this team');
 
-    return team.members.filter(member => {
-      const email = member.email?.toLowerCase() || '';
-      const name = member.name?.toLowerCase() || '';
-      const lowerKeyword = keyword?.toLowerCase() || '';
+    const teamMembers = [team.owner, ...team.members];
 
-      return name.includes(lowerKeyword) || email.includes(lowerKeyword);
-    });
+    // TODO: add sql query
+    return teamMembers;
   }
 
   async createTeam(args: { ownerId: string; data: CreateTeamReqDto }) {

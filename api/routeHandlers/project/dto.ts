@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const CreateProjectReqBodySchema = z.object({
-  teamId: z.string().uuid(),
+  teamIdOrSlug: z.string(),
   name: z.string(),
   memberIds: z.array(z.string()).optional(),
 });
@@ -11,4 +11,17 @@ export const CreateProjectResSchema = z.object({
   teamId: z.string(),
   name: z.string(),
   createdAt: z.string(),
+});
+
+export const GetAllProjectsResSchema = z.array(
+  z.object({
+    id: z.string(),
+    name: z.string(),
+    createdAt: z.string(),
+    teamId: z.string().uuid(),
+  }),
+);
+
+export const GetAllTeamProjectsReqQuerySchema = z.object({
+  teamIdOrSlug: z.string(),
 });
