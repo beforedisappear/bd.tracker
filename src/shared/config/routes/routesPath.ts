@@ -11,6 +11,6 @@ export const getProjectByIdRoutePath = (tenant?: string, projectId?: string) =>
 
 //service
 export const getInviteRoutePath = () => '/invite';
-
+export const getChangeEmailRoutePath = () => '/email-change';
 // export const getEmployeeByIdRoute = (id: string | number) => `/employee/${id}`;
 // export const getCreateEmployeeRoute = () => `/employee/create`;

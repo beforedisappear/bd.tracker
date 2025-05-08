@@ -1,1 +1,4 @@
-export { PostCreateProject as POST } from '$/routeHandlers/project/route';
+export {
+  PostCreateProject as POST,
+  GetAllTeamProjects as GET,
+} from '$/routeHandlers/project/route';

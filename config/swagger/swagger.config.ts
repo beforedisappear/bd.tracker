@@ -29,7 +29,26 @@ import {
   DeleteRemoveTeamAdminDoc,
   PatchSetTeamAdminDoc,
 } from '$/routeHandlers/team/[idOrSlug]/members/[memberId]/admin/doc';
-import { PostCreateProjectDoc } from '$/routeHandlers/project/doc';
+import {
+  PostCreateProjectDoc,
+  GetAllTeamProjectsDoc,
+} from '$/routeHandlers/project/doc';
+import {
+  DeleteProjectDoc,
+  GetProjectByIdDoc,
+} from '$/routeHandlers/project/[projectId]/doc';
+import { PatchProjectRenameDoc } from '$/routeHandlers/project/[projectId]/rename/doc';
+import {
+  GetProjectMembersDoc,
+  PostAddProjectMemberDoc,
+} from '$/routeHandlers/project/[projectId]/members/doc';
+import { DeleteProjectMemberDoc } from '$/routeHandlers/project/[projectId]/members/[memberId]/doc';
+import {
+  GetProjectBoardsDoc,
+  PostCreateBoardDoc,
+} from '$/routeHandlers/board/doc';
+import { PostAcceptChangeEmailDoc } from '$/routeHandlers/profile/email/accept-change-request/doc';
+import { PostSendChangeEmailDoc } from '$/routeHandlers/profile/email/send-change-request/doc';
 
 extendZodWithOpenApi(z);
 
@@ -53,7 +72,8 @@ openAPIRegistry.registerPath(PostLogoutDoc);
 
 //profile
 openAPIRegistry.registerPath(GetProfileDoc(bearerAuth.name));
-
+openAPIRegistry.registerPath(PostAcceptChangeEmailDoc);
+openAPIRegistry.registerPath(PostSendChangeEmailDoc(bearerAuth.name));
 //team main
 openAPIRegistry.registerPath(PostCreateTeamDoc(bearerAuth.name));
 openAPIRegistry.registerPath(GetTeamListDoc(bearerAuth.name));
@@ -73,6 +93,17 @@ openAPIRegistry.registerPath(PostInviteUserToTeamDoc(bearerAuth.name));
 openAPIRegistry.registerPath(PostAcceptInvitationToTeamDoc(bearerAuth.name));
 //project main
 openAPIRegistry.registerPath(PostCreateProjectDoc(bearerAuth.name));
+openAPIRegistry.registerPath(GetAllTeamProjectsDoc(bearerAuth.name));
+openAPIRegistry.registerPath(DeleteProjectDoc(bearerAuth.name));
+openAPIRegistry.registerPath(PatchProjectRenameDoc(bearerAuth.name));
+openAPIRegistry.registerPath(GetProjectByIdDoc(bearerAuth.name));
+//project members
+openAPIRegistry.registerPath(GetProjectMembersDoc(bearerAuth.name));
+openAPIRegistry.registerPath(PostAddProjectMemberDoc(bearerAuth.name));
+openAPIRegistry.registerPath(DeleteProjectMemberDoc(bearerAuth.name));
+//board main
+openAPIRegistry.registerPath(PostCreateBoardDoc(bearerAuth.name));
+openAPIRegistry.registerPath(GetProjectBoardsDoc(bearerAuth.name));
 
 function getOpenApiDocumentation() {
   const generator = new OpenApiGeneratorV3(openAPIRegistry.definitions);

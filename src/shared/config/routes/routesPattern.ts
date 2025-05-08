@@ -11,5 +11,7 @@ export const routePatterns: Record<AppRoutes, string> = {
   [AppRoutes.PROJECT]: '/:tenant/project/:projectId',
   //service
   [AppRoutes.INVITE]: '/invite',
+  [AppRoutes.EMAIL_CHANGE]: '/email-change',
+  [AppRoutes.SWAGGER]: '/swagger',
   [AppRoutes.NOT_FOUND]: '*', //skip pattern
 };

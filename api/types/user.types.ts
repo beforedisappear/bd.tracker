@@ -7,3 +7,9 @@ type User = Exclude<UserFields, 'createdAt' | 'updatedAt' | 'id'>;
 export type CreateUser = { email: string };
 
 export type UpdateUser = Exclude<User, 'email'>;
+
+export type ChangeEmailMail = {
+  token: string;
+  newEmail: string;
+  requestId: string;
+};
