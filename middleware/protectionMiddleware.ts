@@ -17,6 +17,8 @@ export const protectionMiddleware = (req: NextRequest) => {
 
   const currentRoute = getRouteByPath(getCleanPath(req.nextUrl.pathname));
 
+  if (routesAccess[currentRoute] === 'service') return NextResponse.next();
+
   //is authenticated and public url
   if (isAuth && routesAccess[currentRoute] === 'public') {
     return NextResponse.redirect(new URL(getHomeRoutePath(), req.url));

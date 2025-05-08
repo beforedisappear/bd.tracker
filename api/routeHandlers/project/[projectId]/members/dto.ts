@@ -18,3 +18,11 @@ export const GetProjectMembersResSchema = z.object({
   updatedAt: z.string(),
   email: z.string().email(),
 });
+
+export const PostAddProjectMemberReqBodySchema = z.object({
+  memberId: z.string(),
+});
+
+export const PostAddProjectMemberReqParamsSchema = z.object({
+  projectId: z.string(),
+});

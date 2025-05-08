@@ -1,5 +1,10 @@
 import { redirect } from 'next/navigation';
 
+import {
+  getLoginRoutePath,
+  getMainRoutePath,
+} from '@/shared/config/routes/routesPath';
+
 interface IProps {
   searchParams: Promise<{}>;
 }
@@ -7,15 +12,15 @@ interface IProps {
 export default async function InvitePage({ searchParams }: IProps) {
   const query = await searchParams;
 
-  let redirectPath = '/login';
+  let redirectPath = getLoginRoutePath();
 
-  //add custom server fetch
+  //TODO:add custom server fetch
   await fetch(`${process.env.NEXT_PUBLIC_URL}/api/team/accept-invitation`, {
     method: 'POST',
     body: JSON.stringify(query),
   }).catch(e => {
     console.error(e);
-    redirectPath = '/';
+    redirectPath = getMainRoutePath();
   });
 
   return redirect(redirectPath);

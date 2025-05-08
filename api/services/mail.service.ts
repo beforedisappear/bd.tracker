@@ -8,6 +8,7 @@ import type {
   IAuthMail,
   IInvitationMail,
   IProposalMail,
+  ChangeEmailMail,
 } from '../types';
 
 class MailService {
@@ -47,6 +48,17 @@ class MailService {
 
     return this.sendMail({
       to: email,
+      text: message,
+    });
+  }
+
+  async sendChangeEmailMail(props: ChangeEmailMail) {
+    const { newEmail, token, requestId } = props;
+
+    const message = `Добрый день! Для изменения почты перейдите по ссылке - ${process.env.NEXT_PUBLIC_URL}/email-change?token=${token}&requestId=${requestId}`;
+
+    return this.sendMail({
+      to: newEmail,
       text: message,
     });
   }

@@ -11,7 +11,7 @@ export const PostCreateProjectDoc = (bearerName: string): RouteConfig => ({
   method: 'post',
   path: '/project',
   tags: ['project main'],
-  description: 'to create project inside team',
+  summary: 'Create project inside team',
   security: [{ [bearerName]: [] }],
   request: {
     body: {
@@ -30,7 +30,7 @@ export const GetAllTeamProjectsDoc = (bearerName: string): RouteConfig => ({
   method: 'get',
   path: '/project',
   tags: ['project main'],
-  description: 'to get all projects inside team',
+  summary: 'Get all projects inside team',
   security: [{ [bearerName]: [] }],
   request: {
     query: GetAllTeamProjectsReqQuerySchema,

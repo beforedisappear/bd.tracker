@@ -11,6 +11,7 @@ export const DeleteProjectDoc = (bearerName: string): RouteConfig => ({
   method: 'delete',
   path: '/project/{projectId}',
   tags: ['project main'],
+  summary: 'Delete project by id inside team',
   security: [{ [bearerName]: [] }],
   request: {
     params: DeleteProjectReqParamsSchema,
@@ -27,6 +28,7 @@ export const GetProjectByIdDoc = (bearerName: string): RouteConfig => ({
   method: 'get',
   path: '/project/{projectId}',
   tags: ['project main'],
+  summary: 'Get project info by id inside team',
   security: [{ [bearerName]: [] }],
   request: {
     params: GetProjectByIdReqParamsSchema,

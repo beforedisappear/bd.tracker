@@ -185,13 +185,21 @@ class ProjectService extends BaseService {
 
   async addProjectMember(args: {
     projectId: string;
-    teamId: string;
     userId: string;
     initiatorId: string;
   }) {
-    const { projectId, teamId, userId, initiatorId } = args;
+    const { projectId, userId, initiatorId } = args;
 
-    const { isAdmin, isOwner } = await this.checkIsUserInTeam(teamId, {
+    const project = await prismaService.project.findUnique({
+      where: { id: projectId },
+      include: { team: true },
+    });
+
+    if (!project) {
+      throw ApiError.notFound('Project not found');
+    }
+
+    const { isAdmin, isOwner } = await this.checkIsUserInTeam(project.team.id, {
       userId: initiatorId,
     });
 
@@ -199,14 +207,6 @@ class ProjectService extends BaseService {
       throw ApiError.forbidden(
         'New members can only be added by admins or owners',
       );
-    }
-
-    const project = await prismaService.project.findUnique({
-      where: { id: projectId },
-    });
-
-    if (!project) {
-      throw ApiError.notFound('Project not found');
     }
 
     const user = await prismaService.user.findUnique({

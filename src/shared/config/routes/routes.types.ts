@@ -9,6 +9,8 @@ export enum AppRoutes {
   PROJECT = 'project',
   //service
   INVITE = 'invite',
+  EMAIL_CHANGE = 'email_change',
+  SWAGGER = 'swagger',
 
   // EMPLOYEE_BY_ID = 'employee_by_id',
   // CREATE_EMPLOYEE = 'create_employee',

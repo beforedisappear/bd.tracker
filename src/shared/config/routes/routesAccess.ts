@@ -13,5 +13,7 @@ export const routesAccess: Record<AppRoutes, RouteAccess> = {
 
   //service
   [AppRoutes.INVITE]: 'service',
+  [AppRoutes.EMAIL_CHANGE]: 'service',
+  [AppRoutes.SWAGGER]: 'service',
   [AppRoutes.NOT_FOUND]: 'service',
 };

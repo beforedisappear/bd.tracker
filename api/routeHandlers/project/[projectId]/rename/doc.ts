@@ -10,6 +10,7 @@ export const PatchProjectRenameDoc = (bearerName: string): RouteConfig => ({
   path: '/project/{projectId}/rename',
   tags: ['project main'],
   security: [{ [bearerName]: [] }],
+  summary: 'Change project name by id inside team',
   request: {
     params: RenameProjectReqParamsSchema,
     body: {

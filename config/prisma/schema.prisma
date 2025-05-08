@@ -119,6 +119,8 @@ model User {
   adminTeams          Team[]           @relation("TeamAdmins")
   //many users to many projects
   projects            Project[]        @relation("ProjectMembers")
+  //one user to one email change request
+  emailChangeRequest  UserEmailChange? @relation("UserEmailChange")
 
   @@map("users")
 }
@@ -132,6 +134,20 @@ model JWT {
   userAgent String   @map("user_agent")
 
   @@map("jwt")
+}
+
+model UserEmailChange {
+  id        String   @id @default(uuid())
+  newEmail  String
+  createdAt DateTime @default(now()) @map("created_at")
+  token     String
+  expiresAt DateTime
+
+  //one user to one email change request
+  userId    String   @unique
+  user      User     @relation("UserEmailChange", fields: [userId], references: [id])
+
+  @@map("user_email_change")
 }
 
 // allocated entry to add new permissons, to store their description, dynamic management from ui
