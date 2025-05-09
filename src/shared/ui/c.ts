@@ -18,6 +18,7 @@ export { DatePicker } from './DatePicker/DatePicker';
 export { DateRangePicker } from './DateRangePicker/DateRangePicker';
 export { ScrollArea } from './ScrollArea/ScrollArea';
 export { Sidebar } from './Sidebar/Sidebar';
+export { SidebarTrigger } from './Sidebar/SidebarTrigger';
 export { Collapsible } from './Collapsible/Collapsible';
 
 //custom

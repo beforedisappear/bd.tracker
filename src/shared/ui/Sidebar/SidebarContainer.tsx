@@ -1,7 +1,6 @@
 'use client';
 
 import { cn } from '@/shared/lib/css';
-
 import { useSidebar } from './Sidebar.hooks';
 import { forwardRef, type ComponentProps } from 'react';
 
@@ -20,6 +19,7 @@ export const SidebarContainer = forwardRef<HTMLDivElement, Props>(
       children,
       ...restProps
     } = props;
+
     const { isMobile, state } = useSidebar();
 
     const collapsible = isMobile ? 'offcanvas' : 'icon';
@@ -28,7 +28,7 @@ export const SidebarContainer = forwardRef<HTMLDivElement, Props>(
       <div
         ref={ref}
         className={cn('group peer block text-sidebar-foreground', {
-          ['fixed']: isMobile,
+          ['fixed z-50']: isMobile,
         })}
         data-state={state}
         data-collapsible={state === 'collapsed' ? collapsible : ''}

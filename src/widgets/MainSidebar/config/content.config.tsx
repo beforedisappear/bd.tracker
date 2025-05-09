@@ -7,13 +7,17 @@ import {
 
 import { Logout } from '@/features/Logout';
 import { SelectTeamQuick } from '@/features/SelectTeam';
+import { SidebarTrigger, type SidebarGroupEl } from '@/shared/ui/c';
+
 import {
   getTeamRoutePath,
   getProfileRoutePath,
   getProjectByIdRoutePath,
 } from '@/shared/config/routes';
 
-import type { SidebarGroupEl } from '@/shared/ui/c';
+export const getMainSidebarHeaderItems = (): React.ReactNode[] => {
+  return [<SidebarTrigger key='sb-trigger' className='w-fit ml-auto' />];
+};
 
 export const getMainSidebarGroupItems = (
   tenant: string,

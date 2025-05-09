@@ -4,11 +4,11 @@ import { Card } from '@/shared/ui/s';
 import { UserForm, userQueries } from '@/entities/User';
 import { ChangeEmail } from '@/features/ChangeEmail';
 import { ProfileLoading } from './Profile.loading';
+import { ProfileError } from './Profile.error';
 
 import { useQuery } from '@tanstack/react-query';
 
 import { getProfileBlockClassName } from '../../config';
-import { ProfileError } from './Profile.error';
 
 export function Profile() {
   const {

@@ -17,7 +17,6 @@ import { SidebarSeparator } from './SidebarSeparator';
 import { SidebarMenuBadge } from './SidebarMenuBadge';
 import { SidebarMenuAction } from './SidebarMenuAction';
 import { SidebarFooter } from './SidebarFooter';
-import { SidebarTrigger } from './SidebarTrigger';
 import { SidebarGroupAction } from './SidebarGroupAction';
 import { SidebarMenuSkeleton } from './SidebarMenuSkeleton';
 import { SidebarMenuSubItemList } from './SidebarMenuSubItemList';
@@ -50,10 +49,6 @@ export function Sidebar(props: IProps) {
     <SidebarContainer variant={variant} {...restProps}>
       <SidebarHeader className={cn(headerClassName)}>
         <SidebarMenu>
-          <SidebarMenuItem className='flex md:absolute md:z-50 md:right-[-40px]'>
-            <SidebarTrigger className='ml-auto' />
-          </SidebarMenuItem>
-
           {headerItems &&
             headerItems.length > 0 &&
             headerItems.map((child, i) => (
