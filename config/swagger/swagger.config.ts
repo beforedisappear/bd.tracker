@@ -10,7 +10,7 @@ import { PostAuthDoc } from '$/routeHandlers/auth/doc';
 import { PostLoginDoc } from '$/routeHandlers/login/doc';
 import { PostRefreshTokensDoc } from '$/routeHandlers/refreshTokens/doc';
 import { PostLogoutDoc } from '$/routeHandlers/logout/doc';
-import { GetProfileDoc } from '$/routeHandlers/profile/doc';
+import { GetProfileDoc, UpdateProfileDoc } from '$/routeHandlers/profile/doc';
 import { PostCreateTeamDoc, GetTeamListDoc } from '$/routeHandlers/team/doc';
 import { PatchTeamRenameByIdOrSlugDoc } from '$/routeHandlers/team/[idOrSlug]/rename/doc';
 import {
@@ -72,6 +72,7 @@ openAPIRegistry.registerPath(PostLogoutDoc);
 
 //profile
 openAPIRegistry.registerPath(GetProfileDoc(bearerAuth.name));
+openAPIRegistry.registerPath(UpdateProfileDoc(bearerAuth.name));
 openAPIRegistry.registerPath(PostAcceptChangeEmailDoc);
 openAPIRegistry.registerPath(PostSendChangeEmailDoc(bearerAuth.name));
 //team main

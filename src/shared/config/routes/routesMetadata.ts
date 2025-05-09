@@ -1,8 +1,6 @@
 import { AppRoutes, type RoutesMetadata } from './routes.types';
 
-type RoutesWithMetadata = Exclude<AppRoutes, 'email_change' | 'invite'>;
-
-export const routesMetadata: Record<RoutesWithMetadata, RoutesMetadata> = {
+export const routesMetadata: Record<AppRoutes, RoutesMetadata> = {
   // public
   [AppRoutes.MAIN]: {
     title: 'Сервис для планирования задач небольших команд',
@@ -37,6 +35,14 @@ export const routesMetadata: Record<RoutesWithMetadata, RoutesMetadata> = {
   },
   [AppRoutes.SWAGGER]: {
     title: 'API documentation',
+    description: '',
+  },
+  [AppRoutes.INVITE]: {
+    title: '',
+    description: '',
+  },
+  [AppRoutes.EMAIL_CHANGE]: {
+    title: '',
     description: '',
   },
 };
