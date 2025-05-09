@@ -1,4 +1,7 @@
-export type CodeError = '1000' | '1004';
+export enum CodeError {
+  'INCORRECT_OR_INVALID_CODE' = '1004',
+  'EMAIL_ALREADY_TAKEN' = '1010',
+}
 
 interface IParams {
   message: string;

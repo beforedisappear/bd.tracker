@@ -1,7 +1,7 @@
 import 'server-only';
 import { v4 as uuidv4 } from 'uuid';
 
-import { ApiError } from '$/errors/apiError';
+import { ApiError, CodeError } from '$/errors/apiError';
 
 import { prismaService } from '&/prisma';
 import { mailService } from './mail.service';
@@ -61,10 +61,14 @@ class UserService {
       where: { email: newEmail },
     });
 
-    if (existingUser) throw ApiError.conflict('Email is already taken');
+    if (existingUser)
+      throw ApiError.conflict(
+        'Email is already taken',
+        CodeError.EMAIL_ALREADY_TAKEN,
+      );
 
     const existingRequest = await prismaService.userEmailChange.findFirst({
-      where: { userId },
+      where: { userId, newEmail },
     });
 
     const token = uuidv4();

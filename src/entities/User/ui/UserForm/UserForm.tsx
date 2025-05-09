@@ -29,14 +29,14 @@ interface Props {
 export function UserForm(props: Props) {
   const { user, className } = props;
 
-  const methods = useForm<UserFormValues>({
+  const form = useForm<UserFormValues>({
     defaultValues: { name: user.name },
     resolver: zodResolver(UserFormSchema),
   });
 
   const { mutateAsync: updateUser } = useMutation(userQueries.updateUser());
 
-  const onSubmit = methods.handleSubmit(data => {
+  const onSubmit = form.handleSubmit(data => {
     const toastId = toast.loading(SENDING_DATA_MESSAGE);
 
     updateUser(data)
@@ -45,10 +45,13 @@ export function UserForm(props: Props) {
   });
 
   const color = useMemo(() => getColorByFirstLetter(user.name), [user]);
-  const initials = useMemo(() => user.name.slice(0, 2), [user]);
+  const initials = useMemo(() => {
+    const letters = user.name.split(' ').slice(0, 2);
+    return letters.map(el => el[0]).join('');
+  }, [user]);
 
   return (
-    <Form {...methods}>
+    <Form {...form}>
       <form
         onSubmit={onSubmit}
         className={cn('flex flex-col gap-4', className)}

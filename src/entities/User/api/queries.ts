@@ -1,12 +1,12 @@
-import { getUser } from './getUser';
-
 import { queryOptions } from '@tanstack/react-query';
 import { mutationOptions } from '@/shared/lib/tanstack-query';
 import { queryClient } from '@/shared/config/query';
 
+import { getUser } from './getUser';
 import { updateUser } from './updateUser';
+import { changeEmail } from './changeEmail';
 
-import type { UpdateUserDtoReq } from '../model/types';
+import type { PostChangeEmailDtoReq, UpdateUserDtoReq } from '../model/types';
 
 export const userQueries = {
   all: () => ['user'],
@@ -22,5 +22,10 @@ export const userQueries = {
     mutationOptions({
       mutationFn: (user: UpdateUserDtoReq) => updateUser(user),
       onSuccess: data => queryClient.setQueryData([...userQueries.all()], data),
+    }),
+
+  changeEmail: () =>
+    mutationOptions({
+      mutationFn: (dto: PostChangeEmailDtoReq) => changeEmail(dto),
     }),
 };

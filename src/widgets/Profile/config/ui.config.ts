@@ -1,3 +1,3 @@
 export const getProfileBlockClassName = () => {
-  return 'h-[300px]';
+  return 'h-[360px] w-1/2 lg:w-full';
 };

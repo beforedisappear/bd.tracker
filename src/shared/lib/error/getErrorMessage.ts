@@ -12,7 +12,7 @@ export const getErrorMessage = (error: unknown) => {
       'code' in error.response.data &&
       typeof error.response.data.code === 'string'
     ) {
-      message = errorMessagesMap[error.response.data.code as number];
+      message = errorMessagesMap[error.response.data.code];
     }
   } else if (error instanceof Error) {
     message = error.message;
