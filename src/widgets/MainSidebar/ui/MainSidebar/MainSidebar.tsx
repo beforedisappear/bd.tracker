@@ -18,10 +18,10 @@ export function MainSidebar({}: Props) {
   const { isMobile } = useDeviceType();
   const pathname = usePathname()!;
   const { tenant } = useParams<{ tenant: string }>()!;
-  const { setIsSidebarOpen, state } = useSidebar();
+  const { setIsSidebarOpen } = useSidebar();
 
   useEffect(() => {
-    if (isMobile && state === 'expanded') setIsSidebarOpen(false);
+    if (isMobile) setIsSidebarOpen(false);
   }, [isMobile, pathname]);
 
   return (
