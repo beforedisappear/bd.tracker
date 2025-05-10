@@ -1,3 +1,4 @@
+import { Loader2 } from 'lucide-react';
 import { cn } from '@/shared/lib/css';
 
 import { Button, Input } from '@/shared/ui/c';
@@ -10,13 +11,10 @@ import { getTeamRoutePath } from '@/shared/config/routes';
 import { teamQueries } from '@/entities/Team';
 import { toast } from 'sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { getErrorMessage } from '@/shared/lib/error';
 
 import { CREATE_TEAM_DESCRIPTION } from '../../constants';
-import {
-  SENDING_DATA_MESSAGE,
-  SUCCESS_MESSAGE,
-  ERROR_MESSAGE,
-} from '@/shared/constants';
+import { SUCCESSFUL_SENDING_MESSAGE } from '@/shared/constants';
 
 import { CreateTeamSchema } from '../../model/schemes';
 import type { CreateTeam } from '../../model/types';
@@ -35,30 +33,40 @@ export function CreateTeamForm(props: Props) {
     defaultValues: { name: '' },
   });
 
-  const { mutateAsync: createTeam } = useMutation(teamQueries.createTeam());
+  const { mutateAsync: createTeam, isPending } = useMutation(
+    teamQueries.createTeam(),
+  );
 
   const onSubmit = form.handleSubmit(data => {
-    const toastId = toast.loading(SENDING_DATA_MESSAGE);
-
     createTeam(data)
       .then(({ data }) => push(getTeamRoutePath(data.slug)))
-      .then(() => toast.success(SUCCESS_MESSAGE, { id: toastId }))
-      .catch(() => toast.error(ERROR_MESSAGE, { id: toastId }));
+      .then(() => toast.success(SUCCESSFUL_SENDING_MESSAGE))
+      .catch(e => form.setError('name', { message: getErrorMessage(e) }));
   });
+
   return (
     <FormProvider {...form}>
       <form
         onSubmit={onSubmit}
         className={cn('flex flex-col gap-2 h-full', className)}
       >
-        <p className='text-center text-sm text-zinc-500'>
+        <p className='text-center text-sm text-muted-foreground'>
           {CREATE_TEAM_DESCRIPTION}
         </p>
 
-        <Input name='name' label='Название команды' autoComplete='off' />
+        <Input
+          name='name'
+          label='Название команды'
+          autoComplete='off'
+          disabled={isPending}
+        />
 
-        <Button className='mt-auto' type='submit'>
-          Создать
+        <Button className='mt-auto' type='submit' disabled={isPending}>
+          {isPending ? (
+            <Loader2 className='w-4 h-4 animate-spin' />
+          ) : (
+            <span>Создать</span>
+          )}
         </Button>
       </form>
     </FormProvider>

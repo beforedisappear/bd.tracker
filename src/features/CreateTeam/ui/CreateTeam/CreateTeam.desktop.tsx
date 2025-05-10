@@ -1,8 +1,8 @@
 'use client';
 
 import { Dialog } from '@/shared/ui/c';
+import { CreateTeamForm } from '../CreateTeamForm';
 import { CreateTeamTrigger } from '../CreateTeamTrigger/CreateTeamTrigger';
-import { CreateTeamForm } from '../CreateTeamForm/CreateTeamForm';
 
 interface Props {}
 

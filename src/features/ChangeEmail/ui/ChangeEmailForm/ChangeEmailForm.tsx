@@ -38,9 +38,9 @@ export const ChangeEmailForm = ({ email }: Props) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className='flex flex-col gap-6 p-6'>
-        <span className='text-base text-zinc-800 dark:text-zinc-300'>
-          {`Ваш текущий e-mail: ${email}`}
+      <form onSubmit={onSubmit} className='flex flex-col gap-6 p-6 flex-grow'>
+        <span className='text-base ov text-zinc-800 dark:text-zinc-300'>
+          Ваш текущий e-mail: <b>{email}</b>
         </span>
 
         <Input
@@ -51,7 +51,7 @@ export const ChangeEmailForm = ({ email }: Props) => {
           disabled={isPending}
         />
 
-        <Button type='submit' className='w-fit mx-auto min-w-48'>
+        <Button type='submit' className='mx-auto min-w-56 mt-auto'>
           {isPending ? (
             <Loader2 className='h-4 w-4 animate-spin' />
           ) : (

@@ -13,4 +13,9 @@ export const RenameTeamByIdOrSlugReqParamsSchema = z.object({
 
 export const RenameTeamResSchema = z.object({
   name: z.string(),
+  slug: z.string(),
+  id: z.string(),
+  ownerId: z.string(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
 });

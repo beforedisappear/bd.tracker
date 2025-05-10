@@ -1,6 +1,9 @@
 export enum CodeError {
   'INCORRECT_OR_INVALID_CODE' = '1004',
   'EMAIL_ALREADY_TAKEN' = '1010',
+  'TEAM_NAME_ALREADY_TAKEN' = '1020',
+  'TEAM_COUNT_EXCEEDED' = '1021',
+  'TEAM_COUNT_MIN' = '1022',
 }
 
 interface IParams {

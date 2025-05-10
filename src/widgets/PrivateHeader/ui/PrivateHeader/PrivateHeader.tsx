@@ -16,7 +16,7 @@ export function PrivateHeader({}: Props) {
 
   return (
     <header
-      className='sticky top-0 flex items-center justify-between h-14 px-4 py-3 bg-sidebar-background
+      className='sticky top-0 z-50 flex items-center justify-between h-14 px-4 py-3 bg-sidebar-background
       md:static md:h-12'
     >
       {isMobile && <SidebarTrigger />}

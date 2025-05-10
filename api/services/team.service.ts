@@ -8,7 +8,7 @@ import { projectService } from './project.service';
 
 import { v4 as uuidv4 } from 'uuid';
 import { getSlug } from '$/utils/getSlug';
-import { ApiError } from '$/errors/apiError';
+import { ApiError, CodeError } from '$/errors/apiError';
 
 import type { Team } from '&/prisma/generated/client';
 import type { CreateTeamReqDto } from '$/routeHandlers/team/types';
@@ -30,6 +30,7 @@ class TeamService extends BaseService {
       where: {
         OR: [{ members: { some: { id: userId } } }, { ownerId: userId }],
       },
+      orderBy: { createdAt: 'asc' },
     });
 
     return teams.map(team => ({
@@ -55,7 +56,6 @@ class TeamService extends BaseService {
 
     const teamMembers = [team.owner, ...team.members];
 
-    // TODO: add sql query
     return teamMembers;
   }
 
@@ -70,8 +70,21 @@ class TeamService extends BaseService {
     });
 
     if (existingTeam) {
-      throw ApiError.conflict('A team with that name already exists');
+      throw ApiError.conflict(
+        'A team with that name already exists',
+        CodeError.TEAM_NAME_ALREADY_TAKEN,
+      );
     }
+
+    const teamCount = await prismaService.team.count({
+      where: { ownerId },
+    });
+
+    if (teamCount >= 9)
+      throw ApiError.conflict(
+        `User mustn't have more than 9 teams`,
+        CodeError.TEAM_COUNT_EXCEEDED,
+      );
 
     return prismaService.team.create({
       data: {
@@ -99,6 +112,16 @@ class TeamService extends BaseService {
         'The team cannot be renamed by non-owner or non-admin',
       );
 
+    const existingTeam = await prismaService.team.findFirst({
+      where: { name: data.name },
+    });
+
+    if (existingTeam)
+      throw ApiError.conflict(
+        'A team with that name already exists',
+        CodeError.TEAM_NAME_ALREADY_TAKEN,
+      );
+
     const newSlug = getSlug(data.name);
 
     const updatedTeam = await prismaService.team.update({
@@ -122,9 +145,10 @@ class TeamService extends BaseService {
     const teamCount = await prismaService.team.count({ where: { ownerId } });
 
     if (teamCount <= 1)
-      throw ApiError.conflict('User must have at least one team');
-    else if (teamCount >= 9)
-      throw ApiError.conflict(`User mustn't have more than 9 teams`);
+      throw ApiError.conflict(
+        'User must have at least one team',
+        CodeError.TEAM_COUNT_MIN,
+      );
 
     const deletedTeam = await prismaService.team.delete({
       where: { id: team.id },

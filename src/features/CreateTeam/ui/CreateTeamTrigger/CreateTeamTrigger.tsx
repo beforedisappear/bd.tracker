@@ -1,5 +1,5 @@
 import { Button, ButtonProps } from '@/shared/ui/c';
-
+import { PlusIcon } from 'lucide-react';
 interface Props extends ButtonProps {}
 
 export function CreateTeamTrigger(props: Props) {
@@ -7,11 +7,12 @@ export function CreateTeamTrigger(props: Props) {
     <Button
       type='button'
       variant={null}
-      className='mx-auto mt-2 w-fit'
+      className='w-fit'
       data-testid='create-team-button'
       {...props}
     >
-      Создать команду
+      <PlusIcon className='w-4 h-4' />
+      <span>Создать команду</span>
     </Button>
   );
 }

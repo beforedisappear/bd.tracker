@@ -1,7 +1,7 @@
 'use client';
 
 import { Drawer } from '@/shared/ui/c';
-import { CreateTeamForm } from '../CreateTeamForm/CreateTeamForm';
+import { CreateTeamForm } from '../CreateTeamForm';
 import { CreateTeamTrigger } from '../CreateTeamTrigger/CreateTeamTrigger';
 
 import { CREATE_TEAM_TITLE } from '../../constants';

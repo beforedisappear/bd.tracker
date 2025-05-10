@@ -14,7 +14,8 @@ export function HomePage({}: Props) {
         title='Выберите команду'
         className='h-auto p-2 w-full max-w-[400px]'
         headerClassName='text-xl text-center'
-        contentClassName='flex flex-col'
+        contentClassName='flex flex-col
+        [&>button]:mx-auto [&>button]:mt-2'
       >
         <SelectTeam />
 
