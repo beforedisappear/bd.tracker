@@ -5,6 +5,7 @@ import { Sidebar, useSidebar } from '@/shared/ui/c';
 import { useParams, usePathname } from 'next/navigation';
 import { useDeviceType } from '@/shared/lib/deviceType/c';
 import { useEffect } from 'react';
+import { useMainSidebarProjects } from '../../lib';
 
 import {
   getMainSidebarGroupItems,
@@ -16,19 +17,25 @@ interface Props {}
 
 export function MainSidebar({}: Props) {
   const { isMobile } = useDeviceType();
+  const { setIsSidebarOpen } = useSidebar();
   const pathname = usePathname()!;
   const { tenant } = useParams<{ tenant: string }>()!;
-  const { setIsSidebarOpen } = useSidebar();
+
+  const projects = useMainSidebarProjects(tenant);
 
   useEffect(() => {
     if (isMobile) setIsSidebarOpen(false);
   }, [isMobile, pathname]);
 
+  const headerItems = getMainSidebarHeaderItems();
+  const groupItems = getMainSidebarGroupItems(tenant, pathname, { projects });
+  const footerItems = getSideBarFooterItems();
+
   return (
     <Sidebar
-      headerItems={getMainSidebarHeaderItems()}
-      groupItems={getMainSidebarGroupItems(tenant, pathname)}
-      footerItems={getSideBarFooterItems()}
+      headerItems={headerItems}
+      groupItems={groupItems}
+      footerItems={footerItems}
     />
   );
 }

@@ -15,7 +15,10 @@ type MenuLink = {
   isActive?: boolean;
 };
 
-export type MenuSubItem = Omit<MenuItemLink, 'action' | 'badge'>;
+export type MenuSubItem =
+  | Omit<MenuItemLink, 'action' | 'badge'>
+  | Separator
+  | Skeleton;
 
 type MenuItemLink = {
   type: 'item-link';

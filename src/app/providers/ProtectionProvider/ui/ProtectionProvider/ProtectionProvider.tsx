@@ -51,7 +51,7 @@ export function ProtectionProvider({ children }: IProps) {
       {children}
       {showLoader && (
         <>
-          <div className='fixed inset-0 bg-black/50 backdrop-blur-md' />
+          <div className='fixed inset-0 bg-black/25 dark:bg-black/50 backdrop-blur-md' />
           <div className='fixed inset-0 flex items-center justify-center'>
             <Loader2 className='h-10 w-10 animate-spin' />
           </div>

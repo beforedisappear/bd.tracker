@@ -7,13 +7,13 @@ import {
 
 import { Logout } from '@/features/Logout';
 import { SelectTeamQuick } from '@/features/SelectTeam';
-import { SidebarTrigger, type SidebarGroupEl } from '@/shared/ui/c';
-
 import {
-  getTeamRoutePath,
-  getProfileRoutePath,
-  getProjectByIdRoutePath,
-} from '@/shared/config/routes';
+  SidebarTrigger,
+  type SidebarGroupEl,
+  type MenuSubItem,
+} from '@/shared/ui/c';
+
+import { getTeamRoutePath, getProfileRoutePath } from '@/shared/config/routes';
 
 export const getMainSidebarHeaderItems = (): React.ReactNode[] => {
   return [<SidebarTrigger key='sb-trigger' className='w-fit ml-auto' />];
@@ -22,6 +22,7 @@ export const getMainSidebarHeaderItems = (): React.ReactNode[] => {
 export const getMainSidebarGroupItems = (
   tenant: string,
   pathname: string,
+  other: { projects: MenuSubItem[] },
 ): SidebarGroupEl[] => {
   const profileRoute = getProfileRoutePath(tenant);
   const teamRoute = getTeamRoutePath(tenant);
@@ -55,22 +56,7 @@ export const getMainSidebarGroupItems = (
             icon: <Folder />,
           },
           isDefaultOpen: true,
-          subItems: [
-            {
-              type: 'item-link',
-              link: {
-                title: 'Проект №1',
-                url: getProjectByIdRoutePath(tenant, '1'),
-              },
-            },
-            {
-              type: 'item-link',
-              link: {
-                title: 'Проект №2',
-                url: getProjectByIdRoutePath(tenant, '2'),
-              },
-            },
-          ],
+          subItems: other.projects,
         },
         {
           type: 'item-sub' as const,

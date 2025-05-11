@@ -11,10 +11,11 @@ import { useState, type MouseEvent, type PropsWithChildren } from 'react';
 interface Props extends PropsWithChildren {
   trigger: React.ReactNode;
   defaultOpen?: boolean;
+  disabled?: boolean;
 }
 
 export function SidebarCollapsibleMenuItem(props: Props) {
-  const { children, trigger, defaultOpen = false } = props;
+  const { children, trigger, defaultOpen = false, disabled = false } = props;
 
   const { setIsSidebarOpen, isSidebarOpen } = useSidebar();
   const [openCol, setOpenCol] = useState(defaultOpen);
@@ -31,6 +32,7 @@ export function SidebarCollapsibleMenuItem(props: Props) {
       open={openCol}
       onOpenChange={setOpenCol}
       className='group/collapsible'
+      disabled={disabled}
     >
       <SidebarMenuItem>
         <CollapsibleTrigger

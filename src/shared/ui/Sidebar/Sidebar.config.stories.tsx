@@ -12,6 +12,7 @@ import {
   Map,
   Plus,
   Cross,
+  Globe,
 } from 'lucide-react';
 
 import { SidebarGroupEl } from './Sidebar.types';
@@ -66,8 +67,15 @@ const sidebarGroupElementSubItems = [
     link: { title: 'SubItem №2', icon: <Circle />, url: '#' },
   },
   {
+    type: 'separator' as const,
+  },
+  {
     type: 'item-link' as const,
     link: { title: 'SubItem №3', icon: <Map />, url: '#', isActive: true },
+  },
+  {
+    type: 'item-link' as const,
+    link: { title: 'SubItem №4', icon: <Globe />, url: '#' },
   },
 ];
 
@@ -159,6 +167,26 @@ export const groupItemsWithSubItems: SidebarGroupEl[] = [
         trigger: { label: 'Item №2', icon: <Option /> },
         subItems: sidebarGroupElementSubItems,
         isDefaultOpen: false,
+      },
+    ],
+  },
+];
+
+export const groupItemsWithSubItemsSkeleton: SidebarGroupEl[] = [
+  {
+    type: 'group' as const,
+    label: 'Group',
+    items: [
+      {
+        type: 'item-sub' as const,
+        trigger: {
+          label: 'Item №1',
+          icon: <ChevronDownCircleIcon />,
+        },
+        subItems: [
+          ...new Array(5).fill('_').map(() => ({ type: 'skeleton' as const })),
+        ],
+        isDefaultOpen: true,
       },
     ],
   },
