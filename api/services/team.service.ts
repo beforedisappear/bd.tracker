@@ -8,13 +8,23 @@ import { projectService } from './project.service';
 
 import { v4 as uuidv4 } from 'uuid';
 import { getSlug } from '$/utils/getSlug';
-import { ApiError } from '$/errors/apiError';
+import { ApiError, CodeError } from '$/errors/apiError';
 
 import type { Team } from '&/prisma/generated/client';
 import type { CreateTeamReqDto } from '$/routeHandlers/team/types';
 import type { RenameTeamReqDto } from '$/routeHandlers/team/[idOrSlug]/rename/types';
 
 class TeamService extends BaseService {
+  async haveAccess(args: { idOrSlug: string; userId: string }) {
+    const { idOrSlug, userId } = args;
+
+    const { inTeam } = await this.checkIsUserInTeam(idOrSlug, {
+      userId,
+    });
+
+    return inTeam;
+  }
+
   async getTeamByIdOrSlug(args: { idOrSlug: string }) {
     const { idOrSlug } = args;
 
@@ -30,12 +40,21 @@ class TeamService extends BaseService {
       where: {
         OR: [{ members: { some: { id: userId } } }, { ownerId: userId }],
       },
+      include: {
+        admins: true,
+      },
+      orderBy: { createdAt: 'asc' },
     });
 
-    return teams.map(team => ({
-      ...team,
-      owned: team.ownerId === userId,
-    }));
+    return teams.map(team => {
+      const { admins, ...rest } = team;
+
+      return {
+        ...rest,
+        owned: team.ownerId === userId,
+        admin: admins.some(admin => admin.id === userId),
+      };
+    });
   }
 
   async getTeamMembers(args: {
@@ -55,7 +74,6 @@ class TeamService extends BaseService {
 
     const teamMembers = [team.owner, ...team.members];
 
-    // TODO: add sql query
     return teamMembers;
   }
 
@@ -70,8 +88,21 @@ class TeamService extends BaseService {
     });
 
     if (existingTeam) {
-      throw ApiError.conflict('A team with that name already exists');
+      throw ApiError.conflict(
+        'A team with that name already exists',
+        CodeError.TEAM_NAME_ALREADY_TAKEN,
+      );
     }
+
+    const teamCount = await prismaService.team.count({
+      where: { ownerId },
+    });
+
+    if (teamCount >= 9)
+      throw ApiError.conflict(
+        `User mustn't have more than 9 teams`,
+        CodeError.TEAM_COUNT_EXCEEDED,
+      );
 
     return prismaService.team.create({
       data: {
@@ -97,6 +128,17 @@ class TeamService extends BaseService {
     if (!isOwner && !isAdmin)
       throw ApiError.forbidden(
         'The team cannot be renamed by non-owner or non-admin',
+        CodeError.TEAM_CANT_BE_RENAMED_BY_NON_OWNER_OR_NON_ADMIN,
+      );
+
+    const existingTeam = await prismaService.team.findFirst({
+      where: { name: data.name },
+    });
+
+    if (existingTeam)
+      throw ApiError.conflict(
+        'A team with that name already exists',
+        CodeError.TEAM_NAME_ALREADY_TAKEN,
       );
 
     const newSlug = getSlug(data.name);
@@ -117,17 +159,46 @@ class TeamService extends BaseService {
     });
 
     if (!isOwner)
-      throw ApiError.forbidden('The team cannot be deleted by non-owner');
+      throw ApiError.forbidden(
+        'The team cannot be deleted by non-owner',
+        CodeError.TEAM_CANT_BE_DELETED_BY_NON_OWNER,
+      );
 
     const teamCount = await prismaService.team.count({ where: { ownerId } });
 
     if (teamCount <= 1)
-      throw ApiError.conflict('User must have at least one team');
-    else if (teamCount >= 9)
-      throw ApiError.conflict(`User mustn't have more than 9 teams`);
+      throw ApiError.conflict(
+        'User must have at least one team',
+        CodeError.TEAM_COUNT_MIN,
+      );
 
-    const deletedTeam = await prismaService.team.delete({
-      where: { id: team.id },
+    // Delete team and all related data in a transaction
+    const deletedTeam = await prismaService.$transaction(async tx => {
+      await Promise.all([
+        // Delete all team invitations
+        tx.teamInvitation.deleteMany({
+          where: { teamId: team.id },
+        }),
+
+        // Delete all team projects (this will cascade delete boards, columns, tasks, stickers)
+        tx.project.deleteMany({
+          where: { teamId: team.id },
+        }),
+
+        // Delete team members and admins relations
+        tx.team.update({
+          where: { id: team.id },
+          data: {
+            members: { set: [] },
+            admins: { set: [] },
+          },
+        }),
+      ]);
+
+      // Finally delete the team
+      return tx.team.delete({
+        where: { id: team.id },
+      });
     });
 
     return deletedTeam;

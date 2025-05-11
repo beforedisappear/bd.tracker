@@ -1,8 +1,9 @@
+import { AppRoutes, routesMetadata } from '@/shared/config/routes';
+
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Profile',
-  description: '',
+  ...routesMetadata[AppRoutes.PROFILE],
 };
 
 export { ProfilePage as default } from '@/pages/ProfilePage';

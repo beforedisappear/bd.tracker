@@ -5,7 +5,6 @@ import { geistSans } from './fonts/geistSans';
 
 import NextTopLoader from 'nextjs-toploader';
 import { ThemeProvider } from './providers/ThemeProvider';
-import { StoreProvider } from './providers/StoreProvider';
 import { QueryProvider } from './providers/QueryProvider';
 import { ToastProvider } from './providers/ToastProvider';
 
@@ -19,13 +18,12 @@ export function App({ children }: PropsWithChildren) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <NextTopLoader color='hsl(var(--primary))' showSpinner={false} />
-        <StoreProvider>
-          <ThemeProvider>
-            <QueryProvider>
-              <ToastProvider>{children}</ToastProvider>
-            </QueryProvider>
-          </ThemeProvider>
-        </StoreProvider>
+
+        <ThemeProvider>
+          <QueryProvider>
+            <ToastProvider>{children}</ToastProvider>
+          </QueryProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

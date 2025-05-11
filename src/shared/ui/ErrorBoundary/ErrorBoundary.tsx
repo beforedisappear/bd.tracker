@@ -9,7 +9,7 @@ interface Props {
   title?: string;
   description?: string;
   className?: string;
-  error?: Error;
+  error?: Error | null;
   reset?: () => void;
   children?: React.ReactNode;
 }

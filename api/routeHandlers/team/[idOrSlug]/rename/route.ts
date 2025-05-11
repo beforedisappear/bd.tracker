@@ -31,12 +31,9 @@ export async function PatchTeamRename(
 
     const newTeam = await teamService.renameTeam({ idOrSlug, data, userId });
 
-    return NextResponse.json(
-      { name: newTeam.name },
-      {
-        status: 200,
-      },
-    );
+    return NextResponse.json(newTeam, {
+      status: 200,
+    });
   } catch (e) {
     return ErrorResponse(e);
   }

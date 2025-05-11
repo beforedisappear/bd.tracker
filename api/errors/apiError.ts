@@ -1,4 +1,12 @@
-export type CodeError = '1000' | '1004';
+export enum CodeError {
+  'INCORRECT_OR_INVALID_CODE' = '1004',
+  'EMAIL_ALREADY_TAKEN' = '1010',
+  'TEAM_NAME_ALREADY_TAKEN' = '1020',
+  'TEAM_COUNT_EXCEEDED' = '1021',
+  'TEAM_COUNT_MIN' = '1022',
+  'TEAM_CANT_BE_DELETED_BY_NON_OWNER' = '1023',
+  'TEAM_CANT_BE_RENAMED_BY_NON_OWNER_OR_NON_ADMIN' = '1024',
+}
 
 interface IParams {
   message: string;

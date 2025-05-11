@@ -1,32 +1,32 @@
 import 'server-only';
 import { v4 as uuidv4 } from 'uuid';
 
-import { ApiError } from '$/errors/apiError';
+import { ApiError, CodeError } from '$/errors/apiError';
 
 import { prismaService } from '&/prisma';
 import { mailService } from './mail.service';
 
-import type { CreateUser, UpdateUser } from '../types';
 import type { Prisma } from '&/prisma/generated/client';
 
 class UserService {
-  create(user: CreateUser) {
+  create(user: { email: string }) {
     return prismaService.user.create({
       data: { ...user, name: this.getUserName(user.email) },
     });
   }
 
-  async createWithTx(tx: Prisma.TransactionClient, user: CreateUser) {
+  async createWithTx(tx: Prisma.TransactionClient, user: { email: string }) {
     return tx.user.create({
       data: { ...user, name: this.getUserName(user.email) },
     });
   }
 
-  //TODO: смена мыла
-  update(id: string, user: UpdateUser) {
+  update(args: { id: string; newName: string }) {
+    const { id, newName } = args;
+
     return prismaService.user.update({
       where: { id },
-      data: user,
+      data: { name: newName },
     });
   }
 
@@ -61,10 +61,14 @@ class UserService {
       where: { email: newEmail },
     });
 
-    if (existingUser) throw ApiError.conflict('Email is already taken');
+    if (existingUser)
+      throw ApiError.conflict(
+        'Email is already taken',
+        CodeError.EMAIL_ALREADY_TAKEN,
+      );
 
     const existingRequest = await prismaService.userEmailChange.findFirst({
-      where: { userId },
+      where: { userId, newEmail },
     });
 
     const token = uuidv4();

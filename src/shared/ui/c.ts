@@ -18,6 +18,7 @@ export { DatePicker } from './DatePicker/DatePicker';
 export { DateRangePicker } from './DateRangePicker/DateRangePicker';
 export { ScrollArea } from './ScrollArea/ScrollArea';
 export { Sidebar } from './Sidebar/Sidebar';
+export { SidebarTrigger } from './Sidebar/SidebarTrigger';
 export { Collapsible } from './Collapsible/Collapsible';
 
 //custom
@@ -32,3 +33,4 @@ export type { NavigationMenuItems } from './NavigationMenu';
 export type { ButtonSize, ButtonVariant } from './Button/Button.types';
 export type { SidebarGroupEl } from './Sidebar/Sidebar.types';
 export type { SelectOption } from './Select/Select.types';
+export type { ButtonProps } from './Button/Button.types';

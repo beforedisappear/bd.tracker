@@ -1,23 +1,20 @@
-'use client';
-
-import { apiClient } from '@/shared/api/c';
-import { useQuery } from '@tanstack/react-query';
+import { Profile } from '@/widgets/Profile';
+import { MyTeams } from '@/widgets/MyTeams';
+import { TeamStoreProvider } from '@/entities/Team';
 
 interface Props {}
 
 export function ProfilePage({}: Props) {
-  const { data } = useQuery({
-    queryKey: ['user'],
-    select: data => data.data,
-    queryFn: () => apiClient.withAuth.get('/profile'),
-  });
-
-  console.log('data', data);
-
   return (
-    <div className='flex flex-col'>
-      <span>ProfilePage</span>
-      <span>{data?.name}</span>
-    </div>
+    <TeamStoreProvider>
+      <div
+        className='flex flex-col gap-4 w-1/2 
+        xl:w-2/3
+        lg:w-full'
+      >
+        <Profile />
+        <MyTeams />
+      </div>
+    </TeamStoreProvider>
   );
 }

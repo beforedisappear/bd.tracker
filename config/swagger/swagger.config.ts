@@ -10,7 +10,7 @@ import { PostAuthDoc } from '$/routeHandlers/auth/doc';
 import { PostLoginDoc } from '$/routeHandlers/login/doc';
 import { PostRefreshTokensDoc } from '$/routeHandlers/refreshTokens/doc';
 import { PostLogoutDoc } from '$/routeHandlers/logout/doc';
-import { GetProfileDoc } from '$/routeHandlers/profile/doc';
+import { GetProfileDoc, UpdateProfileDoc } from '$/routeHandlers/profile/doc';
 import { PostCreateTeamDoc, GetTeamListDoc } from '$/routeHandlers/team/doc';
 import { PatchTeamRenameByIdOrSlugDoc } from '$/routeHandlers/team/[idOrSlug]/rename/doc';
 import {
@@ -49,7 +49,7 @@ import {
 } from '$/routeHandlers/board/doc';
 import { PostAcceptChangeEmailDoc } from '$/routeHandlers/profile/email/accept-change-request/doc';
 import { PostSendChangeEmailDoc } from '$/routeHandlers/profile/email/send-change-request/doc';
-
+import { GetHaveAccessToTeamDoc } from '$/routeHandlers/team/[idOrSlug]/access/doc';
 extendZodWithOpenApi(z);
 
 const openAPIRegistry = new OpenAPIRegistry();
@@ -72,6 +72,7 @@ openAPIRegistry.registerPath(PostLogoutDoc);
 
 //profile
 openAPIRegistry.registerPath(GetProfileDoc(bearerAuth.name));
+openAPIRegistry.registerPath(UpdateProfileDoc(bearerAuth.name));
 openAPIRegistry.registerPath(PostAcceptChangeEmailDoc);
 openAPIRegistry.registerPath(PostSendChangeEmailDoc(bearerAuth.name));
 //team main
@@ -80,6 +81,7 @@ openAPIRegistry.registerPath(GetTeamListDoc(bearerAuth.name));
 openAPIRegistry.registerPath(GetTeamByIdOrSlugDoc(bearerAuth.name));
 openAPIRegistry.registerPath(DeleteTeamByIdOrSlugDoc(bearerAuth.name));
 openAPIRegistry.registerPath(PatchTeamRenameByIdOrSlugDoc(bearerAuth.name));
+openAPIRegistry.registerPath(GetHaveAccessToTeamDoc(bearerAuth.name));
 //team member
 openAPIRegistry.registerPath(GetTeamMembersDoc(bearerAuth.name));
 openAPIRegistry.registerPath(GetTeamMemberByIdDoc(bearerAuth.name));

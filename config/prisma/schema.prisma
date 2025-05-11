@@ -99,7 +99,7 @@ enum Color {
 model User {
   //name / data type / type modifiers / optional attributes 
   id                  String           @id @default(uuid())
-  name                String?
+  name                String
   email               String           @unique
   createdAt           DateTime         @default(now()) @map("created_at")
   updatedAt           DateTime         @default(now()) @map("updated_at")

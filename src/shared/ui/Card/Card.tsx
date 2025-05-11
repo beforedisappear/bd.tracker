@@ -5,9 +5,10 @@ import { CardDescription } from './CardDescription';
 import { CardFooter } from './CardFooter';
 import { CardHeader } from './CardHeader';
 import { CardTitle } from './CardTitle';
+import { cn } from '@/shared/lib/css';
 
 interface Props extends PropsWithChildren {
-  title: React.ReactNode;
+  title?: React.ReactNode;
   description?: React.ReactNode;
   className?: string;
   titleClassName?: string;
@@ -34,20 +35,28 @@ export function Card(props: Props) {
     footerClassName,
   } = props;
 
+  const hasHeader = title || description || headerContent;
+
   return (
     <CardContainer className={className}>
-      <CardHeader className={headerClassName}>
-        <CardTitle className={titleClassName}>{title}</CardTitle>
-        {description && (
-          <CardDescription className={descClassName}>
-            {description}
-          </CardDescription>
-        )}
-        {headerContent}
-      </CardHeader>
+      {hasHeader && (
+        <CardHeader className={headerClassName}>
+          {title && <CardTitle className={titleClassName}>{title}</CardTitle>}
+
+          {description && (
+            <CardDescription className={descClassName}>
+              {description}
+            </CardDescription>
+          )}
+
+          {headerContent}
+        </CardHeader>
+      )}
 
       {children && (
-        <CardContent className={contentClassName}>{children}</CardContent>
+        <CardContent className={cn({ 'pt-6': !hasHeader }, contentClassName)}>
+          {children}
+        </CardContent>
       )}
 
       {footerContent && (

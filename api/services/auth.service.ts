@@ -10,8 +10,8 @@ import { prismaService } from '&/prisma';
 import { userService } from './user.service';
 import { mailService } from './mail.service';
 
-import type { CreateUser, IJwtPayload } from '../types';
-import { ApiError } from '$/errors/apiError';
+import type { IJwtPayload } from '../types';
+import { ApiError, CodeError } from '$/errors/apiError';
 import { LoginDto } from '$/routeHandlers/login/types';
 import { RefreshTokensDto } from '$/routeHandlers/refreshTokens/types';
 import { LogoutDto } from '$/routeHandlers/logout/types';
@@ -21,7 +21,7 @@ const secretKey = process.env.JWT_SECRET;
 const key = new TextEncoder().encode(secretKey);
 
 class AuthService {
-  async auth(data: CreateUser) {
+  async auth(data: { email: string }) {
     let user = await userService.findOne({ idOrEmail: data.email });
 
     if (!user) {
@@ -54,7 +54,10 @@ class AuthService {
       return newTokens;
     }
 
-    throw ApiError.conflict('Incorrect code', '1004');
+    throw ApiError.conflict(
+      'Incorrect code',
+      CodeError.INCORRECT_OR_INVALID_CODE,
+    );
   }
 
   async refreshTokens(data: RefreshTokensDto, agent: string) {

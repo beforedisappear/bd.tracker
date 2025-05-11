@@ -1,55 +1,47 @@
 'use client';
 
-import { Select, Form } from '@/shared/ui/c';
 import { Skeleton } from '@/shared/ui/s';
+import { SelectTeamQuickForm } from '../SelectTeamQuickForm/SelectTeamQuickForm';
 
 import { useQuery } from '@tanstack/react-query';
-import { useForm } from 'react-hook-form';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
+import { useMemo } from 'react';
 
 import { teamQueries } from '@/entities/Team';
 import { selectAdapter } from '@/shared/lib/input';
-import { getTeamRoutePath } from '@/shared/config/routes';
 
 interface Props {}
 
 export function SelectTeamQuick({}: Props) {
-  const { push } = useRouter();
   const { tenant } = useParams<{ tenant: string }>()!;
 
   const {
     data: userTeamList,
-    isLoading,
+    isFetching,
     isError,
   } = useQuery(teamQueries.getUserTeamList());
 
-  const form = useForm<{}>({
-    defaultValues: { team: tenant },
-  });
+  const options = useMemo(
+    () =>
+      selectAdapter(userTeamList ?? [], {
+        labelKey: 'name',
+        valueKey: 'slug',
+      }),
+    // to avoid empty select input value (when value !== tenant)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [userTeamList?.map(t => t.id).join(','), tenant],
+  );
 
-  if (isLoading)
+  if (isFetching)
     return <Skeleton className='h-9 group-data-[collapsible=icon]:hidden' />;
   else if (isError || !userTeamList) return <></>;
 
-  const onSubmit = form.handleSubmit(data => {
-    console.log(data);
-  });
-
-  const options = selectAdapter(userTeamList, {
-    labelKey: 'name',
-    valueKey: 'slug',
-  });
-
   return (
-    <Form {...form}>
-      <form onSubmit={onSubmit}>
-        <Select
-          name='team'
-          options={options}
-          className='group-data-[collapsible=icon]:hidden'
-          onValueChange={v => push(getTeamRoutePath(v))}
-        />
-      </form>
-    </Form>
+    <SelectTeamQuickForm
+      key={tenant}
+      options={options}
+      isFetching={isFetching}
+      tenant={tenant}
+    />
   );
 }

@@ -12,7 +12,7 @@ import { toast } from 'sonner';
 import {
   ERROR_MESSAGE,
   SENDING_DATA_MESSAGE,
-  SUCCESS_MESSAGE,
+  SUCCESSFUL_SENDING_MESSAGE,
 } from '@/shared/constants';
 import { LogOut } from 'lucide-react';
 
@@ -45,7 +45,7 @@ export function Logout(props: Props) {
     const toastId = toast.loading(SENDING_DATA_MESSAGE);
 
     mutateAsync({ refreshToken })
-      .then(() => toast.success(SUCCESS_MESSAGE, { id: toastId }))
+      .then(() => toast.success(SUCCESSFUL_SENDING_MESSAGE, { id: toastId }))
       .catch(() => toast.error(ERROR_MESSAGE, { id: toastId }))
       .finally(() => removeJwt())
       .finally(() => push(getMainRoutePath()));

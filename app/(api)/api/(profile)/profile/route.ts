@@ -1,1 +1,4 @@
-export { GetProfile as GET } from '$/routeHandlers/profile/route';
+export {
+  GetProfile as GET,
+  UpdateProfile as PUT,
+} from '$/routeHandlers/profile/route';
