@@ -37,3 +37,9 @@ export type GetHaveAccessToTeamDto = {
 export type GetHaveAccessToTeamDtoRes = {
   haveAccess: boolean;
 };
+
+export type GetTeamByIdDtoReq = {
+  idOrSlug: string;
+};
+
+export type GetTeamByIdDtoRes = Team;

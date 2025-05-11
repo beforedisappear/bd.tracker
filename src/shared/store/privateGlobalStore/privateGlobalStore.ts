@@ -1,20 +1,29 @@
 import { createStore as createZustandStore } from 'zustand/vanilla';
 
-interface IPrivateGlobalStoreState {}
+interface IPrivateGlobalStoreState {
+  teamIdBySlugMap: Record<string, string>;
+}
 
-interface IPrivateGlobalStoreActions {}
+interface IPrivateGlobalStoreActions {
+  setTeamIdBySlugMap: (map: Record<string, string>) => void;
+}
 
 export type PrivateGlobalStore = IPrivateGlobalStoreState &
   IPrivateGlobalStoreActions;
 
 export type PrivateGlobalStoreApi = ReturnType<typeof createPrivateGlobalStore>;
 
-const defaultInitState: IPrivateGlobalStoreState = {};
+const defaultInitState: IPrivateGlobalStoreState = {
+  teamIdBySlugMap: {},
+};
 
 export const createPrivateGlobalStore = (
   initState: IPrivateGlobalStoreState = defaultInitState,
 ) => {
-  return createZustandStore<PrivateGlobalStore>()(() => ({
+  return createZustandStore<PrivateGlobalStore>()(set => ({
     ...initState,
+    setTeamIdBySlugMap: (map: Record<string, string>) => {
+      set({ teamIdBySlugMap: map });
+    },
   }));
 };

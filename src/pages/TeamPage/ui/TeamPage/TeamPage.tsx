@@ -1,3 +1,5 @@
+'use client';
+
 import { TeamToolbar } from '@/widgets/TeamToolbar';
 import { TeamProjects } from '@/widgets/TeamProjects';
 import { TeamMembers } from '@/widgets/TeamMembers';

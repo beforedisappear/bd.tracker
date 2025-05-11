@@ -14,13 +14,17 @@ import type {
   DeleteTeamDtoReq,
   RenameTeamDtoReq,
   GetHaveAccessToTeamDto,
+  GetTeamByIdDtoReq,
 } from '../models/types';
 import type { AxiosResponse } from 'axios';
+import { getTeamById } from './getTeamByid';
 
 export const teamQueries = {
   currentUser: () => ['currentUser'],
 
   userTeamList: () => ['userTeamList'],
+
+  userTeamById: (idOrSlug: string) => ['userTeamById', idOrSlug],
 
   createTeam: () =>
     mutationOptions({
@@ -89,6 +93,13 @@ export const teamQueries = {
     queryOptions({
       queryKey: ['teamAccess', dto.idOrSlug],
       queryFn: () => getHaveAccessToTeam(dto),
+      select: res => res.data,
+    }),
+
+  getTeamById: (dto: GetTeamByIdDtoReq) =>
+    queryOptions({
+      queryKey: [...teamQueries.userTeamById(dto.idOrSlug)],
+      queryFn: () => getTeamById(dto),
       select: res => res.data,
     }),
 };
