@@ -2,6 +2,7 @@ import { mutationOptions } from '@/shared/lib/tanstack-query';
 import { queryOptions } from '@tanstack/react-query';
 import { queryClient } from '@/shared/config/query';
 
+import { getHaveAccessToTeam } from './getHaveAccessToTeam';
 import { getUserTeamList } from './getUserTeamList';
 import { createTeam } from './createTeam';
 import { deleteTeam } from './deleteTeam';
@@ -12,6 +13,7 @@ import type {
   CreateTeamDtoReq,
   DeleteTeamDtoReq,
   RenameTeamDtoReq,
+  GetHaveAccessToTeamDto,
 } from '../models/types';
 import type { AxiosResponse } from 'axios';
 
@@ -81,5 +83,12 @@ export const teamQueries = {
         queryClient.invalidateQueries({
           queryKey: [...teamQueries.userTeamList()],
         }),
+    }),
+
+  getHaveAccessToTeam: (dto: GetHaveAccessToTeamDto) =>
+    queryOptions({
+      queryKey: ['teamAccess', dto.idOrSlug],
+      queryFn: () => getHaveAccessToTeam(dto),
+      select: res => res.data,
     }),
 };

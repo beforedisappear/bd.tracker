@@ -20,6 +20,7 @@ export function SelectTeamAdvanced(props: Props) {
 
   const {
     data: userTeamList,
+    isSuccess,
     isLoading,
     isError,
     error,
@@ -30,14 +31,15 @@ export function SelectTeamAdvanced(props: Props) {
 
   return (
     <div className='flex flex-col gap-2'>
-      {userTeamList?.map(team => (
-        <SelectTeamAdvancedItem
-          key={team.id}
-          team={team}
-          isCurrentTeam={team.slug === tenant}
-          onDeleteTeam={onDeleteTeam}
-        />
-      ))}
+      {isSuccess &&
+        userTeamList.map(team => (
+          <SelectTeamAdvancedItem
+            key={team.id}
+            team={team}
+            isCurrentTeam={team.slug === tenant}
+            onDeleteTeam={onDeleteTeam}
+          />
+        ))}
     </div>
   );
 }

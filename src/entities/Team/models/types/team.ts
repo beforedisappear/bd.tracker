@@ -29,3 +29,11 @@ export type DeleteTeamDtoRes = {
 };
 
 export type GetUserTeamListDtoRes = UserTeam[];
+
+export type GetHaveAccessToTeamDto = {
+  idOrSlug: string;
+};
+
+export type GetHaveAccessToTeamDtoRes = {
+  haveAccess: boolean;
+};

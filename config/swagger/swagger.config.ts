@@ -49,7 +49,7 @@ import {
 } from '$/routeHandlers/board/doc';
 import { PostAcceptChangeEmailDoc } from '$/routeHandlers/profile/email/accept-change-request/doc';
 import { PostSendChangeEmailDoc } from '$/routeHandlers/profile/email/send-change-request/doc';
-
+import { GetHaveAccessToTeamDoc } from '$/routeHandlers/team/[idOrSlug]/access/doc';
 extendZodWithOpenApi(z);
 
 const openAPIRegistry = new OpenAPIRegistry();
@@ -81,6 +81,7 @@ openAPIRegistry.registerPath(GetTeamListDoc(bearerAuth.name));
 openAPIRegistry.registerPath(GetTeamByIdOrSlugDoc(bearerAuth.name));
 openAPIRegistry.registerPath(DeleteTeamByIdOrSlugDoc(bearerAuth.name));
 openAPIRegistry.registerPath(PatchTeamRenameByIdOrSlugDoc(bearerAuth.name));
+openAPIRegistry.registerPath(GetHaveAccessToTeamDoc(bearerAuth.name));
 //team member
 openAPIRegistry.registerPath(GetTeamMembersDoc(bearerAuth.name));
 openAPIRegistry.registerPath(GetTeamMemberByIdDoc(bearerAuth.name));

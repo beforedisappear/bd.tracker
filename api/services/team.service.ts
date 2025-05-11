@@ -15,6 +15,16 @@ import type { CreateTeamReqDto } from '$/routeHandlers/team/types';
 import type { RenameTeamReqDto } from '$/routeHandlers/team/[idOrSlug]/rename/types';
 
 class TeamService extends BaseService {
+  async haveAccess(args: { idOrSlug: string; userId: string }) {
+    const { idOrSlug, userId } = args;
+
+    const { inTeam } = await this.checkIsUserInTeam(idOrSlug, {
+      userId,
+    });
+
+    return inTeam;
+  }
+
   async getTeamByIdOrSlug(args: { idOrSlug: string }) {
     const { idOrSlug } = args;
 

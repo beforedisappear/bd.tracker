@@ -15,7 +15,7 @@ export const userQueries = {
     queryOptions({
       queryKey: [...userQueries.all()],
       queryFn: getUser,
-      select: data => data.data,
+      select: res => res.data,
     }),
 
   updateUser: () =>

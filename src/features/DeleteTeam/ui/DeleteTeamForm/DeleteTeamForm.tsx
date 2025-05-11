@@ -41,9 +41,10 @@ export function DeleteTeamForm({}: Props) {
     deleteTeam({ idOrSlug: deletingTeam.id })
       .then(() => setShowDeleteTeamModal(false))
       .then(() => setDeletingTeam(null))
-      .then(() =>
-        tenant === deletingTeam.slug ? push(getHomeRoutePath()) : undefined,
-      )
+      .then(() => {
+        //to prevent incorrect behavior with delete tenant param
+        if (tenant === deletingTeam.slug) push(getHomeRoutePath());
+      })
       .then(() => toast.success(SUCCESSFUL_SENDING_MESSAGE, { id: toastId }))
       .catch(e => toast.error(getErrorMessage(e), { id: toastId }));
   };
