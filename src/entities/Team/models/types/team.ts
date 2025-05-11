@@ -6,13 +6,9 @@ export interface Team {
   ownerId: string;
 }
 
-export interface UserTeam {
-  name: string;
-  id: string;
-  slug: string;
-  createdAt: string;
-  ownerId: string;
+export interface UserTeam extends Team {
   owned: boolean;
+  admin: boolean;
 }
 
 export type CreateTeamDtoReq = {

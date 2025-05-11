@@ -8,13 +8,13 @@ import { deleteTeam } from './deleteTeam';
 import { renameTeam } from './renameTeam';
 
 import type {
+  Team,
   CreateTeamDtoReq,
   DeleteTeamDtoReq,
   RenameTeamDtoReq,
-  Team,
 } from '../models/types';
-
 import type { AxiosResponse } from 'axios';
+
 export const teamQueries = {
   currentUser: () => ['currentUser'],
 
@@ -42,6 +42,11 @@ export const teamQueries = {
     mutationOptions({
       mutationKey: ['deleteTeam'],
       mutationFn: (dto: DeleteTeamDtoReq) => deleteTeam(dto),
+      onSuccess: () =>
+        queryClient.invalidateQueries({
+          queryKey: [...teamQueries.userTeamList()],
+          refetchType: 'active',
+        }),
     }),
 
   renameTeam: () =>

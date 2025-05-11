@@ -4,14 +4,20 @@ import { Dialog } from '@/shared/ui/c';
 import { DeleteTeamForm } from '../DeleteTeamForm';
 import { DeleteTeamTrigger } from '../DeleteTeamTrigger/DeleteTeamTrigger';
 
-import { DELETE_TEAM_TITLE } from '../../constants';
+import { useTeamStore } from '@/entities/Team';
 
+import { DELETE_TEAM_TITLE } from '../../constants';
 interface Props {
   hideTrigger?: boolean;
 }
 
 export function DeleteTeamDesktop(props: Props) {
   const { hideTrigger } = props;
+
+  const setShowDeleteTeamModal = useTeamStore(
+    state => state.setShowDeleteTeamModal,
+  );
+  const showDeleteTeamModal = useTeamStore(state => state.showDeleteTeamModal);
 
   return (
     <Dialog
@@ -20,6 +26,8 @@ export function DeleteTeamDesktop(props: Props) {
       trigger={hideTrigger ? null : <DeleteTeamTrigger />}
       className='h-48 max-w-96'
       data-testid='delete-team-dialog'
+      onOpenChange={setShowDeleteTeamModal}
+      open={showDeleteTeamModal}
     >
       <DeleteTeamForm />
     </Dialog>

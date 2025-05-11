@@ -30,13 +30,21 @@ class TeamService extends BaseService {
       where: {
         OR: [{ members: { some: { id: userId } } }, { ownerId: userId }],
       },
+      include: {
+        admins: true,
+      },
       orderBy: { createdAt: 'asc' },
     });
 
-    return teams.map(team => ({
-      ...team,
-      owned: team.ownerId === userId,
-    }));
+    return teams.map(team => {
+      const { admins, ...rest } = team;
+
+      return {
+        ...rest,
+        owned: team.ownerId === userId,
+        admin: admins.some(admin => admin.id === userId),
+      };
+    });
   }
 
   async getTeamMembers(args: {
@@ -110,6 +118,7 @@ class TeamService extends BaseService {
     if (!isOwner && !isAdmin)
       throw ApiError.forbidden(
         'The team cannot be renamed by non-owner or non-admin',
+        CodeError.TEAM_CANT_BE_RENAMED_BY_NON_OWNER_OR_NON_ADMIN,
       );
 
     const existingTeam = await prismaService.team.findFirst({
@@ -140,7 +149,10 @@ class TeamService extends BaseService {
     });
 
     if (!isOwner)
-      throw ApiError.forbidden('The team cannot be deleted by non-owner');
+      throw ApiError.forbidden(
+        'The team cannot be deleted by non-owner',
+        CodeError.TEAM_CANT_BE_DELETED_BY_NON_OWNER,
+      );
 
     const teamCount = await prismaService.team.count({ where: { ownerId } });
 
@@ -150,8 +162,33 @@ class TeamService extends BaseService {
         CodeError.TEAM_COUNT_MIN,
       );
 
-    const deletedTeam = await prismaService.team.delete({
-      where: { id: team.id },
+    // Delete team and all related data in a transaction
+    const deletedTeam = await prismaService.$transaction(async tx => {
+      await Promise.all([
+        // Delete all team invitations
+        tx.teamInvitation.deleteMany({
+          where: { teamId: team.id },
+        }),
+
+        // Delete all team projects (this will cascade delete boards, columns, tasks, stickers)
+        tx.project.deleteMany({
+          where: { teamId: team.id },
+        }),
+
+        // Delete team members and admins relations
+        tx.team.update({
+          where: { id: team.id },
+          data: {
+            members: { set: [] },
+            admins: { set: [] },
+          },
+        }),
+      ]);
+
+      // Finally delete the team
+      return tx.team.delete({
+        where: { id: team.id },
+      });
     });
 
     return deletedTeam;

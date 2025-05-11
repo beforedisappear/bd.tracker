@@ -19,6 +19,14 @@ export const saveJwt = (accessToken: string, refreshToken: string) => {
   Cookies.set(REFRESH_TOKEN_COOKIE_NAME, refreshToken, getCookieConfig());
 };
 
+export const removeAccessToken = () => {
+  Cookies.remove(ACCESS_TOKEN_COOKIE_NAME, getCookieConfig());
+};
+
+export const removeRefreshToken = () => {
+  Cookies.remove(REFRESH_TOKEN_COOKIE_NAME, getCookieConfig());
+};
+
 export const removeJwt = () => {
   const expiredDate = new Date(0);
 

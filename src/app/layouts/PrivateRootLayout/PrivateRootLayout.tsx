@@ -11,7 +11,7 @@ export async function PrivateRootLayout({ children }: IProps) {
   return (
     <>
       <PrivateGlobalStoreProvider>
-        <SidebarProvider defaultOpen={true}>
+        <SidebarProvider>
           <MainSidebar />
 
           <div className='flex flex-col flex-grow'>

@@ -1,0 +1,1 @@
+export { RenameTeamSchema } from './RenameTeamSchema';

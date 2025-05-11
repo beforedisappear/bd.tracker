@@ -23,5 +23,6 @@ export const GetTeamListResSchema = z.array(
     createdAt: z.string(),
     ownerId: z.string().uuid(),
     owned: z.boolean(),
+    admin: z.boolean(),
   }),
 );

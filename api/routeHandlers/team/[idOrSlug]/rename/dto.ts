@@ -4,7 +4,7 @@ import { z } from 'zod';
 extendZodWithOpenApi(z);
 
 export const RenameTeamByIdOrSlugReqBodySchema = z.object({
-  name: z.string(),
+  name: z.string().min(1),
 });
 
 export const RenameTeamByIdOrSlugReqParamsSchema = z.object({

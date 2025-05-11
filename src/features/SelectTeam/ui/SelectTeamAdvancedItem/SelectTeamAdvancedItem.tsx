@@ -6,20 +6,29 @@ import { useRef, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
-import { teamQueries } from '@/entities/Team';
+import { toast } from 'sonner';
+import { teamQueries, RenameTeamSchema } from '@/entities/Team';
 import { getProfileRoutePath } from '@/shared/config/routes';
+import {
+  errorMessagesMap,
+  getErrorMessage,
+  getZodErrorMessage,
+} from '@/shared/lib/error';
 
-import type { Team } from '@/entities/Team';
+import { ZodError } from 'zod';
+import type { UserTeam } from '@/entities/Team';
 import type { FocusEvent } from 'react';
-
 interface Props {
-  team: Team;
+  team: UserTeam;
   isCurrentTeam: boolean;
-  onDelete?: (id: string) => void;
+  onDeleteTeam?: (id: string, slug: string) => void;
 }
 
 export function SelectTeamAdvancedItem(props: Props) {
-  const { team, isCurrentTeam, onDelete } = props;
+  const { team, isCurrentTeam, onDeleteTeam } = props;
+
+  const isAdmin = team.admin;
+  const isOwner = team.owned;
   const router = useRouter();
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -36,17 +45,28 @@ export function SelectTeamAdvancedItem(props: Props) {
   const onEndEditing = (e: FocusEvent<HTMLInputElement>) => {
     setIsEditing(false);
 
+    try {
+      RenameTeamSchema.parse({ name: e.target.value });
+    } catch (error) {
+      if (error instanceof ZodError) toast.error(getZodErrorMessage(error));
+      setTeamName(team.name);
+      return;
+    }
+
     const value = e.target.value;
 
     if (value === team.name) return;
 
-    renameTeam({ idOrSlug: team.id, name: e.target.value }).then(
-      ({ data: { slug } }) => {
+    renameTeam({ idOrSlug: team.id, name: e.target.value })
+      .then(({ data: { slug } }) => {
         //if the team is the current team, then update slug in the url
         if (isCurrentTeam)
           router.push(getProfileRoutePath(slug), { scroll: false });
-      },
-    );
+      })
+      .catch(e => {
+        toast.error(getErrorMessage(e));
+        setTeamName(team.name);
+      });
   };
 
   return (
@@ -67,17 +87,25 @@ export function SelectTeamAdvancedItem(props: Props) {
           variant='ghost'
           size='icon'
           className='w-6 h-6 group'
-          onClick={onStartEditing}
+          onClick={() =>
+            isAdmin || isOwner
+              ? onStartEditing()
+              : toast.error(errorMessagesMap['1024'])
+          }
         >
           <Pencil className='w-4 h-4 group-hover:text-blue-800' />
         </Button>
 
-        {onDelete && (
+        {onDeleteTeam && (
           <Button
             variant='ghost'
             size='icon'
             className='w-6 h-6 group'
-            onClick={() => onDelete(team.id)}
+            onClick={() =>
+              isOwner
+                ? onDeleteTeam(team.id, team.slug)
+                : toast.error(errorMessagesMap['1023'])
+            }
           >
             <Trash className='w-4 h-4 group-hover:text-red-800' />
           </Button>

@@ -16,7 +16,8 @@ export function TeamPage({}: Props) {
       <span>TeamPage</span>
       <span>TeamPage</span>
       <span>TeamPage</span>
-      <span>TeamPage</span> <span>TeamPage</span>
+      <span>TeamPage</span>
+      <span>TeamPage</span>
       <span>TeamPage</span>
       <span>TeamPage</span>
       <span>TeamPage</span>

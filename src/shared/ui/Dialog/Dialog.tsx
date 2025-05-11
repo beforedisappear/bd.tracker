@@ -11,11 +11,12 @@ import type { ComponentProps } from 'react';
 const DialogContainer = DialogPrimitive.Root;
 const DialogTrigger = DialogPrimitive.Trigger;
 
-interface IProps extends ComponentProps<typeof DialogContainer> {
+interface IProps extends ComponentProps<typeof DialogContent> {
   title: string;
   trigger?: React.ReactNode;
   description?: string;
   defaultOpen?: boolean;
+  open?: boolean;
   onOpenChange?: (open: boolean) => void;
   className?: string;
   titleClassName?: string;
@@ -28,6 +29,7 @@ export function Dialog(props: IProps) {
     description,
     trigger,
     defaultOpen,
+    open,
     children,
     className,
     titleClassName,
@@ -37,7 +39,11 @@ export function Dialog(props: IProps) {
   } = props;
 
   return (
-    <DialogContainer defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
+    <DialogContainer
+      defaultOpen={defaultOpen}
+      onOpenChange={onOpenChange}
+      open={open}
+    >
       <DialogTrigger asChild>{trigger}</DialogTrigger>
 
       <DialogContent className={className} {...restProps}>
