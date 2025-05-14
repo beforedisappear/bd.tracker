@@ -68,7 +68,6 @@ enum PermissionType {
 
 enum StickerType {
   TEXT
-  DATE
   DATE_RANGE
 }
 
@@ -144,8 +143,8 @@ model UserEmailChange {
   expiresAt DateTime
 
   //one user to one email change request
-  userId    String   @unique
-  user      User     @relation("UserEmailChange", fields: [userId], references: [id])
+  userId String @unique
+  user   User   @relation("UserEmailChange", fields: [userId], references: [id])
 
   @@map("user_email_change")
 }
@@ -190,11 +189,12 @@ model Team {
 }
 
 model TeamInvitation {
-  id        String           @id @default(uuid())
-  status    InvitationStatus @default(PENDING)
-  token     String
-  createdAt DateTime         @default(now())
-  expiresAt DateTime
+  id           String           @id @default(uuid())
+  status       InvitationStatus @default(PENDING)
+  token        String
+  createdAt    DateTime         @default(now())
+  expiresAt    DateTime
+  inviteeEmail String           @unique
 
   //many teamInvitations to one team
   teamId String
@@ -203,8 +203,6 @@ model TeamInvitation {
   //many teamInvitations to one user (inviter)
   inviterId String
   inviter   User   @relation("TeamInviter", fields: [inviterId], references: [id])
-
-  inviteeEmail String @unique
 
   //many teamInvitations to many projects 
   projectIds String[]
@@ -228,9 +226,9 @@ model Project {
 model Board {
   id        String    @id @default(uuid())
   name      String
-  projectId String
   createdAt DateTime  @default(now())
   //many boards to one project
+  projectId String
   project   Project   @relation(fields: [projectId], references: [id])
   //many columns to one board
   columns   Column[]
@@ -239,49 +237,67 @@ model Board {
 }
 
 model Column {
-  id            String   @id @default(uuid())
-  name          String
-  boardPosition Int      @unique
-  createdAt     DateTime @default(now()) @map("created_at")
-  updatedAt     DateTime @updatedAt @map("updated_at")
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
   //many columns to one board
-  boardId       String
-  board         Board    @relation(fields: [boardId], references: [id])
+  boardId String
+  board   Board  @relation(fields: [boardId], references: [id])
+
   //many tasks to one column
-  tasks         Task[]
+  tasks Task[]
+
+  //one column to one (next) column | for dual-linked list
+  nextColumnId   String? @unique
+  nextColumn     Column? @relation("ColumnOrder", fields: [nextColumnId], references: [id])
+  previousColumn Column? @relation("ColumnOrder")
 
   //for Multi-tenant 
   projectId String
 }
 
 model Task {
-  id             String    @id @default(uuid())
-  title          String
-  description    String?
-  columnPosition Int       @unique
-  color          Color     @default(GRAY)
-  isDone         Boolean   @default(false)
-  isInArchieve   Boolean   @default(false)
-  createdAt      DateTime  @default(now()) @map("created_at")
-  updatedAt      DateTime  @updatedAt @map("updated_at")
-  //to keep the max nesting = 1
-  isSubtask      Boolean   @default(false)
-  //to place subtask on board
-  isStandalone   Boolean   @default(false)
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  color       Color    @default(GRAY)
+  isDone      Boolean  @default(false)
+  isArchived  Boolean  @default(false)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
   //many tasks to one column
-  columnId       String
-  column         Column    @relation(fields: [columnId], references: [id])
+  columnId String
+  column   Column @relation(fields: [columnId], references: [id])
+
   //many users to many tasks
-  assignees      User[]    @relation("TaskAssignees")
-  //one task to many tasks (subtasks) by self-referencing relationship
-  parentTaskId   String?
-  parentTask     Task?     @relation("TaskHierarchy", fields: [parentTaskId], references: [id])
-  subtasks       Task[]    @relation("TaskHierarchy")
+  assignees User[] @relation("TaskAssignees")
+
   //many stickers to many tasks
-  stickers       Sticker[] @relation("TaskStickers")
+  stickers Sticker[] @relation("TaskStickers")
+
+  //one task to one (next) task | for dual-linked list
+  nextTaskId   String? @unique
+  nextTask     Task?   @relation("TaskOrder", fields: [nextTaskId], references: [id])
+  previousTask Task?   @relation("TaskOrder")
 
   //for Multi-tenant 
   projectId String
+
+  // TODO: add subtask management
+  // //one task to many tasks (subtasks) by self-referencing relationship
+  // parentTaskId   String?
+  // parentTask     Task?     @relation("TaskHierarchy", fields: [parentTaskId], references: [id])
+
+  // subtasks       Task[]    @relation("TaskHierarchy")
+
+  // //to place subtask on board
+  // isStandalone   Boolean   @default(false)
+
+  // //to keep the max nesting = 1
+  // isSubtask      Boolean   @default(false)
 }
 
 //TODO: add sticker group
@@ -289,17 +305,18 @@ model Sticker {
   id        String      @id @default(uuid())
   name      String?
   type      StickerType
-  textValue String?   // текстовые стикеры
+  textValue String? // текстовые стикеры
   startDate DateTime? // начало интервала дат
   endDate   DateTime? // конец интервала дат
   color     Color       @default(GRAY)
   createdAt DateTime    @default(now()) @map("created_at")
   updatedAt DateTime    @updatedAt @map("updated_at")
+
   //many stickers to one board
-  boardId   String
-  board     Board       @relation(fields: [boardId], references: [id])
+  boardId String
+  board   Board  @relation(fields: [boardId], references: [id])
   //many stickers to many tasks
-  tasks     Task[]      @relation("TaskStickers")
+  tasks   Task[] @relation("TaskStickers")
 
   //for Multi-tenant 
   projectId String
