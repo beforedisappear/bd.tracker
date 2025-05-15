@@ -440,6 +440,11 @@ class TeamService extends BaseService {
         members: {
           disconnect: { id: memberId },
         },
+        ...(isAdmin && {
+          admins: {
+            disconnect: { id: memberId },
+          },
+        }),
       },
     });
   }
