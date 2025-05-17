@@ -8,10 +8,11 @@ import { InviteToTeamContentLoading } from './InviteToTeamContent.loading';
 interface Props {
   onClose?: () => void;
   className?: string;
+  submitButtonClassName?: string;
 }
 
 export function InviteToTeamContent(props: Props) {
-  const { onClose, className } = props;
+  const { onClose, className, submitButtonClassName } = props;
   const { tenant } = useParams<{ tenant: string }>()!;
 
   const {
@@ -31,7 +32,7 @@ export function InviteToTeamContent(props: Props) {
       projects={projects}
       onClose={onClose}
       className={className}
-      submitButtonClassName='w-full'
+      submitButtonClassName={submitButtonClassName}
     />
   );
 }

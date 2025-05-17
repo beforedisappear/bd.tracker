@@ -12,7 +12,7 @@ export function InviteToTeamMobile() {
       trigger={<InviteToTeamTrigger />}
       className='h-[100vh]'
     >
-      <InviteToTeamContent className='p-6' />
+      <InviteToTeamContent className='p-6' submitButtonClassName='w-full' />
     </Drawer>
   );
 }
