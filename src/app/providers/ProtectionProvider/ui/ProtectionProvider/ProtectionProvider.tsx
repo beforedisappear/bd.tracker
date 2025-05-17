@@ -35,7 +35,7 @@ export function ProtectionProvider({ children }: IProps) {
   );
 
   const isNotFound = isAxiosError(error) && error.response?.status === 404;
-  const isRestricted = data && !data.haveAccess;
+  const isRestricted = data && !data.inTeam;
   const showLoader = isLoading || isNotFound || isRestricted;
 
   useLayoutEffect(() => {

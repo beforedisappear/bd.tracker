@@ -18,11 +18,12 @@ class TeamService extends BaseService {
   async haveAccess(args: { idOrSlug: string; userId: string }) {
     const { idOrSlug, userId } = args;
 
-    const { inTeam } = await this.checkIsUserInTeam(idOrSlug, {
-      userId,
-    });
+    const { inTeam, isAdmin, isOwner } = await this.checkIsUserInTeam(
+      idOrSlug,
+      { userId },
+    );
 
-    return inTeam;
+    return { inTeam, isAdmin, isOwner };
   }
 
   async getTeamByIdOrSlug(args: { idOrSlug: string }) {
@@ -72,7 +73,13 @@ class TeamService extends BaseService {
     if (!isUserInTeam)
       throw ApiError.forbidden('User is not a member of this team');
 
-    const teamMembers = [team.owner, ...team.members];
+    const adminIds = team.admins.map(a => a.id);
+
+    const teamMembers = [team.owner, ...team.members].map(member => ({
+      ...member,
+      isOwner: member.id === team.ownerId,
+      isAdmin: adminIds.includes(member.id),
+    }));
 
     return teamMembers;
   }

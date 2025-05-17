@@ -35,7 +35,9 @@ export type GetHaveAccessToTeamDto = {
 };
 
 export type GetHaveAccessToTeamDtoRes = {
-  haveAccess: boolean;
+  inTeam: boolean;
+  isAdmin: boolean;
+  isOwner: boolean;
 };
 
 export type GetTeamByIdDtoReq = {

@@ -13,6 +13,7 @@ export function TeamProjects({}: Props) {
       titleClassName='text-xl font-bold 
       md:text-base'
       className='flex flex-col'
+      contentClassName='flex flex-col gap-4'
     >
       <CreateProject />
 

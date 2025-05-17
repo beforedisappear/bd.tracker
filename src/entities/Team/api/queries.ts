@@ -9,6 +9,7 @@ import { deleteTeam } from './deleteTeam';
 import { renameTeam } from './renameTeam';
 import { getTeamById } from './getTeamByid';
 import { inviteToTeam } from './inviteToTeam';
+import { getTeamMembers } from './getTeamMembers';
 
 import type {
   Team,
@@ -18,6 +19,7 @@ import type {
   GetHaveAccessToTeamDto,
   GetTeamByIdDtoReq,
   InviteToTeamDtoReq,
+  GetTeamMembersDtoReq,
 } from '../models/types';
 import type { AxiosResponse } from 'axios';
 
@@ -28,6 +30,37 @@ export const teamQueries = {
 
   userTeamById: (idOrSlug: string) => ['userTeamById', idOrSlug],
 
+  teamMembers: (idOrSlug: string) => ['teamMembers', idOrSlug],
+
+  getUserTeamList: () =>
+    queryOptions({
+      queryKey: [...teamQueries.userTeamList()],
+      queryFn: getUserTeamList,
+      select: res => res.data,
+    }),
+
+  getTeamMembers: (dto: GetTeamMembersDtoReq) =>
+    queryOptions({
+      queryKey: [...teamQueries.teamMembers(dto.idOrSlug)],
+      queryFn: () => getTeamMembers(dto),
+      select: res => res.data,
+    }),
+
+  // TODO: add cache time
+  getHaveAccessToTeam: (dto: GetHaveAccessToTeamDto) =>
+    queryOptions({
+      queryKey: ['teamAccess', dto.idOrSlug],
+      queryFn: () => getHaveAccessToTeam(dto),
+      select: res => res.data,
+    }),
+
+  getTeamById: (dto: GetTeamByIdDtoReq) =>
+    queryOptions({
+      queryKey: [...teamQueries.userTeamById(dto.idOrSlug)],
+      queryFn: () => getTeamById(dto),
+      select: res => res.data,
+    }),
+
   createTeam: () =>
     mutationOptions({
       mutationKey: ['createTeam'],
@@ -37,13 +70,6 @@ export const teamQueries = {
           queryKey: [...teamQueries.userTeamList()],
           refetchType: 'active',
         }),
-    }),
-
-  getUserTeamList: () =>
-    queryOptions({
-      queryKey: [...teamQueries.userTeamList()],
-      queryFn: getUserTeamList,
-      select: res => res.data,
     }),
 
   deleteTeam: () =>
@@ -89,20 +115,6 @@ export const teamQueries = {
         queryClient.invalidateQueries({
           queryKey: [...teamQueries.userTeamList()],
         }),
-    }),
-
-  getHaveAccessToTeam: (dto: GetHaveAccessToTeamDto) =>
-    queryOptions({
-      queryKey: ['teamAccess', dto.idOrSlug],
-      queryFn: () => getHaveAccessToTeam(dto),
-      select: res => res.data,
-    }),
-
-  getTeamById: (dto: GetTeamByIdDtoReq) =>
-    queryOptions({
-      queryKey: [...teamQueries.userTeamById(dto.idOrSlug)],
-      queryFn: () => getTeamById(dto),
-      select: res => res.data,
     }),
 
   inviteToTeam: () =>

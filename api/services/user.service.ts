@@ -46,7 +46,10 @@ class UserService {
     const existingUsers = await prismaService.user.findMany({
       where: {
         id: { in: ids },
-        ...(teamId ? { teams: { some: { id: teamId } } } : {}),
+        OR: [
+          ...(teamId ? [{ teams: { some: { id: teamId } } }] : []),
+          ...(teamId ? [{ ownedTeams: { some: { id: teamId } } }] : []),
+        ],
       },
       select: { id: true },
     });

@@ -17,7 +17,7 @@ import { CREATE_TEAM_DESCRIPTION } from '../../constants';
 import { SUCCESSFUL_SENDING_MESSAGE } from '@/shared/constants';
 
 import { CreateTeamSchema } from '../../model/schemes';
-import type { CreateTeam } from '../../model/types';
+import type { CreateTeamDtoReq } from '../../model/types';
 
 interface Props {
   className?: string;
@@ -28,7 +28,7 @@ export function CreateTeamForm(props: Props) {
 
   const { push } = useRouter();
 
-  const form = useForm<CreateTeam>({
+  const form = useForm<CreateTeamDtoReq>({
     resolver: zodResolver(CreateTeamSchema),
     defaultValues: { name: '' },
   });

@@ -1,6 +1,6 @@
 'use client';
 
-import { Moon, Sun } from 'lucide-react';
+import { Moon, Sun, Monitor } from 'lucide-react';
 
 import { Button, DropdownMenu, type DropDownMenuOptions } from '@/shared/ui/c';
 
@@ -21,14 +21,28 @@ export function SwitchTheme() {
   );
 
   const options: DropDownMenuOptions = [
-    { type: 'item', label: 'Светлая', onSelect: () => setTheme('light') },
-    { type: 'item', label: 'Темная', onSelect: () => setTheme('dark') },
     {
       type: 'item',
-      label: 'Системная',
+      label: { text: 'Светлая', icon: <Sun /> },
+      onSelect: () => setTheme('light'),
+    },
+    {
+      type: 'item',
+      label: { text: 'Темная', icon: <Moon /> },
+      onSelect: () => setTheme('dark'),
+    },
+    {
+      type: 'item',
+      label: { text: 'Системная', icon: <Monitor /> },
       onSelect: () => setTheme('system'),
     },
   ];
 
-  return <DropdownMenu align='end' trigger={trigger} options={options} />;
+  return (
+    <DropdownMenu
+      trigger={trigger}
+      options={options}
+      contentProps={{ align: 'end' }}
+    />
+  );
 }

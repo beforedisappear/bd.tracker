@@ -39,7 +39,7 @@ export function ErrorBoundary(props: Props) {
       <h2 className='text-lg font-semibold'>{title}</h2>
       <p className='text-sm text-muted-foreground mb-3'>{description}</p>
       {reset && (
-        <Button onClick={reset} size='sm' variant='outline'>
+        <Button type='button' onClick={reset} size='sm' variant='outline'>
           <RefreshCw className='mr-2 h-4 w-4' />
           <span>Попробовать снова</span>
         </Button>

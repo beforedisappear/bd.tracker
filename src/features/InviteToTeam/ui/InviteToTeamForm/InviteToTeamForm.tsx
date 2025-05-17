@@ -1,11 +1,12 @@
 import { cn } from '@/shared/lib/css';
 import { Loader2 } from 'lucide-react';
 
-import { Button, Form, Input, Checkbox } from '@/shared/ui/c';
+import { Button, Form, Input, Checkbox, ScrollArea } from '@/shared/ui/c';
 
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
+import { useDeviceType } from '@/shared/lib/deviceType/c';
 
 import { teamQueries, InviteToTeamSchema } from '@/entities/Team';
 import { getErrorMessage } from '@/shared/lib/error';
@@ -18,13 +19,12 @@ import { toast } from 'sonner';
 interface Props {
   projects: Project[];
   onClose?: () => void;
-  className?: string;
-  submitButtonClassName?: string;
 }
 
 //TODO: Добавить проверку на существование приглашения и уведомить об этом
 export function InviteToTeamForm(props: Props) {
-  const { projects, onClose, className, submitButtonClassName } = props;
+  const { isMobile, isDesktop } = useDeviceType();
+  const { projects, onClose } = props;
 
   const { tenant } = useParams<{ tenant: string }>()!;
 
@@ -38,8 +38,11 @@ export function InviteToTeamForm(props: Props) {
 
   const onSubmit = form.handleSubmit(data => {
     const dto = {
-      teamIdOrSlug: tenant,
       ...data,
+      teamIdOrSlug: tenant,
+      projectIds: Object.keys(data.projectIds).filter(
+        key => data.projectIds[key],
+      ),
     };
 
     inviteToTeam(dto)
@@ -53,7 +56,9 @@ export function InviteToTeamForm(props: Props) {
   return (
     <Form {...form}>
       <form
-        className={cn('flex flex-col gap-6 h-full', className)}
+        className={cn('flex flex-col gap-6 h-full', {
+          'p-6': isMobile,
+        })}
         onSubmit={onSubmit}
       >
         <Input name='inviteeEmail' label='E-mail адрес' />
@@ -61,7 +66,13 @@ export function InviteToTeamForm(props: Props) {
         <div className='flex flex-col gap-2'>
           <span className='font-medium mb-1'>Также пригласить в проекты:</span>
 
-          <div className='flex flex-col gap-1 pl-2'>
+          <ScrollArea
+            type='always'
+            className={cn('flex flex-col gap-1 pl-2', {
+              'h-36': isDesktop,
+              'h-full max-h-[400px]': isMobile,
+            })}
+          >
             {projects.map(project => (
               <Checkbox
                 key={project.id}
@@ -71,7 +82,7 @@ export function InviteToTeamForm(props: Props) {
                 label={project.name}
               />
             ))}
-          </div>
+          </ScrollArea>
         </div>
 
         <div className='flex justify-end gap-2 mt-auto'>
@@ -83,7 +94,9 @@ export function InviteToTeamForm(props: Props) {
 
           <Button
             type='submit'
-            className={cn('min-w-48', submitButtonClassName)}
+            className={cn('min-w-48', {
+              'w-full': isMobile,
+            })}
             disabled={isPending}
           >
             {isPending ? (

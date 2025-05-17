@@ -1,4 +1,6 @@
 import { Card } from '@/shared/ui/s';
+import { InviteToTeam2 } from '@/features/InviteToTeam';
+import { ViewTeamMembers } from '@/features/ViewTeamMembers';
 
 interface Props {}
 
@@ -7,7 +9,11 @@ export function TeamMembers({}: Props) {
     <Card
       title='Участники команды'
       titleClassName='text-xl font-bold'
-      className='flex flex-col gap-4'
-    ></Card>
+      contentClassName='flex flex-col gap-4'
+    >
+      <InviteToTeam2 />
+
+      <ViewTeamMembers />
+    </Card>
   );
 }

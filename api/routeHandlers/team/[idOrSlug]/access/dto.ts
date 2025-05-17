@@ -5,5 +5,7 @@ export const GetHaveAccessToTeamDtoSchema = z.object({
 });
 
 export const GetHaveAccessToTeamResSchema = z.object({
-  haveAccess: z.boolean(),
+  inTeam: z.boolean(),
+  isAdmin: z.boolean(),
+  isOwner: z.boolean(),
 });

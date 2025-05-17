@@ -11,10 +11,14 @@ export const GetTeamMembersReqQuerySchema = z.object({
   keyword: z.string().optional(),
 });
 
-export const GetTeamMembersResSchema = z.object({
-  id: z.string().uuid(),
-  name: z.string().nullable(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
-  email: z.string().email(),
-});
+export const GetTeamMembersResSchema = z.array(
+  z.object({
+    id: z.string().uuid(),
+    name: z.string().nullable(),
+    email: z.string().email(),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+    isOwner: z.boolean(),
+    isAdmin: z.boolean(),
+  }),
+);

@@ -23,7 +23,7 @@ export async function GetHaveAccessToTeam(
       userId,
     });
 
-    return NextResponse.json({ haveAccess }, { status: 200 });
+    return NextResponse.json(haveAccess, { status: 200 });
   } catch (error) {
     return ErrorResponse(error);
   }

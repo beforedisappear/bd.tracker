@@ -4,7 +4,10 @@ export type MenuSeparator = {
 
 export type MenuItem = {
   type: 'item';
-  label: string;
+  label: {
+    icon?: React.ReactNode;
+    text: string;
+  };
   shortcut?: string;
   disabled?: boolean;
   onSelect?: () => void;

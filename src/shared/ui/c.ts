@@ -21,6 +21,7 @@ export { Sidebar } from './Sidebar/Sidebar';
 export { SidebarTrigger } from './Sidebar/SidebarTrigger';
 export { Collapsible } from './Collapsible/Collapsible';
 export { Checkbox } from './Checkbox/Checkbox';
+export { Popover } from './Popover/Popover';
 
 //custom
 export { ErrorBoundary } from './ErrorBoundary/ErrorBoundary';
