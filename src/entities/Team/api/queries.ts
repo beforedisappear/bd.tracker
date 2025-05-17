@@ -7,6 +7,8 @@ import { getUserTeamList } from './getUserTeamList';
 import { createTeam } from './createTeam';
 import { deleteTeam } from './deleteTeam';
 import { renameTeam } from './renameTeam';
+import { getTeamById } from './getTeamByid';
+import { inviteToTeam } from './inviteToTeam';
 
 import type {
   Team,
@@ -15,9 +17,9 @@ import type {
   RenameTeamDtoReq,
   GetHaveAccessToTeamDto,
   GetTeamByIdDtoReq,
+  InviteToTeamDtoReq,
 } from '../models/types';
 import type { AxiosResponse } from 'axios';
-import { getTeamById } from './getTeamByid';
 
 export const teamQueries = {
   currentUser: () => ['currentUser'],
@@ -101,5 +103,11 @@ export const teamQueries = {
       queryKey: [...teamQueries.userTeamById(dto.idOrSlug)],
       queryFn: () => getTeamById(dto),
       select: res => res.data,
+    }),
+
+  inviteToTeam: () =>
+    mutationOptions({
+      mutationKey: ['inviteToTeam'],
+      mutationFn: (dto: InviteToTeamDtoReq) => inviteToTeam(dto),
     }),
 };

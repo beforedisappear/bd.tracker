@@ -10,36 +10,42 @@ import {
   FormLabel,
   FormMessage,
 } from '../Form';
-import { PureInput } from './PureInput';
+import { PureCheckbox } from './PureCheckbox';
 
 import { useFormContext } from 'react-hook-form';
 
 import type { ComponentProps } from 'react';
 
-interface IProps extends ComponentProps<typeof PureInput> {
+type BaseProps = Omit<
+  ComponentProps<typeof PureCheckbox>,
+  'checked' | 'onChange'
+>;
+
+interface IProps extends BaseProps {
   name: string;
   label?: string;
   description?: string;
   errorMessageTestId?: string;
   inputClassName?: string;
+  labelClassName?: string;
+  descriptionClassName?: string;
   hideErrorMessage?: boolean;
-  dataTestId?: string;
 }
 
-const Input = (props: IProps) => {
+export const Checkbox = (props: IProps) => {
   const {
     name,
-    type = 'text',
     label,
     description,
     className,
-    onChange,
+    onCheckedChange,
     onBlur,
     disabled,
     errorMessageTestId,
     inputClassName,
+    labelClassName,
+    descriptionClassName,
     hideErrorMessage = false,
-    dataTestId = 'input',
     ...restProps
   } = props;
 
@@ -49,31 +55,41 @@ const Input = (props: IProps) => {
     <FormField
       name={name}
       control={control}
-      defaultValue={''}
+      defaultValue={false}
       render={({ field }) => (
-        <FormItem className={cn(className)}>
-          {label && <FormLabel>{label}</FormLabel>}
-
+        <FormItem
+          className={cn(
+            'flex flex-row items-start space-x-3 space-y-0',
+            className,
+          )}
+        >
           <FormControl>
-            <PureInput
+            <PureCheckbox
               {...restProps}
               {...field}
-              type={type}
+              defaultChecked={field.value}
+              checked={field.value}
               disabled={disabled}
-              onChange={v => {
+              onCheckedChange={v => {
                 field.onChange(v);
-                if (onChange) onChange(v);
+                if (onCheckedChange) onCheckedChange(v);
               }}
               onBlur={e => {
                 field.onBlur();
                 if (onBlur) onBlur(e);
               }}
               className={inputClassName}
-              data-testid={dataTestId}
             />
           </FormControl>
 
-          {description && <FormDescription>{description}</FormDescription>}
+          <div className='flex space-y-1 leading-none'>
+            {label && <FormLabel className={labelClassName}>{label}</FormLabel>}
+            {description && (
+              <FormDescription className={descriptionClassName}>
+                {description}
+              </FormDescription>
+            )}
+          </div>
 
           {!hideErrorMessage && (
             <FormMessage data-testid={errorMessageTestId} />
@@ -83,5 +99,3 @@ const Input = (props: IProps) => {
     />
   );
 };
-
-export { Input };

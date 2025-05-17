@@ -61,17 +61,18 @@ export function EditTeamNameField({ name }: Props) {
 
   return (
     <Form {...form}>
-      <form className='flex items-center gap-2' onSubmit={onSubmit}>
-        <span
+      <form
+        className='flex items-center gap-2
+        md:flex-col md:items-start'
+        onSubmit={onSubmit}
+      >
+        <h3
           className='text-xl font-bold
-            md:text-base'
+          md:text-base'
         >
           Команда
-        </span>
-        <div
-          className='flex items-center gap-2 w-full
-          md:flex-col'
-        >
+        </h3>
+        <div className='flex items-center gap-2 w-full'>
           <Input
             name='name'
             value={name}

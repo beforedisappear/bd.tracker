@@ -260,7 +260,7 @@ class TeamService extends BaseService {
       //проверка на существование проекта + запрет на добавление в чужой проект
       const allProjectsExists = await projectService.projectExists({
         ids: projectIds,
-        teamId: idOrSlug,
+        teamIdOrSlug: idOrSlug,
       });
 
       if (!allProjectsExists) {
@@ -292,8 +292,14 @@ class TeamService extends BaseService {
     const expSeconds = Number(process.env.TEAM_INVITATION_EXPIRATION);
     const expiresAt = new Date(Date.now() + expSeconds);
 
-    const invitation = await prismaService.teamInvitation.create({
-      data: {
+    const invitation = await prismaService.teamInvitation.upsert({
+      where: { inviteeEmail },
+      update: {
+        token,
+        projectIds: projectIds.length > 0 ? projectIds : undefined,
+        expiresAt,
+      },
+      create: {
         teamId: team.id,
         inviterId: inviterId,
         inviteeEmail,

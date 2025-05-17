@@ -20,6 +20,7 @@ export { ScrollArea } from './ScrollArea/ScrollArea';
 export { Sidebar } from './Sidebar/Sidebar';
 export { SidebarTrigger } from './Sidebar/SidebarTrigger';
 export { Collapsible } from './Collapsible/Collapsible';
+export { Checkbox } from './Checkbox/Checkbox';
 
 //custom
 export { ErrorBoundary } from './ErrorBoundary/ErrorBoundary';

@@ -4,17 +4,14 @@ import { teamService } from '$/services/team.service';
 import { ErrorResponse } from '$/errors/errorResponse';
 
 import { type NextRequest, NextResponse } from 'next/server';
-import { getAccessTokenFromReq } from '$/utils';
+import { getAccessTokenFromReq, getQueryParams } from '$/utils';
 
 import {
-  CheckInvitationExistsReqBodySchema,
+  CheckInvitationExistsReqQuerySchema,
   CheckInvitationExistsReqParamsSchema,
 } from './dto';
 
-import type {
-  CheckInvitationExistsReqParams,
-  CheckInvitationExistsReqDto,
-} from './types';
+import type { CheckInvitationExistsReqParams } from './types';
 
 export async function GetCheckInvitationExists(
   request: NextRequest,
@@ -27,13 +24,13 @@ export async function GetCheckInvitationExists(
     const { idOrSlug } = await params;
     CheckInvitationExistsReqParamsSchema.parse({ idOrSlug });
 
-    const data: CheckInvitationExistsReqDto = await request.json();
-    CheckInvitationExistsReqBodySchema.parse(data);
+    const { inviteeEmail } = getQueryParams(request, ['inviteeEmail']);
+    CheckInvitationExistsReqQuerySchema.parse({ inviteeEmail });
 
     const isInvitationExists =
       await teamService.checkInvitationExistsByInviteeEmail({
         idOrSlug,
-        inviteeEmail: data.inviteeEmail,
+        inviteeEmail: inviteeEmail,
         checkerId: userId,
       });
 

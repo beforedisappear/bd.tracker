@@ -13,6 +13,7 @@ export const FormDecorator: Decorator = StoryComponent => {
       inputOtpValue: '1243',
       selectValue: 'value_1',
       switchValue: true,
+      checkboxValue: true,
       dateValue: new Date('2025-02-01'),
       dateRangeValue: { from: new Date(), to: addDays(new Date(), 10) },
     },

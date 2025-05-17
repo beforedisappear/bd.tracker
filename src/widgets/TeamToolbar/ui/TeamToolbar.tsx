@@ -7,7 +7,7 @@ interface Props {}
 
 export function TeamToolbar({}: Props) {
   return (
-    <Card>
+    <Card contentClassName='flex flex-col gap-4'>
       <EditTeamName />
       <InviteToTeam />
     </Card>

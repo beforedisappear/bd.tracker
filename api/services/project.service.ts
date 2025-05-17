@@ -5,11 +5,16 @@ import { BaseService } from './base.service';
 import { userService } from './user.service';
 
 class ProjectService extends BaseService {
-  async projectExists(args: { ids: string[]; teamId: string }) {
-    const { ids, teamId } = args;
+  async projectExists(args: { ids: string[]; teamIdOrSlug: string }) {
+    const { ids, teamIdOrSlug } = args;
 
     const existingProjects = await prismaService.project.findMany({
-      where: { id: { in: ids }, teamId },
+      where: {
+        id: { in: ids },
+        team: {
+          OR: [{ id: teamIdOrSlug }, { slug: teamIdOrSlug }],
+        },
+      },
       select: { id: true },
     });
 
