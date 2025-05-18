@@ -33,6 +33,7 @@ export function ManageProjectsItem({ project, tenant }: Props) {
     router.push(getProjectByIdRoutePath(tenant, project.id));
   };
 
+  //TODO: вызывать модалку DeleteProject
   const onDeleteProject = async () => {
     deleteProject({ projectId: project.id, teamIdOrSlug: tenant }).catch(e =>
       toast.error(getErrorMessage(e)),

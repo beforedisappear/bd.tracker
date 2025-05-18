@@ -8,5 +8,4 @@ export const CreateTeamSchema = z.object({
       required_error: REQUIRED_FIELD_MESSAGE,
     })
     .min(1, REQUIRED_FIELD_MESSAGE),
-  membersIds: z.array(z.string().uuid()),
 });

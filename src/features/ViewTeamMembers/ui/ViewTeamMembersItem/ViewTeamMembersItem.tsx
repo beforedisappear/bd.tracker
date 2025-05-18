@@ -8,15 +8,17 @@ import type { TeamMember } from '@/entities/Team';
 
 interface Props {
   member: TeamMember;
+  onOpenProfile: (memberId: string) => void;
 }
 
 export function ViewTeamMembersItem(props: Props) {
-  const { member } = props;
+  const { member, onOpenProfile } = props;
 
   return (
     <div
       className='flex items-center gap-4 py-2 px-3 h-10 transition-colors cursor-pointer
     hover:bg-zinc-200 dark:hover:bg-zinc-800'
+      onClick={() => onOpenProfile(member.id)}
     >
       <Avatar
         src={''}

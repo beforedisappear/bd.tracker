@@ -14,7 +14,7 @@ export const GetTeamMemberByIdResSchema = z.object({
   createdAt: z.string(),
   updatedAt: z.string(),
   email: z.string().email(),
-  isOwner: z.string(),
+  isOwner: z.boolean(),
   isAdmin: z.boolean(),
 });
 

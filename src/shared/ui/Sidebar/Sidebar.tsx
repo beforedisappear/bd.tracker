@@ -98,7 +98,7 @@ export function Sidebar(props: IProps) {
                             asChild
                             isActive={item.link.isActive}
                           >
-                            <Link href={item.link.url}>
+                            <Link href={item.link.url} scroll={false}>
                               {item.link.icon}
                               <span>{item.link.title}</span>
                             </Link>

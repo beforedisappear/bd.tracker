@@ -40,9 +40,9 @@ export function InviteToTeamForm(props: Props) {
     const dto = {
       ...data,
       teamIdOrSlug: tenant,
-      projectIds: Object.keys(data.projectIds).filter(
-        key => data.projectIds[key],
-      ),
+      projectIds: data.projectIds
+        ? Object.keys(data.projectIds).filter(key => data.projectIds?.[key])
+        : [],
     };
 
     inviteToTeam(dto)

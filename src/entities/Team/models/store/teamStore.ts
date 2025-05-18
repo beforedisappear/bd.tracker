@@ -7,6 +7,8 @@ export type TeamStoreApi = ReturnType<typeof createTeamStore>;
 const defaultInitState: TeamStoreState = {
   deletingTeam: null,
   showDeleteTeamModal: false,
+  showTeamMemberProfileModal: false,
+  currentTeamMemberId: null,
 };
 
 export const createTeamStore = (
@@ -16,5 +18,8 @@ export const createTeamStore = (
     ...initState,
     setDeletingTeam: team => set({ deletingTeam: team }),
     setShowDeleteTeamModal: show => set({ showDeleteTeamModal: show }),
+    setShowTeamMemberProfileModal: show =>
+      set({ showTeamMemberProfileModal: show }),
+    setCurrentTeamMemberId: id => set({ currentTeamMemberId: id }),
   }));
 };

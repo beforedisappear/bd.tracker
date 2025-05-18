@@ -6,12 +6,21 @@ import { ViewTeamMembersHeader } from '../ViewTeamMembersHeader/ViewTeamMembersH
 import { ViewTeamMembersItem } from '../ViewTeamMembersItem/ViewTeamMembersItem';
 import { ViewTeamMembersLoading } from './ViewTeamMembers.loading';
 
-import { teamQueries } from '@/entities/Team';
+import {
+  getCurrentTeamMemberId,
+  getTeamMemberProfileModal,
+  teamQueries,
+  useTeamStore,
+} from '@/entities/Team';
 
 // TODO: add mobile view
 
 export function ViewTeamMembers() {
   const { tenant } = useParams<{ tenant: string }>()!;
+  const { setShowTeamMemberProfileModal } = useTeamStore(
+    getTeamMemberProfileModal(),
+  );
+  const { setCurrentTeamMemberId } = useTeamStore(getCurrentTeamMemberId());
 
   const {
     data: teamMembers,
@@ -22,6 +31,11 @@ export function ViewTeamMembers() {
   if (isLoading) return <ViewTeamMembersLoading />;
   else if (isError || !teamMembers) return <div>Error</div>;
 
+  const handleOpenTeamMemberProfileModal = (memberId: string) => {
+    setCurrentTeamMemberId(memberId);
+    setShowTeamMemberProfileModal(true);
+  };
+
   return (
     <ScrollArea
       className='h-full w-full pb-4
@@ -31,7 +45,11 @@ export function ViewTeamMembers() {
     >
       <ViewTeamMembersHeader />
       {teamMembers.map(member => (
-        <ViewTeamMembersItem key={member.id} member={member} />
+        <ViewTeamMembersItem
+          key={member.id}
+          member={member}
+          onOpenProfile={handleOpenTeamMemberProfileModal}
+        />
       ))}
     </ScrollArea>
   );

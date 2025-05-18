@@ -439,6 +439,9 @@ class TeamService extends BaseService {
       { userId: memberId },
     );
 
+    if (memberId === initiatorId)
+      throw ApiError.badRequest('You cannot remove yourself from the team');
+
     if (!inTeam) {
       throw ApiError.notFound('User is not a member of this team');
     } else if (isOwner) {
@@ -447,18 +450,27 @@ class TeamService extends BaseService {
       throw ApiError.forbidden('Admin cannot be removed by non-owner');
     }
 
-    await prismaService.team.update({
-      where: { id: team.id },
-      data: {
-        members: {
-          disconnect: { id: memberId },
-        },
-        ...(isAdmin && {
-          admins: {
-            disconnect: { id: memberId },
+    await prismaService.$transaction(async tx => {
+      const teamProjects = await tx.project.findMany({
+        where: { teamId: team.id },
+        select: { id: true },
+      });
+
+      await Promise.all([
+        tx.team.update({
+          where: { id: team.id },
+          data: {
+            members: { disconnect: { id: memberId } },
+            ...(isAdmin && { admins: { disconnect: { id: memberId } } }),
           },
         }),
-      },
+        tx.user.update({
+          where: { id: memberId },
+          data: {
+            projects: { disconnect: teamProjects.map(p => ({ id: p.id })) },
+          },
+        }),
+      ]);
     });
   }
 

@@ -14,3 +14,17 @@ export type GetTeamMembersDtoReq = {
   idOrSlug: string;
   keyword?: string;
 };
+
+export type GetTeamMemberByIdDtoReq = {
+  teamIdOrSlug: string;
+  memberId: string;
+};
+
+export type GetTeamMemberByIdDtoRes = TeamMember;
+
+export type DeleteTeamMemberDtoReq = {
+  teamIdOrSlug: string;
+  memberId: string;
+};
+
+export type DeleteTeamMemberDtoRes = unknown;
