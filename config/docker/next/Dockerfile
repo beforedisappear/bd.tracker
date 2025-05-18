@@ -1,0 +1,36 @@
+FROM node:22-slim AS base
+
+ARG PORT=3000
+ENV NEXT_TELEMETRY_DISABLED=1
+WORKDIR /app
+
+FROM base AS dependencies
+COPY package.json package-lock.json ./
+RUN npm ci --legacy-peer-deps
+
+FROM base AS build
+COPY --from=dependencies /app/node_modules ./node_modules
+COPY . .
+RUN npm run build
+
+FROM base AS run
+ENV NODE_ENV=production
+ENV PORT=$PORT
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+WORKDIR /app
+
+COPY --from=build /app/.next/standalone/ ./
+COPY --from=build /app/public ./public
+COPY --from=build /app/.next/static ./.next/static
+
+RUN chown -R nextjs:nodejs /app
+
+USER nextjs
+
+EXPOSE $PORT
+ENV HOSTNAME="0.0.0.0"
+
+CMD ["node", "server.js"]

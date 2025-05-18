@@ -1,8 +1,8 @@
 import { LoginReqBodySchema } from './dto';
-import { authService } from '$/services/auth.service';
+import { authService } from 'api/services/auth.service';
 
 import { NextResponse, type NextRequest, userAgent } from 'next/server';
-import { ErrorResponse } from '$/errors/errorResponse';
+import { ErrorResponse } from 'api/errors/errorResponse';
 
 import type { LoginDto } from './types';
 

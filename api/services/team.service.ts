@@ -1,18 +1,18 @@
 import 'server-only';
 
 import { BaseService } from './base.service';
-import { prismaService } from '&/prisma';
+import { prismaService } from 'config/prisma';
 import { userService } from './user.service';
 import { mailService } from './mail.service';
 import { projectService } from './project.service';
 
 import { v4 as uuidv4 } from 'uuid';
-import { getSlug } from '$/utils/getSlug';
-import { ApiError, CodeError } from '$/errors/apiError';
+import { getSlug } from 'api/utils/getSlug';
+import { ApiError, CodeError } from 'api/errors/apiError';
 
-import type { Team } from '&/prisma/generated/client';
-import type { CreateTeamReqDto } from '$/routeHandlers/team/types';
-import type { RenameTeamReqDto } from '$/routeHandlers/team/[idOrSlug]/rename/types';
+import type { Team } from 'config/prisma/generated/client';
+import type { CreateTeamReqDto } from 'api/routeHandlers/team/types';
+import type { RenameTeamReqDto } from 'api/routeHandlers/team/[idOrSlug]/rename/types';
 
 class TeamService extends BaseService {
   async haveAccess(args: { idOrSlug: string; userId: string }) {

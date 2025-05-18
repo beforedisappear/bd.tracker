@@ -1,10 +1,10 @@
-import { authService } from '$/services/auth.service';
-import { teamService } from '$/services/team.service';
+import { authService } from 'api/services/auth.service';
+import { teamService } from 'api/services/team.service';
 
-import { ErrorResponse } from '$/errors/errorResponse';
+import { ErrorResponse } from 'api/errors/errorResponse';
 
 import { type NextRequest, NextResponse } from 'next/server';
-import { getAccessTokenFromReq } from '$/utils';
+import { getAccessTokenFromReq } from 'api/utils/getAccessTokenFromReq';
 
 import { InviteUserToTeamReqBodySchema } from './dto';
 import type {

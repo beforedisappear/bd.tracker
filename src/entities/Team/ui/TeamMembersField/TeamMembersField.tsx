@@ -1,3 +1,5 @@
+'use client';
+
 import { ErrorBoundary } from '@/shared/ui/c';
 import { TeamMembersFieldLoading } from './TeamMembersField.loading';
 import { TeamMembersFieldContent } from '../TeamMembersFieldContent/TeamMembersFieldContent';

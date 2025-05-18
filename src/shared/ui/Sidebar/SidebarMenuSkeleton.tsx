@@ -1,5 +1,5 @@
 import { cn } from '@/shared/lib/css';
-import { forwardRef, useMemo, type ComponentProps } from 'react';
+import { forwardRef, type ComponentProps } from 'react';
 import { Skeleton } from '../Skeleton/Skeleton';
 
 type Props = ComponentProps<'div'> & {

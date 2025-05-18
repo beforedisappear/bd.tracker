@@ -1,8 +1,8 @@
-import { projectService } from '$/services/project.service';
+import { projectService } from 'api/services/project.service';
 import { NextRequest, NextResponse } from 'next/server';
 import { RenameProjectReqParamsDto } from './types';
-import { authService } from '$/services/auth.service';
-import { getAccessTokenFromReq } from '$/utils';
+import { authService } from 'api/services/auth.service';
+import { getAccessTokenFromReq } from 'api/utils/getAccessTokenFromReq';
 
 export const PatchProjectRename = async (
   request: NextRequest,

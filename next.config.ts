@@ -1,10 +1,11 @@
-import { NextСommonConfig } from '&/nextCommon/nextCommon.config';
-import { TurbopackConfig } from '&/turbopack/turbopack.config';
-import { WebpackConfig } from '&/webpack/webpack.config';
+import { NextСommonConfig } from 'config/nextCommon/nextCommon.config';
+import { TurbopackConfig } from 'config/turbopack/turbopack.config';
+import { WebpackConfig } from 'config/webpack/webpack.config';
 
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  output: 'standalone',
   webpack: WebpackConfig,
   turbopack: TurbopackConfig,
   async headers() {

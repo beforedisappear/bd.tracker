@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiError } from '$/errors/apiError';
-import { prismaService } from '&/prisma';
+import { ApiError } from 'api/errors/apiError';
+import { prismaService } from 'config/prisma';
 import { BaseService } from './base.service';
-import { Column } from '&/prisma/generated/client';
 
 class ColumnService extends BaseService {
   async createColumn(args: {

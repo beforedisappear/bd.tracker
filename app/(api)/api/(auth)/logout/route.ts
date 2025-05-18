@@ -1,1 +1,1 @@
-export { PostLogout as POST } from '$/routeHandlers/logout/route';
+export { PostLogout as POST } from 'api/routeHandlers/logout/route';

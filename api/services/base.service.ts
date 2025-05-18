@@ -1,5 +1,5 @@
-import { ApiError } from '$/errors/apiError';
-import { prismaService } from '&/prisma';
+import { ApiError } from 'api/errors/apiError';
+import { prismaService } from 'config/prisma';
 
 export class BaseService {
   protected async getTeamByIdOrSlugWithOptions(

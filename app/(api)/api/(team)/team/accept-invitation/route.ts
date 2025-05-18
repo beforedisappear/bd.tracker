@@ -1,1 +1,1 @@
-export { PostAcceptInvitationToTeam as POST } from '$/routeHandlers/team/accept-invitation/route';
+export { PostAcceptInvitationToTeam as POST } from 'api/routeHandlers/team/accept-invitation/route';

@@ -1,1 +1,1 @@
-export { redisService } from './redis';
+export { getRedisService } from './redis';

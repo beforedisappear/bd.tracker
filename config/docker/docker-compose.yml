@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  next:
+    container_name: bd_next_container
+    build:
+      context: ../../
+      dockerfile: config/docker/next/Dockerfile
+    ports:
+      - '${NEXT_PORT:-3000}:3000'
+    volumes:
+      - ../../:/app
+      - /app/node_modules
+      - /app/.next
+    env_file:
+      - ../../.env
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - NEXT_PUBLIC_URL=${NEXT_PUBLIC_URL:-http://localhost:3000}
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:3000/api}
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRE=${JWT_EXPIRE:-60 min}
+      - TEAM_INVITATION_EXPIRATION=${TEAM_INVITATION_EXPIRATION:-86400000}
+      - CHANGE_EMAIL_REQUEST_EXPIRATION=${CHANGE_EMAIL_REQUEST_EXPIRATION:-86400000}
+      - SMTP_SERVICE_HOST=${SMTP_SERVICE_HOST}
+      - SMTP_SERVICE_PORT=${SMTP_SERVICE_PORT}
+      - SMTP_SERVICE_SECURE=${SMTP_SERVICE_SECURE}
+      - SMTP_SERVICE_LOGIN=${SMTP_SERVICE_LOGIN}
+      - SMTP_SERVICE_PASS=${SMTP_SERVICE_PASS}
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  redis:
+    container_name: redis-stack
+    build: ./redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    environment:
+      - REDIS_PASSWORD=yourpassword
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  postgres:
+    container_name: bd_postgres_container
+    build: ./postgres/postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-123456}
+      POSTGRES_DB: ${POSTGRES_DB:-postgres_db}
+      PGDATA: ${PGDATA:-/data/postgres}
+    volumes:
+      - postgres:${PGDATA:-/data/postgres}
+    ports:
+      - '${DB_PORT:-5432}:5432'
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # pgadmin:
+  #   container_name: bd_pgadmin_container
+  #   build: ./postgres/pgadmin
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@admin.com}
+  #     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-123456}
+  #   volumes:
+  #     - pgadmin:/root/.pgadmin
+  #   ports:
+  #     - '${PGADMIN_PORT:-5050}:80'
+  #   networks:
+  #     - app-network
+  #   restart: unless-stopped
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  redis-data:
+  postgres:
+  # pgadmin: 

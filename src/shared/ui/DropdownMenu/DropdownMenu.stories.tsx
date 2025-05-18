@@ -40,7 +40,7 @@ export const WithLabel: Story = {
 };
 
 export const WithCustomAlign: Story = {
-  args: { align: 'end' },
+  args: { contentProps: { align: 'end' } },
 };
 
 export const WithSimpleSubitems: Story = {

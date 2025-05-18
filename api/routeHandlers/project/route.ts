@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ErrorResponse } from '$/errors/errorResponse';
+import { ErrorResponse } from 'api/errors/errorResponse';
 
-import { authService } from '$/services/auth.service';
-import { projectService } from '$/services/project.service';
+import { authService } from 'api/services/auth.service';
+import { projectService } from 'api/services/project.service';
 
-import { getAccessTokenFromReq, getQueryParams } from '$/utils';
+import { getAccessTokenFromReq, getQueryParams } from 'api/utils';
 
 import {
   CreateProjectReqBodySchema,

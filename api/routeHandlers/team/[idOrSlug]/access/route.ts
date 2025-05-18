@@ -1,8 +1,8 @@
-import { teamService } from '$/services/team.service';
-import { getAccessTokenFromReq } from '$/utils/getAccessTokenFromReq';
-import { authService } from '$/services/auth.service';
+import { teamService } from 'api/services/team.service';
+import { getAccessTokenFromReq } from 'api/utils/getAccessTokenFromReq';
+import { authService } from 'api/services/auth.service';
 import { NextRequest, NextResponse } from 'next/server';
-import { ErrorResponse } from '$/errors/errorResponse';
+import { ErrorResponse } from 'api/errors/errorResponse';
 
 import { GetHaveAccessToTeamDtoSchema } from './dto';
 import type { GetHaveAccessToTeamDto } from './types';

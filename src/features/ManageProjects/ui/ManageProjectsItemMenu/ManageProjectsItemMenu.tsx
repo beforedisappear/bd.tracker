@@ -14,7 +14,7 @@ export function ManageProjectsItemMenu(props: Props) {
   return (
     <DropdownMenu
       trigger={<ManageProjectsItemPopoverTrigger />}
-      content={{
+      contentProps={{
         align: 'start',
       }}
       options={[

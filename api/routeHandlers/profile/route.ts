@@ -1,8 +1,8 @@
-import { ErrorResponse } from '$/errors/errorResponse';
-import { authService } from '$/services/auth.service';
-import { userService } from '$/services/user.service';
+import { ErrorResponse } from 'api/errors/errorResponse';
+import { authService } from 'api/services/auth.service';
+import { userService } from 'api/services/user.service';
 
-import { getAccessTokenFromReq } from '$/utils';
+import { getAccessTokenFromReq } from 'api/utils';
 
 import { UserSchemaReq } from './dto';
 import { type NextRequest, NextResponse } from 'next/server';

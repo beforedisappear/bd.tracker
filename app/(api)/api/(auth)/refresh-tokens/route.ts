@@ -1,1 +1,1 @@
-export { PostRefreshTokens as POST } from '$/routeHandlers/refreshTokens/route';
+export { PostRefreshTokens as POST } from 'api/routeHandlers/refreshTokens/route';

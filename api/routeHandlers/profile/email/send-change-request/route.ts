@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ErrorResponse } from '$/errors/errorResponse';
+import { ErrorResponse } from 'api/errors/errorResponse';
 
-import { userService } from '$/services/user.service';
-import { authService } from '$/services/auth.service';
+import { userService } from 'api/services/user.service';
+import { authService } from 'api/services/auth.service';
 
-import { getAccessTokenFromReq } from '$/utils/getAccessTokenFromReq';
+import { getAccessTokenFromReq } from 'api/utils/getAccessTokenFromReq';
 
 import { PostSendChangeEmailReqBodySchema } from './dto';
 
