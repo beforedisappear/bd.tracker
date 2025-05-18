@@ -20,23 +20,31 @@ import {
   getMenuSubItem,
 } from './DropdownMenu.utils';
 import type { DropDownMenuOptions } from './DropdownMenu.types';
+import type { ComponentProps } from 'react';
 
-interface IProps {
+interface IProps extends ComponentProps<typeof DropdownMenuContainer> {
   trigger: React.ReactNode;
-  align?: DropdownMenuPrimitive.DropdownMenuContentProps['align'];
   label?: string;
   options: DropDownMenuOptions;
   className?: string;
+  contentProps?: ComponentProps<typeof DropdownMenuContent>;
 }
 
 export function DropdownMenu(props: IProps) {
-  const { trigger, label, options = [], align, className } = props;
+  const {
+    trigger,
+    label,
+    options = [],
+    className,
+    contentProps,
+    ...restProps
+  } = props;
 
   return (
-    <DropdownMenuContainer>
+    <DropdownMenuContainer {...restProps}>
       <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
 
-      <DropdownMenuContent className={className} align={align}>
+      <DropdownMenuContent className={className} {...contentProps}>
         {label && (
           <>
             <DropdownMenuLabel>{label}</DropdownMenuLabel>

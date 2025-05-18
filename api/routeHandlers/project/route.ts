@@ -26,7 +26,7 @@ export async function PostCreateProject(request: NextRequest) {
     const newTeam = await projectService.createProject({
       teamIdOrSlug: data.teamIdOrSlug,
       name: data.name,
-      memberIds: data.memberIds,
+      membersIds: data.membersIds,
       creatorId: userId,
     });
 

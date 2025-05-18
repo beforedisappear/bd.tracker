@@ -62,13 +62,13 @@ export function Sidebar(props: IProps) {
       <SidebarContent>
         {groupItems.map((groupItem, i) => {
           if (groupItem.type === 'separator')
-            return <SidebarSeparator key={i} />;
+            return <SidebarSeparator key={`group-separator-${i}`} />;
 
           if (groupItem.type === 'skeleton')
-            return <SidebarMenuSkeleton key={i} />;
+            return <SidebarMenuSkeleton key={`group-skeleton-${i}`} />;
 
           return (
-            <SidebarGroup key={i}>
+            <SidebarGroup key={`group-${i}`}>
               {groupItem.label && (
                 <SidebarGroupLabel>{groupItem.label}</SidebarGroupLabel>
               )}
@@ -87,7 +87,9 @@ export function Sidebar(props: IProps) {
                 <SidebarMenu>
                   {groupItem.items.map((item, i) => {
                     if (item.type === 'separator')
-                      return <SidebarSeparator key={i} />;
+                      return (
+                        <SidebarSeparator key={`group-item-separator-${i}`} />
+                      );
 
                     if (item.type === 'item-link')
                       return (
@@ -96,7 +98,7 @@ export function Sidebar(props: IProps) {
                             asChild
                             isActive={item.link.isActive}
                           >
-                            <Link href={item.link.url}>
+                            <Link href={item.link.url} scroll={false}>
                               {item.link.icon}
                               <span>{item.link.title}</span>
                             </Link>
@@ -125,6 +127,7 @@ export function Sidebar(props: IProps) {
                         <SidebarCollapsibleMenuItem
                           key={item.trigger.label}
                           defaultOpen={item.isDefaultOpen}
+                          disabled={item.subItems.length === 0}
                           trigger={
                             <SidebarMenuButton>
                               {item.trigger.icon}

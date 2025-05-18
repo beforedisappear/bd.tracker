@@ -18,11 +18,12 @@ class TeamService extends BaseService {
   async haveAccess(args: { idOrSlug: string; userId: string }) {
     const { idOrSlug, userId } = args;
 
-    const { inTeam } = await this.checkIsUserInTeam(idOrSlug, {
-      userId,
-    });
+    const { inTeam, isAdmin, isOwner } = await this.checkIsUserInTeam(
+      idOrSlug,
+      { userId },
+    );
 
-    return inTeam;
+    return { inTeam, isAdmin, isOwner };
   }
 
   async getTeamByIdOrSlug(args: { idOrSlug: string }) {
@@ -72,7 +73,13 @@ class TeamService extends BaseService {
     if (!isUserInTeam)
       throw ApiError.forbidden('User is not a member of this team');
 
-    const teamMembers = [team.owner, ...team.members];
+    const adminIds = team.admins.map(a => a.id);
+
+    const teamMembers = [team.owner, ...team.members].map(member => ({
+      ...member,
+      isOwner: member.id === team.ownerId,
+      isAdmin: adminIds.includes(member.id),
+    }));
 
     return teamMembers;
   }
@@ -260,7 +267,7 @@ class TeamService extends BaseService {
       //проверка на существование проекта + запрет на добавление в чужой проект
       const allProjectsExists = await projectService.projectExists({
         ids: projectIds,
-        teamId: idOrSlug,
+        teamIdOrSlug: idOrSlug,
       });
 
       if (!allProjectsExists) {
@@ -292,8 +299,14 @@ class TeamService extends BaseService {
     const expSeconds = Number(process.env.TEAM_INVITATION_EXPIRATION);
     const expiresAt = new Date(Date.now() + expSeconds);
 
-    const invitation = await prismaService.teamInvitation.create({
-      data: {
+    const invitation = await prismaService.teamInvitation.upsert({
+      where: { inviteeEmail },
+      update: {
+        token,
+        projectIds: projectIds.length > 0 ? projectIds : undefined,
+        expiresAt,
+      },
+      create: {
         teamId: team.id,
         inviterId: inviterId,
         inviteeEmail,
@@ -426,6 +439,9 @@ class TeamService extends BaseService {
       { userId: memberId },
     );
 
+    if (memberId === initiatorId)
+      throw ApiError.badRequest('You cannot remove yourself from the team');
+
     if (!inTeam) {
       throw ApiError.notFound('User is not a member of this team');
     } else if (isOwner) {
@@ -434,13 +450,27 @@ class TeamService extends BaseService {
       throw ApiError.forbidden('Admin cannot be removed by non-owner');
     }
 
-    await prismaService.team.update({
-      where: { id: team.id },
-      data: {
-        members: {
-          disconnect: { id: memberId },
-        },
-      },
+    await prismaService.$transaction(async tx => {
+      const teamProjects = await tx.project.findMany({
+        where: { teamId: team.id },
+        select: { id: true },
+      });
+
+      await Promise.all([
+        tx.team.update({
+          where: { id: team.id },
+          data: {
+            members: { disconnect: { id: memberId } },
+            ...(isAdmin && { admins: { disconnect: { id: memberId } } }),
+          },
+        }),
+        tx.user.update({
+          where: { id: memberId },
+          data: {
+            projects: { disconnect: teamProjects.map(p => ({ id: p.id })) },
+          },
+        }),
+      ]);
     });
   }
 

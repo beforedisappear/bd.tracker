@@ -10,11 +10,6 @@ export const SidebarMenuSkeleton = forwardRef<HTMLDivElement, Props>(
   (props, ref) => {
     const { className, showIcon = true, ...restProps } = props;
 
-    // Random width between 50 to 90%.
-    const width = useMemo(() => {
-      return `${Math.floor(Math.random() * 40) + 50}%`;
-    }, []);
-
     return (
       <div
         ref={ref}
@@ -32,11 +27,6 @@ export const SidebarMenuSkeleton = forwardRef<HTMLDivElement, Props>(
         <Skeleton
           className='h-4 max-w-[--skeleton-width] flex-1'
           data-sidebar='menu-skeleton-text'
-          style={
-            {
-              '--skeleton-width': width,
-            } as React.CSSProperties
-          }
         />
       </div>
     );

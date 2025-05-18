@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import {
-  CheckInvitationExistsReqBodySchema,
+  CheckInvitationExistsReqQuerySchema,
   CheckInvitationExistsReqParamsSchema,
   CheckInvitationExistsResSchema,
 } from './dto';
@@ -10,7 +10,7 @@ export type CheckInvitationExistsReqParams = z.infer<
 >;
 
 export type CheckInvitationExistsReqDto = z.infer<
-  typeof CheckInvitationExistsReqBodySchema
+  typeof CheckInvitationExistsReqQuerySchema
 >;
 
 export type CheckInvitationExistsResDto = z.infer<

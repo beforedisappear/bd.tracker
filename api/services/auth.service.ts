@@ -10,11 +10,11 @@ import { prismaService } from '&/prisma';
 import { userService } from './user.service';
 import { mailService } from './mail.service';
 
-import type { IJwtPayload } from '../types';
 import { ApiError, CodeError } from '$/errors/apiError';
 import { LoginDto } from '$/routeHandlers/login/types';
 import { RefreshTokensDto } from '$/routeHandlers/refreshTokens/types';
 import { LogoutDto } from '$/routeHandlers/logout/types';
+import type { IJwtPayload } from '../types';
 
 const secretKey = process.env.JWT_SECRET;
 

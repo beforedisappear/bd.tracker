@@ -1,5 +1,7 @@
 import { DeviceTypeDecorator } from '../../lib/storybook/decorators/DeviceTypeDecorator';
 import { Sidebar } from './Sidebar';
+import { SidebarTrigger } from './SidebarTrigger';
+import { SidebarProvider } from './SidebarProvider';
 import {
   groupItemsWithSubItems,
   simpleGroupItems,
@@ -9,8 +11,8 @@ import {
   simpleGroupItemsWithActions,
   getSimpleGroupItemsWithActive,
   simpleGroupItemsWithSkeleton,
+  groupItemsWithSubItemsSkeleton,
 } from './Sidebar.config.stories';
-import { SidebarProvider } from './SidebarProvider';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -24,7 +26,10 @@ const meta: Meta<typeof Sidebar> = {
       <SidebarProvider>
         <Story />
         <main>
-          <div>Page content</div>
+          <div className='flex items-center gap-2'>
+            <span>{`To open sidebar click here ==>`}</span>
+            <SidebarTrigger />
+          </div>
         </main>
       </SidebarProvider>
     ),
@@ -79,6 +84,12 @@ export const WithMenuActions: Story = {
 export const WithSubitems: Story = {
   args: {
     groupItems: groupItemsWithSubItems,
+  },
+};
+
+export const WithSubitemsSkeleton: Story = {
+  args: {
+    groupItems: groupItemsWithSubItemsSkeleton,
   },
 };
 

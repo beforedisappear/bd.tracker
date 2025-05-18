@@ -1,4 +1,5 @@
 import { LayoutGrid, Pencil, Trash } from 'lucide-react';
+import { cn } from '@/shared/lib/css';
 
 import { Button } from '@/shared/ui/c';
 
@@ -8,7 +9,7 @@ import { useRouter } from 'next/navigation';
 
 import { toast } from 'sonner';
 import { teamQueries, RenameTeamSchema } from '@/entities/Team';
-import { getProfileRoutePath } from '@/shared/config/routes';
+import { getProfileRoutePath, getTeamRoutePath } from '@/shared/config/routes';
 import {
   errorMessagesMap,
   getErrorMessage,
@@ -18,6 +19,7 @@ import {
 import { ZodError } from 'zod';
 import type { UserTeam } from '@/entities/Team';
 import type { FocusEvent } from 'react';
+
 interface Props {
   team: UserTeam;
   isCurrentTeam: boolean;
@@ -29,7 +31,7 @@ export function SelectTeamAdvancedItem(props: Props) {
 
   const isAdmin = team.admin;
   const isOwner = team.owned;
-  const router = useRouter();
+  const { push } = useRouter();
 
   const inputRef = useRef<HTMLInputElement>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -60,8 +62,7 @@ export function SelectTeamAdvancedItem(props: Props) {
     renameTeam({ idOrSlug: team.id, name: e.target.value })
       .then(({ data: { slug } }) => {
         //if the team is the current team, then update slug in the url
-        if (isCurrentTeam)
-          router.push(getProfileRoutePath(slug), { scroll: false });
+        if (isCurrentTeam) push(getProfileRoutePath(slug), { scroll: false });
       })
       .catch(e => {
         toast.error(getErrorMessage(e));
@@ -69,20 +70,38 @@ export function SelectTeamAdvancedItem(props: Props) {
       });
   };
 
+  const onRedirectToTeam = (e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement;
+    const ignoredElement = target.closest('[data-ignore="true"]');
+
+    if (ignoredElement) return;
+
+    push(getTeamRoutePath(team.slug), { scroll: false });
+  };
+
   return (
-    <div key={team.id} className='flex items-center gap-2 h-6'>
+    <div
+      key={team.id}
+      className='flex items-center gap-2 px-1 h-6
+      hover:bg-primary/5'
+      onClick={isEditing ? undefined : onRedirectToTeam}
+    >
       <LayoutGrid className='w-4 h-4' />
+
       <input
         type='text'
         ref={inputRef}
         value={teamName}
         onChange={e => setTeamName(e.target.value)}
         onBlur={onEndEditing}
-        disabled={!isEditing}
-        className='border-none outline-none bg-transparent w-full'
+        readOnly={!isEditing}
+        className={cn(
+          'border-none outline-none bg-transparent w-full cursor-pointer',
+          { 'cursor-text': isEditing },
+        )}
       />
 
-      <div className='flex items-center gap-2 ml-auto'>
+      <div data-ignore='true' className='flex items-center gap-2 ml-auto'>
         <Button
           variant='ghost'
           size='icon'

@@ -5,7 +5,6 @@ import { SelectTeamQuickForm } from '../SelectTeamQuickForm/SelectTeamQuickForm'
 
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
-import { useMemo } from 'react';
 
 import { teamQueries } from '@/entities/Team';
 import { selectAdapter } from '@/shared/lib/input';
@@ -21,16 +20,10 @@ export function SelectTeamQuick({}: Props) {
     isError,
   } = useQuery(teamQueries.getUserTeamList());
 
-  const options = useMemo(
-    () =>
-      selectAdapter(userTeamList ?? [], {
-        labelKey: 'name',
-        valueKey: 'slug',
-      }),
-    // to avoid empty select input value (when value !== tenant)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [userTeamList?.map(t => t.id).join(','), tenant],
-  );
+  const options = selectAdapter(userTeamList ?? [], {
+    labelKey: 'name',
+    valueKey: 'slug',
+  });
 
   if (isFetching)
     return <Skeleton className='h-9 group-data-[collapsible=icon]:hidden' />;

@@ -2,6 +2,7 @@ export {
   SENDING_DATA_MESSAGE,
   SUCCESSFUL_SENDING_MESSAGE,
   ERROR_MESSAGE,
+  RESTRICTED_MESSAGE,
 } from './toast.constants';
 
 export { SITE_NAME, SITE_DESCRIPTION } from './seo.constants';

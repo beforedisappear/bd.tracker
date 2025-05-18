@@ -21,6 +21,9 @@ interface IProps extends ComponentProps<typeof PureInput> {
   label?: string;
   description?: string;
   errorMessageTestId?: string;
+  inputClassName?: string;
+  hideErrorMessage?: boolean;
+  dataTestId?: string;
 }
 
 const Input = (props: IProps) => {
@@ -31,8 +34,12 @@ const Input = (props: IProps) => {
     description,
     className,
     onChange,
+    onBlur,
     disabled,
     errorMessageTestId,
+    inputClassName,
+    hideErrorMessage = false,
+    dataTestId = 'input',
     ...restProps
   } = props;
 
@@ -57,12 +64,20 @@ const Input = (props: IProps) => {
                 field.onChange(v);
                 if (onChange) onChange(v);
               }}
+              onBlur={e => {
+                field.onBlur();
+                if (onBlur) onBlur(e);
+              }}
+              className={inputClassName}
+              data-testid={dataTestId}
             />
           </FormControl>
 
           {description && <FormDescription>{description}</FormDescription>}
 
-          <FormMessage data-testid={errorMessageTestId} />
+          {!hideErrorMessage && (
+            <FormMessage data-testid={errorMessageTestId} />
+          )}
         </FormItem>
       )}
     />

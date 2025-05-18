@@ -4,11 +4,10 @@ import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 extendZodWithOpenApi(z);
 
 export const CheckInvitationExistsReqParamsSchema = z.object({
-  idOrSlug: z.string().uuid(),
+  idOrSlug: z.string(),
 });
 
-export const CheckInvitationExistsReqBodySchema = z.object({
-  idOrSlug: z.string().uuid(),
+export const CheckInvitationExistsReqQuerySchema = z.object({
   inviteeEmail: z.string().email(),
 });
 

@@ -1,5 +1,5 @@
 import {
-  CheckInvitationExistsReqBodySchema,
+  CheckInvitationExistsReqQuerySchema,
   CheckInvitationExistsReqParamsSchema,
   CheckInvitationExistsResSchema,
 } from './dto';
@@ -15,11 +15,7 @@ export const GetCheckInvitationExistsDoc = (
   security: [{ [bearerName]: [] }],
   request: {
     params: CheckInvitationExistsReqParamsSchema,
-    body: {
-      content: {
-        'application/json': { schema: CheckInvitationExistsReqBodySchema },
-      },
-    },
+    query: CheckInvitationExistsReqQuerySchema,
   },
   responses: {
     200: {

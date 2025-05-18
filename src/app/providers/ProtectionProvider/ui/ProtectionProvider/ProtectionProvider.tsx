@@ -35,7 +35,7 @@ export function ProtectionProvider({ children }: IProps) {
   );
 
   const isNotFound = isAxiosError(error) && error.response?.status === 404;
-  const isRestricted = data && !data.haveAccess;
+  const isRestricted = data && !data.inTeam;
   const showLoader = isLoading || isNotFound || isRestricted;
 
   useLayoutEffect(() => {
@@ -49,9 +49,9 @@ export function ProtectionProvider({ children }: IProps) {
   return (
     <>
       {children}
-      {showLoader && (
+      {showLoader && process.env.NODE_ENV !== 'development' && (
         <>
-          <div className='fixed inset-0 bg-black/50 backdrop-blur-md' />
+          <div className='fixed inset-0 bg-black/25 dark:bg-black/50 backdrop-blur-md' />
           <div className='fixed inset-0 flex items-center justify-center'>
             <Loader2 className='h-10 w-10 animate-spin' />
           </div>

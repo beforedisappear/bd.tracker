@@ -20,6 +20,8 @@ export { ScrollArea } from './ScrollArea/ScrollArea';
 export { Sidebar } from './Sidebar/Sidebar';
 export { SidebarTrigger } from './Sidebar/SidebarTrigger';
 export { Collapsible } from './Collapsible/Collapsible';
+export { Checkbox } from './Checkbox/Checkbox';
+export { Popover } from './Popover/Popover';
 
 //custom
 export { ErrorBoundary } from './ErrorBoundary/ErrorBoundary';
@@ -31,6 +33,6 @@ export type { IAccordionItem } from './Accordion/Accordion.types';
 export type { DropDownMenuOptions } from './DropdownMenu/DropdownMenu.types';
 export type { NavigationMenuItems } from './NavigationMenu';
 export type { ButtonSize, ButtonVariant } from './Button/Button.types';
-export type { SidebarGroupEl } from './Sidebar/Sidebar.types';
+export type { SidebarGroupEl, MenuSubItem } from './Sidebar/Sidebar.types';
 export type { SelectOption } from './Select/Select.types';
 export type { ButtonProps } from './Button/Button.types';

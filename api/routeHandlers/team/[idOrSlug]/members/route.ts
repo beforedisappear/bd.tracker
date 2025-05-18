@@ -35,9 +35,7 @@ export async function GetTeamMembers(
       keyword: query.keyword,
     });
 
-    return NextResponse.json(members, {
-      status: 200,
-    });
+    return NextResponse.json(members, { status: 200 });
   } catch (e) {
     return ErrorResponse(e);
   }

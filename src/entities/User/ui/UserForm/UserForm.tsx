@@ -11,6 +11,7 @@ import { userQueries } from '../../api/queries';
 import { cn, getColorByFirstLetter } from '@/shared/lib/css';
 import { toast } from 'sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { getInitials } from '@/shared/lib/data';
 
 import {
   ERROR_MESSAGE,
@@ -45,10 +46,7 @@ export function UserForm(props: Props) {
   });
 
   const color = useMemo(() => getColorByFirstLetter(user.name), [user]);
-  const initials = useMemo(() => {
-    const letters = user.name.split(' ').slice(0, 2);
-    return letters.map(el => el[0]).join('');
-  }, [user]);
+  const initials = useMemo(() => getInitials(user.name), [user]);
 
   return (
     <Form {...form}>

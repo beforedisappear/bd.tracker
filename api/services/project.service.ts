@@ -5,11 +5,16 @@ import { BaseService } from './base.service';
 import { userService } from './user.service';
 
 class ProjectService extends BaseService {
-  async projectExists(args: { ids: string[]; teamId: string }) {
-    const { ids, teamId } = args;
+  async projectExists(args: { ids: string[]; teamIdOrSlug: string }) {
+    const { ids, teamIdOrSlug } = args;
 
     const existingProjects = await prismaService.project.findMany({
-      where: { id: { in: ids }, teamId },
+      where: {
+        id: { in: ids },
+        team: {
+          OR: [{ id: teamIdOrSlug }, { slug: teamIdOrSlug }],
+        },
+      },
       select: { id: true },
     });
 
@@ -21,9 +26,9 @@ class ProjectService extends BaseService {
     teamIdOrSlug: string;
     creatorId: string;
     name: string;
-    memberIds?: string[];
+    membersIds?: string[];
   }) {
-    const { teamIdOrSlug, creatorId, name, memberIds = [] } = args;
+    const { teamIdOrSlug, creatorId, name, membersIds = [] } = args;
 
     const { isAdmin, isOwner, team } = await this.checkIsUserInTeam(
       teamIdOrSlug,
@@ -36,16 +41,15 @@ class ProjectService extends BaseService {
       );
     }
 
-    if (memberIds.length > 0) {
+    if (membersIds.length > 0) {
       //при создании проекта добавляем только участников команды
       const allTeamMembersExists = await userService.userExists({
-        ids: memberIds,
+        ids: membersIds,
         teamId: team.id,
       });
 
-      if (!allTeamMembersExists) {
+      if (!allTeamMembersExists)
         throw ApiError.badRequest('One or more team members were not found');
-      }
     }
 
     const project = await prismaService.project.create({
@@ -53,7 +57,7 @@ class ProjectService extends BaseService {
         name,
         teamId: team.id,
         members: {
-          connect: [...memberIds.map(id => ({ id })), { id: creatorId }],
+          connect: [...membersIds.map(id => ({ id }))],
         },
       },
     });
@@ -151,6 +155,9 @@ class ProjectService extends BaseService {
 
     const projects = await prismaService.project.findMany({
       where: { teamId: team.id },
+      include: {
+        members: true,
+      },
     });
 
     return projects;
