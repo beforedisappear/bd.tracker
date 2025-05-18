@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { add } from 'date-fns';
 import { SignJWT, jwtVerify } from 'jose';
 
-import { redisService } from 'config/redis/redis';
+import { getRedisService } from 'config/redis';
 import { prismaService } from 'config/prisma';
 import { userService } from './user.service';
 import { mailService } from './mail.service';
@@ -151,10 +151,14 @@ class AuthService {
   }
 
   private async getAuthCode(userId: string) {
+    const redisService = await getRedisService();
+
     return redisService.get(userId);
   }
 
   private async clearAuthCode(userId: string) {
+    const redisService = await getRedisService();
+
     return redisService.del(userId);
   }
 
@@ -166,6 +170,8 @@ class AuthService {
       if (email === process.env.TEST_USER_EMAIL && testCode) {
         code = testCode;
       }
+
+      const redisService = await getRedisService();
 
       const res = await redisService.set(userId, code, { EX: 300 });
 

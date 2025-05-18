@@ -5,6 +5,7 @@ import { WebpackConfig } from 'config/webpack/webpack.config';
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  output: 'standalone',
   webpack: WebpackConfig,
   turbopack: TurbopackConfig,
   async headers() {
