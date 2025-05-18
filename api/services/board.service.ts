@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApiError } from '$/errors/apiError';
-import { prismaService } from '&/prisma';
+import { ApiError } from 'api/errors/apiError';
+import { prismaService } from 'config/prisma';
 import { BaseService } from './base.service';
-import { Color, StickerType } from '&/prisma/generated/client';
+import { Color, StickerType } from 'config/prisma/generated/client';
 
 class BoardService extends BaseService {
   async createBoard(args: {

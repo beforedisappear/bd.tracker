@@ -1,7 +1,7 @@
-import { teamService } from '$/services/team.service';
+import { teamService } from 'api/services/team.service';
 
-import { ErrorResponse } from '$/errors/errorResponse';
-import { getQueryParams } from '$/utils';
+import { ErrorResponse } from 'api/errors/errorResponse';
+import { getQueryParams } from 'api/utils';
 
 import { type NextRequest, NextResponse } from 'next/server';
 

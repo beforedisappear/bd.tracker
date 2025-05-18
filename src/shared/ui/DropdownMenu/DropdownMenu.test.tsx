@@ -73,7 +73,7 @@ describe('DropdownMenu ui component', () => {
     const options: DropDownMenuOptions = [
       {
         type: 'item',
-        label: 'Clickable Item',
+        label: { text: 'Clickable Item' },
         onSelect,
       },
     ];
@@ -114,7 +114,7 @@ describe('DropdownMenu ui component', () => {
   });
 
   it('handles align prop', async () => {
-    render(<DropdownMenu {...defaultProps} align='end' />);
+    render(<DropdownMenu {...defaultProps} contentProps={{ align: 'end' }} />);
 
     const trigger = screen.getByRole('button', { name: 'Open Menu' });
     await userEvent.click(trigger);

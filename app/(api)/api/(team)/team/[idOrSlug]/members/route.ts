@@ -1,1 +1,1 @@
-export { GetTeamMembers as GET } from '$/routeHandlers/team/[idOrSlug]/members/route';
+export { GetTeamMembers as GET } from 'api/routeHandlers/team/[idOrSlug]/members/route';

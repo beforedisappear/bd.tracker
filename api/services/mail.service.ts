@@ -1,7 +1,7 @@
 import 'server-only';
 
 import nodemailer, { Transporter } from 'nodemailer';
-import { ApiError } from '$/errors/apiError';
+import { ApiError } from 'api/errors/apiError';
 
 import type {
   EmailOptions,

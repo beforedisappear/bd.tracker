@@ -1,7 +1,7 @@
 import { AuthReqBodySchema } from './dto';
-import { authService } from '$/services/auth.service';
+import { authService } from 'api/services/auth.service';
 
-import { ErrorResponse } from '$/errors/errorResponse';
+import { ErrorResponse } from 'api/errors/errorResponse';
 
 import { type NextRequest, NextResponse } from 'next/server';
 import type { AuthDto } from './types';

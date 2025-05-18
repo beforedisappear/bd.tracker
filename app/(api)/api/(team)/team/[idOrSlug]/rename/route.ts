@@ -1,1 +1,1 @@
-export { PatchTeamRename as PATCH } from '$/routeHandlers/team/[idOrSlug]/rename/route';
+export { PatchTeamRename as PATCH } from 'api/routeHandlers/team/[idOrSlug]/rename/route';

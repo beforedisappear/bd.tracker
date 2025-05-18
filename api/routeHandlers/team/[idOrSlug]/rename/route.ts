@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ErrorResponse } from '$/errors/errorResponse';
+import { ErrorResponse } from 'api/errors/errorResponse';
 
-import { authService } from '$/services/auth.service';
-import { teamService } from '$/services/team.service';
+import { authService } from 'api/services/auth.service';
+import { teamService } from 'api/services/team.service';
 
-import { getAccessTokenFromReq } from '$/utils';
+import { getAccessTokenFromReq } from 'api/utils/getAccessTokenFromReq';
 import {
   RenameTeamByIdOrSlugReqBodySchema,
   RenameTeamByIdOrSlugReqParamsSchema,

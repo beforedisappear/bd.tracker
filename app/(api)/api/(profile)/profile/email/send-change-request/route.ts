@@ -1,1 +1,1 @@
-export { PostSendChangeEmail as POST } from '$/routeHandlers/profile/email/send-change-request/route';
+export { PostSendChangeEmail as POST } from 'api/routeHandlers/profile/email/send-change-request/route';

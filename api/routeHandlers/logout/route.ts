@@ -1,8 +1,8 @@
 import { LogoutReqBodySchema } from './dto';
-import { authService } from '$/services/auth.service';
+import { authService } from 'api/services/auth.service';
 
 import { NextResponse, type NextRequest } from 'next/server';
-import { ErrorResponse } from '$/errors/errorResponse';
+import { ErrorResponse } from 'api/errors/errorResponse';
 
 import type { LogoutDto } from './types';
 

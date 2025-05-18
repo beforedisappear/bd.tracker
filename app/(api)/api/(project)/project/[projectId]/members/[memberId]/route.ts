@@ -1,1 +1,1 @@
-export { DeleteProjectMember as DELETE } from '$/routeHandlers/project/[projectId]/members/[memberId]/route';
+export { DeleteProjectMember as DELETE } from 'api/routeHandlers/project/[projectId]/members/[memberId]/route';

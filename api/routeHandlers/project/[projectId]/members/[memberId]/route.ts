@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ErrorResponse } from '$/errors/errorResponse';
-import { authService } from '$/services/auth.service';
-import { projectService } from '$/services/project.service';
-import { getAccessTokenFromReq } from '$/utils/getAccessTokenFromReq';
+import { ErrorResponse } from 'api/errors/errorResponse';
+import { authService } from 'api/services/auth.service';
+import { projectService } from 'api/services/project.service';
+import { getAccessTokenFromReq } from 'api/utils/getAccessTokenFromReq';
 import { RemoveProjectMemberReqParamsSchema } from './dto';
 
 import type { RemoveProjectMemberReqParamsDto } from './types';

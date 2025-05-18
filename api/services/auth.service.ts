@@ -5,15 +5,15 @@ import { v4 as uuidv4 } from 'uuid';
 import { add } from 'date-fns';
 import { SignJWT, jwtVerify } from 'jose';
 
-import { redisService } from '&/redis';
-import { prismaService } from '&/prisma';
+import { redisService } from 'config/redis/redis';
+import { prismaService } from 'config/prisma';
 import { userService } from './user.service';
 import { mailService } from './mail.service';
 
-import { ApiError, CodeError } from '$/errors/apiError';
-import { LoginDto } from '$/routeHandlers/login/types';
-import { RefreshTokensDto } from '$/routeHandlers/refreshTokens/types';
-import { LogoutDto } from '$/routeHandlers/logout/types';
+import { ApiError, CodeError } from 'api/errors/apiError';
+import { LoginDto } from 'api/routeHandlers/login/types';
+import { RefreshTokensDto } from 'api/routeHandlers/refreshTokens/types';
+import { LogoutDto } from 'api/routeHandlers/logout/types';
 import type { IJwtPayload } from '../types';
 
 const secretKey = process.env.JWT_SECRET;

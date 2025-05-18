@@ -5,10 +5,10 @@ import {
 
 import { NextRequest, NextResponse } from 'next/server';
 
-import { ErrorResponse } from '$/errors/errorResponse';
-import { projectService } from '$/services/project.service';
-import { authService } from '$/services/auth.service';
-import { getAccessTokenFromReq } from '$/utils';
+import { ErrorResponse } from 'api/errors/errorResponse';
+import { projectService } from 'api/services/project.service';
+import { authService } from 'api/services/auth.service';
+import { getAccessTokenFromReq } from 'api/utils/getAccessTokenFromReq';
 import type {
   DeleteProjectReqParamsDto,
   GetProjectByIdReqParamsDto,

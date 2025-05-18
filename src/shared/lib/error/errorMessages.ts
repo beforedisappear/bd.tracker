@@ -1,4 +1,4 @@
-import type { CodeError } from '$/errors/apiError';
+import type { CodeError } from 'api/errors/apiError';
 
 export const errorMessagesMap: { [key: string]: string } = {
   '1004': 'Неправильный или истекший код',

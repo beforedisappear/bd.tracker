@@ -6,50 +6,50 @@ import {
   OpenAPIRegistry,
 } from '@asteasolutions/zod-to-openapi';
 
-import { PostAuthDoc } from '$/routeHandlers/auth/doc';
-import { PostLoginDoc } from '$/routeHandlers/login/doc';
-import { PostRefreshTokensDoc } from '$/routeHandlers/refreshTokens/doc';
-import { PostLogoutDoc } from '$/routeHandlers/logout/doc';
-import { GetProfileDoc, UpdateProfileDoc } from '$/routeHandlers/profile/doc';
-import { PostCreateTeamDoc, GetTeamListDoc } from '$/routeHandlers/team/doc';
-import { PatchTeamRenameByIdOrSlugDoc } from '$/routeHandlers/team/[idOrSlug]/rename/doc';
+import { PostAuthDoc } from 'api/routeHandlers/auth/doc';
+import { PostLoginDoc } from 'api/routeHandlers/login/doc';
+import { PostRefreshTokensDoc } from 'api/routeHandlers/refreshTokens/doc';
+import { PostLogoutDoc } from 'api/routeHandlers/logout/doc';
+import { GetProfileDoc, UpdateProfileDoc } from 'api/routeHandlers/profile/doc';
+import { PostCreateTeamDoc, GetTeamListDoc } from 'api/routeHandlers/team/doc';
+import { PatchTeamRenameByIdOrSlugDoc } from 'api/routeHandlers/team/[idOrSlug]/rename/doc';
 import {
   DeleteTeamByIdOrSlugDoc,
   GetTeamByIdOrSlugDoc,
-} from '$/routeHandlers/team/[idOrSlug]/doc';
-import { PostInviteUserToTeamDoc } from '$/routeHandlers/team/[idOrSlug]/invitation/send/doc';
-import { PostAcceptInvitationToTeamDoc } from '$/routeHandlers/team/accept-invitation/doc';
-import { GetCheckInvitationExistsDoc } from '$/routeHandlers/team/[idOrSlug]/invitation/check/doc';
-import { GetTeamMembersDoc } from '$/routeHandlers/team/[idOrSlug]/members/doc';
+} from 'api/routeHandlers/team/[idOrSlug]/doc';
+import { PostInviteUserToTeamDoc } from 'api/routeHandlers/team/[idOrSlug]/invitation/send/doc';
+import { PostAcceptInvitationToTeamDoc } from 'api/routeHandlers/team/accept-invitation/doc';
+import { GetCheckInvitationExistsDoc } from 'api/routeHandlers/team/[idOrSlug]/invitation/check/doc';
+import { GetTeamMembersDoc } from 'api/routeHandlers/team/[idOrSlug]/members/doc';
 import {
   GetTeamMemberByIdDoc,
   RemoveTeamMemberByIdDoc,
-} from '$/routeHandlers/team/[idOrSlug]/members/[memberId]/doc';
+} from 'api/routeHandlers/team/[idOrSlug]/members/[memberId]/doc';
 import {
   DeleteRemoveTeamAdminDoc,
   PatchSetTeamAdminDoc,
-} from '$/routeHandlers/team/[idOrSlug]/members/[memberId]/admin/doc';
+} from 'api/routeHandlers/team/[idOrSlug]/members/[memberId]/admin/doc';
 import {
   PostCreateProjectDoc,
   GetAllTeamProjectsDoc,
-} from '$/routeHandlers/project/doc';
+} from 'api/routeHandlers/project/doc';
 import {
   DeleteProjectDoc,
   GetProjectByIdDoc,
-} from '$/routeHandlers/project/[projectId]/doc';
-import { PatchProjectRenameDoc } from '$/routeHandlers/project/[projectId]/rename/doc';
+} from 'api/routeHandlers/project/[projectId]/doc';
+import { PatchProjectRenameDoc } from 'api/routeHandlers/project/[projectId]/rename/doc';
 import {
   GetProjectMembersDoc,
   PostAddProjectMemberDoc,
-} from '$/routeHandlers/project/[projectId]/members/doc';
-import { DeleteProjectMemberDoc } from '$/routeHandlers/project/[projectId]/members/[memberId]/doc';
+} from 'api/routeHandlers/project/[projectId]/members/doc';
+import { DeleteProjectMemberDoc } from 'api/routeHandlers/project/[projectId]/members/[memberId]/doc';
 import {
   GetProjectBoardsDoc,
   PostCreateBoardDoc,
-} from '$/routeHandlers/board/doc';
-import { PostAcceptChangeEmailDoc } from '$/routeHandlers/profile/email/accept-change-request/doc';
-import { PostSendChangeEmailDoc } from '$/routeHandlers/profile/email/send-change-request/doc';
-import { GetHaveAccessToTeamDoc } from '$/routeHandlers/team/[idOrSlug]/access/doc';
+} from 'api/routeHandlers/board/doc';
+import { PostAcceptChangeEmailDoc } from 'api/routeHandlers/profile/email/accept-change-request/doc';
+import { PostSendChangeEmailDoc } from 'api/routeHandlers/profile/email/send-change-request/doc';
+import { GetHaveAccessToTeamDoc } from 'api/routeHandlers/team/[idOrSlug]/access/doc';
 extendZodWithOpenApi(z);
 
 const openAPIRegistry = new OpenAPIRegistry();

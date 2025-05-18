@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PostAcceptChangeEmailReqBodySchema } from './dto';
-import { userService } from '$/services/user.service';
-import { ErrorResponse } from '$/errors/errorResponse';
+import { userService } from 'api/services/user.service';
+import { ErrorResponse } from 'api/errors/errorResponse';
 
 export async function PostAcceptChangeEmail(req: NextRequest) {
   try {

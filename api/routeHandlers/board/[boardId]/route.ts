@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GetBoardByIdReqParamsDto, RenameBoardReqBodyDto } from './types';
-import { ErrorResponse } from '$/errors/errorResponse';
-import { authService } from '$/services/auth.service';
-import { boardService } from '$/services/board.service';
-import { getAccessTokenFromReq } from '$/utils/getAccessTokenFromReq';
+import { ErrorResponse } from 'api/errors/errorResponse';
+import { authService } from 'api/services/auth.service';
+import { boardService } from 'api/services/board.service';
+import { getAccessTokenFromReq } from 'api/utils/getAccessTokenFromReq';
 
 export const GetBoardById = async (
   request: NextRequest,

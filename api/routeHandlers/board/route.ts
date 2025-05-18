@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ErrorResponse } from '$/errors/errorResponse';
-import { authService } from '$/services/auth.service';
-import { boardService } from '$/services/board.service';
-import { getAccessTokenFromReq } from '$/utils/getAccessTokenFromReq';
+import { ErrorResponse } from 'api/errors/errorResponse';
+import { authService } from 'api/services/auth.service';
+import { boardService } from 'api/services/board.service';
+import { getAccessTokenFromReq } from 'api/utils/getAccessTokenFromReq';
 import { CreateBoardReqBodySchema } from './dto';
-import { getQueryParams } from '$/utils/getQueryParams';
+import { getQueryParams } from 'api/utils/getQueryParams';
 
 export const PostCreateBoard = async (request: NextRequest) => {
   try {

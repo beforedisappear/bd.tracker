@@ -1,7 +1,7 @@
-import { ErrorResponse } from '$/errors/errorResponse';
-import { authService } from '$/services/auth.service';
-import { teamService } from '$/services/team.service';
-import { getAccessTokenFromReq } from '$/utils';
+import { ErrorResponse } from 'api/errors/errorResponse';
+import { authService } from 'api/services/auth.service';
+import { teamService } from 'api/services/team.service';
+import { getAccessTokenFromReq } from 'api/utils/getAccessTokenFromReq';
 import { NextRequest, NextResponse } from 'next/server';
 
 import {

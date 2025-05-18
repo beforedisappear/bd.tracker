@@ -5,29 +5,29 @@ export default { tags: ['hidden'] };
 export const simpleMenuData: DropDownMenuOptions = [
   {
     type: 'item',
-    label: 'Item №1',
+    label: { text: 'Item №1' },
     onSelect: () => alert('You selected first item'),
   },
   {
     type: 'item',
     shortcut: 'Ctrl',
-    label: 'Item №2',
+    label: { text: 'Item №2' },
     disabled: true,
     onSelect: () => alert('You selected second item'),
   },
   {
     type: 'item',
-    label: 'Item №3',
+    label: { text: 'Item №3' },
     shortcut: 'Shift',
     onSelect: () => alert('You selected third item'),
   },
 ];
 
 const subItems: MenuItem[] = [
-  { type: 'item', label: 'SubItem №1' },
-  { type: 'item', label: 'SubItem №2' },
-  { type: 'item', label: 'SubItem №3' },
-  { type: 'item', label: 'SubItem №4' },
+  { type: 'item', label: { text: 'SubItem №1' } },
+  { type: 'item', label: { text: 'SubItem №2' } },
+  { type: 'item', label: { text: 'SubItem №3' } },
+  { type: 'item', label: { text: 'SubItem №4' } },
 ];
 
 export const groupMenuData: DropDownMenuOptions = [

@@ -1,4 +1,4 @@
 export {
   GetTeamByIdOrSlug as GET,
   DeleteTeamByIdOrSlug as DELETE,
-} from '$/routeHandlers/team/[idOrSlug]/route';
+} from 'api/routeHandlers/team/[idOrSlug]/route';

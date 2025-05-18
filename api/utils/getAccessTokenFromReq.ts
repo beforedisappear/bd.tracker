@@ -1,4 +1,4 @@
-import { ApiError } from '$/errors/apiError';
+import { ApiError } from 'api/errors/apiError';
 import { NextRequest } from 'next/server';
 
 export function getAccessTokenFromReq(request: NextRequest) {

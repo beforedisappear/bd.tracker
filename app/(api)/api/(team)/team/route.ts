@@ -1,4 +1,4 @@
 export {
   PostCreateTeam as POST,
   GetTeamList as GET,
-} from '$/routeHandlers/team/route';
+} from 'api/routeHandlers/team/route';

@@ -1,12 +1,12 @@
 import 'server-only';
 import { v4 as uuidv4 } from 'uuid';
 
-import { ApiError, CodeError } from '$/errors/apiError';
+import { ApiError, CodeError } from 'api/errors/apiError';
 
-import { prismaService } from '&/prisma';
+import { prismaService } from 'config/prisma';
 import { mailService } from './mail.service';
 
-import type { Prisma } from '&/prisma/generated/client';
+import type { Prisma } from 'config/prisma/generated/client';
 
 class UserService {
   create(user: { email: string }) {
