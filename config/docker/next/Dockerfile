@@ -2,6 +2,7 @@ FROM node:22-slim AS base
 
 ARG PORT=3000
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV HOME=/app
 WORKDIR /app
 
 # Install OpenSSL
@@ -15,7 +16,7 @@ FROM base AS build
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
 
-COPY .env.production .env.production
+COPY .env .env
 
 RUN npm run build
 
@@ -34,9 +35,12 @@ WORKDIR /app
 
 COPY --from=build /app/.next/standalone ./
 COPY --from=build /app/.next/static ./.next/static
-COPY --from=build /app/config/prisma/generated/client ./config/prisma/generated/client
+COPY --from=build /app/config/prisma ./config/prisma
 
 RUN chown -R nextjs:nodejs /app
+
+COPY config/prisma/scripts/start.sh ./start.sh
+RUN chmod +x ./start.sh
 
 USER nextjs
 
