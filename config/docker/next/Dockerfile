@@ -18,11 +18,10 @@ COPY . .
 
 COPY .env .env
 
-RUN npm run build
-
 COPY config/prisma ./config/prisma/
 RUN npm run db:pg:generate
-# RUN npm run db:pg:migrate:prod
+
+RUN npm run build
 
 FROM base AS run
 ENV NODE_ENV=production
