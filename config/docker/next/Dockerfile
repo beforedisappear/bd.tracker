@@ -4,6 +4,9 @@ ARG PORT=3000
 ENV NEXT_TELEMETRY_DISABLED=1
 WORKDIR /app
 
+# Install OpenSSL
+RUN apt-get update -y && apt-get install -y openssl
+
 FROM base AS dependencies
 COPY package.json package-lock.json ./
 RUN npm ci --legacy-peer-deps
@@ -11,7 +14,14 @@ RUN npm ci --legacy-peer-deps
 FROM base AS build
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
+
+COPY .env.production .env.production
+
 RUN npm run build
+
+COPY config/prisma ./config/prisma/
+RUN npm run db:pg:generate
+# RUN npm run db:pg:migrate:prod
 
 FROM base AS run
 ENV NODE_ENV=production
@@ -22,9 +32,9 @@ RUN adduser --system --uid 1001 nextjs
 
 WORKDIR /app
 
-COPY --from=build /app/.next/standalone/ ./
-COPY --from=build /app/public ./public
+COPY --from=build /app/.next/standalone ./
 COPY --from=build /app/.next/static ./.next/static
+COPY --from=build /app/config/prisma/generated/client ./config/prisma/generated/client
 
 RUN chown -R nextjs:nodejs /app
 
@@ -33,4 +43,5 @@ USER nextjs
 EXPOSE $PORT
 ENV HOSTNAME="0.0.0.0"
 
+# Use the server.js from the standalone directory
 CMD ["node", "server.js"]

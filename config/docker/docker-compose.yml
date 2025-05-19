@@ -9,25 +9,8 @@ services:
     ports:
       - '${NEXT_PORT:-3000}:3000'
     volumes:
-      - ../../:/app
       - /app/node_modules
       - /app/.next
-    env_file:
-      - ../../.env
-    environment:
-      - NODE_ENV=${NODE_ENV:-development}
-      - NEXT_PUBLIC_URL=${NEXT_PUBLIC_URL:-http://localhost:3000}
-      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:3000/api}
-      - DATABASE_URL=${DATABASE_URL}
-      - JWT_SECRET=${JWT_SECRET}
-      - JWT_EXPIRE=${JWT_EXPIRE:-60 min}
-      - TEAM_INVITATION_EXPIRATION=${TEAM_INVITATION_EXPIRATION:-86400000}
-      - CHANGE_EMAIL_REQUEST_EXPIRATION=${CHANGE_EMAIL_REQUEST_EXPIRATION:-86400000}
-      - SMTP_SERVICE_HOST=${SMTP_SERVICE_HOST}
-      - SMTP_SERVICE_PORT=${SMTP_SERVICE_PORT}
-      - SMTP_SERVICE_SECURE=${SMTP_SERVICE_SECURE}
-      - SMTP_SERVICE_LOGIN=${SMTP_SERVICE_LOGIN}
-      - SMTP_SERVICE_PASS=${SMTP_SERVICE_PASS}
     depends_on:
       - postgres
       - redis

@@ -26,9 +26,11 @@
     "db:pg:generate": "prisma generate --schema ./config/prisma/schema.prisma",
     "db:pg:seed": "prisma db seed",
     "db:pg:migrate:dev": "prisma migrate dev --schema ./config/prisma/schema.prisma --name",
+    "db:pg:migrate:prod": "prisma migrate deploy --schema ./config/prisma/schema.prisma",
     "db:pg:reset": "prisma migrate reset --schema ./config/prisma/schema.prisma",
-    "docker:db:up": "docker-compose -f ./config/docker/docker-compose.yml up -d",
-    "docker:db:down": "docker-compose -f ./config/docker/docker-compose.yml down"
+    "docker:build": "docker-compose -f ./config/docker/docker-compose.yml build",
+    "docker:up": "docker-compose -f ./config/docker/docker-compose.yml up -d",
+    "docker:down": "docker-compose -f ./config/docker/docker-compose.yml down"
   },
   "prisma": {
     "seed": "tsx ./config/prisma/seeds/seed.ts"
