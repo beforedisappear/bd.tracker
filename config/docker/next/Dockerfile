@@ -35,6 +35,8 @@ WORKDIR /app
 COPY --from=build /app/.next/standalone ./
 COPY --from=build /app/.next/static ./.next/static
 COPY --from=build /app/config/prisma ./config/prisma
+#for nginx
+COPY --from=build /app/.next/static /static
 
 RUN chown -R nextjs:nodejs /app
 
