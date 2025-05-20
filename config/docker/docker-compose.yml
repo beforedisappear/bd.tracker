@@ -7,7 +7,7 @@ services:
       context: ../../
       dockerfile: config/docker/next/Dockerfile
     ports:
-      - '${NEXT_PORT:-3000}:3000'
+      - '3000'
     volumes:
       - /app/node_modules
       - /app/.next
@@ -22,7 +22,7 @@ services:
     container_name: redis-stack
     build: ./redis
     ports:
-      - "6379:6379"
+      - "6379"
     volumes:
       - redis-data:/data
     environment:
@@ -42,7 +42,7 @@ services:
     volumes:
       - postgres:${PGDATA:-/data/postgres}
     ports:
-      - '${DB_PORT:-5432}:5432'
+      - '5432'
     networks:
       - app-network
     restart: unless-stopped
