@@ -41,6 +41,9 @@ RUN chown -R nextjs:nodejs /app
 COPY config/prisma/scripts/start.sh ./start.sh
 RUN chmod +x ./start.sh
 
+COPY config/docker/next/static.sh ./static.sh
+RUN chmod +x ./static.sh
+
 USER nextjs
 
 EXPOSE $PORT
