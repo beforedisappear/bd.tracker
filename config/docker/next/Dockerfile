@@ -47,4 +47,4 @@ EXPOSE $PORT
 ENV HOSTNAME="0.0.0.0"
 
 # Use the server.js from the standalone directory
-CMD ["node", "server.js"]
+CMD ["./static.sh","node", "server.js"]
