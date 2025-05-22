@@ -1,11 +1,14 @@
 #!/bin/sh
 
-echo "Updating next static files in volume /static..."
+echo "Cleaning /static (volume)..."
+rm -rf /static/* /static/.* 2>/dev/null || true
 
-rm -rf /static/*
-
+echo "Copying fresh static files to volume..."
 cp -r /app/.next/static/* /static/
 
-echo "Next static files updated."
+echo "Updating access rights..."
+chown -R nextjs:nodejs /static
+
+echo "Static files updated."
 
 exec "$@"

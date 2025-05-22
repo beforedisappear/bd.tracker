@@ -36,6 +36,8 @@ COPY --from=build /app/.next/standalone ./
 COPY --from=build /app/.next/static ./.next/static
 COPY --from=build /app/config/prisma ./config/prisma
 
+RUN mkdir -p /static && chown -R nextjs:nodejs /static
+
 RUN chown -R nextjs:nodejs /app
 
 COPY config/prisma/scripts/start.sh ./start.sh
