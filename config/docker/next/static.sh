@@ -1,8 +1,11 @@
 #!/bin/sh
 
-if [ ! "$(ls -A /static)" ]; then
-  echo "Static folder empty, copying static files..."
-  cp -r /app/.next/static/* /static/
-fi
+echo "Updating next static files in volume /static..."
 
-exec "$@" 
+rm -rf /static/*
+
+cp -r /app/.next/static/* /static/
+
+echo "Next static files updated."
+
+exec "$@"
