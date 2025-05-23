@@ -368,9 +368,7 @@ class TeamService extends BaseService {
       await tx.team.update({
         where: { id: invitation.teamId },
         data: {
-          members: {
-            connect: { id: user.id },
-          },
+          members: { connect: { id: user.id } },
           projects:
             invitation.projectIds.length > 0
               ? { connect: invitation.projectIds.map(id => ({ id })) }
