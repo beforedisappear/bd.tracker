@@ -29,8 +29,14 @@
     "db:pg:migrate:prod": "npx prisma migrate deploy --schema ./config/prisma/schema.prisma",
     "db:pg:reset": "prisma migrate reset --schema ./config/prisma/schema.prisma",
     "docker:build": "docker-compose -f ./config/docker/docker-compose.yml build",
+    "docker:build:override": "docker-compose -f ./config/docker/docker-compose.yml -f ./config/docker/docker-compose.override.yml build",
+    "docker:build:local": "docker-compose -f ./config/docker/docker-compose-local.yml build",
     "docker:up": "docker-compose -f ./config/docker/docker-compose.yml up -d",
-    "docker:down": "docker-compose -f ./config/docker/docker-compose.yml down"
+    "docker:up:override": "docker-compose -f ./config/docker/docker-compose.yml -f ./config/docker/docker-compose.override.yml up -d",
+    "docker:up:local": "docker-compose -f ./config/docker/docker-compose-local.yml up -d",
+    "docker:down": "docker-compose -f ./config/docker/docker-compose.yml down",
+    "docker:down:override": "docker-compose -f ./config/docker/docker-compose.yml -f ./config/docker/docker-compose.override.yml down",
+    "docker:down:local": "docker-compose -f ./config/docker/docker-compose-local.yml down"
   },
   "prisma": {
     "seed": "tsx ./config/prisma/seeds/seed.ts"

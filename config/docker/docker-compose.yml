@@ -41,7 +41,8 @@ services:
     volumes:
       - redis-data:/data
     environment:
-      - REDIS_PASSWORD=yourpassword
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT:-6379}
     networks:
       - app-network
     restart: unless-stopped
