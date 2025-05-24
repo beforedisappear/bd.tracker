@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 
-import { ScrollArea } from '@/shared/ui/c';
+import { ErrorBoundary, ScrollArea } from '@/shared/ui/c';
 import { ViewTeamMembersHeader } from '../ViewTeamMembersHeader/ViewTeamMembersHeader';
 import { ViewTeamMembersItem } from '../ViewTeamMembersItem/ViewTeamMembersItem';
 import { ViewTeamMembersLoading } from './ViewTeamMembers.loading';
@@ -26,10 +26,13 @@ export function ViewTeamMembers() {
     data: teamMembers,
     isLoading,
     isError,
+    error,
+    refetch,
   } = useQuery(teamQueries.getTeamMembers({ idOrSlug: tenant }));
 
   if (isLoading) return <ViewTeamMembersLoading />;
-  else if (isError || !teamMembers) return <div>Error</div>;
+  else if (isError || !teamMembers)
+    return <ErrorBoundary className='m-auto' error={error} reset={refetch} />;
 
   const handleOpenTeamMemberProfileModal = (memberId: string) => {
     setCurrentTeamMemberId(memberId);

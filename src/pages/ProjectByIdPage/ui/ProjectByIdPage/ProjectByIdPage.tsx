@@ -7,7 +7,7 @@ interface Props {}
 export function ProjectByIdPage({}: Props) {
   return (
     <div className='flex flex-col gap-4 w-full'>
-      <div className='flex gap-4'>
+      <div className='flex w-full gap-4 h-8'>
         <SelectProjectView />
         <FilterTasks />
       </div>

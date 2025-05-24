@@ -35,7 +35,7 @@ import {
 } from 'api/routeHandlers/project/doc';
 import {
   DeleteProjectDoc,
-  GetProjectByIdDoc,
+  // GetProjectByIdDoc,
 } from 'api/routeHandlers/project/[projectId]/doc';
 import { PatchProjectRenameDoc } from 'api/routeHandlers/project/[projectId]/rename/doc';
 import {
@@ -50,6 +50,7 @@ import {
 import { PostAcceptChangeEmailDoc } from 'api/routeHandlers/profile/email/accept-change-request/doc';
 import { PostSendChangeEmailDoc } from 'api/routeHandlers/profile/email/send-change-request/doc';
 import { GetHaveAccessToTeamDoc } from 'api/routeHandlers/team/[idOrSlug]/access/doc';
+
 extendZodWithOpenApi(z);
 
 const openAPIRegistry = new OpenAPIRegistry();
@@ -64,6 +65,8 @@ export const bearerAuth = openAPIRegistry.registerComponent(
   },
 );
 
+// TODO: add decorators for swagger
+
 // auth
 openAPIRegistry.registerPath(PostAuthDoc);
 openAPIRegistry.registerPath(PostLoginDoc);
@@ -75,6 +78,7 @@ openAPIRegistry.registerPath(GetProfileDoc(bearerAuth.name));
 openAPIRegistry.registerPath(UpdateProfileDoc(bearerAuth.name));
 openAPIRegistry.registerPath(PostAcceptChangeEmailDoc);
 openAPIRegistry.registerPath(PostSendChangeEmailDoc(bearerAuth.name));
+
 //team main
 openAPIRegistry.registerPath(PostCreateTeamDoc(bearerAuth.name));
 openAPIRegistry.registerPath(GetTeamListDoc(bearerAuth.name));
@@ -82,27 +86,33 @@ openAPIRegistry.registerPath(GetTeamByIdOrSlugDoc(bearerAuth.name));
 openAPIRegistry.registerPath(DeleteTeamByIdOrSlugDoc(bearerAuth.name));
 openAPIRegistry.registerPath(PatchTeamRenameByIdOrSlugDoc(bearerAuth.name));
 openAPIRegistry.registerPath(GetHaveAccessToTeamDoc(bearerAuth.name));
+
 //team member
 openAPIRegistry.registerPath(GetTeamMembersDoc(bearerAuth.name));
 openAPIRegistry.registerPath(GetTeamMemberByIdDoc(bearerAuth.name));
 openAPIRegistry.registerPath(RemoveTeamMemberByIdDoc(bearerAuth.name));
+
 //team admin
 openAPIRegistry.registerPath(PatchSetTeamAdminDoc(bearerAuth.name));
 openAPIRegistry.registerPath(DeleteRemoveTeamAdminDoc(bearerAuth.name));
+
 //team invitation
 openAPIRegistry.registerPath(GetCheckInvitationExistsDoc(bearerAuth.name));
 openAPIRegistry.registerPath(PostInviteUserToTeamDoc(bearerAuth.name));
 openAPIRegistry.registerPath(PostAcceptInvitationToTeamDoc(bearerAuth.name));
+
 //project main
 openAPIRegistry.registerPath(PostCreateProjectDoc(bearerAuth.name));
 openAPIRegistry.registerPath(GetAllTeamProjectsDoc(bearerAuth.name));
 openAPIRegistry.registerPath(DeleteProjectDoc(bearerAuth.name));
 openAPIRegistry.registerPath(PatchProjectRenameDoc(bearerAuth.name));
-openAPIRegistry.registerPath(GetProjectByIdDoc(bearerAuth.name));
+// openAPIRegistry.registerPath(GetProjectByIdDoc(bearerAuth.name));
+
 //project members
 openAPIRegistry.registerPath(GetProjectMembersDoc(bearerAuth.name));
 openAPIRegistry.registerPath(PostAddProjectMemberDoc(bearerAuth.name));
 openAPIRegistry.registerPath(DeleteProjectMemberDoc(bearerAuth.name));
+
 //board main
 openAPIRegistry.registerPath(PostCreateBoardDoc(bearerAuth.name));
 openAPIRegistry.registerPath(GetProjectBoardsDoc(bearerAuth.name));

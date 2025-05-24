@@ -28,3 +28,16 @@ export interface DeleteProjectDtoReq {
 }
 
 export type DeleteProjectDtoRes = unknown;
+
+// export interface GetProjectByIdDtoReq {
+//   projectId: string;
+// }
+
+// export interface GetProjectByIdDtoRes {
+//   id: string;
+//   name: string;
+//   description: string;
+//   createdAt: string;
+//   members: ProjectMember[];
+//   boards: SummaryBoard[];
+// }
