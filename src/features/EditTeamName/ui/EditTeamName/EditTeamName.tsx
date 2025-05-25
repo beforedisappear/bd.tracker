@@ -6,10 +6,10 @@ import { EditTeamNameLoading } from './EditTeamName.loading';
 
 import { useQuery } from '@tanstack/react-query';
 import { teamQueries } from '@/entities/Team/api/queries';
-import { useParams } from 'next/navigation';
+import { useTenant } from '@/shared/lib/navigation';
 
 export function EditTeamName() {
-  const { tenant } = useParams<{ tenant: string }>()!;
+  const tenant = useTenant();
 
   const { data, isLoading, isPending, isError } = useQuery(
     teamQueries.getTeamById({ idOrSlug: tenant }),

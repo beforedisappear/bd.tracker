@@ -26,9 +26,9 @@ export function SelectProjectView() {
       {/* <Button variant={null} size='sm'>
         <List />
         <span>Доска</span>
-      </Button>
+      </Button> */}
 
-      <Button variant={null} size='sm'>
+      {/* <Button variant={null} size='sm'>
         <Calendar />
         <span>Календарь</span>
       </Button> */}

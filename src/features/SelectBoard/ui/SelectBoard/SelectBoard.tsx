@@ -4,20 +4,17 @@ import { SelectBoardItem } from '../SelectBoardItem/SelectBoardItem';
 import { SelectBoardLoading } from './SelectBoard.loading';
 import { ScrollArea, Button } from '@/shared/ui/c';
 
-import { boardQueries } from '@/entities/Board';
+import { useProject, useTenant } from '@/shared/lib/navigation';
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
 import { useRef, useState, useEffect } from 'react';
 
-export function SelectBoard() {
-  const { tenant, ids } = useParams<{
-    tenant: string;
-    ids: string[];
-  }>()!;
-  const [showScrollButtons, setShowScrollButtons] = useState(false);
+import { boardQueries } from '@/entities/Board';
 
-  const projectId: string = ids[0];
-  const boardId = ids[1] as string | undefined;
+//TODO: mb add resize observer
+export function SelectBoard() {
+  const tenant = useTenant();
+  const { projectId, boardId } = useProject();
+  const [showScrollButtons, setShowScrollButtons] = useState(false);
 
   const {
     data: boards,

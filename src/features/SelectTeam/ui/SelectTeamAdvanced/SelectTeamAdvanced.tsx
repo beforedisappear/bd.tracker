@@ -5,7 +5,7 @@ import { SelectTeamAdvancedItem } from '../SelectTeamAdvancedItem/SelectTeamAdva
 import { SelectTeamAdvancedLoading } from './SelectTeamAdvanced.loading';
 
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
+import { useTenant } from '@/shared/lib/navigation';
 
 import { teamQueries } from '@/entities/Team';
 
@@ -16,7 +16,7 @@ interface Props {
 export function SelectTeamAdvanced(props: Props) {
   const { onDeleteTeam } = props;
 
-  const { tenant } = useParams<{ tenant: string }>()!;
+  const tenant = useTenant();
 
   const {
     data: userTeamList,

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
+import { useTenant } from '@/shared/lib/navigation';
 
 import { ErrorBoundary, ScrollArea } from '@/shared/ui/c';
 import { ViewTeamMembersHeader } from '../ViewTeamMembersHeader/ViewTeamMembersHeader';
@@ -16,7 +16,7 @@ import {
 // TODO: add mobile view
 
 export function ViewTeamMembers() {
-  const { tenant } = useParams<{ tenant: string }>()!;
+  const tenant = useTenant();
   const { setShowTeamMemberProfileModal } = useTeamStore(
     getTeamMemberProfileModal(),
   );

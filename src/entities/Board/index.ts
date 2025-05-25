@@ -1,2 +1,2 @@
 export { boardQueries } from './api';
-export type { SummaryBoard } from './model/types';
+export type { SummaryBoard, CreateBoardDtoReq } from './model/types';

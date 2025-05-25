@@ -9,7 +9,8 @@ import {
   getDeleteTeamModal,
   teamQueries,
 } from '@/entities/Team';
-import { useParams, useRouter } from 'next/navigation';
+import { useTenant } from '@/shared/lib/navigation';
+import { useRouter } from 'next/navigation';
 
 import { getHomeRoutePath } from '@/shared/config/routes';
 import { getErrorMessage } from '@/shared/lib/error';
@@ -24,7 +25,7 @@ import {
 interface Props {}
 
 export function DeleteTeamForm({}: Props) {
-  const { tenant } = useParams<{ tenant: string }>()!;
+  const tenant = useTenant();
   const { push } = useRouter();
   const { setShowDeleteTeamModal } = useTeamStore(getDeleteTeamModal());
   const { setDeletingTeam, deletingTeam } = useTeamStore(getDeletingTeam());

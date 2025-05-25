@@ -3,14 +3,14 @@ import { ManageProjectsItem } from '../ManageProjectsItem/ManageProjectsItem';
 import { ManageProjectsLoading } from './ManageProjects.loading';
 import { ManageProjectsPlaceholder } from './ManageProjects.placeholder';
 
-import { useParams } from 'next/navigation';
+import { useTenant } from '@/shared/lib/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { projectQueries } from '@/entities/Project';
 import { getManageProjectsContainerClassName } from '../../config';
 import { cn } from '@/shared/lib/css';
 
 export function ManageProjects() {
-  const { tenant } = useParams<{ tenant: string }>()!;
+  const tenant = useTenant();
 
   // TODO: add pagination
   const { data, isLoading, isError, error, refetch } = useQuery(

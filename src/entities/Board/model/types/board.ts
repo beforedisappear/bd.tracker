@@ -10,3 +10,10 @@ export type GetAllBoardsDtoReq = {
 };
 
 export type GetAllBoardsDtoRes = SummaryBoard[];
+
+export type CreateBoardDtoReq = {
+  projectId: string;
+  name: string;
+};
+
+export type CreateBoardDtoRes = SummaryBoard;

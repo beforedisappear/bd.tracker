@@ -6,7 +6,7 @@ import { DeleteTeamMember } from '@/features/DeleteTeamMember';
 import { TeamMemberProfileModalContentLoading } from './TeamMemberProfileModalContent.loading';
 
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
+import { useTenant } from '@/shared/lib/navigation';
 
 import {
   getCurrentTeamMemberId,
@@ -18,7 +18,7 @@ import { getColorByFirstLetter } from '@/shared/lib/css';
 import { getInitials } from '@/shared/lib/data/getInitials';
 
 export function TeamMemberProfileModalContent() {
-  const { tenant } = useParams<{ tenant: string }>()!;
+  const tenant = useTenant();
   const { currentTeamMemberId } = useTeamStore(getCurrentTeamMemberId());
   const { setShowTeamMemberProfileModal } = useTeamStore(
     getTeamMemberProfileModal(),

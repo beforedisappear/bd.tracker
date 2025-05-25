@@ -36,10 +36,8 @@ export function SelectBoardItem(props: Props) {
       onClick={onSelectBoard}
       className={cn(
         buttonVariants({ variant: isActive ? null : 'ghost' }),
-        'rounded-b-none font-normal',
-        {
-          'bg-sidebar-accent': isActive,
-        },
+        'rounded-b-none font-normal cursor-pointer',
+        { 'bg-sidebar-accent': isActive },
       )}
     >
       <span>{board.name}</span>

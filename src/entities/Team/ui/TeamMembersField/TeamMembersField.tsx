@@ -5,7 +5,7 @@ import { TeamMembersFieldLoading } from './TeamMembersField.loading';
 import { TeamMembersFieldContent } from '../TeamMembersFieldContent/TeamMembersFieldContent';
 
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
+import { useTenant } from '@/shared/lib/navigation';
 
 import { teamQueries } from '../../api';
 
@@ -16,7 +16,7 @@ interface Props {
 export function TeamMembersField(props: Props) {
   const { label } = props;
 
-  const { tenant } = useParams<{ tenant: string }>()!;
+  const tenant = useTenant();
 
   const {
     data: teamMembers,

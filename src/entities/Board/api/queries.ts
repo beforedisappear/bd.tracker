@@ -1,9 +1,24 @@
+import { queryClient } from '@/shared/config/query';
 import { queryOptions } from '@tanstack/react-query';
+import { mutationOptions } from '@/shared/lib/tanstack-query';
+
 import { getAllBoards } from './getAllBoards';
-import type { GetAllBoardsDtoReq } from '../model/types';
+import { createBoard } from './createBoard';
+
+import type { GetAllBoardsDtoReq, CreateBoardDtoReq } from '../model/types';
 
 export const boardQueries = {
   all: (projectId: string) => ['boards', projectId],
+
+  createBoard: () =>
+    mutationOptions({
+      mutationFn: (dto: CreateBoardDtoReq) => createBoard(dto),
+      onSuccess: (_, { projectId }) => {
+        queryClient.invalidateQueries({
+          queryKey: [...boardQueries.all(projectId)],
+        });
+      },
+    }),
 
   getAllBoards: (dto: GetAllBoardsDtoReq) =>
     queryOptions({

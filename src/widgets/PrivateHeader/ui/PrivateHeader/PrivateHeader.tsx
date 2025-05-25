@@ -3,7 +3,7 @@
 import { SwitchTheme } from '@/features/SwitchTheme';
 import { SidebarTrigger } from '@/shared/ui/c';
 import { SelectBoard } from '@/features/SelectBoard';
-import { AddBoard } from '@/features/AddBoard';
+import { CreateBoard } from '@/features/CreateBoard';
 
 import { usePathname } from 'next/navigation';
 import { useDeviceType } from '@/shared/lib/deviceType/c';
@@ -48,7 +48,7 @@ export function PrivateHeader({}: Props) {
           sm:max-w-full'
         >
           <SelectBoard />
-          <AddBoard />
+          <CreateBoard />
         </div>
       )}
     </header>
