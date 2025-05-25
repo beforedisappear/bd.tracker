@@ -1,3 +1,5 @@
+import { ViewBoard } from '@/features/ViewBoard';
+
 export function ProjectView() {
-  return <div>ProjectView</div>;
+  return <ViewBoard />;
 }

@@ -4,6 +4,7 @@ import { SwitchTheme } from '@/features/SwitchTheme';
 import { SidebarTrigger } from '@/shared/ui/c';
 import { SelectBoard } from '@/features/SelectBoard';
 import { CreateBoard } from '@/features/CreateBoard';
+import { ManageProjectMembers } from '@/features/ManageProjectMembers';
 
 import { usePathname } from 'next/navigation';
 import { useDeviceType } from '@/shared/lib/deviceType/c';
@@ -12,6 +13,7 @@ import { cn } from '@/shared/lib/css';
 
 import { getRouteByPath } from '@/shared/lib/routes';
 import { AppRoutes, routesMetadata } from '@/shared/config/routes';
+
 interface Props {}
 
 export function PrivateHeader({}: Props) {
@@ -20,6 +22,10 @@ export function PrivateHeader({}: Props) {
   const route = getRouteByPath(pathname);
 
   const isProjectByIdRoute = route === AppRoutes.PROJECT_BY_ID;
+
+  const title = (
+    <span className='text-base font-medium'>{routesMetadata[route].title}</span>
+  );
 
   return (
     <header
@@ -31,9 +37,11 @@ export function PrivateHeader({}: Props) {
       <div className='flex items-center justify-between'>
         {isMobile && <SidebarTrigger />}
 
-        <span className='text-base font-medium'>
-          {routesMetadata[route].title}
-        </span>
+        {isProjectByIdRoute ? (
+          <ManageProjectMembers>{title}</ManageProjectMembers>
+        ) : (
+          title
+        )}
 
         <SwitchTheme />
       </div>
