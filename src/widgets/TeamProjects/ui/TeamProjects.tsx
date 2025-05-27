@@ -16,8 +16,10 @@ export function TeamProjects({}: Props) {
       contentClassName='flex flex-col gap-4'
     >
       <CreateProject />
-
       <ManageProjects />
+      {/* TODO add */}
+      {/* DeleteProject */}
+      {/* ManageProjectMembers */}
     </Card>
   );
 }
