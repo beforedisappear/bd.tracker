@@ -5,6 +5,8 @@ export interface SummaryBoard {
   projectId: string;
 }
 
+export type Board = SummaryBoard & {};
+
 export type GetAllBoardsDtoReq = {
   projectId: string;
 };
@@ -17,3 +19,9 @@ export type CreateBoardDtoReq = {
 };
 
 export type CreateBoardDtoRes = SummaryBoard;
+
+export type GetBoardByIdDtoReq = {
+  boardId: string;
+};
+
+export type GetBoardByIdDtoRes = Board;

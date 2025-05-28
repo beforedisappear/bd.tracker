@@ -1,7 +1,13 @@
-export type GetBoardByIdReqParamsDto = {
-  boardId: string;
-};
+import { z } from 'zod';
+import {
+  GetBoardByIdReqParamsSchema,
+  DeleteBoardByIdReqParamsSchema,
+} from './dto';
 
-export type RenameBoardReqBodyDto = {
-  name: string;
-};
+export type GetBoardByIdReqParamsDto = z.infer<
+  typeof GetBoardByIdReqParamsSchema
+>;
+
+export type DeleteBoardByIdReqParamsDto = z.infer<
+  typeof DeleteBoardByIdReqParamsSchema
+>;

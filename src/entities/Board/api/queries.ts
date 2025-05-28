@@ -6,6 +6,7 @@ import { getAllBoards } from './getAllBoards';
 import { createBoard } from './createBoard';
 
 import type { GetAllBoardsDtoReq, CreateBoardDtoReq } from '../model/types';
+import { getBoardById } from './getBoardById';
 
 export const boardQueries = {
   all: (projectId: string) => ['boards', projectId],
@@ -25,5 +26,11 @@ export const boardQueries = {
       queryKey: [...boardQueries.all(dto.projectId)],
       queryFn: () => getAllBoards(dto),
       select: res => res.data,
+    }),
+
+  getBoardById: (id: string) =>
+    queryOptions({
+      queryKey: ['board', id],
+      queryFn: () => getBoardById(id),
     }),
 };

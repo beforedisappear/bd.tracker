@@ -50,7 +50,17 @@ import {
 import { PostAcceptChangeEmailDoc } from 'api/routeHandlers/profile/email/accept-change-request/doc';
 import { PostSendChangeEmailDoc } from 'api/routeHandlers/profile/email/send-change-request/doc';
 import { GetHaveAccessToTeamDoc } from 'api/routeHandlers/team/[idOrSlug]/access/doc';
+import {
+  GetBoardByIdDoc,
+  DeleteBoardByIdDoc,
+} from 'api/routeHandlers/board/[boardId]/doc';
+import { PatchRenameBoardDoc } from 'api/routeHandlers/board/[boardId]/rename/doc';
+import { PostCreateColumnDoc } from 'api/routeHandlers/column/doc';
+import { DeleteColumnByIdDoc } from 'api/routeHandlers/column/[columnId]/doc';
+import { PatchRenameColumnDoc } from 'api/routeHandlers/column/[columnId]/rename/doc';
+import { PatchMoveColumnDoc } from 'api/routeHandlers/column/[columnId]/move/doc';
 
+// setup open api for zod
 extendZodWithOpenApi(z);
 
 const openAPIRegistry = new OpenAPIRegistry();
@@ -116,7 +126,17 @@ openAPIRegistry.registerPath(DeleteProjectMemberDoc(bearerAuth.name));
 //board main
 openAPIRegistry.registerPath(PostCreateBoardDoc(bearerAuth.name));
 openAPIRegistry.registerPath(GetProjectBoardsDoc(bearerAuth.name));
+openAPIRegistry.registerPath(GetBoardByIdDoc(bearerAuth.name));
+openAPIRegistry.registerPath(DeleteBoardByIdDoc(bearerAuth.name));
+openAPIRegistry.registerPath(PatchRenameBoardDoc(bearerAuth.name));
 
+//column main
+openAPIRegistry.registerPath(PostCreateColumnDoc(bearerAuth.name));
+openAPIRegistry.registerPath(DeleteColumnByIdDoc(bearerAuth.name));
+openAPIRegistry.registerPath(PatchRenameColumnDoc(bearerAuth.name));
+openAPIRegistry.registerPath(PatchMoveColumnDoc(bearerAuth.name));
+
+// doc setup
 function getOpenApiDocumentation() {
   const generator = new OpenApiGeneratorV3(openAPIRegistry.definitions);
 
