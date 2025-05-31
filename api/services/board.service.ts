@@ -115,6 +115,7 @@ class BoardService extends BaseService {
                 stickers: true,
               },
             },
+            previousColumn: { select: { id: true } },
           },
         },
       },

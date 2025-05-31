@@ -7,7 +7,3 @@ export const DeleteColumnByIdReqParamsSchema = z.object({
 export const DeleteColumnByIdResSchema = z.object({
   id: z.string(),
 });
-
-export type DeleteColumnByIdReqParamsDto = z.infer<
-  typeof DeleteColumnByIdReqParamsSchema
->;

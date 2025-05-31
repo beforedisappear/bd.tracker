@@ -38,6 +38,37 @@ export class BaseService {
     return team;
   }
 
+  protected async getProjectByIdOrSlugWithOptions(
+    id: string,
+    options: {
+      withMembers?: boolean;
+      membersKeyword?: string;
+    },
+  ) {
+    const { withMembers, membersKeyword } = options ?? {
+      withMembers: false,
+      membersKeyword: undefined,
+    };
+
+    const project = await prismaService.project.findFirst({
+      where: { id },
+      include: {
+        members: withMembers
+          ? {
+              where: membersKeyword
+                ? { name: { contains: membersKeyword, mode: 'insensitive' } }
+                : undefined,
+            }
+          : undefined,
+        team: true,
+      },
+    });
+
+    if (!project) throw ApiError.notFound('Project not found');
+
+    return project;
+  }
+
   protected async checkIsUserInTeam(
     idOrSlug: string,
     options: { userId: string; membersKeyword?: string },
@@ -64,6 +95,28 @@ export class BaseService {
       isAdmin,
       isOwner,
       team,
+    };
+  }
+
+  protected async checkIsUserInProject(
+    idOrSlug: string,
+    options: { userId: string; membersKeyword?: string },
+  ) {
+    const { userId, membersKeyword } = options;
+
+    const project = await this.getProjectByIdOrSlugWithOptions(idOrSlug, {
+      withMembers: true,
+      membersKeyword,
+    });
+
+    if (!project) throw ApiError.notFound('Project not found');
+
+    const isMember = project.members.some(member => member.id === userId);
+
+    return {
+      inProject: isMember,
+      team: project.team,
+      project,
     };
   }
 }
