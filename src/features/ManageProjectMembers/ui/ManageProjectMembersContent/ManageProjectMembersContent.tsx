@@ -2,12 +2,13 @@ import { ManageProjectMembersContentLoading } from './ManageProjectMembersConten
 import { ManageProjectMembersForm } from '../ManageProjectMembersForm/ManageProjectMembersForm';
 import { ErrorBoundary } from '@/shared/ui/c';
 
-import { getCurrentTeamProjectId, projectQueries } from '@/entities/Project';
-import { teamQueries } from '@/entities/Team';
-
 import { useTenant } from '@/shared/lib/navigation/useTenant';
 import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
 import { useQuery } from '@tanstack/react-query';
+
+import { getCurrentTeamProjectId, projectQueries } from '@/entities/Project';
+import { teamQueries } from '@/entities/Team';
+
 import { mapTeamMembersToProjectMembers } from '../../lib/mapTeamMembersToProjectMembers';
 
 export function ManageProjectMembersContent() {
@@ -15,8 +16,8 @@ export function ManageProjectMembersContent() {
   const { currentProjectId } = usePrivateGlobalStore(getCurrentTeamProjectId());
 
   const {
-    data: projectMembers,
-    isLoading: isProjectMembersLoading,
+    data: projectMembers = [],
+    isFetching: isProjectMembersFetching,
     isError: isProjectMembersError,
     error: projectMembersError,
     refetch: refetchProjectMembers,
@@ -28,28 +29,20 @@ export function ManageProjectMembersContent() {
   });
 
   const {
-    data: teamMembers,
-    isLoading: isTeamMembersLoading,
+    data: teamMembers = [],
+    isFetching: isTeamMembersFetching,
     isError: isTeamMembersError,
     error: teamMembersError,
     refetch: refetchTeamMembers,
-  } = useQuery({
-    ...teamQueries.getTeamMembers({
+  } = useQuery(
+    teamQueries.getTeamMembers({
       idOrSlug: tenant,
     }),
-  });
+  );
 
-  if (isProjectMembersLoading || isTeamMembersLoading) {
+  if (isProjectMembersFetching || isTeamMembersFetching)
     return <ManageProjectMembersContentLoading />;
-  } else if (isProjectMembersError || !projectMembers) {
-    return (
-      <ErrorBoundary
-        error={projectMembersError}
-        className='m-auto'
-        reset={refetchProjectMembers}
-      />
-    );
-  } else if (isTeamMembersError || !teamMembers) {
+  else if (isTeamMembersError)
     return (
       <ErrorBoundary
         error={teamMembersError}
@@ -57,10 +50,18 @@ export function ManageProjectMembersContent() {
         reset={refetchTeamMembers}
       />
     );
-  }
+  else if (isProjectMembersError)
+    return (
+      <ErrorBoundary
+        error={projectMembersError}
+        className='m-auto'
+        reset={refetchProjectMembers}
+      />
+    );
 
   return (
     <ManageProjectMembersForm
+      projectId={currentProjectId as string}
       data={mapTeamMembersToProjectMembers(teamMembers, projectMembers)}
     />
   );

@@ -272,6 +272,36 @@ class ProjectService extends BaseService {
     return null;
   }
 
+  async updateProjectMembers(args: {
+    projectId: string;
+    membersIds: string[];
+    initiatorId: string;
+  }) {
+    const { projectId, membersIds, initiatorId } = args;
+
+    const project = await prismaService.project.findUnique({
+      where: { id: projectId },
+      include: { team: true },
+    });
+
+    if (!project) throw ApiError.notFound('Project not found');
+
+    const { isAdmin, isOwner } = await this.checkIsUserInTeam(project.team.id, {
+      userId: initiatorId,
+    });
+
+    if (!isAdmin && !isOwner) {
+      throw ApiError.forbidden('You are not allowed to update this project');
+    }
+
+    await prismaService.project.update({
+      where: { id: projectId },
+      data: { members: { set: membersIds.map(id => ({ id })) } },
+    });
+
+    return null;
+  }
+
   async getProjectMembers(args: {
     projectId: string;
     initiatorId: string;

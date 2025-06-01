@@ -1,25 +1,17 @@
 'use client';
 
-import { Dialog } from '@/shared/ui/c';
-import { ManageProjectMembersContent } from '../ManageProjectMembersContent';
+import { LazyManageProjectMembersDesktop } from './ManageProjectMembers.desktop.async';
+import { LazyManageProjectMembersMobile } from './ManageProjectMembers.mobile.async';
 
-import { getProjectMembersModal } from '@/entities/Project';
-import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
-
-import { MANAGE_PROJECT_MEMBERS_TITLE } from '../../config';
+import { useDeviceType } from '@/shared/lib/deviceType/c';
 
 export function ManageProjectMembers() {
-  const { showProjectMembersModal, setShowProjectMembersModal } =
-    usePrivateGlobalStore(getProjectMembersModal());
+  const { isDesktop, isMobile } = useDeviceType();
 
   return (
-    <Dialog
-      title={MANAGE_PROJECT_MEMBERS_TITLE}
-      className='h-[400px]'
-      open={showProjectMembersModal}
-      onOpenChange={setShowProjectMembersModal}
-    >
-      <ManageProjectMembersContent />
-    </Dialog>
+    <>
+      {isDesktop && <LazyManageProjectMembersDesktop />}
+      {isMobile && <LazyManageProjectMembersMobile />}
+    </>
   );
 }

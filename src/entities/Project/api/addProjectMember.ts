@@ -6,7 +6,7 @@ import type {
 
 export const addProjectMember = async (dto: AddProjectMemberDtoReq) => {
   return apiClient.withAuth.post<AddProjectMemberDtoRes>(
-    `/projects/${dto.projectId}/members`,
+    `/project/${dto.projectId}/members`,
     { memberId: dto.memberId },
   );
 };

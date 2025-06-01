@@ -3,6 +3,7 @@
 //primitive
 export { Button } from './Button/Button';
 export { Input } from './Input/Input';
+export { PureInput } from './Input/PureInput';
 export { Dialog } from './Dialog/Dialog';
 export { InputOTP } from './InputOTP/InputOTP';
 export { Select } from './Select/Select';

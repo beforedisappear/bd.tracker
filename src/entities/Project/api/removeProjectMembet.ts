@@ -6,6 +6,6 @@ import type {
 
 export const removeProjectMember = async (dto: RemoveProjectMemberDtoReq) => {
   return apiClient.withAuth.delete<RemoveProjectMemberDtoRes>(
-    `/projects/${dto.projectId}/members/${dto.memberId}`,
+    `/project/${dto.projectId}/members/${dto.memberId}`,
   );
 };

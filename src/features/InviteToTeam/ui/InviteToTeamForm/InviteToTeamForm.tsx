@@ -55,12 +55,7 @@ export function InviteToTeamForm(props: Props) {
 
   return (
     <Form {...form}>
-      <form
-        className={cn('flex flex-col gap-6 h-full', {
-          'p-6': isMobile,
-        })}
-        onSubmit={onSubmit}
-      >
+      <form className='flex flex-col gap-6 h-full' onSubmit={onSubmit}>
         <Input name='inviteeEmail' label='E-mail адрес' />
 
         <div className='flex flex-col gap-2'>

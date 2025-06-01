@@ -7,7 +7,7 @@ export interface IPrivateGlobalStoreState {
 export interface IPrivateGlobalStoreActions {
   setTeamIdBySlugMap: (map: Record<string, string>) => void;
   setShowProjectMembersModal: (show: boolean) => void;
-  setCurrentProjectId: (id: string) => void;
+  setCurrentProjectId: (id: string | null) => void;
 }
 
 export type PrivateGlobalStore = IPrivateGlobalStoreState &

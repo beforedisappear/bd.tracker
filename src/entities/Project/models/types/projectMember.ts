@@ -26,3 +26,11 @@ export interface RemoveProjectMemberDtoReq {
 }
 
 export type RemoveProjectMemberDtoRes = never;
+
+export interface UpdateProjectMembersDtoReq {
+  teamIdOrSlug: string;
+  projectId: string;
+  membersIds: string[];
+}
+
+export type UpdateProjectMembersDtoRes = never;

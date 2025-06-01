@@ -8,6 +8,7 @@ import { getProjectMembers } from './getProjectMembers';
 import { deleteProject } from './deleteProject';
 import { addProjectMember } from './addProjectMember';
 import { removeProjectMember } from './removeProjectMembet';
+import { updateProjectMembers } from './updateProjectMembers';
 
 import type {
   GetProjectsByTeamDtoReq,
@@ -16,6 +17,7 @@ import type {
   DeleteProjectDtoReq,
   AddProjectMemberDtoReq,
   RemoveProjectMemberDtoReq,
+  UpdateProjectMembersDtoReq,
 } from '../models/types';
 
 export const projectQueries = {
@@ -64,5 +66,25 @@ export const projectQueries = {
   removeProjectMember: () =>
     mutationOptions({
       mutationFn: (dto: RemoveProjectMemberDtoReq) => removeProjectMember(dto),
+    }),
+
+  updateProjectMembers: () =>
+    mutationOptions({
+      mutationFn: (dto: UpdateProjectMembersDtoReq) =>
+        updateProjectMembers(dto),
+      onSuccess: (_, { teamIdOrSlug, projectId }) => {
+        queryClient.invalidateQueries({
+          queryKey: [...projectQueries.teamProjects(teamIdOrSlug)],
+        });
+
+        setTimeout(
+          () =>
+            queryClient.invalidateQueries({
+              queryKey: [...projectQueries.projectMembers(projectId)],
+              refetchType: 'active',
+            }),
+          0,
+        );
+      },
     }),
 };

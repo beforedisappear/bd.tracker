@@ -19,7 +19,7 @@ import { CreateBoardSchema } from '../../model/schemes';
 
 interface Props {
   className?: string;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 export function CreateBoardForm(props: Props) {
@@ -38,7 +38,7 @@ export function CreateBoardForm(props: Props) {
 
   const onSubmit = form.handleSubmit(data => {
     createBoard({ ...data, projectId })
-      .then(() => onClose())
+      .then(() => onClose?.())
       .then(() => toast.success(SUCCESSFUL_SENDING_MESSAGE))
       .catch(e => form.setError('name', { message: getErrorMessage(e) }));
   });

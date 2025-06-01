@@ -4,10 +4,11 @@ import type { ProjectMember } from '@/entities/Project';
 export const mapTeamMembersToProjectMembers = (
   teamMembers: TeamMember[],
   projectMembers: ProjectMember[],
-): TeamMember[] => {
-  const projectMembersMap = Object.fromEntries(
-    projectMembers.map(member => [member.id, member]),
-  );
+): (TeamMember & { isProjectMember: boolean })[] => {
+  const projectMemberIds = new Set(projectMembers.map(member => member.id));
 
-  return teamMembers.filter(teamMember => projectMembersMap[teamMember.id]);
+  return teamMembers.map(member => ({
+    ...member,
+    isProjectMember: projectMemberIds.has(member.id),
+  }));
 };

@@ -75,7 +75,15 @@ class TeamService extends BaseService {
 
     const adminIds = team.admins.map(a => a.id);
 
-    const teamMembers = [team.owner, ...team.members].map(member => ({
+    const withOwner =
+      !keyword ||
+      team.owner.name.toLowerCase().includes(keyword.toLowerCase()) ||
+      team.owner.email.toLowerCase().includes(keyword.toLowerCase());
+
+    const teamMembers = [
+      ...(withOwner ? [team.owner] : []),
+      ...team.members,
+    ].map(member => ({
       ...member,
       isOwner: member.id === team.ownerId,
       isAdmin: adminIds.includes(member.id),

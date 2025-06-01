@@ -41,10 +41,10 @@ export function ViewTeamMembers() {
 
   return (
     <ScrollArea
-      className='h-full w-full pb-4
-      md:max-w-[300px]'
-      scrollBar={{ orientation: 'horizontal' }}
       type='always'
+      className='h-full w-full pb-4
+      md:max-w-[calc(100vw-24px*2-16px*2-2px)]'
+      scrollBar={{ orientation: 'horizontal' }}
     >
       <ViewTeamMembersHeader />
       {teamMembers.map(member => (

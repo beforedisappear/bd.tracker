@@ -14,7 +14,7 @@ export function CreateBoardMobile() {
       trigger={<CreateBoardTrigger />}
       className='h-[400px]'
     >
-      <CreateBoardForm className='p-6' />
+      <CreateBoardForm />
     </Drawer>
   );
 }

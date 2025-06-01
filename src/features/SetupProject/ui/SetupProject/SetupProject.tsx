@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from 'react';
 
-import { SetupProjectMenu } from '../SetupProjectMenu/SetupProjectMenu';
+import { SetupProjectMenu } from '../SetupProjectMenu';
 
 interface Props extends PropsWithChildren {}
 

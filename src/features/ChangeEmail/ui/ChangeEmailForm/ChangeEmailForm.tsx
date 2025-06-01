@@ -38,7 +38,7 @@ export const ChangeEmailForm = ({ email }: Props) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className='flex flex-col gap-6 p-6 flex-grow'>
+      <form onSubmit={onSubmit} className='flex flex-col gap-6 p-2 flex-grow'>
         <span className='text-base ov text-zinc-800 dark:text-zinc-300'>
           Ваш текущий e-mail: <b>{email}</b>
         </span>

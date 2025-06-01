@@ -24,7 +24,7 @@ export function CreateProject() {
       open={showCreateProjectModal}
       onOpenChange={setShowCreateProjectModal}
     >
-      <CreateProjectForm className='p-6' onClose={onClose} />
+      <CreateProjectForm onClose={onClose} />
     </Drawer>
   );
 }

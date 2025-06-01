@@ -1,13 +1,17 @@
 import { ScrollArea, Checkbox } from '@/shared/ui/c';
 import { TeamMember } from '../../models/types';
+import { memo } from 'react';
 
 interface Props {
   members: TeamMember[];
+  withSearch?: boolean;
 }
 
-export function TeamMembersFieldContent({ members }: Props) {
+export const TeamMembersFieldContent = memo((props: Props) => {
+  const { members = [], withSearch } = props;
+
   return (
-    <ScrollArea type='always' className='h-52'>
+    <ScrollArea type='always' className={withSearch ? 'h-40' : 'h-52'}>
       {members.map(member => (
         <Checkbox
           key={member.id}
@@ -19,4 +23,6 @@ export function TeamMembersFieldContent({ members }: Props) {
       ))}
     </ScrollArea>
   );
-}
+});
+
+TeamMembersFieldContent.displayName = 'TeamMembersFieldContent';
