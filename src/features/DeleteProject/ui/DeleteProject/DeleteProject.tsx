@@ -7,6 +7,8 @@ interface Props {
   onConfirm: () => void;
 }
 
+// TODO: add mobile version
+
 export function DeleteProject(props: Props) {
   const { onConfirm } = props;
 

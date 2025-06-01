@@ -1,6 +1,8 @@
 import { SelectProjectView } from '@/features/SelectProjectView';
 import { ProjectView } from '@/widgets/ProjectView';
 import { TaskFilters } from '@/widgets/TaskFilters';
+import { ManageProjectMembers } from '@/features/ManageProjectMembers';
+
 interface Props {}
 
 export function ProjectByIdPage({}: Props) {
@@ -12,6 +14,8 @@ export function ProjectByIdPage({}: Props) {
       </div>
 
       <ProjectView />
+
+      <ManageProjectMembers />
     </div>
   );
 }

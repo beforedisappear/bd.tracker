@@ -10,7 +10,7 @@ export interface Project {
 
 export type GetProjectsByTeamDtoRes = Project[];
 
-export interface GetProjectsByTeamDto {
+export interface GetProjectsByTeamDtoReq {
   teamIdOrSlug: string;
 }
 

@@ -1,21 +1,25 @@
-import { Settings } from 'lucide-react';
+'use client';
 
-import { Button } from '@/shared/ui/c';
+import { Dialog } from '@/shared/ui/c';
+import { ManageProjectMembersContent } from '../ManageProjectMembersContent';
 
-import type { PropsWithChildren } from 'react';
+import { getProjectMembersModal } from '@/entities/Project';
+import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
 
-interface Props extends PropsWithChildren {}
+import { MANAGE_PROJECT_MEMBERS_TITLE } from '../../config';
 
-// TODO: add mobile version
-// TODO: mb it's better to use another way
-export function ManageProjectMembers({ children }: Props) {
+export function ManageProjectMembers() {
+  const { showProjectMembersModal, setShowProjectMembersModal } =
+    usePrivateGlobalStore(getProjectMembersModal());
+
   return (
-    <div className='flex items-center gap-2'>
-      {children}
-
-      <Button variant={'ghost'} className='p-0 h-6 w-6'>
-        <Settings className='h-4 w-4' />
-      </Button>
-    </div>
+    <Dialog
+      title={MANAGE_PROJECT_MEMBERS_TITLE}
+      className='h-[400px]'
+      open={showProjectMembersModal}
+      onOpenChange={setShowProjectMembersModal}
+    >
+      <ManageProjectMembersContent />
+    </Dialog>
   );
 }

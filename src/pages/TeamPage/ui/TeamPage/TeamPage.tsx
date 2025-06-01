@@ -5,6 +5,8 @@ import { TeamProjects } from '@/widgets/TeamProjects';
 import { TeamMembers } from '@/widgets/TeamMembers';
 import { TeamMemberProfileModal } from '@/widgets/TeamMemberProfileModal';
 
+import { ManageProjectMembers } from '@/features/ManageProjectMembers';
+
 import { TeamStoreProvider } from '@/entities/Team';
 
 interface Props {}
@@ -18,6 +20,8 @@ export function TeamPage({}: Props) {
         <TeamMembers />
         <TeamMemberProfileModal />
       </div>
+
+      <ManageProjectMembers />
     </TeamStoreProvider>
   );
 }

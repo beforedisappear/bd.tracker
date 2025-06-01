@@ -1,11 +1,11 @@
 import { apiClient } from '@/shared/api/apiClient';
 
 import type {
-  GetProjectsByTeamDto,
+  GetProjectsByTeamDtoReq,
   GetProjectsByTeamDtoRes,
 } from '../models/types';
 
-export const getProjectsByTeam = async (dto: GetProjectsByTeamDto) => {
+export const getProjectsByTeam = async (dto: GetProjectsByTeamDtoReq) => {
   return apiClient.withAuth.get<GetProjectsByTeamDtoRes>(`/project`, {
     params: dto,
   });

@@ -4,7 +4,7 @@ import { SwitchTheme } from '@/features/SwitchTheme';
 import { SidebarTrigger } from '@/shared/ui/c';
 import { SelectBoard } from '@/features/SelectBoard';
 import { CreateBoard } from '@/features/CreateBoard';
-import { ManageProjectMembers } from '@/features/ManageProjectMembers';
+import { SetupProject } from '@/features/SetupProject';
 
 import { usePathname } from 'next/navigation';
 import { useDeviceType } from '@/shared/lib/deviceType/c';
@@ -37,11 +37,7 @@ export function PrivateHeader({}: Props) {
       <div className='flex items-center justify-between'>
         {isMobile && <SidebarTrigger />}
 
-        {isProjectByIdRoute ? (
-          <ManageProjectMembers>{title}</ManageProjectMembers>
-        ) : (
-          title
-        )}
+        {isProjectByIdRoute ? <SetupProject>{title}</SetupProject> : title}
 
         <SwitchTheme />
       </div>

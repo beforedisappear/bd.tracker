@@ -9,7 +9,13 @@ import { getProjectByIdRoutePath } from '@/shared/config/routes';
 import { cn, getColorByFirstLetter } from '@/shared/lib/css';
 import { getInitials } from '@/shared/lib/data';
 import { getManageProjectsItemClassName } from '../../config';
-import { projectQueries } from '@/entities/Project';
+import {
+  projectQueries,
+  getProjectMembersModal,
+  getCurrentTeamProjectId,
+} from '@/entities/Project';
+import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
+
 import { toast } from 'sonner';
 
 import type { Project } from '@/entities/Project';
@@ -27,10 +33,23 @@ export function ManageProjectsItem({ project, tenant }: Props) {
     projectQueries.deleteProject(),
   );
 
+  const { setShowProjectMembersModal } = usePrivateGlobalStore(
+    getProjectMembersModal(),
+  );
+
+  const { setCurrentProjectId } = usePrivateGlobalStore(
+    getCurrentTeamProjectId(),
+  );
+
   const onRedirectToProjectPage = (e: MouseEvent<HTMLDivElement>) => {
     if (e.target !== e.currentTarget) return;
 
     router.push(getProjectByIdRoutePath(tenant, project.id));
+  };
+
+  const onOpenProjectMembersModal = () => {
+    setCurrentProjectId(project.id);
+    setShowProjectMembersModal(true);
   };
 
   //TODO: вызывать модалку DeleteProject
@@ -55,7 +74,7 @@ export function ManageProjectsItem({ project, tenant }: Props) {
 
         <ManageProjectsItemMenu
           onRenameProject={() => {}}
-          onParticipants={() => {}}
+          onParticipants={onOpenProjectMembersModal}
           onDeleteProject={onDeleteProject}
         />
       </div>
