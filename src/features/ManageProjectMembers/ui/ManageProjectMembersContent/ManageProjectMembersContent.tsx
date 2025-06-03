@@ -6,14 +6,14 @@ import { useTenant } from '@/shared/lib/navigation/useTenant';
 import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
 import { useQuery } from '@tanstack/react-query';
 
-import { getCurrentTeamProjectId, projectQueries } from '@/entities/Project';
+import { getProjectMembersModal, projectQueries } from '@/entities/Project';
 import { teamQueries } from '@/entities/Team';
 
 import { mapTeamMembersToProjectMembers } from '../../lib/mapTeamMembersToProjectMembers';
 
 export function ManageProjectMembersContent() {
   const tenant = useTenant();
-  const { currentProjectId } = usePrivateGlobalStore(getCurrentTeamProjectId());
+  const { currentProjectId } = usePrivateGlobalStore(getProjectMembersModal());
 
   const {
     data: projectMembers = [],

@@ -1,6 +1,6 @@
 import { ManageProjectsItemLoading } from '../ManageProjectsItem/ManageProjectsItem.loading';
 
-import { MANAGE_PROJECTS_LOADING_ITEMS_COUNT } from '../../config';
+import { MANAGE_PROJECTS_LOADING_ITEMS_COUNT } from '../../constants';
 
 export function ManageProjectsLoading() {
   return (

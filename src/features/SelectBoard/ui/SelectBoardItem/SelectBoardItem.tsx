@@ -41,7 +41,8 @@ export function SelectBoardItem(props: Props) {
       )}
     >
       <span>{board.name}</span>
-      <SelectBoardItemMenu />
+
+      <SelectBoardItemMenu boardId={board.id} />
     </div>
   );
 }

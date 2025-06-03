@@ -5,7 +5,7 @@ interface Props extends ButtonProps {}
 
 export function CreateBoardTrigger(props: Props) {
   return (
-    <Button type='button' variant={null} className='w-fit' {...props}>
+    <Button type='button' size='icon' variant={null} {...props}>
       <PlusIcon className='w-4 h-4' />
     </Button>
   );

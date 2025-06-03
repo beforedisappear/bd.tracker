@@ -6,7 +6,7 @@ import { CreateProjectForm } from '../CreateProjectForm/CreateProjectForm';
 
 import { useCallback, useState } from 'react';
 
-import { CREATE_PROJECT_TITLE } from '../../config';
+import { CREATE_PROJECT_TITLE } from '../../constants';
 
 export function CreateProject() {
   const [showCreateProjectModal, setShowCreateProjectModal] = useState(false);

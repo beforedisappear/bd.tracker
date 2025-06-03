@@ -4,19 +4,29 @@ import { ErrorBoundary } from '@/shared/ui/c';
 import { SelectTeamAdvancedItem } from '../SelectTeamAdvancedItem/SelectTeamAdvancedItem';
 import { SelectTeamAdvancedLoading } from './SelectTeamAdvanced.loading';
 
+import { useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useTenant } from '@/shared/lib/navigation';
 
-import { teamQueries } from '@/entities/Team';
+import { teamQueries, useTeamStore } from '@/entities/Team';
 
-interface Props {
-  onDeleteTeam?: (id: string, slug: string) => void;
-}
+interface Props {}
 
 export function SelectTeamAdvanced(props: Props) {
-  const { onDeleteTeam } = props;
+  const {} = props;
 
   const tenant = useTenant();
+
+  const setDeletingTeam = useTeamStore(state => state.setDeletingTeam);
+  const setShowDeleteTeamModal = useTeamStore(
+    state => state.setShowDeleteTeamModal,
+  );
+
+  const onDeleteTeam = useCallback((id: string, slug: string) => {
+    setDeletingTeam({ id, slug });
+    setShowDeleteTeamModal(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const {
     data: userTeamList,

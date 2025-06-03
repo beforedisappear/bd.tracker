@@ -1,30 +1,15 @@
-import { Dialog } from '@/shared/ui/c';
+import { LazyDeleteProjectDesktop } from './DeleteProject.desktop.async';
+import { LazyDeleteProjectMobile } from './DeleteProject.mobile.async';
 
-import { DeleteProjectContent } from '../DeleteProjectContent/DeleteProjectContent';
-import { useState } from 'react';
+import { useDeviceType } from '@/shared/lib/deviceType/c';
 
-interface Props {
-  onConfirm: () => void;
-}
-
-// TODO: add mobile version
-
-export function DeleteProject(props: Props) {
-  const { onConfirm } = props;
-
-  const [showDeleteProjectModal, setShowDeleteProjectModal] = useState(false);
-
-  const onCloseModal = () => {
-    setShowDeleteProjectModal(false);
-  };
+export function DeleteProject() {
+  const { isDesktop, isMobile } = useDeviceType();
 
   return (
-    <Dialog
-      title='Удалить проект?'
-      open={showDeleteProjectModal}
-      onOpenChange={setShowDeleteProjectModal}
-    >
-      <DeleteProjectContent onClose={onCloseModal} onConfirm={onConfirm} />
-    </Dialog>
+    <>
+      {isDesktop && <LazyDeleteProjectDesktop />}
+      {isMobile && <LazyDeleteProjectMobile />}
+    </>
   );
 }

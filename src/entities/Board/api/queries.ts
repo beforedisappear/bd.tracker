@@ -4,9 +4,15 @@ import { mutationOptions } from '@/shared/lib/tanstack-query';
 
 import { getAllBoards } from './getAllBoards';
 import { createBoard } from './createBoard';
-
-import type { GetAllBoardsDtoReq, CreateBoardDtoReq } from '../model/types';
 import { getBoardById } from './getBoardById';
+import { deleteBoard } from './deleteBoard';
+
+import type {
+  GetAllBoardsDtoReq,
+  CreateBoardDtoReq,
+  DeleteBoardDtoReq,
+  GetBoardByIdDtoReq,
+} from '../model/types';
 
 export const boardQueries = {
   all: (projectId: string) => ['boards', projectId],
@@ -28,9 +34,14 @@ export const boardQueries = {
       select: res => res.data,
     }),
 
-  getBoardById: (id: string) =>
+  getBoardById: (dto: GetBoardByIdDtoReq) =>
     queryOptions({
-      queryKey: ['board', id],
-      queryFn: () => getBoardById(id),
+      queryKey: ['board', dto.boardId],
+      queryFn: () => getBoardById(dto),
+    }),
+
+  deleteBoard: () =>
+    mutationOptions({
+      mutationFn: (dto: DeleteBoardDtoReq) => deleteBoard(dto),
     }),
 };

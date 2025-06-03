@@ -25,3 +25,9 @@ export type GetBoardByIdDtoReq = {
 };
 
 export type GetBoardByIdDtoRes = Board;
+
+export type DeleteBoardDtoReq = {
+  boardId: string;
+};
+
+export type DeleteBoardDtoRes = never;

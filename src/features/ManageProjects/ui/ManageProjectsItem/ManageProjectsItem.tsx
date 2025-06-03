@@ -2,21 +2,16 @@ import { Avatar } from '@/shared/ui/s';
 import { ManageProjectsItemMenu } from '../ManageProjectsItemMenu/ManageProjectsItemMenu';
 
 import { useRouter } from 'next/navigation';
-import { useMutation } from '@tanstack/react-query';
 
-import { getErrorMessage } from '@/shared/lib/error';
 import { getProjectByIdRoutePath } from '@/shared/config/routes';
 import { cn, getColorByFirstLetter } from '@/shared/lib/css';
 import { getInitials } from '@/shared/lib/data';
-import { getManageProjectsItemClassName } from '../../config';
+import { getManageProjectsItemClassName } from '../../constants';
 import {
-  projectQueries,
   getProjectMembersModal,
-  getCurrentTeamProjectId,
+  getDeleteProjectModal,
 } from '@/entities/Project';
 import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
-
-import { toast } from 'sonner';
 
 import type { Project } from '@/entities/Project';
 import type { MouseEvent } from 'react';
@@ -29,16 +24,10 @@ interface Props {
 export function ManageProjectsItem({ project, tenant }: Props) {
   const router = useRouter();
 
-  const { mutateAsync: deleteProject } = useMutation(
-    projectQueries.deleteProject(),
-  );
-
-  const { setShowProjectMembersModal } = usePrivateGlobalStore(
-    getProjectMembersModal(),
-  );
-
-  const { setCurrentProjectId } = usePrivateGlobalStore(
-    getCurrentTeamProjectId(),
+  const { setShowProjectMembersModal, setCurrentProjectId } =
+    usePrivateGlobalStore(getProjectMembersModal());
+  const { setShowDeleteProjectModal } = usePrivateGlobalStore(
+    getDeleteProjectModal(),
   );
 
   const onRedirectToProjectPage = (e: MouseEvent<HTMLDivElement>) => {
@@ -52,11 +41,9 @@ export function ManageProjectsItem({ project, tenant }: Props) {
     setShowProjectMembersModal(true);
   };
 
-  //TODO: вызывать модалку DeleteProject
-  const onDeleteProject = async () => {
-    deleteProject({ projectId: project.id, teamIdOrSlug: tenant }).catch(e =>
-      toast.error(getErrorMessage(e)),
-    );
+  const onOpenDeleteProjectModal = () => {
+    setCurrentProjectId(project.id);
+    setShowDeleteProjectModal(true);
   };
 
   return (
@@ -75,7 +62,7 @@ export function ManageProjectsItem({ project, tenant }: Props) {
         <ManageProjectsItemMenu
           onRenameProject={() => {}}
           onParticipants={onOpenProjectMembersModal}
-          onDeleteProject={onDeleteProject}
+          onDeleteProject={onOpenDeleteProjectModal}
         />
       </div>
 

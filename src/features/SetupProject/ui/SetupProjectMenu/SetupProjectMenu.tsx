@@ -7,21 +7,14 @@ import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
 import { useProject } from '@/shared/lib/navigation';
 import { useDeviceType } from '@/shared/lib/deviceType/c';
 
-import {
-  getProjectMembersModal,
-  getCurrentTeamProjectId,
-} from '@/entities/Project';
+import { getProjectMembersModal } from '@/entities/Project';
 
 export function SetupProjectMenu() {
   const { isMobile } = useDeviceType();
   const { projectId } = useProject();
 
-  const { setShowProjectMembersModal } = usePrivateGlobalStore(
-    getProjectMembersModal(),
-  );
-  const { setCurrentProjectId } = usePrivateGlobalStore(
-    getCurrentTeamProjectId(),
-  );
+  const { setShowProjectMembersModal, setCurrentProjectId } =
+    usePrivateGlobalStore(getProjectMembersModal());
 
   const onShowProjectMembersModal = () => {
     setCurrentProjectId(projectId);

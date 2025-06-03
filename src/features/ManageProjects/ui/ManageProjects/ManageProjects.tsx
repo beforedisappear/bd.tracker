@@ -6,7 +6,7 @@ import { ManageProjectsPlaceholder } from './ManageProjects.placeholder';
 import { useTenant } from '@/shared/lib/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { projectQueries } from '@/entities/Project';
-import { getManageProjectsContainerClassName } from '../../config';
+import { getManageProjectsContainerClassName } from '../../constants';
 import { cn } from '@/shared/lib/css';
 
 export function ManageProjects() {

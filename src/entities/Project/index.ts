@@ -1,4 +1,7 @@
 export { projectQueries } from './api';
-export type { Project, ProjectMember } from './models/types';
+export { ProjectStoreProvider } from './models/store/ProjectStoreProvider';
+export { useProjectStore } from './models/store/useProjectStore';
 export { getProjectMembersModal } from './models/selectors/getProjectMembersModal';
-export { getCurrentTeamProjectId } from './models/selectors/getCurrentTeamProjectId';
+export { getDeleteProjectModal } from './models/selectors/getDeleteProjectModal';
+
+export type { Project, ProjectMember } from './models/types';

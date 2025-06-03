@@ -3,11 +3,7 @@ import { Loader2 } from 'lucide-react';
 import { Button, Form } from '@/shared/ui/c';
 import { TeamMembersField, type TeamMember } from '@/entities/Team';
 
-import {
-  getCurrentTeamProjectId,
-  projectQueries,
-  getProjectMembersModal,
-} from '@/entities/Project';
+import { projectQueries, getProjectMembersModal } from '@/entities/Project';
 
 import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
 import { useDeviceType } from '@/shared/lib/deviceType/c';
@@ -30,12 +26,8 @@ export function ManageProjectMembersForm(props: Props) {
 
   const tenant = useTenant();
 
-  const { setCurrentProjectId } = usePrivateGlobalStore(
-    getCurrentTeamProjectId(),
-  );
-  const { setShowProjectMembersModal } = usePrivateGlobalStore(
-    getProjectMembersModal(),
-  );
+  const { setShowProjectMembersModal, setCurrentProjectId } =
+    usePrivateGlobalStore(getProjectMembersModal());
 
   const form = useForm<z.infer<typeof ManageProjectMembersSchema>>({
     resolver: zodResolver(ManageProjectMembersSchema),

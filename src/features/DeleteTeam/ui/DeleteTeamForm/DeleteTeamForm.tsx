@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/shared/ui/c';
+import { BasicDeleteForm } from '@/shared/ui/c';
 
 import { useMutation } from '@tanstack/react-query';
 import {
@@ -11,22 +11,27 @@ import {
 } from '@/entities/Team';
 import { useTenant } from '@/shared/lib/navigation';
 import { useRouter } from 'next/navigation';
+import { useDeviceType } from '@/shared/lib/deviceType/c';
 
 import { getHomeRoutePath } from '@/shared/config/routes';
 import { getErrorMessage } from '@/shared/lib/error';
 import { toast } from 'sonner';
 
-import { DELETE_TEAM_DESCRIPTION } from '../../constants';
 import {
   SENDING_DATA_MESSAGE,
   SUCCESSFUL_SENDING_MESSAGE,
 } from '@/shared/constants';
 
-interface Props {}
+interface Props {
+  onClose: () => void;
+}
 
-export function DeleteTeamForm({}: Props) {
+export function DeleteTeamForm(props: Props) {
+  const { onClose } = props;
+
   const tenant = useTenant();
   const { push } = useRouter();
+  const { isMobile, isDesktop } = useDeviceType();
   const { setShowDeleteTeamModal } = useTeamStore(getDeleteTeamModal());
   const { setDeletingTeam, deletingTeam } = useTeamStore(getDeletingTeam());
 
@@ -51,20 +56,12 @@ export function DeleteTeamForm({}: Props) {
   };
 
   return (
-    <div>
-      <p className='text-center text-muted-foreground mb-6'>
-        {DELETE_TEAM_DESCRIPTION}
-      </p>
-
-      <Button
-        type='submit'
-        variant='destructive'
-        className='w-full'
-        disabled={isPending}
-        onClick={onDelete}
-      >
-        <span>Удалить</span>
-      </Button>
-    </div>
+    <BasicDeleteForm
+      isDesktop={isDesktop}
+      isMobile={isMobile}
+      onClose={onClose}
+      onDelete={onDelete}
+      isPending={isPending}
+    />
   );
 }

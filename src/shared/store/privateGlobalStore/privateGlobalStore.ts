@@ -6,8 +6,11 @@ export type PrivateGlobalStoreApi = ReturnType<typeof createPrivateGlobalStore>;
 
 const defaultInitState: IPrivateGlobalStoreState = {
   teamIdBySlugMap: {},
+  currentProjectId: null, // to pass to the delete project modal or project members modal
   showProjectMembersModal: false,
-  currentProjectId: null,
+  showDeleteProjectModal: false,
+  showDeleteBoardModal: false,
+  deletingBoardId: null,
 };
 
 export const createPrivateGlobalStore = (
@@ -21,8 +24,17 @@ export const createPrivateGlobalStore = (
     setShowProjectMembersModal: (show: boolean) => {
       set({ showProjectMembersModal: show });
     },
-    setCurrentProjectId: (id: string) => {
+    setCurrentProjectId: (id: string | null) => {
       set({ currentProjectId: id });
+    },
+    setShowDeleteProjectModal: (show: boolean) => {
+      set({ showDeleteProjectModal: show });
+    },
+    setShowDeleteBoardModal: (show: boolean) => {
+      set({ showDeleteBoardModal: show });
+    },
+    setDeletingBoardId: (id: string | null) => {
+      set({ deletingBoardId: id });
     },
   }));
 };

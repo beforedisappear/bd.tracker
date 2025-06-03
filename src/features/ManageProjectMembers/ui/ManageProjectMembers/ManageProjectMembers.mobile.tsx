@@ -6,7 +6,7 @@ import { ManageProjectMembersContent } from '../ManageProjectMembersContent';
 import { getProjectMembersModal } from '@/entities/Project';
 import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
 
-import { MANAGE_PROJECT_MEMBERS_TITLE } from '../../config';
+import { MANAGE_PROJECT_MEMBERS_TITLE } from '../../constants';
 
 export function ManageProjectMembersMobile() {
   const { showProjectMembersModal, setShowProjectMembersModal } =

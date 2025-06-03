@@ -2,7 +2,7 @@ import { type ButtonProps, Drawer } from '@/shared/ui/c';
 import { InviteToTeamTrigger } from '../InviteToTeamTrigger/InviteToTeamTrigger';
 import { InviteToTeamContent } from '../InviteToTeamContent/InviteToTeamContent';
 
-import { INVITE_TO_TEAM_TITLE } from '../../config';
+import { INVITE_TO_TEAM_TITLE } from '../../constants';
 
 interface Props {
   btnText: string;

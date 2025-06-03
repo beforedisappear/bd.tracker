@@ -28,6 +28,7 @@ export { Popover } from './Popover/Popover';
 export { ErrorBoundary } from './ErrorBoundary/ErrorBoundary';
 export { SidebarProvider } from './Sidebar/SidebarProvider';
 export { useSidebar } from './Sidebar/Sidebar.hooks';
+export { BasicDeleteForm } from './BasicDeleteForm/BasicDeleteForm';
 
 //types
 export type { IAccordionItem } from './Accordion/Accordion.types';
