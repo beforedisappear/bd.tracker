@@ -4,6 +4,7 @@ import type { IPrivateGlobalStoreState, PrivateGlobalStore } from './types';
 
 export type PrivateGlobalStoreApi = ReturnType<typeof createPrivateGlobalStore>;
 
+// TODO: add slices for project & team global states
 const defaultInitState: IPrivateGlobalStoreState = {
   teamIdBySlugMap: {},
   currentProjectId: null, // to pass to the delete project modal or project members modal

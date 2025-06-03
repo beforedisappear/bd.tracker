@@ -38,3 +38,6 @@ export type { ButtonSize, ButtonVariant } from './Button/Button.types';
 export type { SidebarGroupEl, MenuSubItem } from './Sidebar/Sidebar.types';
 export type { SelectOption } from './Select/Select.types';
 export type { ButtonProps } from './Button/Button.types';
+
+//constants
+export { SIDEBAR_WIDTH, SIDEBAR_WIDTH_ICON } from './Sidebar/Sidebar.constants';

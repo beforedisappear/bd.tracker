@@ -1,4 +1,4 @@
-import { TrashIcon } from 'lucide-react';
+import { PencilIcon, TrashIcon } from 'lucide-react';
 
 import { DropdownMenu, type DropDownMenuOptions } from '@/shared/ui/c';
 import { SelectBoardItemMenuTrigger } from '../SelectBoardItemMenuTrigger/SelectBoardItemMenuTrigger';
@@ -26,6 +26,11 @@ export function SelectBoardItemMenu(props: Props) {
   };
 
   const options: DropDownMenuOptions = [
+    {
+      type: 'item',
+      label: { text: 'Переименовать', icon: <PencilIcon /> },
+      onSelect: () => {},
+    },
     {
       type: 'item',
       label: { text: 'Удалить', icon: <TrashIcon /> },

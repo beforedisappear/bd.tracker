@@ -1,3 +1,5 @@
+import type { Column } from '@/entities/Column/@x/project';
+
 export interface SummaryBoard {
   id: string;
   name: string;
@@ -5,7 +7,9 @@ export interface SummaryBoard {
   projectId: string;
 }
 
-export type Board = SummaryBoard & {};
+export interface Board extends SummaryBoard {
+  columns: Column[];
+}
 
 export type GetAllBoardsDtoReq = {
   projectId: string;

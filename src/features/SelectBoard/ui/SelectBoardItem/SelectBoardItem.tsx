@@ -7,7 +7,7 @@ import { buttonVariants } from '@/shared/ui/s';
 import { getProjectByIdRoutePath } from '@/shared/config/routes';
 
 import type { SummaryBoard } from '@/entities/Board';
-import { MouseEvent } from 'react';
+import type { MouseEvent } from 'react';
 
 interface Props {
   board: SummaryBoard;

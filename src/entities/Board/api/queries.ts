@@ -38,6 +38,7 @@ export const boardQueries = {
     queryOptions({
       queryKey: ['board', dto.boardId],
       queryFn: () => getBoardById(dto),
+      select: res => res.data,
     }),
 
   deleteBoard: () =>

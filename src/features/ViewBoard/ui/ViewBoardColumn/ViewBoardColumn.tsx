@@ -1,5 +1,6 @@
-import { Button } from '@/shared/ui/c';
 import { Ellipsis, PlusCircle } from 'lucide-react';
+
+import { Button } from '@/shared/ui/c';
 
 interface Props {
   title: string;
@@ -7,12 +8,13 @@ interface Props {
   children: React.ReactNode;
 }
 
+// TODO: add SCROLL AREA
 export function ViewBoardColumn(props: Props) {
   const { title, count, children } = props;
 
   return (
     <div className={`flex-shrink-0 w-80`}>
-      <div className={`bg-muted rounded-lg p-4 h-auto flex flex-col gap-2`}>
+      <div className={`flex flex-col h-auto gap-2 p-4 bg-muted rounded-lg`}>
         <div className='flex justify-between items-center mb-4'>
           <p className='font-medium text-lg'>{title}</p>
           <div className='flex items-center gap-2'>
