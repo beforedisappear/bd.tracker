@@ -18,6 +18,10 @@ export function DeleteTeamMobile(props: Props) {
   );
   const showDeleteTeamModal = useTeamStore(state => state.showDeleteTeamModal);
 
+  const onCloseModal = () => {
+    setShowDeleteTeamModal(false);
+  };
+
   return (
     <Drawer
       title={DELETE_TEAM_TITLE}
@@ -29,7 +33,7 @@ export function DeleteTeamMobile(props: Props) {
       open={showDeleteTeamModal}
       onOpenChange={setShowDeleteTeamModal}
     >
-      <DeleteTeamForm />
+      <DeleteTeamForm onClose={onCloseModal} />
     </Drawer>
   );
 }

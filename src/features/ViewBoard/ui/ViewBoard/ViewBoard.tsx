@@ -10,14 +10,13 @@ interface Props {
 export function ViewBoard(props: Props) {
   const { board } = props;
 
+  console.log(board);
+
   return (
     <div className='flex gap-4 h-full overflow-x-auto pb-4'>
       <ViewBoardColumn title='To Do' count={3}>
         <ViewBoardTask title='Изучить TypeScript' />
         <ViewBoardTask title='Изучить React' />
-        <ViewBoardTask title='Изучить Next.js' />
-        <ViewBoardTask title='Изучить Next.js' />
-        <ViewBoardTask title='Изучить Next.js' />
         <ViewBoardTask title='Изучить Next.js' />
       </ViewBoardColumn>
 

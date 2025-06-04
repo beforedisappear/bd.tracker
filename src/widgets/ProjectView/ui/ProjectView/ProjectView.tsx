@@ -15,10 +15,17 @@ export function ProjectView() {
   const { boardId } = useProject();
   const { isMobile } = useDeviceType();
 
-  const { data: board } = useQuery({
+  const {
+    data: board,
+    isLoading,
+    isError,
+  } = useQuery({
     ...boardQueries.getBoardById({ boardId: boardId as string }),
     enabled: !!boardId,
   });
+
+  if (isLoading) return <div>Loading...</div>;
+  else if (isError || !board) return <div>Error</div>;
 
   return (
     <ProjectViewWrapper>
