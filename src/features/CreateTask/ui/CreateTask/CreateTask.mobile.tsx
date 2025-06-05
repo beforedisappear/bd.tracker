@@ -2,13 +2,13 @@ import { Drawer } from '@/shared/ui/c';
 import { CreateTaskForm } from '../CreateTaskForm/CreateTaskForm';
 
 import { useCallback } from 'react';
-import { useProjectStore, getCreateTaskModal } from '@/entities/Project';
+import { useBoardStore, getCreateTaskModal } from '@/entities/Board';
 
 import { CREATE_TASK_TITLE } from '../../constants';
 
 export function CreateTaskMobile() {
   const { showCreateTaskModal, setShowCreateTaskModal } =
-    useProjectStore(getCreateTaskModal());
+    useBoardStore(getCreateTaskModal());
 
   const onClose = useCallback(() => {
     setShowCreateTaskModal(false);

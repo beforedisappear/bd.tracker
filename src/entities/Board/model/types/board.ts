@@ -32,6 +32,7 @@ export type GetBoardByIdDtoRes = Board;
 
 export type DeleteBoardDtoReq = {
   boardId: string;
+  projectId: string; // for invalidation
 };
 
 export type DeleteBoardDtoRes = never;

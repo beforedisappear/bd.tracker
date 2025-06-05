@@ -10,7 +10,7 @@ import { getDeleteBoardModal } from '@/entities/Board';
 import { DELETE_BOARD_DESCRIPTION, DELETE_BOARD_TITLE } from '../../constants';
 
 export function DeleteBoardDesktop() {
-  const { setShowDeleteBoardModal, showDeleteBoardModal, deletingBoardId } =
+  const { setShowDeleteBoardModal, showDeleteBoardModal } =
     usePrivateGlobalStore(getDeleteBoardModal());
 
   const onCloseModal = () => {
@@ -28,7 +28,7 @@ export function DeleteBoardDesktop() {
       onOpenChange={setShowDeleteBoardModal}
       open={showDeleteBoardModal}
     >
-      <DeleteBoardForm onClose={onCloseModal} boardId={deletingBoardId} />
+      <DeleteBoardForm onClose={onCloseModal} />
     </Dialog>
   );
 }

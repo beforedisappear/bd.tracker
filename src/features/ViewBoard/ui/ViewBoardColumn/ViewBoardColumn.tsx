@@ -1,6 +1,12 @@
-import { ViewBoardTask } from '../ViewBoardTask/ViewBoardTask';
-import { ViewBoardColumnMenu } from '../ViewBoardColumnMenu/ViewBoardColumnMenu';
+// import { ViewBoardTask } from '../ViewBoardTask/ViewBoardTask';
+import { ViewBoardColumnHeader } from '../ViewBoardColumnHeader/ViewBoardColumnHeader';
 import { ViewBoardColumnCreateTaskBtn } from '../ViewBoardColumnCreateTaskBtn/ViewBoardColumnCreateTaskBtn';
+
+import { useSortable } from '@dnd-kit/sortable';
+
+import { CSS } from '@dnd-kit/utilities';
+import { getColumnClassName } from '../../lib/getColumnClassName';
+import { cn } from '@/shared/lib/css';
 
 import type { Column } from '@/entities/Board';
 interface Props {
@@ -13,23 +19,30 @@ export function ViewBoardColumn(props: Props) {
     data: { id, name, tasks },
   } = props;
 
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
+
   return (
-    <div className={`flex-shrink-0 w-80`}>
+    <div
+      className={cn('flex-shrink-0 w-80', getColumnClassName())}
+      ref={setNodeRef}
+      style={{
+        transform: CSS.Translate.toString(transform),
+        transition,
+      }}
+      {...attributes}
+      {...listeners}
+    >
       <div className={`flex flex-col h-auto gap-2 p-4 bg-muted rounded-lg`}>
-        <div className='flex justify-between items-center mb-4'>
-          <p className='font-medium text-lg'>{name}</p>
-          <div className='flex items-center gap-2'>
-            <ViewBoardColumnMenu columnId={id} />
+        <ViewBoardColumnHeader
+          columnId={id}
+          name={name}
+          length={tasks.length}
+        />
 
-            <span className='bg-primary/10 text-primary px-2 py-1 rounded-full text-sm'>
-              {tasks.length}
-            </span>
-          </div>
-        </div>
-
-        {tasks.map(task => (
+        {/* {tasks.map(task => (
           <ViewBoardTask key={task.id} data={task} />
-        ))}
+        ))} */}
 
         <ViewBoardColumnCreateTaskBtn />
       </div>

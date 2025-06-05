@@ -3,7 +3,7 @@
 import { Dialog } from '@/shared/ui/c';
 import { DeleteColumnForm } from '../DeleteColumnForm';
 
-import { useProjectStore, getDeleteColumnModal } from '@/entities/Project';
+import { useBoardStore, getDeleteColumnModal } from '@/entities/Board';
 
 import {
   DELETE_COLUMN_DESCRIPTION,
@@ -12,7 +12,7 @@ import {
 
 export function DeleteColumnDesktop() {
   const { setShowDeleteColumnModal, showDeleteColumnModal, deletingColumnId } =
-    useProjectStore(getDeleteColumnModal());
+    useBoardStore(getDeleteColumnModal());
 
   const onCloseModal = () => {
     setShowDeleteColumnModal(false);

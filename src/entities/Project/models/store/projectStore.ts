@@ -4,21 +4,12 @@ import type { ProjectStore, ProjectStoreState } from './types';
 
 export type ProjectStoreApi = ReturnType<typeof createProjectStore>;
 
-const defaultInitState: ProjectStoreState = {
-  deletingColumnId: null,
-  showDeleteColumnModal: false,
-  showCreateTaskModal: false,
-};
+const defaultInitState: ProjectStoreState = {};
 
 export const createProjectStore = (
   initState: ProjectStoreState = defaultInitState,
 ) => {
-  return createZustandStore<ProjectStore>()(set => ({
+  return createZustandStore<ProjectStore>()(() => ({
     ...initState,
-    setDeletingColumnId: (id: string | null) => set({ deletingColumnId: id }),
-    setShowDeleteColumnModal: (show: boolean) =>
-      set({ showDeleteColumnModal: show }),
-    setShowCreateTaskModal: (show: boolean) =>
-      set({ showCreateTaskModal: show }),
   }));
 };

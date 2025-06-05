@@ -4,12 +4,21 @@ import type { BoardStore, BoardStoreState } from './types';
 
 export type BoardStoreApi = ReturnType<typeof createBoardStore>;
 
-const defaultInitState: BoardStoreState = {};
+const defaultInitState: BoardStoreState = {
+  showDeleteColumnModal: false,
+  deletingColumnId: null,
+  showCreateTaskModal: false,
+};
 
 export const createBoardStore = (
   initState: BoardStoreState = defaultInitState,
 ) => {
-  return createZustandStore<BoardStore>()(() => ({
+  return createZustandStore<BoardStore>()(set => ({
     ...initState,
+    setShowDeleteColumnModal: (show: boolean) =>
+      set({ showDeleteColumnModal: show }),
+    setDeletingColumnId: (id: string | null) => set({ deletingColumnId: id }),
+    setShowCreateTaskModal: (show: boolean) =>
+      set({ showCreateTaskModal: show }),
   }));
 };

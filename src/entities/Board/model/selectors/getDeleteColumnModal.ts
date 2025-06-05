@@ -1,12 +1,12 @@
 import { useShallow } from 'zustand/react/shallow';
 
-import type { ProjectStore } from '../store/types';
+import type { BoardStore } from '../store/types';
 
 export const getDeleteColumnModal = () =>
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  useShallow((state: ProjectStore) => ({
-    deletingColumnId: state.deletingColumnId,
+  useShallow((state: BoardStore) => ({
     showDeleteColumnModal: state.showDeleteColumnModal,
-    setDeletingColumnId: state.setDeletingColumnId,
     setShowDeleteColumnModal: state.setShowDeleteColumnModal,
+    deletingColumnId: state.deletingColumnId,
+    setDeletingColumnId: state.setDeletingColumnId,
   }));

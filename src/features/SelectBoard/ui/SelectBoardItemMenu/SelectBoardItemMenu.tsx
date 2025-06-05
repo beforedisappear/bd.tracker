@@ -7,21 +7,14 @@ import { useState } from 'react';
 import { getDeleteBoardModal } from '@/entities/Board';
 import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
 
-interface Props {
-  boardId: string;
-}
-
-export function SelectBoardItemMenu(props: Props) {
-  const { boardId } = props;
-
+export function SelectBoardItemMenu() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { setShowDeleteBoardModal, setDeletingBoardId } = usePrivateGlobalStore(
+  const { setShowDeleteBoardModal } = usePrivateGlobalStore(
     getDeleteBoardModal(),
   );
 
   const onDeleteBoard = () => {
-    setDeletingBoardId(boardId);
     setShowDeleteBoardModal(true);
   };
 

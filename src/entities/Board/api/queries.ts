@@ -9,6 +9,7 @@ import { deleteBoard } from './board/deleteBoard';
 
 import { createColumn } from './column/createColumn';
 import { deleteColumn } from './column/deleteColumn';
+import { moveColumn } from './column/moveColumn';
 
 import { createTask } from './task/createTask';
 
@@ -20,6 +21,7 @@ import type {
   CreateColumnDtoReq,
   DeleteColumnDtoReq,
   CreateTaskDtoReq,
+  MoveColumnDtoReq,
 } from '../model/types';
 
 export const boardQueries = {
@@ -54,6 +56,11 @@ export const boardQueries = {
   deleteBoard: () =>
     mutationOptions({
       mutationFn: (dto: DeleteBoardDtoReq) => deleteBoard(dto),
+      onSuccess: (_, { projectId }) => {
+        queryClient.invalidateQueries({
+          queryKey: [...boardQueries.all(projectId)],
+        });
+      },
     }),
 };
 
@@ -74,6 +81,11 @@ export const columnQueries = {
         queryClient.invalidateQueries({
           queryKey: [...boardQueries.boardById(boardId)],
         }),
+    }),
+
+  moveColumn: () =>
+    mutationOptions({
+      mutationFn: (dto: MoveColumnDtoReq) => moveColumn(dto),
     }),
 };
 

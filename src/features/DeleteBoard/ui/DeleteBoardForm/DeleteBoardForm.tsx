@@ -5,28 +5,26 @@ import { BasicDeleteForm } from '@/shared/ui/c';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useDeviceType } from '@/shared/lib/deviceType/c';
-import { useTenant } from '@/shared/lib/navigation';
+import { useProject, useTenant } from '@/shared/lib/navigation';
 
 import { boardQueries } from '@/entities/Board';
 import { getProjectByIdRoutePath } from '@/shared/config/routes';
 import { getErrorMessage } from '@/shared/lib/error';
 import { toast } from 'sonner';
-import {
-  SENDING_DATA_MESSAGE,
-  SUCCESSFUL_SENDING_MESSAGE,
-} from '@/shared/constants';
+
+import { SUCCESSFUL_SENDING_MESSAGE } from '@/shared/constants';
 
 interface Props {
-  boardId: string | null;
   onClose: () => void;
 }
 
 export function DeleteBoardForm(props: Props) {
-  const { onClose, boardId } = props;
+  const { onClose } = props;
 
   const { push } = useRouter();
   const { isMobile, isDesktop } = useDeviceType();
   const tenant = useTenant();
+  const { projectId, boardId } = useProject();
 
   const { mutateAsync: deleteBoard, isPending } = useMutation(
     boardQueries.deleteBoard(),
@@ -35,13 +33,11 @@ export function DeleteBoardForm(props: Props) {
   const onDelete = () => {
     if (!boardId) return;
 
-    const toastId = toast.loading(SENDING_DATA_MESSAGE);
-
-    deleteBoard({ boardId })
+    deleteBoard({ projectId, boardId })
       .then(() => onClose())
-      .then(() => push(getProjectByIdRoutePath(tenant, boardId)))
-      .then(() => toast.success(SUCCESSFUL_SENDING_MESSAGE, { id: toastId }))
-      .catch(e => toast.error(getErrorMessage(e), { id: toastId }));
+      .then(() => push(getProjectByIdRoutePath(tenant, projectId)))
+      .then(() => toast.success(SUCCESSFUL_SENDING_MESSAGE))
+      .catch(e => toast.error(getErrorMessage(e)));
   };
 
   return (

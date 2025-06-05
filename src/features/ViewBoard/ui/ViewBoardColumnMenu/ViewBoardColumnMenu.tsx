@@ -1,9 +1,10 @@
-import { Trash2 } from 'lucide-react';
+import { Pencil, Trash2 } from 'lucide-react';
 
-import { DropdownMenu } from '@/shared/ui/c';
+import { DropdownMenu, type DropDownMenuOptions } from '@/shared/ui/c';
 import { ViewBoardColumnMenuTrigger } from '../ViewBoardColumnMenuTrigger/ViewBoardColumnMenuTrigger';
 
-import { useProjectStore, getDeleteColumnModal } from '@/entities/Project';
+import { useBoardStore, getDeleteColumnModal } from '@/entities/Board';
+import { useState } from 'react';
 
 interface Props {
   columnId: string;
@@ -11,26 +12,43 @@ interface Props {
 
 export function ViewBoardColumnMenu(props: Props) {
   const { columnId } = props;
+  const [isOpen, setIsOpen] = useState(false);
 
-  const { setShowDeleteColumnModal, setDeletingColumnId } = useProjectStore(
+  const { setShowDeleteColumnModal, setDeletingColumnId } = useBoardStore(
     getDeleteColumnModal(),
   );
+
+  const onRename = () => {
+    console.log('rename');
+  };
 
   const onDelete = () => {
     setShowDeleteColumnModal(true);
     setDeletingColumnId(columnId);
   };
 
+  const options: DropDownMenuOptions = [
+    {
+      type: 'item',
+      label: { text: 'Переименовать', icon: <Pencil /> },
+      onSelect: onRename,
+    },
+    {
+      type: 'item',
+      label: { text: 'Удалить', icon: <Trash2 /> },
+      onSelect: onDelete,
+    },
+  ];
+
   return (
     <DropdownMenu
       trigger={<ViewBoardColumnMenuTrigger />}
-      options={[
-        {
-          type: 'item',
-          label: { text: 'Удалить', icon: <Trash2 /> },
-          onSelect: onDelete,
-        },
-      ]}
+      contentProps={{
+        onFocusOutside: () => setIsOpen(false),
+      }}
+      options={options}
+      open={isOpen}
+      onOpenChange={setIsOpen}
     />
   );
 }

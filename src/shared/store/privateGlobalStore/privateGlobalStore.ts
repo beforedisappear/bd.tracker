@@ -19,23 +19,15 @@ export const createPrivateGlobalStore = (
 ) => {
   return createZustandStore<PrivateGlobalStore>()(set => ({
     ...initState,
-    setTeamIdBySlugMap: (map: Record<string, string>) => {
-      set({ teamIdBySlugMap: map });
-    },
-    setShowProjectMembersModal: (show: boolean) => {
-      set({ showProjectMembersModal: show });
-    },
-    setCurrentProjectId: (id: string | null) => {
-      set({ currentProjectId: id });
-    },
-    setShowDeleteProjectModal: (show: boolean) => {
-      set({ showDeleteProjectModal: show });
-    },
-    setShowDeleteBoardModal: (show: boolean) => {
-      set({ showDeleteBoardModal: show });
-    },
-    setDeletingBoardId: (id: string | null) => {
-      set({ deletingBoardId: id });
-    },
+    setTeamIdBySlugMap: (map: Record<string, string>) =>
+      set({ teamIdBySlugMap: map }),
+    setShowProjectMembersModal: (show: boolean) =>
+      set({ showProjectMembersModal: show }),
+    setCurrentProjectId: (id: string | null) => set({ currentProjectId: id }),
+    setShowDeleteProjectModal: (show: boolean) =>
+      set({ showDeleteProjectModal: show }),
+    setShowDeleteBoardModal: (show: boolean) =>
+      set({ showDeleteBoardModal: show }),
+    setDeletingBoardId: (id: string | null) => set({ deletingBoardId: id }),
   }));
 };

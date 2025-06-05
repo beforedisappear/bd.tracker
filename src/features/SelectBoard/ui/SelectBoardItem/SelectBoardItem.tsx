@@ -42,7 +42,7 @@ export function SelectBoardItem(props: Props) {
     >
       <span>{board.name}</span>
 
-      <SelectBoardItemMenu boardId={board.id} />
+      <SelectBoardItemMenu />
     </div>
   );
 }

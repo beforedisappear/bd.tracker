@@ -1,7 +1,7 @@
 'use client';
 
 import { ProjectViewWrapper } from '../ProjectViewWrapper/ProjectViewWrapper';
-import { ViewBoard } from '@/features/ViewBoard';
+import { ViewBoard, ViewBoardLoading } from '@/features/ViewBoard';
 import { CreateColumn } from '@/features/CreateColumn';
 import { DeleteColumn } from '@/features/DeleteColumn';
 import { CreateTask } from '@/features/CreateTask';
@@ -13,7 +13,9 @@ import { useDeviceType } from '@/shared/lib/deviceType/useDeviceType';
 import { boardQueries } from '@/entities/Board';
 import { getContentMargin } from '../../lib/getContentMargin';
 import { restoreColumnsOrder } from '../../lib/restoreColumnsOrder';
+import { ErrorBoundary } from '@/shared/ui/c';
 
+//TODO: add choose project view
 export function ProjectView() {
   const { boardId } = useProject();
   const { isMobile } = useDeviceType();
@@ -22,13 +24,17 @@ export function ProjectView() {
     data: board,
     isLoading,
     isError,
+    error,
+    refetch,
+    dataUpdatedAt,
   } = useQuery({
     ...boardQueries.getBoardById({ boardId: boardId as string }),
     enabled: !!boardId,
   });
 
-  if (isLoading) return <div>Loading...</div>;
-  else if (isError || !board) return <div>Error</div>;
+  if (isLoading) return <ViewBoardLoading />;
+  else if (isError || !board)
+    return <ErrorBoundary className='m-auto' error={error} reset={refetch} />;
 
   const normalizedBoard = {
     ...board,
@@ -41,7 +47,8 @@ export function ProjectView() {
         className='flex gap-4'
         style={{ marginInline: getContentMargin(isMobile) }}
       >
-        <ViewBoard board={normalizedBoard} />
+        {/* TODO: add key to ViewBoard */}
+        <ViewBoard key={dataUpdatedAt} board={normalizedBoard} />
         <CreateColumn />
       </div>
 
