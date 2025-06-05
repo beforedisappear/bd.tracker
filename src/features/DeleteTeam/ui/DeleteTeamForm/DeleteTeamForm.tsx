@@ -39,20 +39,24 @@ export function DeleteTeamForm(props: Props) {
     teamQueries.deleteTeam(),
   );
 
+  const onCloseModal = () => {
+    setShowDeleteTeamModal(false);
+    setDeletingTeam(null);
+  };
+
   const onDelete = () => {
     if (!deletingTeam) return;
 
     const toastId = toast.loading(SENDING_DATA_MESSAGE);
 
     deleteTeam({ idOrSlug: deletingTeam.id })
-      .then(() => setShowDeleteTeamModal(false))
-      .then(() => setDeletingTeam(null))
       .then(() => {
         //to prevent incorrect behavior with delete tenant param
         if (tenant === deletingTeam.slug) push(getHomeRoutePath());
       })
       .then(() => toast.success(SUCCESSFUL_SENDING_MESSAGE, { id: toastId }))
-      .catch(e => toast.error(getErrorMessage(e), { id: toastId }));
+      .catch(e => toast.error(getErrorMessage(e), { id: toastId }))
+      .finally(() => onCloseModal());
   };
 
   return (

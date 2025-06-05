@@ -51,7 +51,7 @@ export function CreateBoardForm(props: Props) {
       >
         <Input
           name='name'
-          label='Название доски'
+          placeholder='Введите название доски...'
           autoComplete='off'
           disabled={isPending}
         />

@@ -12,7 +12,7 @@ export function CreateBoardMobile() {
       title={CREATE_BOARD_TITLE}
       titleClassName='text-center'
       trigger={<CreateBoardTrigger />}
-      className='h-[400px]'
+      className='h-[250px]'
     >
       <CreateBoardForm />
     </Drawer>

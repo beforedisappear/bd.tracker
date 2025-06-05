@@ -20,7 +20,7 @@ export function CreateBoardDesktop({}: Props) {
       title='Создать доску'
       titleClassName='text-center'
       trigger={<CreateBoardTrigger />}
-      className='h-60 max-w-96'
+      className='h-48 max-w-96'
       open={showCreateBoardDialog}
       onOpenChange={setShowCreateBoardDialog}
     >

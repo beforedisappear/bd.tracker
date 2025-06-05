@@ -19,7 +19,7 @@ export function DeleteBoardMobile() {
       titleClassName='text-center'
       description={DELETE_BOARD_DESCRIPTION}
       descClassName='text-center'
-      className='h-[300px]'
+      className='h-[250px]'
       open={showDeleteBoardModal}
       onOpenChange={setShowDeleteBoardModal}
     >

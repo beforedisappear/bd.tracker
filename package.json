@@ -99,7 +99,7 @@
     "sharp": "^0.34.1",
     "slugify": "^1.6.6",
     "sonner": "^1.7.4",
-    "swagger-ui-react": "^5.21.0",
+    "swagger-ui-react": "^5.22.0",
     "tailwind-merge": "^3.0.1",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^11.0.5",

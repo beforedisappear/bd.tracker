@@ -11,6 +11,7 @@ import { useRef, useState, useEffect } from 'react';
 import { boardQueries } from '@/entities/Board';
 
 //TODO: mb add resize observer
+//TODO: add shadow for edges
 export function SelectBoard() {
   const tenant = useTenant();
   const { projectId, boardId } = useProject();
