@@ -4,6 +4,7 @@ import { ProjectViewWrapper } from '../ProjectViewWrapper/ProjectViewWrapper';
 import { ViewBoard } from '@/features/ViewBoard';
 import { CreateColumn } from '@/features/CreateColumn';
 import { DeleteColumn } from '@/features/DeleteColumn';
+import { CreateTask } from '@/features/CreateTask';
 
 import { useQuery } from '@tanstack/react-query';
 import { useProject } from '@/shared/lib/navigation';
@@ -44,6 +45,7 @@ export function ProjectView() {
         <CreateColumn />
       </div>
 
+      <CreateTask />
       <DeleteColumn />
     </ProjectViewWrapper>
   );

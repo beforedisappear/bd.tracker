@@ -1,6 +1,4 @@
-import { Loader2 } from 'lucide-react';
-
-import { Input, Form, Button } from '@/shared/ui/c';
+import { BasicCreateForm, Form } from '@/shared/ui/c';
 
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
@@ -45,17 +43,12 @@ export function CreateColumnForm(props: Props) {
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className='flex flex-col gap-2 h-full'>
-        <Input name='name' placeholder='Введите название колонки...' />
-
-        <Button type='submit' className='mt-auto' disabled={isPending}>
-          {isPending ? (
-            <Loader2 className='w-4 h-4 animate-spin' />
-          ) : (
-            <span>Создать</span>
-          )}
-        </Button>
-      </form>
+      <BasicCreateForm
+        inputName='name'
+        onSubmit={onSubmit}
+        isPending={isPending}
+        inputPlaceholder='Введите название колонки...'
+      />
     </Form>
   );
 }

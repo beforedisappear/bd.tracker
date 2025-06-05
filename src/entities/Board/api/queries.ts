@@ -8,6 +8,9 @@ import { getBoardById } from './board/getBoardById';
 import { deleteBoard } from './board/deleteBoard';
 
 import { createColumn } from './column/createColumn';
+import { deleteColumn } from './column/deleteColumn';
+
+import { createTask } from './task/createTask';
 
 import type {
   GetAllBoardsDtoReq,
@@ -16,8 +19,8 @@ import type {
   GetBoardByIdDtoReq,
   CreateColumnDtoReq,
   DeleteColumnDtoReq,
+  CreateTaskDtoReq,
 } from '../model/types';
-import { deleteColumn } from './column/deleteColumn';
 
 export const boardQueries = {
   all: (projectId: string) => ['boards', projectId],
@@ -71,5 +74,12 @@ export const columnQueries = {
         queryClient.invalidateQueries({
           queryKey: [...boardQueries.boardById(boardId)],
         }),
+    }),
+};
+
+export const taskQueries = {
+  createTask: () =>
+    mutationOptions({
+      mutationFn: (dto: CreateTaskDtoReq) => createTask(dto),
     }),
 };

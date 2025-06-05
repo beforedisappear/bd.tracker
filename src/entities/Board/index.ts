@@ -1,4 +1,4 @@
-export { boardQueries, columnQueries } from './api';
+export { boardQueries, columnQueries, taskQueries } from './api';
 export { BoardStoreProvider, useBoardStore } from './model/store';
 export { getDeleteBoardModal } from './model/selectors/getDeleteBoardModal';
 

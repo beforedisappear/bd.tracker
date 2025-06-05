@@ -1,1 +1,1 @@
-export { boardQueries, columnQueries } from './queries';
+export { boardQueries, columnQueries, taskQueries } from './queries';

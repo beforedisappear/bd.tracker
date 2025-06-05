@@ -7,6 +7,7 @@ export type ProjectStoreApi = ReturnType<typeof createProjectStore>;
 const defaultInitState: ProjectStoreState = {
   deletingColumnId: null,
   showDeleteColumnModal: false,
+  showCreateTaskModal: false,
 };
 
 export const createProjectStore = (
@@ -14,11 +15,10 @@ export const createProjectStore = (
 ) => {
   return createZustandStore<ProjectStore>()(set => ({
     ...initState,
-    setDeletingColumnId: (id: string | null) => {
-      set({ deletingColumnId: id });
-    },
-    setShowDeleteColumnModal: (show: boolean) => {
-      set({ showDeleteColumnModal: show });
-    },
+    setDeletingColumnId: (id: string | null) => set({ deletingColumnId: id }),
+    setShowDeleteColumnModal: (show: boolean) =>
+      set({ showDeleteColumnModal: show }),
+    setShowCreateTaskModal: (show: boolean) =>
+      set({ showCreateTaskModal: show }),
   }));
 };

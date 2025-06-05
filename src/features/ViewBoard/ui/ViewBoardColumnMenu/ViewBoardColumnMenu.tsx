@@ -2,7 +2,8 @@ import { Trash2 } from 'lucide-react';
 
 import { DropdownMenu } from '@/shared/ui/c';
 import { ViewBoardColumnMenuTrigger } from '../ViewBoardColumnMenuTrigger/ViewBoardColumnMenuTrigger';
-import { getDeleteColumnModal, useProjectStore } from '@/entities/Project';
+
+import { useProjectStore, getDeleteColumnModal } from '@/entities/Project';
 
 interface Props {
   columnId: string;
@@ -26,7 +27,7 @@ export function ViewBoardColumnMenu(props: Props) {
       options={[
         {
           type: 'item',
-          label: { text: 'Delete', icon: <Trash2 /> },
+          label: { text: 'Удалить', icon: <Trash2 /> },
           onSelect: onDelete,
         },
       ]}

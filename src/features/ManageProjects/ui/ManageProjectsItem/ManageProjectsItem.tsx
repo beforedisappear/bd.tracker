@@ -31,7 +31,7 @@ export function ManageProjectsItem({ project, tenant }: Props) {
   );
 
   const onRedirectToProjectPage = (e: MouseEvent<HTMLDivElement>) => {
-    if (e.target !== e.currentTarget) return;
+    if (!e.currentTarget.contains(e.target as Node)) return;
 
     router.push(getProjectByIdRoutePath(tenant, project.id));
   };

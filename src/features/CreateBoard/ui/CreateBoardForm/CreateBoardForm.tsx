@@ -1,9 +1,6 @@
-import { Loader2 } from 'lucide-react';
-import { cn } from '@/shared/lib/css';
+import { BasicCreateForm, Form } from '@/shared/ui/c';
 
-import { Button, Input } from '@/shared/ui/c';
-
-import { FormProvider, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import { useProject } from '@/shared/lib/navigation';
 
@@ -18,12 +15,11 @@ import { z } from 'zod';
 import { CreateBoardSchema } from '../../model/schemes';
 
 interface Props {
-  className?: string;
   onClose?: () => void;
 }
 
 export function CreateBoardForm(props: Props) {
-  const { className, onClose } = props;
+  const { onClose } = props;
 
   const { projectId } = useProject();
 
@@ -44,26 +40,13 @@ export function CreateBoardForm(props: Props) {
   });
 
   return (
-    <FormProvider {...form}>
-      <form
+    <Form {...form}>
+      <BasicCreateForm
+        inputName='name'
         onSubmit={onSubmit}
-        className={cn('flex flex-col gap-2 h-full', className)}
-      >
-        <Input
-          name='name'
-          placeholder='Введите название доски...'
-          autoComplete='off'
-          disabled={isPending}
-        />
-
-        <Button className='mt-auto' type='submit' disabled={isPending}>
-          {isPending ? (
-            <Loader2 className='w-4 h-4 animate-spin' />
-          ) : (
-            <span>Создать</span>
-          )}
-        </Button>
-      </form>
-    </FormProvider>
+        isPending={isPending}
+        inputPlaceholder='Введите название доски...'
+      />
+    </Form>
   );
 }
