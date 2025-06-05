@@ -1,4 +1,4 @@
-import type { Column } from '@/entities/Column/@x/project';
+import type { Column } from './column';
 
 export interface SummaryBoard {
   id: string;

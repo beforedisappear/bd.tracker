@@ -12,8 +12,11 @@ import { useDeviceType } from '@/shared/lib/deviceType/useDeviceType';
 
 import { boardQueries } from '@/entities/Board';
 import { getContentMargin } from '../../lib/getContentMargin';
+import { restoreTasksOrder } from '../../lib/restoreTasksOrder';
 import { restoreColumnsOrder } from '../../lib/restoreColumnsOrder';
 import { ErrorBoundary } from '@/shared/ui/c';
+
+import type { Board } from '@/entities/Board';
 
 //TODO: add choose project view
 export function ProjectView() {
@@ -36,9 +39,16 @@ export function ProjectView() {
   else if (isError || !board)
     return <ErrorBoundary className='m-auto' error={error} reset={refetch} />;
 
-  const normalizedBoard = {
+  const normalizedBoard: Board = {
     ...board,
-    columns: board.columns.length > 0 ? restoreColumnsOrder(board.columns) : [],
+    columns:
+      board.columns.length > 0
+        ? restoreColumnsOrder(board.columns).map(column => ({
+            ...column,
+            tasks:
+              column.tasks.length > 0 ? restoreTasksOrder(column.tasks) : [],
+          }))
+        : [],
   };
 
   return (

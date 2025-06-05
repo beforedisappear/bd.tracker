@@ -7,12 +7,17 @@ import { useBoardStore, getCreateTaskModal } from '@/entities/Board';
 import { CREATE_TASK_TITLE } from '../../constants';
 
 export function CreateTaskDesktop() {
-  const { showCreateTaskModal, setShowCreateTaskModal } =
-    useBoardStore(getCreateTaskModal());
+  const {
+    showCreateTaskModal,
+    setShowCreateTaskModal,
+    currentColumnId,
+    setCurrentColumnId,
+  } = useBoardStore(getCreateTaskModal());
 
   const onClose = useCallback(() => {
     setShowCreateTaskModal(false);
-  }, [setShowCreateTaskModal]);
+    setCurrentColumnId(null);
+  }, [setShowCreateTaskModal, setCurrentColumnId]);
 
   return (
     <Dialog
@@ -22,7 +27,7 @@ export function CreateTaskDesktop() {
       open={showCreateTaskModal}
       onOpenChange={setShowCreateTaskModal}
     >
-      <CreateTaskForm onClose={onClose} />
+      <CreateTaskForm onClose={onClose} columnId={currentColumnId} />
     </Dialog>
   );
 }

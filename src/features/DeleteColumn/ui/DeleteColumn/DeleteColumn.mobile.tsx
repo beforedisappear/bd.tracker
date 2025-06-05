@@ -11,11 +11,16 @@ import {
 } from '../../constants';
 
 export function DeleteColumnMobile() {
-  const { setShowDeleteColumnModal, showDeleteColumnModal, deletingColumnId } =
-    useBoardStore(getDeleteColumnModal());
+  const {
+    setShowDeleteColumnModal,
+    showDeleteColumnModal,
+    currentColumnId,
+    setCurrentColumnId,
+  } = useBoardStore(getDeleteColumnModal());
 
   const onCloseModal = () => {
     setShowDeleteColumnModal(false);
+    setCurrentColumnId(null);
   };
 
   return (
@@ -28,7 +33,7 @@ export function DeleteColumnMobile() {
       open={showDeleteColumnModal}
       onOpenChange={setShowDeleteColumnModal}
     >
-      <DeleteColumnForm onClose={onCloseModal} columnId={deletingColumnId} />
+      <DeleteColumnForm onClose={onCloseModal} columnId={currentColumnId} />
     </Drawer>
   );
 }

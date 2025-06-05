@@ -6,8 +6,8 @@ export type BoardStoreApi = ReturnType<typeof createBoardStore>;
 
 const defaultInitState: BoardStoreState = {
   showDeleteColumnModal: false,
-  deletingColumnId: null,
   showCreateTaskModal: false,
+  currentColumnId: null, // for create or delete task
 };
 
 export const createBoardStore = (
@@ -17,7 +17,7 @@ export const createBoardStore = (
     ...initState,
     setShowDeleteColumnModal: (show: boolean) =>
       set({ showDeleteColumnModal: show }),
-    setDeletingColumnId: (id: string | null) => set({ deletingColumnId: id }),
+    setCurrentColumnId: (id: string) => set({ currentColumnId: id }),
     setShowCreateTaskModal: (show: boolean) =>
       set({ showCreateTaskModal: show }),
   }));

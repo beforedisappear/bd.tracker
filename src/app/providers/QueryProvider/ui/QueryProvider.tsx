@@ -13,7 +13,7 @@ export function QueryProvider({ children }: PropsWithChildren) {
     <QueryClientProvider client={client}>
       {children}
       {process.env.NODE_ENV === 'development' && (
-        <ReactQueryDevtools initialIsOpen={false} />
+        <ReactQueryDevtools initialIsOpen={false} buttonPosition='top-right' />
       )}
     </QueryClientProvider>
   );

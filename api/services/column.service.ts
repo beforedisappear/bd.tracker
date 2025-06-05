@@ -357,7 +357,10 @@ class ColumnService extends BaseService {
       return null;
     }
 
-    throw ApiError.badRequest('Invalid column connections');
+    // если переданная колонка - единственная
+    await this.clearColumnConnections({ id }, tx);
+
+    return null;
   }
 
   //очищаем ссылки на предыдущую и следующую колонку

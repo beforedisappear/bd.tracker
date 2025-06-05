@@ -22,6 +22,9 @@ import type {
   DeleteColumnDtoReq,
   CreateTaskDtoReq,
   MoveColumnDtoReq,
+  GetBoardByIdDtoRes,
+  Column,
+  Board,
 } from '../model/types';
 
 export const boardQueries = {
@@ -50,7 +53,6 @@ export const boardQueries = {
     queryOptions({
       queryKey: [...boardQueries.boardById(dto.boardId)],
       queryFn: () => getBoardById(dto),
-      select: res => res.data,
     }),
 
   deleteBoard: () =>
@@ -93,5 +95,36 @@ export const taskQueries = {
   createTask: () =>
     mutationOptions({
       mutationFn: (dto: CreateTaskDtoReq) => createTask(dto),
+      onSuccess: (res, { boardId, columnId }) =>
+        queryClient.setQueryData(
+          [...boardQueries.boardById(boardId)],
+          (old: GetBoardByIdDtoRes) => {
+            const copyOld = structuredClone(old);
+
+            const column = copyOld.columns.find(
+              c => c.id === columnId,
+            ) as Column;
+
+            if (!column) return old;
+
+            const newTasks = [...column.tasks, res.data];
+
+            const newColumn: Column = {
+              ...column,
+              tasks: newTasks,
+            };
+
+            const newColumns = [...copyOld.columns];
+            const columnIndex = newColumns.findIndex(c => c.id === columnId);
+            newColumns[columnIndex] = newColumn;
+
+            const newData: Board = {
+              ...copyOld,
+              columns: newColumns,
+            };
+
+            return newData;
+          },
+        ),
     }),
 };

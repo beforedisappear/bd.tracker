@@ -2,19 +2,23 @@ import { BasicCreateForm, Form } from '@/shared/ui/c';
 
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
+import { taskQueries } from '@/entities/Board';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { taskQueries } from '@/entities/Board';
 
 import { z } from 'zod';
 import { CreateTaskSchema } from '../../model/schemes';
+import { useProject } from '@/shared/lib/navigation';
 
 interface Props {
   onClose: () => void;
+  columnId: string | null;
 }
 
 export function CreateTaskForm(props: Props) {
-  const { onClose } = props;
+  const { onClose, columnId } = props;
+
+  const { boardId } = useProject();
 
   const form = useForm<z.infer<typeof CreateTaskSchema>>({
     resolver: zodResolver(CreateTaskSchema),
@@ -25,14 +29,15 @@ export function CreateTaskForm(props: Props) {
   );
 
   const onSubmit = form.handleSubmit(data => {
-    console.log(data);
-    createTask({ ...data, columnId: '' }).then(() => onClose());
+    if (!columnId || !boardId) return;
+
+    createTask({ ...data, columnId, boardId }).then(() => onClose());
   });
 
   return (
     <Form {...form}>
       <BasicCreateForm
-        inputName='name'
+        inputName='title'
         inputPlaceholder='Введите название задачи...'
         isPending={isPending}
         onSubmit={onSubmit}

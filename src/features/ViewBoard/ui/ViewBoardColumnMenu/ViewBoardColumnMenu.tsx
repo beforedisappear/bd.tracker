@@ -14,7 +14,7 @@ export function ViewBoardColumnMenu(props: Props) {
   const { columnId } = props;
   const [isOpen, setIsOpen] = useState(false);
 
-  const { setShowDeleteColumnModal, setDeletingColumnId } = useBoardStore(
+  const { setShowDeleteColumnModal, setCurrentColumnId } = useBoardStore(
     getDeleteColumnModal(),
   );
 
@@ -24,7 +24,7 @@ export function ViewBoardColumnMenu(props: Props) {
 
   const onDelete = () => {
     setShowDeleteColumnModal(true);
-    setDeletingColumnId(columnId);
+    setCurrentColumnId(columnId);
   };
 
   const options: DropDownMenuOptions = [

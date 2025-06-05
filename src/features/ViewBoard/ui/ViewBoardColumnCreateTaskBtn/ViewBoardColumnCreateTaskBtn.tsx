@@ -3,11 +3,19 @@ import { PlusCircle } from 'lucide-react';
 import { Button } from '@/shared/ui/c';
 import { useBoardStore, getCreateTaskModal } from '@/entities/Board';
 
-export function ViewBoardColumnCreateTaskBtn() {
-  const { setShowCreateTaskModal } = useBoardStore(getCreateTaskModal());
+interface Props {
+  columnId: string;
+}
+
+export function ViewBoardColumnCreateTaskBtn(props: Props) {
+  const { columnId } = props;
+
+  const { setShowCreateTaskModal, setCurrentColumnId } =
+    useBoardStore(getCreateTaskModal());
 
   const onOpenCreateTaskModal = () => {
     setShowCreateTaskModal(true);
+    setCurrentColumnId(columnId);
   };
 
   return (

@@ -60,6 +60,8 @@ import { DeleteColumnByIdDoc } from 'api/routeHandlers/column/[columnId]/doc';
 import { PatchRenameColumnDoc } from 'api/routeHandlers/column/[columnId]/rename/doc';
 import { PatchMoveColumnDoc } from 'api/routeHandlers/column/[columnId]/move/doc';
 import { PostUpdateProjectMembersDoc } from 'api/routeHandlers/project/[projectId]/members/update/doc';
+import { PostCreateTaskDoc } from 'api/routeHandlers/task/doc';
+
 // setup open api for zod
 extendZodWithOpenApi(z);
 
@@ -136,6 +138,9 @@ openAPIRegistry.registerPath(PostCreateColumnDoc(bearerAuth.name));
 openAPIRegistry.registerPath(DeleteColumnByIdDoc(bearerAuth.name));
 openAPIRegistry.registerPath(PatchRenameColumnDoc(bearerAuth.name));
 openAPIRegistry.registerPath(PatchMoveColumnDoc(bearerAuth.name));
+
+//task main
+openAPIRegistry.registerPath(PostCreateTaskDoc(bearerAuth.name));
 
 // doc setup
 function getOpenApiDocumentation() {

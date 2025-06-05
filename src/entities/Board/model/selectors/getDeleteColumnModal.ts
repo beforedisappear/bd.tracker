@@ -7,6 +7,6 @@ export const getDeleteColumnModal = () =>
   useShallow((state: BoardStore) => ({
     showDeleteColumnModal: state.showDeleteColumnModal,
     setShowDeleteColumnModal: state.setShowDeleteColumnModal,
-    deletingColumnId: state.deletingColumnId,
-    setDeletingColumnId: state.setDeletingColumnId,
+    currentColumnId: state.currentColumnId,
+    setCurrentColumnId: state.setCurrentColumnId,
   }));

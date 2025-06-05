@@ -1,4 +1,4 @@
-// import { ViewBoardTask } from '../ViewBoardTask/ViewBoardTask';
+import { ViewBoardTask } from '../ViewBoardTask/ViewBoardTask';
 import { ViewBoardColumnHeader } from '../ViewBoardColumnHeader/ViewBoardColumnHeader';
 import { ViewBoardColumnCreateTaskBtn } from '../ViewBoardColumnCreateTaskBtn/ViewBoardColumnCreateTaskBtn';
 
@@ -40,11 +40,11 @@ export function ViewBoardColumn(props: Props) {
           length={tasks.length}
         />
 
-        {/* {tasks.map(task => (
+        {tasks.map(task => (
           <ViewBoardTask key={task.id} data={task} />
-        ))} */}
+        ))}
 
-        <ViewBoardColumnCreateTaskBtn />
+        <ViewBoardColumnCreateTaskBtn columnId={id} />
       </div>
     </div>
   );

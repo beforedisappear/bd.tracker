@@ -7,4 +7,6 @@ export const getCreateTaskModal = () =>
   useShallow((state: BoardStore) => ({
     showCreateTaskModal: state.showCreateTaskModal,
     setShowCreateTaskModal: state.setShowCreateTaskModal,
+    currentColumnId: state.currentColumnId,
+    setCurrentColumnId: state.setCurrentColumnId,
   }));
