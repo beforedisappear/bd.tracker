@@ -8,11 +8,19 @@ import { useDeviceType } from '@/shared/lib/deviceType/c';
 import { useProject, useTenant } from '@/shared/lib/navigation';
 
 import { boardQueries } from '@/entities/Board';
-import { getProjectByIdRoutePath } from '@/shared/config/routes';
+
+import {
+  getProjectByIdRoutePath,
+  getTeamRoutePath,
+} from '@/shared/config/routes';
 import { getErrorMessage } from '@/shared/lib/error';
+import { queryClient } from '@/shared/config/query';
 import { toast } from 'sonner';
 
 import { SUCCESSFUL_SENDING_MESSAGE } from '@/shared/constants';
+
+import type { AxiosResponse } from 'axios';
+import type { GetAllBoardsDtoRes } from '@/entities/Board';
 
 interface Props {
   onClose: () => void;
@@ -34,10 +42,21 @@ export function DeleteBoardForm(props: Props) {
   const onDelete = () => {
     if (!boardId) return;
 
+    const allBoards = queryClient.getQueryData<
+      AxiosResponse<GetAllBoardsDtoRes>
+    >(boardQueries.all(projectId));
+
+    const anotherBoardId = allBoards?.data.find(
+      board => board.id !== boardId,
+    )?.id;
+
     deleteBoard({ projectId, boardId })
       .then(() => onClose())
-      .then(() => push(getProjectByIdRoutePath(tenant, projectId)))
       .then(() => toast.success(SUCCESSFUL_SENDING_MESSAGE))
+      .then(() => {
+        if (!anotherBoardId) return push(getTeamRoutePath(tenant));
+        push(getProjectByIdRoutePath(tenant, projectId, anotherBoardId));
+      })
       .catch(e => toast.error(getErrorMessage(e)));
   };
 

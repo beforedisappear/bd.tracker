@@ -4,4 +4,10 @@ export { getDeleteBoardModal } from './model/selectors/getDeleteBoardModal';
 export { getDeleteColumnModal } from './model/selectors/getDeleteColumnModal';
 export { getCreateTaskModal } from './model/selectors/getCreateTaskModal';
 
-export type { SummaryBoard, Board, Column, Task } from './model/types';
+export type {
+  SummaryBoard,
+  Board,
+  Column,
+  Task,
+  GetAllBoardsDtoRes,
+} from './model/types';
