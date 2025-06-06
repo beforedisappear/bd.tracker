@@ -4,18 +4,34 @@ import { DropdownMenu, type DropDownMenuOptions } from '@/shared/ui/c';
 import { SelectBoardItemMenuTrigger } from '../SelectBoardItemMenuTrigger/SelectBoardItemMenuTrigger';
 
 import { useState } from 'react';
-import { getDeleteBoardModal } from '@/entities/Board';
 import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
 
-export function SelectBoardItemMenu() {
+import { getDeleteBoardModal } from '@/entities/Board';
+import { toast } from 'sonner';
+import { LAST_BOARD_ERROR_MESSAGE } from '../../constants';
+
+interface Props {
+  boardId: string;
+  countOfBoards: number;
+}
+
+export function SelectBoardItemMenu(props: Props) {
+  const { boardId, countOfBoards } = props;
+
   const [isOpen, setIsOpen] = useState(false);
 
-  const { setShowDeleteBoardModal } = usePrivateGlobalStore(
+  const { setShowDeleteBoardModal, setDeletingBoardId } = usePrivateGlobalStore(
     getDeleteBoardModal(),
   );
 
   const onDeleteBoard = () => {
+    if (countOfBoards === 1) {
+      toast.warning(LAST_BOARD_ERROR_MESSAGE);
+      return;
+    }
+
     setShowDeleteBoardModal(true);
+    setDeletingBoardId(boardId);
   };
 
   const options: DropDownMenuOptions = [

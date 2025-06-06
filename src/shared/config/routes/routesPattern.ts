@@ -8,7 +8,7 @@ export const routePatterns: Record<AppRoutes, string> = {
   [AppRoutes.HOME]: '/home',
   [AppRoutes.PROFILE]: '/:tenant/profile',
   [AppRoutes.TEAM]: '/:tenant/team',
-  [AppRoutes.PROJECT_BY_ID]: '/:tenant/project/:projectId{/:boardId}',
+  [AppRoutes.PROJECT_BY_ID]: '/:tenant/project/:projectId/:boardId',
   //service
   [AppRoutes.INVITE]: '/invite',
   [AppRoutes.EMAIL_CHANGE]: '/email-change',

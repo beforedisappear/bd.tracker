@@ -9,8 +9,8 @@ export const getTeamRoutePath = (tenant: string) => `/${tenant}/team`;
 export const getProjectByIdRoutePath = (
   tenant: string,
   projectId: string,
-  boardId?: string,
-) => `/${tenant}/project/${projectId}${boardId ? `/${boardId}` : ''}`;
+  boardId: string,
+) => `/${tenant}/project/${projectId}/${boardId}`;
 
 //service
 export const getInviteRoutePath = () => '/invite';

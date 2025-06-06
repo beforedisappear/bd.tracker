@@ -28,6 +28,7 @@ export const GetAllProjectsResSchema = z.array(
         updatedAt: z.string(),
       }),
     ),
+    firstBoardId: z.string(),
   }),
 );
 

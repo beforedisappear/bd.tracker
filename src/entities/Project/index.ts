@@ -4,4 +4,8 @@ export { useProjectStore } from './models/store/useProjectStore';
 export { getProjectMembersModal } from './models/selectors/getProjectMembersModal';
 export { getDeleteProjectModal } from './models/selectors/getDeleteProjectModal';
 
-export type { Project, ProjectMember } from './models/types';
+export type {
+  Project,
+  ProjectWithFirstBoardId,
+  ProjectMember,
+} from './models/types';

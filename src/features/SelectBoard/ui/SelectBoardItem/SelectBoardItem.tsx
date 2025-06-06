@@ -14,10 +14,11 @@ interface Props {
   isActive: boolean;
   tenant: string;
   projectId: string;
+  countOfBoards: number;
 }
 
 export function SelectBoardItem(props: Props) {
-  const { board, isActive, tenant, projectId } = props;
+  const { board, isActive, tenant, projectId, countOfBoards } = props;
 
   const { push } = useRouter();
 
@@ -42,7 +43,7 @@ export function SelectBoardItem(props: Props) {
     >
       <span>{board.name}</span>
 
-      <SelectBoardItemMenu />
+      <SelectBoardItemMenu boardId={board.id} countOfBoards={countOfBoards} />
     </div>
   );
 }

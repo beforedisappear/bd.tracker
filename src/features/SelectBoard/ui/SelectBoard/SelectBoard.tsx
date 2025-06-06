@@ -74,6 +74,7 @@ export function SelectBoard() {
                 isActive={isActive}
                 tenant={tenant}
                 projectId={projectId}
+                countOfBoards={boards.length}
               />
             );
           })}

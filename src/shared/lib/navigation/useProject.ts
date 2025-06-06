@@ -3,10 +3,10 @@
 import { useParams } from 'next/navigation';
 
 export function useProject() {
-  const { ids } = useParams<{ ids: string[] }>()!;
-
-  const projectId = ids[0];
-  const boardId = ids[1] as string | undefined;
+  const { projectId, boardId } = useParams<{
+    projectId: string;
+    boardId: string;
+  }>()!;
 
   return { projectId, boardId };
 }

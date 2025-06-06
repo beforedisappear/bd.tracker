@@ -13,14 +13,15 @@ import {
 } from '@/entities/Project';
 import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
 
-import type { Project } from '@/entities/Project';
+import type { ProjectWithFirstBoardId } from '@/entities/Project';
 import type { MouseEvent } from 'react';
 
 interface Props {
-  project: Project;
+  project: ProjectWithFirstBoardId;
   tenant: string;
 }
 
+//TODO: продумать доступность к проекту
 export function ManageProjectsItem({ project, tenant }: Props) {
   const router = useRouter();
 
@@ -33,7 +34,9 @@ export function ManageProjectsItem({ project, tenant }: Props) {
   const onRedirectToProjectPage = (e: MouseEvent<HTMLDivElement>) => {
     if (!e.currentTarget.contains(e.target as Node)) return;
 
-    router.push(getProjectByIdRoutePath(tenant, project.id));
+    router.push(
+      getProjectByIdRoutePath(tenant, project.id, project.firstBoardId),
+    );
   };
 
   const onOpenProjectMembersModal = () => {

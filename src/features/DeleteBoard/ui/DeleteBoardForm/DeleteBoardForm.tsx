@@ -16,15 +16,16 @@ import { SUCCESSFUL_SENDING_MESSAGE } from '@/shared/constants';
 
 interface Props {
   onClose: () => void;
+  boardId: string | null;
 }
 
 export function DeleteBoardForm(props: Props) {
-  const { onClose } = props;
+  const { onClose, boardId } = props;
 
   const { push } = useRouter();
   const { isMobile, isDesktop } = useDeviceType();
   const tenant = useTenant();
-  const { projectId, boardId } = useProject();
+  const { projectId } = useProject();
 
   const { mutateAsync: deleteBoard, isPending } = useMutation(
     boardQueries.deleteBoard(),

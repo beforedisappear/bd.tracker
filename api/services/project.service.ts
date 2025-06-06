@@ -52,14 +52,26 @@ class ProjectService extends BaseService {
         throw ApiError.badRequest('One or more team members were not found');
     }
 
-    const project = await prismaService.project.create({
-      data: {
-        name,
-        teamId: team.id,
-        members: {
-          connect: [...membersIds.map(id => ({ id }))],
+    const project = await prismaService.$transaction(async tx => {
+      const newProject = await tx.project.create({
+        data: {
+          name,
+          teamId: team.id,
+          members: {
+            connect: [...membersIds.map(id => ({ id }))],
+          },
         },
-      },
+      });
+
+      // Create a new board for the project
+      await tx.board.create({
+        data: {
+          name: 'Новая доска',
+          projectId: newProject.id,
+        },
+      });
+
+      return newProject;
     });
 
     return project;
@@ -73,9 +85,7 @@ class ProjectService extends BaseService {
       include: { team: true },
     });
 
-    if (!project) {
-      throw ApiError.notFound('Project not found');
-    }
+    if (!project) throw ApiError.notFound('Project not found');
 
     const teamFromProject = project.team;
 
@@ -157,10 +167,18 @@ class ProjectService extends BaseService {
       where: { teamId: team.id },
       include: {
         members: true,
+        boards: {
+          select: { id: true },
+          take: 1,
+        },
       },
     });
 
-    return projects;
+    return projects.map(project => ({
+      ...project,
+      firstBoardId: project.boards[0]?.id as string,
+      boards: undefined, // remove boards from response since we only needed firstBoardId
+    }));
   }
 
   async getProjectById(args: { id: string; initiatorId: string }) {

@@ -25,6 +25,8 @@ export function ErrorBoundary(props: Props) {
   } = props;
 
   useEffect(() => {
+    if (!error) return;
+
     console.log(error);
   }, [error]);
 
