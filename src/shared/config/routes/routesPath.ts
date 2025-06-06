@@ -15,5 +15,3 @@ export const getProjectByIdRoutePath = (
 //service
 export const getInviteRoutePath = () => '/invite';
 export const getChangeEmailRoutePath = () => '/email-change';
-// export const getEmployeeByIdRoute = (id: string | number) => `/employee/${id}`;
-// export const getCreateEmployeeRoute = () => `/employee/create`;

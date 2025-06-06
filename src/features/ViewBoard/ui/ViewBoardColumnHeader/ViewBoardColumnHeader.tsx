@@ -1,5 +1,4 @@
 import { ViewBoardColumnMenu } from '../ViewBoardColumnMenu/ViewBoardColumnMenu';
-import { Column } from '@/entities/Board';
 
 interface Props {
   columnId: string;

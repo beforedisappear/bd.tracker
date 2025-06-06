@@ -17,7 +17,7 @@ export const createBoardStore = (
     ...initState,
     setShowDeleteColumnModal: (show: boolean) =>
       set({ showDeleteColumnModal: show }),
-    setCurrentColumnId: (id: string) => set({ currentColumnId: id }),
+    setCurrentColumnId: (id: string | null) => set({ currentColumnId: id }),
     setShowCreateTaskModal: (show: boolean) =>
       set({ showCreateTaskModal: show }),
   }));
