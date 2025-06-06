@@ -2,7 +2,11 @@ import { ViewBoardTask } from '../ViewBoardTask/ViewBoardTask';
 import { ViewBoardColumnHeader } from '../ViewBoardColumnHeader/ViewBoardColumnHeader';
 import { ViewBoardColumnCreateTaskBtn } from '../ViewBoardColumnCreateTaskBtn/ViewBoardColumnCreateTaskBtn';
 
-import { useSortable } from '@dnd-kit/sortable';
+import {
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 
 import { CSS } from '@dnd-kit/utilities';
 import { getColumnClassName } from '../../lib/getColumnClassName';
@@ -20,7 +24,9 @@ export function ViewBoardColumn(props: Props) {
   } = props;
 
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id });
+    useSortable({ id, data: { type: 'Column', id } });
+
+  const taskIds = tasks.map(task => task.id);
 
   return (
     <div
@@ -40,9 +46,11 @@ export function ViewBoardColumn(props: Props) {
           length={tasks.length}
         />
 
-        {tasks.map(task => (
-          <ViewBoardTask key={task.id} data={task} />
-        ))}
+        <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
+          {tasks.map(task => (
+            <ViewBoardTask key={task.id} data={task} />
+          ))}
+        </SortableContext>
 
         <ViewBoardColumnCreateTaskBtn columnId={id} />
       </div>

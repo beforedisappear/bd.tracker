@@ -28,3 +28,32 @@ export interface CreateTaskDtoReq {
 }
 
 export type CreateTaskDtoRes = Task;
+
+export type MoveTaskDtoReq =
+  | { nextTaskId: string; previousTaskId: null; taskId: string }
+  | { nextTaskId: null; previousTaskId: string; taskId: string };
+
+export interface MoveTaskDtoRes {
+  id: string;
+}
+
+export interface DeleteTaskDtoReq {
+  taskId: string;
+}
+
+export type DeleteTaskDtoRes = never;
+
+export interface UpdateTaskDtoReq {
+  taskId: string;
+  title?: string;
+  description?: string | null;
+  color?: Color;
+  isDone?: boolean;
+  isArchived?: boolean;
+  startDate?: string | null;
+  endDate?: string | null;
+  assigneeIds?: string[];
+  stickerIds?: string[];
+}
+
+export type UpdateTaskDtoRes = Task;

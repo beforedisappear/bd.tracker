@@ -73,8 +73,8 @@ class TaskService extends BaseService {
     color?: Color;
     isDone?: boolean;
     isArchived?: boolean;
-    startDate?: Date | null;
-    endDate?: Date | null;
+    startDate?: string | null;
+    endDate?: string | null;
     assigneeIds?: string[];
     initiatorId: string;
   }) {
@@ -266,7 +266,7 @@ class TaskService extends BaseService {
       }
     });
 
-    return null;
+    return { id: movedTask.id };
   }
 
   // Вставляем задачу после указанной задачи

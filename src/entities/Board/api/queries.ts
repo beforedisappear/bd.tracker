@@ -10,10 +10,16 @@ import { deleteBoard } from './board/deleteBoard';
 import { createColumn } from './column/createColumn';
 import { deleteColumn } from './column/deleteColumn';
 import { moveColumn } from './column/moveColumn';
+import { renameColumn } from './column/renameColumn';
 
 import { createTask } from './task/createTask';
+import { moveTask } from './task/moveTask';
+import { deleteTask } from './task/deleteTask';
+import { updateTask } from './task/updateTask';
 
 import type {
+  Column,
+  Board,
   GetAllBoardsDtoReq,
   CreateBoardDtoReq,
   DeleteBoardDtoReq,
@@ -23,8 +29,10 @@ import type {
   CreateTaskDtoReq,
   MoveColumnDtoReq,
   GetBoardByIdDtoRes,
-  Column,
-  Board,
+  MoveTaskDtoReq,
+  DeleteTaskDtoReq,
+  RenameColumnDtoReq,
+  UpdateTaskDtoReq,
 } from '../model/types';
 
 export const boardQueries = {
@@ -74,6 +82,11 @@ export const columnQueries = {
         queryClient.invalidateQueries({
           queryKey: [...boardQueries.boardById(boardId)],
         }),
+    }),
+
+  renameColumn: () =>
+    mutationOptions({
+      mutationFn: (dto: RenameColumnDtoReq) => renameColumn(dto),
     }),
 
   deleteColumn: () =>
@@ -126,5 +139,20 @@ export const taskQueries = {
             return newData;
           },
         ),
+    }),
+
+  deleteTask: () =>
+    mutationOptions({
+      mutationFn: (dto: DeleteTaskDtoReq) => deleteTask(dto),
+    }),
+
+  moveTask: () =>
+    mutationOptions({
+      mutationFn: (dto: MoveTaskDtoReq) => moveTask(dto),
+    }),
+
+  updateTask: () =>
+    mutationOptions({
+      mutationFn: (dto: UpdateTaskDtoReq) => updateTask(dto),
     }),
 };

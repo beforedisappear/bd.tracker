@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
 export const DeleteColumnByIdReqParamsSchema = z.object({
-  columnId: z.string(),
+  columnId: z.string().uuid(),
 });
 
 export const DeleteColumnByIdResSchema = z.object({
-  id: z.string(),
+  id: z.string().uuid(),
 });

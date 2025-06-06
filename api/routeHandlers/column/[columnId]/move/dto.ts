@@ -6,9 +6,9 @@ export const MoveColumnReqBodySchema = z.object({
 });
 
 export const MoveColumnReqParamsSchema = z.object({
-  columnId: z.string(),
+  columnId: z.string().uuid(),
 });
 
 export const MoveColumnResSchema = z.object({
-  id: z.string(),
+  id: z.string().uuid(),
 });
