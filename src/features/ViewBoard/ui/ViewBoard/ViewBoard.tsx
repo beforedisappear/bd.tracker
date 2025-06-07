@@ -2,39 +2,23 @@ import { ViewBoardColumn } from '../ViewBoardColumn/ViewBoardColumn';
 import { ViewBoardTask } from '../ViewBoardTask/ViewBoardTask';
 
 import {
-  arrayMove,
   horizontalListSortingStrategy,
   SortableContext,
 } from '@dnd-kit/sortable';
+import { useDragAndDropBoardItems } from '../../lib/useDragAndDropBoardItems';
+import { useMemo } from 'react';
+import { useDebounce } from '@/shared/lib/ui';
 import {
   DndContext,
   DragOverlay,
   PointerSensor,
+  closestCenter,
   useDroppable,
   useSensor,
   useSensors,
-  closestCenter,
-  type DragEndEvent,
-  type DragStartEvent,
-  type DragMoveEvent,
-  type DragOverEvent,
-  type Over,
 } from '@dnd-kit/core';
-import { useMemo, useRef, useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { useDebounce } from '@/shared/lib/ui';
 
-import {
-  columnQueries,
-  taskQueries,
-  type Board,
-  type Column,
-  type Task,
-} from '@/entities/Board';
-import { getErrorMessage } from '@/shared/lib/error';
-import { toast } from 'sonner';
-
-import { type DraggableItemObj, IsDraggableItem } from '../../model/types';
+import { type Board, type Column, type Task } from '@/entities/Board';
 
 interface Props {
   board: Board;
@@ -48,22 +32,16 @@ interface MapColumnsAndTasksById {
 export function ViewBoard(props: Props) {
   const { board } = props;
 
-  const [columns, setColumns] = useState(board.columns);
-  // columns обновляется в handleDragMove, поэтому в handleDragEnd active.id = over.id
-  // для этого в handleDragOver сохраняем последний валидный over.id
-  const lastValidOver = useRef<Over>(null);
-  // для сохранения состояния columns перед мутацией
-  const lastValidColumns = useRef<Column[]>(null);
-  const [activeDraggableItem, setActiveDraggableItem] =
-    useState<DraggableItemObj | null>(null);
-
-  const { mutateAsync: moveColumn, isPending: isMovingColumn } = useMutation(
-    columnQueries.moveColumn(),
-  );
-
-  const { mutateAsync: moveTask, isPending: isMovingTask } = useMutation(
-    taskQueries.moveTask(),
-  );
+  const {
+    columns,
+    activeDraggableItem,
+    isMovingColumn,
+    isMovingTask,
+    handleDragStart,
+    handleDragOver,
+    handleDragMove,
+    handleDragEnd,
+  } = useDragAndDropBoardItems({ board });
 
   const { setNodeRef } = useDroppable({ id: board.id });
   const sensors = useSensors(
@@ -72,252 +50,6 @@ export function ViewBoard(props: Props) {
       disabled: isMovingColumn || isMovingTask,
     }),
   );
-
-  const handleDragStart = (event: DragStartEvent) => {
-    if (!IsDraggableItem(event.active.data.current?.type)) return;
-
-    setActiveDraggableItem({
-      id: event.active.id as string,
-      type: event.active.data.current.type,
-    });
-  };
-
-  const handleDragOver = (event: DragOverEvent) => {
-    const { active, over } = event;
-
-    if (!over) return;
-
-    if (over.id === active.id) return;
-
-    if (activeDraggableItem?.type === 'Column') return;
-
-    if (over.id === lastValidOver.current?.id) return;
-
-    lastValidOver.current = over;
-  };
-
-  // only for tasks
-  const handleDragMove = (event: DragMoveEvent) => {
-    const { active, over } = event;
-
-    if (isMovingColumn || isMovingTask) return;
-
-    if (!over || over.id === active.id) return;
-
-    const isTaskActive = active.data.current?.type === 'Task'; // перетаскиваемый элемент - задача
-    const isTaskOver = over.data.current?.type === 'Task'; // принимающий элемент - задача
-    const isColumnOver = over.data.current?.type === 'Column'; // принимающий элемент - колонка
-
-    if (isTaskActive && isTaskOver) {
-      const sourceColumn = columns.find(column =>
-        column.tasks.some(task => task.id === active.id),
-      );
-
-      const targetColumn = columns.find(column =>
-        column.tasks.some(task => task.id === over.id),
-      );
-
-      if (!sourceColumn || !targetColumn) return;
-
-      const sourceColumnIdx = columns.findIndex(
-        column => column.id === sourceColumn.id,
-      );
-
-      const targetColumnIdx = columns.findIndex(
-        column => column.id === targetColumn.id,
-      );
-
-      const sourceTaskIdx = sourceColumn.tasks.findIndex(
-        task => task.id === active.id,
-      );
-
-      const targetTaskIdx = targetColumn.tasks.findIndex(
-        task => task.id === over.id,
-      );
-
-      let newColumns = [];
-
-      // в той же колонке
-      if (sourceColumnIdx === targetColumnIdx) {
-        newColumns = [...columns];
-
-        newColumns[sourceColumnIdx].tasks = arrayMove(
-          newColumns[sourceColumnIdx].tasks,
-          sourceTaskIdx,
-          targetTaskIdx,
-        );
-      }
-      // в другую колонку
-      else {
-        newColumns = [...columns];
-
-        const [removedTask] = newColumns[sourceColumnIdx].tasks.splice(
-          sourceTaskIdx,
-          1,
-        );
-
-        newColumns[targetColumnIdx].tasks.splice(targetTaskIdx, 0, removedTask);
-      }
-
-      lastValidColumns.current = columns;
-      setColumns(newColumns);
-    }
-
-    if (isTaskActive && isColumnOver) {
-      const sourceColumn = columns.find(column =>
-        column.tasks.some(task => task.id === active.id),
-      );
-
-      const targetColumn = columns.find(column => column.id === over.id);
-
-      if (!sourceColumn || !targetColumn) return;
-
-      const sourceColumnIdx = columns.findIndex(
-        column => column.id === sourceColumn.id,
-      );
-
-      const targetColumnIdx = columns.findIndex(
-        column => column.id === targetColumn.id,
-      );
-
-      const sourceTaskIdx = sourceColumn.tasks.findIndex(
-        task => task.id === active.id,
-      );
-
-      const newColumns = [...columns];
-
-      const [removedTask] = newColumns[sourceColumnIdx].tasks.splice(
-        sourceTaskIdx,
-        1,
-      );
-
-      newColumns[targetColumnIdx].tasks.push(removedTask);
-
-      lastValidColumns.current = columns;
-      setColumns(newColumns);
-    }
-  };
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    if (isMovingColumn || isMovingTask) return;
-
-    const { active, over } = event;
-
-    if (!over) return;
-
-    const isTaskActive = active.data.current?.type === 'Task'; // перетаскиваемый элемент - задача
-    const isColumnOver = over.data.current?.type === 'Column'; // принимающий элемент - колонка
-    const isColumnActive = active.data.current?.type === 'Column'; // перетаскиваемый элемент - колонка
-
-    if (isColumnActive && isColumnOver) {
-      const oldColumnIdx = columns.findIndex(column => column.id === active.id);
-      const newColumnIdx = columns.findIndex(column => column.id === over.id);
-
-      const isBefore = newColumnIdx < oldColumnIdx;
-
-      const newColumns = arrayMove(columns, oldColumnIdx, newColumnIdx);
-
-      setColumns(newColumns);
-
-      const dto = isBefore
-        ? {
-            columnId: active.id as string,
-            nextColumnId: over.id as string,
-            previousColumnId: null,
-          }
-        : {
-            columnId: active.id as string,
-            nextColumnId: null,
-            previousColumnId: over.id as string,
-          };
-
-      moveColumn(dto)
-        .catch(e => {
-          setColumns(lastValidColumns.current!);
-          toast.error(getErrorMessage(e));
-        })
-        .finally(() => setActiveDraggableItem(null));
-
-      return;
-    }
-
-    if (
-      isTaskActive &&
-      lastValidOver.current?.data.current?.type === 'Column'
-    ) {
-      const overColumnId = lastValidOver.current.id as string;
-
-      const overColumn = columns.find(column => column.id === overColumnId);
-
-      if (!overColumn) return;
-
-      //последняя задача в колонке, не перетаскиваемая
-      const lastTask: Task | null =
-        overColumn.tasks.filter(task => task.id !== active.id).at(-1) ?? null;
-
-      //перетаскиваемый элемент - задача, принимающий элемент - колонка
-      //если в колонке есть задачи, находим последнюю и передаем ее id в качестве previousTaskId
-      //иначе колонка пустая и оба параметра null
-      const dto = {
-        taskId: active.id as string,
-        columnId: overColumnId,
-        boardId: board.id,
-        nextTaskId: null,
-        previousTaskId: lastTask ? (lastTask.id as string) : null,
-      };
-
-      moveTask(dto)
-        .catch(e => {
-          setColumns(lastValidColumns.current!);
-          toast.error(getErrorMessage(e));
-        })
-        .finally(() => setActiveDraggableItem(null));
-
-      return;
-    }
-
-    if (isTaskActive && lastValidOver.current?.data.current?.type === 'Task') {
-      const overTaskId = lastValidOver.current.id;
-
-      const targetColumn = columns.find(column =>
-        column.tasks.some(task => task.id === overTaskId),
-      );
-
-      if (!targetColumn) return;
-
-      const newActiveTaskIdx = targetColumn.tasks.findIndex(
-        task => task.id === active.id,
-      );
-
-      const newOverTaskIdx = targetColumn.tasks.findIndex(
-        task => task.id === overTaskId,
-      );
-
-      const dto = {
-        taskId: active.id as string,
-        columnId: targetColumn.id,
-        boardId: board.id,
-        ...(newActiveTaskIdx <= newOverTaskIdx
-          ? {
-              nextTaskId: overTaskId as string,
-              previousTaskId: null,
-            }
-          : {
-              nextTaskId: null,
-              previousTaskId: overTaskId as string,
-            }),
-      };
-
-      moveTask(dto)
-        .catch(e => {
-          setColumns(lastValidColumns.current!);
-          toast.error(getErrorMessage(e));
-        })
-        .finally(() => setActiveDraggableItem(null));
-
-      return;
-    }
-  };
 
   const debouncedHandleDragMove = useDebounce(handleDragMove, 25);
 

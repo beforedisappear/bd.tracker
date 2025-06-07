@@ -2,13 +2,13 @@
 
 import { useRef } from 'react';
 
-export function useDebounce<T extends (...args: unknown[]) => void>(
-  func: T,
+export function useDebounce<Args extends unknown[]>(
+  func: (...args: Args) => void,
   delay: number,
 ) {
   const ref = useRef<NodeJS.Timeout | null>(null);
 
-  return (...args: Parameters<T>) => {
+  return (...args: Args) => {
     if (ref.current) {
       clearTimeout(ref.current);
     }

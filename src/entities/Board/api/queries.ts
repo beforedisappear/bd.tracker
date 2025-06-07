@@ -153,6 +153,7 @@ export const taskQueries = {
     mutationOptions({
       mutationFn: (dto: MoveTaskDtoReq) => moveTask(dto),
       onSuccess: (_, { boardId }) =>
+        //TODO: add cache handling
         queryClient.invalidateQueries({
           queryKey: [...boardQueries.boardById(boardId)],
         }),
