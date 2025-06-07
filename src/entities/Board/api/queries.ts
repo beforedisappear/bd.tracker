@@ -112,13 +112,16 @@ export const taskQueries = {
         queryClient.setQueryData(
           [...boardQueries.boardById(boardId)],
           (old: GetBoardByIdDtoRes) => {
-            const copyOld = structuredClone(old);
-
-            const column = copyOld.columns.find(
-              c => c.id === columnId,
-            ) as Column;
+            const column = old.columns.find(c => c.id === columnId) as Column;
 
             if (!column) return old;
+
+            const lastTask = column.tasks.find(task => !task.nextTaskId);
+
+            if (lastTask) {
+              //обновляем nextTaskId у последнего таски в колонке если она существует
+              lastTask.nextTaskId = res.data.id;
+            }
 
             const newTasks = [...column.tasks, res.data];
 
@@ -127,12 +130,12 @@ export const taskQueries = {
               tasks: newTasks,
             };
 
-            const newColumns = [...copyOld.columns];
+            const newColumns = [...old.columns];
             const columnIndex = newColumns.findIndex(c => c.id === columnId);
             newColumns[columnIndex] = newColumn;
 
             const newData: Board = {
-              ...copyOld,
+              ...old,
               columns: newColumns,
             };
 
@@ -149,6 +152,10 @@ export const taskQueries = {
   moveTask: () =>
     mutationOptions({
       mutationFn: (dto: MoveTaskDtoReq) => moveTask(dto),
+      onSuccess: (_, { boardId }) =>
+        queryClient.invalidateQueries({
+          queryKey: [...boardQueries.boardById(boardId)],
+        }),
     }),
 
   updateTask: () =>

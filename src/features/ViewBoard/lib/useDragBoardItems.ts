@@ -1,61 +1,37 @@
-import { ViewBoardColumn } from '../ViewBoardColumn/ViewBoardColumn';
-import { ViewBoardTask } from '../ViewBoardTask/ViewBoardTask';
-
-import {
-  arrayMove,
-  horizontalListSortingStrategy,
-  SortableContext,
-} from '@dnd-kit/sortable';
-import {
-  DndContext,
-  DragOverlay,
-  PointerSensor,
-  useDroppable,
-  useSensor,
-  useSensors,
-  closestCenter,
-  type DragEndEvent,
-  type DragStartEvent,
-  type DragMoveEvent,
-  type DragOverEvent,
-  type Over,
-} from '@dnd-kit/core';
-import { useMemo, useRef, useState } from 'react';
+import { arrayMove } from '@dnd-kit/sortable';
+import { useState, RefObject } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { useDebounce } from '@/shared/lib/ui';
 
+import { toast } from 'sonner';
+import { getErrorMessage } from '@/shared/lib/error';
 import {
   columnQueries,
   taskQueries,
-  type Board,
   type Column,
   type Task,
+  type Board,
 } from '@/entities/Board';
-import { getErrorMessage } from '@/shared/lib/error';
-import { toast } from 'sonner';
+import { type DraggableItemObj, IsDraggableItem } from '../model/types';
+import type {
+  DragEndEvent,
+  DragMoveEvent,
+  DragOverEvent,
+  DragStartEvent,
+  Over,
+} from '@dnd-kit/core';
 
-import { type DraggableItemObj, IsDraggableItem } from '../../model/types';
-
-interface Props {
+type Args = {
   board: Board;
-}
+  columns: Column[];
+  lastValidColumns: RefObject<Column[] | null>;
+  lastValidOver: RefObject<Over | null>;
+  setColumns: (columns: Column[]) => void;
+};
 
-interface MapColumnsAndTasksById {
-  columns: Record<string, Column>;
-  tasks: Record<string, Task>;
-}
-
-export function ViewBoard(props: Props) {
-  const { board } = props;
+export function useDragBoardItems(args: Args) {
+  const { board, lastValidOver, lastValidColumns } = args;
 
   const [columns, setColumns] = useState(board.columns);
-  // columns обновляется в handleDragMove, поэтому в handleDragEnd active.id = over.id
-  // для этого в handleDragOver сохраняем последний валидный over.id
-  const lastValidOver = useRef<Over>(null);
-  // для сохранения состояния columns перед мутацией
-  const lastValidColumns = useRef<Column[]>(null);
-  const [activeDraggableItem, setActiveDraggableItem] =
-    useState<DraggableItemObj | null>(null);
 
   const { mutateAsync: moveColumn, isPending: isMovingColumn } = useMutation(
     columnQueries.moveColumn(),
@@ -65,13 +41,8 @@ export function ViewBoard(props: Props) {
     taskQueries.moveTask(),
   );
 
-  const { setNodeRef } = useDroppable({ id: board.id });
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: { distance: 5 }, //to support clicks
-      disabled: isMovingColumn || isMovingTask,
-    }),
-  );
+  const [activeDraggableItem, setActiveDraggableItem] =
+    useState<DraggableItemObj | null>(null);
 
   const handleDragStart = (event: DragStartEvent) => {
     if (!IsDraggableItem(event.active.data.current?.type)) return;
@@ -319,66 +290,10 @@ export function ViewBoard(props: Props) {
     }
   };
 
-  const debouncedHandleDragMove = useDebounce(handleDragMove, 25);
-
-  const mapColumnsAndTasksById: MapColumnsAndTasksById = useMemo(() => {
-    return columns.reduce(
-      (acc, column) => {
-        acc.columns[column.id] = column;
-
-        column.tasks.forEach(task => {
-          acc.tasks[task.id] = task;
-        });
-
-        return acc;
-      },
-      { columns: {}, tasks: {} } as MapColumnsAndTasksById,
-    );
-  }, [columns]);
-
-  if (board.columns.length === 0) return null;
-
-  const sortableColumnIds = Object.keys(mapColumnsAndTasksById.columns);
-  const sortableTaskIds = Object.keys(mapColumnsAndTasksById.tasks);
-
-  return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragStart={handleDragStart}
-      onDragMove={debouncedHandleDragMove}
-      onDragOver={handleDragOver}
-      onDragEnd={handleDragEnd}
-    >
-      <SortableContext
-        items={sortableColumnIds}
-        strategy={horizontalListSortingStrategy}
-      >
-        <div className='flex gap-4 h-full' ref={setNodeRef}>
-          {columns.map(column => (
-            <ViewBoardColumn
-              key={column.id}
-              data={column}
-              sortableTaskIds={sortableTaskIds}
-            />
-          ))}
-        </div>
-      </SortableContext>
-
-      <DragOverlay>
-        {activeDraggableItem && activeDraggableItem.type === 'Column' && (
-          <ViewBoardColumn
-            data={mapColumnsAndTasksById.columns[activeDraggableItem.id]}
-            sortableTaskIds={sortableTaskIds}
-          />
-        )}
-
-        {activeDraggableItem && activeDraggableItem.type === 'Task' && (
-          <ViewBoardTask
-            data={mapColumnsAndTasksById.tasks[activeDraggableItem.id]}
-          />
-        )}
-      </DragOverlay>
-    </DndContext>
-  );
+  return {
+    handleDragStart,
+    handleDragOver,
+    handleDragMove,
+    handleDragEnd,
+  };
 }

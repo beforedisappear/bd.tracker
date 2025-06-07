@@ -1,6 +1,8 @@
 import type { Column } from '@/entities/Board';
 
 export function restoreColumnsOrder(columns: Column[]) {
+  if (columns.length === 0) return [];
+
   const mapColumnsById: Record<string, Column> = {};
   const setOfNextColumnIds = new Set<string>();
   const mapOfPreviousColumnIds = new Map<string, string>();

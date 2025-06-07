@@ -168,13 +168,6 @@ class TaskService extends BaseService {
   }) {
     const { id, nextTaskId, previousTaskId, columnId, initiatorId } = args;
 
-    // Если ничего не передано, то выкидываем ошибку
-    if (!nextTaskId && !previousTaskId) {
-      throw ApiError.badRequest(
-        'Either nextTaskId or previousTaskId must be provided',
-      );
-    }
-
     // Если передали оба, то выкидываем ошибку
     if (nextTaskId && previousTaskId) {
       throw ApiError.badRequest(
@@ -194,7 +187,13 @@ class TaskService extends BaseService {
       }),
       prismaService.column.findUnique({
         where: { id: columnId },
-        select: { projectId: true },
+        select: {
+          projectId: true,
+          tasks: {
+            where: { isArchived: false },
+            select: { id: true },
+          },
+        },
       }),
     ]);
 
@@ -204,6 +203,13 @@ class TaskService extends BaseService {
     // Проверяем, что задача и колонка в одном проекте
     if (movedTask.projectId !== targetColumn.projectId) {
       throw ApiError.forbidden('Cannot move task to a different project');
+    }
+
+    // Если оба ID null, проверяем что колонка пустая
+    if (!nextTaskId && !previousTaskId && targetColumn.tasks.length > 0) {
+      throw ApiError.badRequest(
+        'Cannot move task to a non-empty column without specifying position',
+      );
     }
 
     const { inProject } = await this.checkIsUserInProject(movedTask.projectId, {
@@ -246,11 +252,21 @@ class TaskService extends BaseService {
         );
       }
 
+      const isEmptyArgs = !nextTaskId && !previousTaskId;
+
       // 2. Обновляем перемещаемую задачу и новые связи
       // Обновляем колонку задачи
       await tx.task.update({
         where: { id },
-        data: { columnId },
+        data: {
+          column: { connect: { id: columnId } },
+          ...(isEmptyArgs
+            ? {
+                previousTask: { disconnect: true },
+                nextTask: { disconnect: true },
+              }
+            : {}),
+        },
       });
 
       // вставка после указанной задачи
@@ -264,6 +280,8 @@ class TaskService extends BaseService {
         await this.insertBeforeTask({ id, nextTaskId }, tx);
         return null;
       }
+
+      return null;
     });
 
     return { id: movedTask.id };

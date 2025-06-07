@@ -1,3 +1,3 @@
 export function getColumnClassName() {
-  return 'w-80';
+  return 'flex-shrink-0 w-80';
 }

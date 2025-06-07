@@ -29,9 +29,15 @@ export interface CreateTaskDtoReq {
 
 export type CreateTaskDtoRes = Task;
 
-export type MoveTaskDtoReq =
-  | { nextTaskId: string; previousTaskId: null; taskId: string }
-  | { nextTaskId: null; previousTaskId: string; taskId: string };
+export type MoveTaskDtoReq = {
+  taskId: string;
+  columnId: string;
+  boardId: string; // for invalidation
+} & (
+  | { nextTaskId: string; previousTaskId: null }
+  | { nextTaskId: null; previousTaskId: string }
+  | { nextTaskId: null; previousTaskId: null }
+);
 
 export interface MoveTaskDtoRes {
   id: string;

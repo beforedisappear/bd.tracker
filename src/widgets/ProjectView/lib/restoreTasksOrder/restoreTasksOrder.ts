@@ -30,11 +30,5 @@ export function restoreTasksOrder(tasks: Task[]) {
     current = current.nextTaskId ? mapTasksById[current.nextTaskId] : null;
   }
 
-  // Check if we found all tasks
-  if (ordered.length !== tasks.length) {
-    // Return original array if some tasks were lost
-    return tasks;
-  }
-
   return ordered;
 }
