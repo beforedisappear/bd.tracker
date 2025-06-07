@@ -3,9 +3,10 @@ import { PencilIcon } from 'lucide-react';
 import { Button, Form, Input } from '@/shared/ui/c';
 
 import { useMutation } from '@tanstack/react-query';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTenant } from '@/shared/lib/navigation';
 
 import { RenameTeamSchema, teamQueries } from '@/entities/Team';
 
@@ -21,7 +22,7 @@ interface Props {
 
 export function EditTeamNameField({ name }: Props) {
   const { push } = useRouter();
-  const { tenant } = useParams<{ tenant: string }>()!;
+  const tenant = useTenant();
   const [isEditing, setIsEditing] = useState(false);
   const { mutateAsync: renameTeam } = useMutation(teamQueries.renameTeam());
 

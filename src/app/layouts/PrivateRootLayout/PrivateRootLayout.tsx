@@ -19,7 +19,7 @@ export async function PrivateRootLayout({ children }: IProps) {
             <div className='flex flex-col flex-grow'>
               <PrivateHeader />
               <main
-                className='flex flex-col flex-grow max-w-[1400px] px-8 py-6
+                className='flex flex-col flex-grow px-8 py-6
               md:p-4'
               >
                 {children}

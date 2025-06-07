@@ -1,7 +1,7 @@
 import {
   DeleteProjectReqParamsSchema,
   GetProjectByIdReqParamsSchema,
-  GetProjectByIdResSchema,
+  // GetProjectByIdResSchema,
 } from './dto';
 import { z } from 'zod';
 
@@ -13,4 +13,4 @@ export type GetProjectByIdReqParamsDto = z.infer<
   typeof GetProjectByIdReqParamsSchema
 >;
 
-export type GetProjectByIdResDto = z.infer<typeof GetProjectByIdResSchema>;
+// export type GetProjectByIdResDto = z.infer<typeof GetProjectByIdResSchema>;

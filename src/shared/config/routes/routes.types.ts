@@ -6,7 +6,7 @@ export enum AppRoutes {
   HOME = 'home',
   PROFILE = 'profile',
   TEAM = 'team',
-  PROJECT = 'project',
+  PROJECT_BY_ID = 'project_by_id',
   //service
   INVITE = 'invite',
   EMAIL_CHANGE = 'email_change',

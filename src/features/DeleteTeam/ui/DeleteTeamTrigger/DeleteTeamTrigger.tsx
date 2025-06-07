@@ -1,5 +1,6 @@
-import { Button, ButtonProps } from '@/shared/ui/c';
 import { Trash2Icon } from 'lucide-react';
+
+import { Button, ButtonProps } from '@/shared/ui/c';
 
 interface Props extends ButtonProps {}
 

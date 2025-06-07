@@ -1,6 +1,6 @@
 import {
   DeleteProjectReqParamsSchema,
-  GetProjectByIdReqParamsSchema,
+  // GetProjectByIdReqParamsSchema,
 } from './dto';
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -11,7 +11,7 @@ import { authService } from 'api/services/auth.service';
 import { getAccessTokenFromReq } from 'api/utils/getAccessTokenFromReq';
 import type {
   DeleteProjectReqParamsDto,
-  GetProjectByIdReqParamsDto,
+  // GetProjectByIdReqParamsDto,
 } from './types';
 
 export async function DeleteProject(
@@ -38,26 +38,26 @@ export async function DeleteProject(
   }
 }
 
-export async function GetProjectById(
-  request: NextRequest,
-  { params }: { params: Promise<GetProjectByIdReqParamsDto> },
-) {
-  try {
-    const accessToken = getAccessTokenFromReq(request);
+// export async function GetProjectById(
+//   request: NextRequest,
+//   { params }: { params: Promise<GetProjectByIdReqParamsDto> },
+// ) {
+//   try {
+//     const accessToken = getAccessTokenFromReq(request);
 
-    const { userId } = await authService.verifyJwt(accessToken);
+//     const { userId } = await authService.verifyJwt(accessToken);
 
-    const { projectId } = await params;
+//     const { projectId } = await params;
 
-    GetProjectByIdReqParamsSchema.parse({ projectId });
+//     GetProjectByIdReqParamsSchema.parse({ projectId });
 
-    const project = await projectService.getProjectById({
-      id: projectId,
-      initiatorId: userId,
-    });
+//     const project = await projectService.getProjectById({
+//       id: projectId,
+//       initiatorId: userId,
+//     });
 
-    return NextResponse.json(project, { status: 200 });
-  } catch (e) {
-    return ErrorResponse(e);
-  }
-}
+//     return NextResponse.json(project, { status: 200 });
+//   } catch (e) {
+//     return ErrorResponse(e);
+//   }
+// }

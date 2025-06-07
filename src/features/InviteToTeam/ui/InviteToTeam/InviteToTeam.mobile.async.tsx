@@ -2,7 +2,7 @@ import dynamic from 'next/dynamic';
 
 import { InviteToTeamTrigger } from '../InviteToTeamTrigger/InviteToTeamTrigger';
 
-import { INVITE_TO_TEAM_BTN_TEXT } from '../../config';
+import { INVITE_TO_TEAM_BTN_TEXT } from '../../constants';
 
 export const LazyInviteToTeamMobile = dynamic(
   () => import('./InviteToTeam.mobile').then(mod => mod.InviteToTeamMobile),

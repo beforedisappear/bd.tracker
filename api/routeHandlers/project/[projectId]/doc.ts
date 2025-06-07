@@ -3,8 +3,8 @@ import { RouteConfig } from '@asteasolutions/zod-to-openapi';
 import {
   DeleteProjectReqParamsSchema,
   DeleteProjectResSchema,
-  GetProjectByIdResSchema,
-  GetProjectByIdReqParamsSchema,
+  // GetProjectByIdResSchema,
+  // GetProjectByIdReqParamsSchema,
 } from './dto';
 
 export const DeleteProjectDoc = (bearerName: string): RouteConfig => ({
@@ -24,19 +24,19 @@ export const DeleteProjectDoc = (bearerName: string): RouteConfig => ({
   },
 });
 
-export const GetProjectByIdDoc = (bearerName: string): RouteConfig => ({
-  method: 'get',
-  path: '/project/{projectId}',
-  tags: ['project main'],
-  summary: 'Get project info by id inside team',
-  security: [{ [bearerName]: [] }],
-  request: {
-    params: GetProjectByIdReqParamsSchema,
-  },
-  responses: {
-    200: {
-      content: { 'application/json': { schema: GetProjectByIdResSchema } },
-      description: '',
-    },
-  },
-});
+// export const GetProjectByIdDoc = (bearerName: string): RouteConfig => ({
+//   method: 'get',
+//   path: '/project/{projectId}',
+//   tags: ['project main'],
+//   summary: 'Get project info by id inside team',
+//   security: [{ [bearerName]: [] }],
+//   request: {
+//     params: GetProjectByIdReqParamsSchema,
+//   },
+//   responses: {
+//     200: {
+//       content: { 'application/json': { schema: GetProjectByIdResSchema } },
+//       description: '',
+//     },
+//   },
+// });

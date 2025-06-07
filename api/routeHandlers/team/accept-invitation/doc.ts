@@ -1,4 +1,4 @@
-import { AcceptInvitationToTeamReqQuerySchema } from './dto';
+import { AcceptInvitationToTeamReqBodySchema } from './dto';
 import type { RouteConfig } from '@asteasolutions/zod-to-openapi';
 
 export const PostAcceptInvitationToTeamDoc = (
@@ -10,7 +10,13 @@ export const PostAcceptInvitationToTeamDoc = (
   description: 'to accept invitation (from email)',
   security: [{ [bearerName]: [] }],
   request: {
-    params: AcceptInvitationToTeamReqQuerySchema,
+    body: {
+      content: {
+        'application/json': {
+          schema: AcceptInvitationToTeamReqBodySchema,
+        },
+      },
+    },
   },
   responses: {
     204: {

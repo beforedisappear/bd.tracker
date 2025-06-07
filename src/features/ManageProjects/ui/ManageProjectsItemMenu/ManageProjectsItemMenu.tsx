@@ -1,6 +1,9 @@
 import { SquarePen, Users, Trash } from 'lucide-react';
+
 import { DropdownMenu } from '@/shared/ui/c';
-import { ManageProjectsItemPopoverTrigger } from '../ManageProjectsItemPopoverTrigger/ManageProjectsItemPopoverTrigger';
+import { ManageProjectsItemMenuTrigger } from '../ManageProjectsItemMenuTrigger/ManageProjectsItemMenuTrigger';
+
+import { useState } from 'react';
 
 interface Props {
   onRenameProject: () => void;
@@ -11,12 +14,16 @@ interface Props {
 export function ManageProjectsItemMenu(props: Props) {
   const { onRenameProject, onParticipants, onDeleteProject } = props;
 
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <DropdownMenu
-      trigger={<ManageProjectsItemPopoverTrigger />}
+      trigger={<ManageProjectsItemMenuTrigger />}
       contentProps={{
         align: 'start',
+        onFocusOutside: () => setIsOpen(false),
       }}
+      // TODO: add handling
       options={[
         {
           type: 'item',
@@ -43,6 +50,8 @@ export function ManageProjectsItemMenu(props: Props) {
           onSelect: onDeleteProject,
         },
       ]}
+      open={isOpen}
+      onOpenChange={setIsOpen}
       className='w-56'
     />
   );

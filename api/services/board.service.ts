@@ -2,7 +2,7 @@
 import { ApiError } from 'api/errors/apiError';
 import { prismaService } from 'config/prisma';
 import { BaseService } from './base.service';
-import { Color, StickerType } from 'config/prisma/generated/client';
+import { Color } from 'config/prisma/generated/client';
 
 class BoardService extends BaseService {
   async createBoard(args: {
@@ -21,12 +21,12 @@ class BoardService extends BaseService {
       throw ApiError.notFound('Project not found');
     }
 
-    const { inTeam } = await this.checkIsUserInTeam(project.team.id, {
+    const { inProject } = await this.checkIsUserInProject(project.id, {
       userId: initiatorId,
     });
 
-    if (!inTeam) {
-      throw ApiError.forbidden('You are not in this team');
+    if (!inProject) {
+      throw ApiError.forbidden('You are not in this project');
     }
 
     const board = await prismaService.board.create({
@@ -51,12 +51,21 @@ class BoardService extends BaseService {
       throw ApiError.notFound('Board not found');
     }
 
-    const { inTeam } = await this.checkIsUserInTeam(board.project.team.id, {
+    const { inProject } = await this.checkIsUserInProject(board.project.id, {
       userId: initiatorId,
     });
 
-    if (!inTeam) {
-      throw ApiError.forbidden('You are not in this team');
+    if (!inProject) {
+      throw ApiError.forbidden('You are not in this project');
+    }
+
+    // Check if this is the only board in the project
+    const boardCount = await prismaService.board.count({
+      where: { projectId: board.projectId },
+    });
+
+    if (boardCount <= 1) {
+      throw ApiError.badRequest('Cannot delete the only board in the project');
     }
 
     const deletedBoard = await prismaService.$transaction(async tx => {
@@ -84,12 +93,12 @@ class BoardService extends BaseService {
       throw ApiError.notFound('Board not found');
     }
 
-    const { inTeam } = await this.checkIsUserInTeam(board.project.team.id, {
+    const { inProject } = await this.checkIsUserInProject(board.project.id, {
       userId: initiatorId,
     });
 
-    if (!inTeam) {
-      throw ApiError.forbidden('You are not in this team');
+    if (!inProject) {
+      throw ApiError.forbidden('You are not in this project');
     }
 
     const renamedBoard = await prismaService.board.update({
@@ -97,7 +106,7 @@ class BoardService extends BaseService {
       data: { name },
     });
 
-    return renamedBoard;
+    return { id: renamedBoard.id };
   }
 
   async getBoardById(args: { id: string; initiatorId: string }) {
@@ -113,11 +122,12 @@ class BoardService extends BaseService {
               include: {
                 assignees: true,
                 stickers: true,
+                previousTask: { select: { id: true } },
               },
             },
+            previousColumn: { select: { id: true } },
           },
         },
-        stickers: true,
       },
     });
 
@@ -125,12 +135,12 @@ class BoardService extends BaseService {
       throw ApiError.notFound('Board not found');
     }
 
-    const { inTeam } = await this.checkIsUserInTeam(board.project.team.id, {
+    const { inProject } = await this.checkIsUserInProject(board.project.id, {
       userId: initiatorId,
     });
 
-    if (!inTeam) {
-      throw ApiError.forbidden('You are not in this team');
+    if (!inProject) {
+      throw ApiError.forbidden('You are not in this project');
     }
 
     const { project, ...res } = board;
@@ -150,12 +160,12 @@ class BoardService extends BaseService {
       throw ApiError.notFound('Project not found');
     }
 
-    const { inTeam } = await this.checkIsUserInTeam(project.team.id, {
+    const { inProject } = await this.checkIsUserInProject(project.id, {
       userId: initiatorId,
     });
 
-    if (!inTeam) {
-      throw ApiError.forbidden('You are not in this team');
+    if (!inProject) {
+      throw ApiError.forbidden('You are not in this project');
     }
 
     const boards = await prismaService.board.findMany({
@@ -167,24 +177,11 @@ class BoardService extends BaseService {
 
   async createSticker(args: {
     boardId: string;
-    name?: string;
-    type: StickerType;
-    textValue?: string;
-    startDate?: Date;
-    endDate?: Date;
-    color?: Color;
+    name: string;
     initiatorId: string;
+    color?: Color;
   }) {
-    const {
-      boardId,
-      name,
-      type,
-      textValue,
-      startDate,
-      endDate,
-      color,
-      initiatorId,
-    } = args;
+    const { boardId, name, color, initiatorId } = args;
 
     const board = await prismaService.board.findUnique({
       where: { id: boardId },
@@ -195,22 +192,18 @@ class BoardService extends BaseService {
       throw ApiError.notFound('Board not found');
     }
 
-    const { inTeam } = await this.checkIsUserInTeam(board.project.team.id, {
+    const { inProject } = await this.checkIsUserInProject(board.project.id, {
       userId: initiatorId,
     });
 
-    if (!inTeam) {
-      throw ApiError.forbidden('You are not in this team');
+    if (!inProject) {
+      throw ApiError.forbidden('You are not in this project');
     }
 
     const sticker = await prismaService.sticker.create({
       data: {
         name,
-        type,
-        textValue,
-        startDate,
-        endDate,
-        color: color || Color.GRAY,
+        color,
         boardId,
         projectId: board.projectId,
       },
@@ -221,24 +214,11 @@ class BoardService extends BaseService {
 
   async updateSticker(args: {
     id: string;
-    name?: string;
-    type?: StickerType;
-    textValue?: string;
-    startDate?: Date;
-    endDate?: Date;
-    color?: Color;
+    name: string;
+    color: Color;
     initiatorId: string;
   }) {
-    const {
-      id,
-      name,
-      type,
-      textValue,
-      startDate,
-      endDate,
-      color,
-      initiatorId,
-    } = args;
+    const { id, name, color, initiatorId } = args;
 
     const sticker = await prismaService.sticker.findUnique({
       where: { id },
@@ -249,25 +229,21 @@ class BoardService extends BaseService {
       throw ApiError.notFound('Sticker not found');
     }
 
-    const { inTeam } = await this.checkIsUserInTeam(
-      sticker.board.project.team.id,
+    const { inProject } = await this.checkIsUserInProject(
+      sticker.board.project.id,
       {
         userId: initiatorId,
       },
     );
 
-    if (!inTeam) {
-      throw ApiError.forbidden('You are not in this team');
+    if (!inProject) {
+      throw ApiError.forbidden('You are not in this project');
     }
 
     const updatedSticker = await prismaService.sticker.update({
       where: { id },
       data: {
         name,
-        type,
-        textValue,
-        startDate,
-        endDate,
         color,
       },
     });
@@ -287,15 +263,15 @@ class BoardService extends BaseService {
       throw ApiError.notFound('Sticker not found');
     }
 
-    const { inTeam } = await this.checkIsUserInTeam(
-      sticker.board.project.team.id,
+    const { inProject } = await this.checkIsUserInProject(
+      sticker.board.project.id,
       {
         userId: initiatorId,
       },
     );
 
-    if (!inTeam) {
-      throw ApiError.forbidden('You are not in this team');
+    if (!inProject) {
+      throw ApiError.forbidden('You are not in this project');
     }
 
     const deletedSticker = await prismaService.sticker.delete({

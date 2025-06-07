@@ -67,11 +67,6 @@ enum PermissionType {
   USER_VIEW
 }
 
-enum StickerType {
-  TEXT
-  DATE_RANGE
-}
-
 enum InvitationStatus {
   PENDING
   ACCEPTED
@@ -268,6 +263,8 @@ model Task {
   isArchived  Boolean  @default(false)
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
+  startDate DateTime? // начало интервала дат
+  endDate   DateTime? // конец интервала дат
 
   //many tasks to one column
   columnId String
@@ -304,11 +301,7 @@ model Task {
 //TODO: add sticker group
 model Sticker {
   id        String      @id @default(uuid())
-  name      String?
-  type      StickerType
-  textValue String? // текстовые стикеры
-  startDate DateTime? // начало интервала дат
-  endDate   DateTime? // конец интервала дат
+  name      String
   color     Color       @default(GRAY)
   createdAt DateTime    @default(now()) @map("created_at")
   updatedAt DateTime    @updatedAt @map("updated_at")

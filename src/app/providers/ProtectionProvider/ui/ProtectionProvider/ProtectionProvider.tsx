@@ -3,8 +3,9 @@
 import { Loader2 } from 'lucide-react';
 
 import { useQuery } from '@tanstack/react-query';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useLayoutEffect } from 'react';
+import { useTenant } from '@/shared/lib/navigation';
 
 import { teamQueries } from '@/entities/Team';
 import { getHomeRoutePath } from '@/shared/config/routes';
@@ -28,7 +29,7 @@ interface IProps {
 
 export function ProtectionProvider({ children }: IProps) {
   const { push } = useRouter();
-  const { tenant } = useParams<{ tenant: string }>()!;
+  const tenant = useTenant();
 
   const { data, error, isLoading } = useQuery(
     teamQueries.getHaveAccessToTeam({ idOrSlug: tenant }),

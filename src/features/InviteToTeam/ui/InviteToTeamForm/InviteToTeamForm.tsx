@@ -5,7 +5,7 @@ import { Button, Form, Input, Checkbox, ScrollArea } from '@/shared/ui/c';
 
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
+import { useTenant } from '@/shared/lib/navigation';
 import { useDeviceType } from '@/shared/lib/deviceType/c';
 
 import { teamQueries, InviteToTeamSchema } from '@/entities/Team';
@@ -13,9 +13,9 @@ import { getErrorMessage } from '@/shared/lib/error';
 
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'sonner';
 
 import { type Project } from '@/entities/Project';
-import { toast } from 'sonner';
 interface Props {
   projects: Project[];
   onClose?: () => void;
@@ -23,10 +23,10 @@ interface Props {
 
 //TODO: Добавить проверку на существование приглашения и уведомить об этом
 export function InviteToTeamForm(props: Props) {
-  const { isMobile, isDesktop } = useDeviceType();
   const { projects, onClose } = props;
 
-  const { tenant } = useParams<{ tenant: string }>()!;
+  const { isMobile, isDesktop } = useDeviceType();
+  const tenant = useTenant();
 
   const form = useForm<z.infer<typeof InviteToTeamSchema>>({
     resolver: zodResolver(InviteToTeamSchema),
@@ -55,12 +55,7 @@ export function InviteToTeamForm(props: Props) {
 
   return (
     <Form {...form}>
-      <form
-        className={cn('flex flex-col gap-6 h-full', {
-          'p-6': isMobile,
-        })}
-        onSubmit={onSubmit}
-      >
+      <form className='flex flex-col gap-6 h-full' onSubmit={onSubmit}>
         <Input name='inviteeEmail' label='E-mail адрес' />
 
         <div className='flex flex-col gap-2'>

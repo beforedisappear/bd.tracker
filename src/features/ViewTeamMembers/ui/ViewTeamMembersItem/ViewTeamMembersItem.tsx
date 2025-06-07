@@ -20,6 +20,7 @@ export function ViewTeamMembersItem(props: Props) {
     hover:bg-zinc-200 dark:hover:bg-zinc-800'
       onClick={() => onOpenProfile(member.id)}
     >
+      {/* TODO: create UserAvatar ui component */}
       <Avatar
         src={''}
         alt={member.name}

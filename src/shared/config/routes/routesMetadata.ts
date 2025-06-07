@@ -24,8 +24,8 @@ export const routesMetadata: Record<AppRoutes, RoutesMetadata> = {
     title: 'Мой профиль',
     description: '',
   },
-  [AppRoutes.PROJECT]: {
-    title: '',
+  [AppRoutes.PROJECT_BY_ID]: {
+    title: 'Проект',
     description: '',
   },
   // service

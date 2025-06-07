@@ -27,6 +27,11 @@ class MailService {
   }
 
   async sendAuthMail({ email, code }: IAuthMail) {
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`sendAuthMail service: send to ${email} code ${code}`);
+      return;
+    }
+
     return this.sendMail({ to: email, text: code });
   }
 
