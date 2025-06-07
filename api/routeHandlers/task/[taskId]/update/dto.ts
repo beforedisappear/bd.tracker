@@ -2,7 +2,7 @@ import { Color } from 'config/prisma/generated/client';
 import { z } from 'zod';
 
 export const UpdateTaskDtoReqParamsSchema = z.object({
-  id: z.string().uuid(),
+  taskId: z.string().uuid(),
 });
 
 export const UpdateTaskDtoReqBodySchema = z.object({
