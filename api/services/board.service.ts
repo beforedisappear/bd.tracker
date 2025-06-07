@@ -170,6 +170,7 @@ class BoardService extends BaseService {
 
     const boards = await prismaService.board.findMany({
       where: { projectId },
+      orderBy: { createdAt: 'asc' },
     });
 
     return boards;

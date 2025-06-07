@@ -45,6 +45,8 @@ export function useDragAndDropBoardItems(args: Args) {
   );
 
   const handleDragStart = (event: DragStartEvent) => {
+    if (isMovingColumn || isMovingTask) return;
+
     if (!IsDraggableItem(event.active.data.current?.type)) return;
 
     setActiveDraggableItem({
@@ -54,6 +56,8 @@ export function useDragAndDropBoardItems(args: Args) {
   };
 
   const handleDragOver = (event: DragOverEvent) => {
+    if (isMovingColumn || isMovingTask) return;
+
     const { active, over } = event;
 
     if (!over || over.id === active.id) return;

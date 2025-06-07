@@ -169,6 +169,7 @@ class ProjectService extends BaseService {
         members: true,
         boards: {
           select: { id: true },
+          orderBy: { createdAt: 'asc' },
           take: 1,
         },
       },
