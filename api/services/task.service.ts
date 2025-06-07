@@ -69,7 +69,7 @@ class TaskService extends BaseService {
   async updateTask(args: {
     id: string;
     title?: string;
-    description?: string;
+    description?: string | null;
     color?: Color;
     isDone?: boolean;
     isArchived?: boolean;
