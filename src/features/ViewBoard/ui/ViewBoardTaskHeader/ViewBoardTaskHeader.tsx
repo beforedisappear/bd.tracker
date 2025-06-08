@@ -7,6 +7,7 @@ import { cn } from '@/shared/lib/css';
 import { taskQueries } from '@/entities/Board/api/queries';
 import { getErrorMessage } from '@/shared/lib/error';
 import { toast } from 'sonner';
+import { ViewBoardTaskMenu } from '../ViewBoardTaskMenu/ViewBoardTaskMenu';
 
 interface Props {
   taskId: string;
@@ -32,18 +33,21 @@ export function ViewBoardTaskHeader(props: Props) {
   return (
     <div className='flex items-center gap-2'>
       <PureCheckbox
-        id={`task-${taskId}`}
         checked={isChecked}
         onCheckedChange={handleChange}
+        onClick={e => e.stopPropagation()}
       />
-      <label
-        htmlFor={`task-${taskId}`}
-        className={cn('font-normal text-sm line-clamp-1 cursor-pointer', {
-          'line-through text-muted-foreground': isChecked,
-        })}
+
+      <span
+        className={cn(
+          'font-normal text-sm line-clamp-1 cursor-pointer select-none flex-1',
+          { 'line-through text-muted-foreground opacity-50': isChecked },
+        )}
       >
         {title}
-      </label>
+      </span>
+
+      <ViewBoardTaskMenu />
     </div>
   );
 }

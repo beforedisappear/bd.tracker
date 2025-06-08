@@ -2,11 +2,17 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { getAccessTokenFromReq } from 'api/utils/getAccessTokenFromReq';
 
-import { DeleteTaskByIdReqParamsSchema } from './dto';
+import {
+  DeleteTaskByIdReqParamsSchema,
+  GetTaskByIdDtoReqParamsSchema,
+} from './dto';
 import { authService } from 'api/services/auth.service';
 import { taskService } from 'api/services/task.service';
 import { ErrorResponse } from 'api/errors/errorResponse';
-import type { DeleteTaskByIdReqParamsDto } from './types';
+import type {
+  DeleteTaskByIdReqParamsDto,
+  GetTaskByIdDtoReqParamsDto,
+} from './types';
 
 export const DeleteTaskById = async (
   req: NextRequest,
@@ -23,6 +29,26 @@ export const DeleteTaskById = async (
     });
 
     return NextResponse.json(deletedTask);
+  } catch (error) {
+    return ErrorResponse(error);
+  }
+};
+
+export const GetTaskById = async (
+  req: NextRequest,
+  { params }: { params: Promise<GetTaskByIdDtoReqParamsDto> },
+) => {
+  try {
+    const { userId } = await authService.verifyJwt(getAccessTokenFromReq(req));
+
+    const { taskId } = GetTaskByIdDtoReqParamsSchema.parse(await params);
+
+    const task = await taskService.getTaskById({
+      id: taskId,
+      initiatorId: userId,
+    });
+
+    return NextResponse.json(task, { status: 200 });
   } catch (error) {
     return ErrorResponse(error);
   }

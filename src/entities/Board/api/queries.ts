@@ -16,6 +16,7 @@ import { createTask } from './task/createTask';
 import { moveTask } from './task/moveTask';
 import { deleteTask } from './task/deleteTask';
 import { updateTask } from './task/updateTask';
+import { getTaskById } from './task/getTaskById';
 
 import type {
   Column,
@@ -33,6 +34,7 @@ import type {
   DeleteTaskDtoReq,
   RenameColumnDtoReq,
   UpdateTaskDtoReq,
+  GetTaskByIdDtoReq,
 } from '../model/types';
 
 export const boardQueries = {
@@ -105,6 +107,15 @@ export const columnQueries = {
 };
 
 export const taskQueries = {
+  taskById: (taskId: string) => ['task', taskId],
+
+  getTaskById: (dto: GetTaskByIdDtoReq) =>
+    queryOptions({
+      queryKey: [...taskQueries.taskById(dto.taskId)],
+      queryFn: () => getTaskById(dto),
+      select: res => res.data,
+    }),
+
   createTask: () =>
     mutationOptions({
       mutationFn: (dto: CreateTaskDtoReq) => createTask(dto),

@@ -5,6 +5,22 @@ import { Color } from 'config/prisma/generated/client';
 import { PrismaClient } from '@prisma/client';
 
 class TaskService extends BaseService {
+  async getTaskById(args: { id: string; initiatorId: string }) {
+    const { id, initiatorId } = args;
+
+    const task = await prismaService.task.findUnique({ where: { id } });
+
+    if (!task) throw ApiError.notFound('Task not found');
+
+    const { inProject } = await this.checkIsUserInProject(task.projectId, {
+      userId: initiatorId,
+    });
+
+    if (!inProject) throw ApiError.forbidden('You are not in this project');
+
+    return task;
+  }
+
   async createTask(args: {
     columnId: string;
     title: string;

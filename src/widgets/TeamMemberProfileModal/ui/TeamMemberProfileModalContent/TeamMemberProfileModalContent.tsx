@@ -32,7 +32,7 @@ export function TeamMemberProfileModalContent() {
   } = useQuery({
     ...teamQueries.getTeamMemberById({
       teamIdOrSlug: tenant,
-      memberId: currentTeamMemberId as string,
+      memberId: currentTeamMemberId!,
     }),
     enabled: !!currentTeamMemberId,
   });

@@ -14,7 +14,7 @@ type BaseProps = ComponentProps<typeof SheetContainer>;
 
 interface IProps extends BaseProps {
   title: string;
-  trigger: React.ReactNode;
+  trigger?: React.ReactNode;
   description?: string;
   className?: string;
   content?: SheetContentProps;
@@ -32,12 +32,12 @@ export function Sheet(props: IProps) {
     description,
     children,
     className,
-    content,
+    content = {},
     headerClassName,
     ...restProps
   } = props;
 
-  const { side = 'left', ...contentProps } = content || {};
+  const { side = 'left', ...contentProps } = content;
 
   return (
     <SheetContainer {...restProps}>

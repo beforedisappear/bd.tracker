@@ -1,1 +1,4 @@
-export { DeleteTaskById as DELETE } from 'api/routeHandlers/task/[taskId]/route';
+export {
+  DeleteTaskById as DELETE,
+  GetTaskById as GET,
+} from 'api/routeHandlers/task/[taskId]/route';

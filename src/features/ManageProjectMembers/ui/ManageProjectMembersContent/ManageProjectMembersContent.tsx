@@ -22,9 +22,7 @@ export function ManageProjectMembersContent() {
     error: projectMembersError,
     refetch: refetchProjectMembers,
   } = useQuery({
-    ...projectQueries.getProjectMembers({
-      projectId: currentProjectId as string,
-    }),
+    ...projectQueries.getProjectMembers({ projectId: currentProjectId! }),
     enabled: !!currentProjectId,
   });
 

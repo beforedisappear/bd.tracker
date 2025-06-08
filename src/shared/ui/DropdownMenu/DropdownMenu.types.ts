@@ -1,3 +1,5 @@
+import { type MouseEvent } from 'react';
+
 export type MenuSeparator = {
   type: 'separator';
 };
@@ -10,7 +12,7 @@ export type MenuItem = {
   };
   shortcut?: string;
   disabled?: boolean;
-  onSelect?: () => void;
+  onSelect?: (e: MouseEvent<HTMLDivElement>) => void;
 };
 
 export type MenuSubItem = {

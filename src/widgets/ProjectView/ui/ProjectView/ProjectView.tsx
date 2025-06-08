@@ -29,7 +29,7 @@ export function ProjectView() {
     refetch,
     dataUpdatedAt,
   } = useQuery({
-    ...boardQueries.getBoardById({ boardId: boardId as string }),
+    ...boardQueries.getBoardById({ boardId: boardId! }),
     enabled: !!boardId,
     select: res => {
       return {

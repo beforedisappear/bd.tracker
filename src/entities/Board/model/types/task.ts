@@ -63,3 +63,9 @@ export interface UpdateTaskDtoReq {
 }
 
 export type UpdateTaskDtoRes = Task;
+
+export interface GetTaskByIdDtoReq {
+  taskId: string;
+}
+
+export type GetTaskByIdDtoRes = Task;

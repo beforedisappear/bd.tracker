@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { TaskSchema } from 'api/schemes/task';
+
 export const DeleteTaskByIdReqParamsSchema = z.object({
   taskId: z.string().uuid(),
 });
@@ -7,3 +9,9 @@ export const DeleteTaskByIdReqParamsSchema = z.object({
 export const DeleteTaskByIdResSchema = z.object({
   id: z.string().uuid(),
 });
+
+export const GetTaskByIdDtoReqParamsSchema = z.object({
+  taskId: z.string().uuid(),
+});
+
+export const GetTaskByIdDtoResSchema = TaskSchema;

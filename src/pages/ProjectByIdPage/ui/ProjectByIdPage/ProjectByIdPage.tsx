@@ -2,6 +2,7 @@
 
 import { ProjectView } from '@/widgets/ProjectView';
 import { TaskFilters } from '@/widgets/TaskFilters';
+import { TaskOverviewSheet } from '@/widgets/TaskOverviewSheet';
 
 import { DeleteBoard } from '@/features/DeleteBoard';
 import { SelectProjectView } from '@/features/SelectProjectView';
@@ -29,6 +30,7 @@ export function ProjectByIdPage() {
 
         <ManageProjectMembers />
         <DeleteBoard />
+        <TaskOverviewSheet />
       </BoardStoreProvider>
     </ProjectStoreProvider>
   );

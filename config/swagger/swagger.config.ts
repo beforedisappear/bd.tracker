@@ -61,7 +61,10 @@ import { PatchRenameColumnDoc } from 'api/routeHandlers/column/[columnId]/rename
 import { PatchMoveColumnDoc } from 'api/routeHandlers/column/[columnId]/move/doc';
 import { PostUpdateProjectMembersDoc } from 'api/routeHandlers/project/[projectId]/members/update/doc';
 import { PostCreateTaskDoc } from 'api/routeHandlers/task/doc';
-import { DeleteTaskByIdDoc } from 'api/routeHandlers/task/[taskId]/doc';
+import {
+  GetTaskByIdDoc,
+  DeleteTaskByIdDoc,
+} from 'api/routeHandlers/task/[taskId]/doc';
 import { PatchMoveTaskDoc } from 'api/routeHandlers/task/[taskId]/move/doc';
 import { PatchUpdateTaskDoc } from 'api/routeHandlers/task/[taskId]/update/doc';
 
@@ -144,6 +147,7 @@ openAPIRegistry.registerPath(PatchMoveColumnDoc(bearerAuth.name));
 
 //task main
 openAPIRegistry.registerPath(PostCreateTaskDoc(bearerAuth.name));
+openAPIRegistry.registerPath(GetTaskByIdDoc(bearerAuth.name));
 openAPIRegistry.registerPath(DeleteTaskByIdDoc(bearerAuth.name));
 openAPIRegistry.registerPath(PatchMoveTaskDoc(bearerAuth.name));
 openAPIRegistry.registerPath(PatchUpdateTaskDoc(bearerAuth.name));
