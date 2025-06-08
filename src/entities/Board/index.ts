@@ -1,8 +1,11 @@
 export { boardQueries, columnQueries, taskQueries } from './api';
+
 export { BoardStoreProvider, useBoardStore } from './model/store';
 export { getDeleteBoardModal } from './model/selectors/getDeleteBoardModal';
 export { getDeleteColumnModal } from './model/selectors/getDeleteColumnModal';
 export { getCreateTaskModal } from './model/selectors/getCreateTaskModal';
+
+export { mapColorToClassName } from './config';
 
 export type {
   SummaryBoard,
@@ -10,4 +13,5 @@ export type {
   Column,
   Task,
   GetAllBoardsDtoRes,
+  Color,
 } from './model/types';

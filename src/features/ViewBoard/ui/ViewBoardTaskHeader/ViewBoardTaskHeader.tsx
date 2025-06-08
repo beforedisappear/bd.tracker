@@ -1,30 +1,33 @@
 import { PureCheckbox } from '@/shared/ui/c';
+import { ViewBoardTaskMenu } from '../ViewBoardTaskMenu/ViewBoardTaskMenu';
 
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
+import { useProject } from '@/shared/lib/navigation';
 
 import { cn } from '@/shared/lib/css';
 import { taskQueries } from '@/entities/Board/api/queries';
 import { getErrorMessage } from '@/shared/lib/error';
 import { toast } from 'sonner';
-import { ViewBoardTaskMenu } from '../ViewBoardTaskMenu/ViewBoardTaskMenu';
+import type { Color } from '@/entities/Board';
 
 interface Props {
   taskId: string;
   title: string;
   isDone: boolean;
+  color: Color;
 }
 
 export function ViewBoardTaskHeader(props: Props) {
-  const { taskId, title, isDone } = props;
+  const { taskId, title, isDone, color } = props;
 
+  const { boardId } = useProject();
   const [isChecked, setIsChecked] = useState(isDone);
-
   const { mutateAsync: updateTask } = useMutation(taskQueries.updateTask());
 
   const handleChange = (value: boolean) => {
     setIsChecked(value);
-    updateTask({ taskId, isDone: value }).catch(e => {
+    updateTask({ taskId, boardId, isDone: value }).catch(e => {
       setIsChecked(isDone);
       toast.error(getErrorMessage(e));
     });
@@ -47,7 +50,11 @@ export function ViewBoardTaskHeader(props: Props) {
         {title}
       </span>
 
-      <ViewBoardTaskMenu />
+      <ViewBoardTaskMenu
+        taskId={taskId}
+        isChecked={isChecked}
+        currentColor={color}
+      />
     </div>
   );
 }

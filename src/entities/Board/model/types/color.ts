@@ -12,5 +12,4 @@ export type Color =
   | 'GRAY'
   | 'RED'
   | 'ORANGE'
-  | 'GOLD'
   | 'EMERALD';

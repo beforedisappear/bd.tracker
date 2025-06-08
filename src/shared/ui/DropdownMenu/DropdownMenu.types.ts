@@ -4,6 +4,11 @@ export type MenuSeparator = {
   type: 'separator';
 };
 
+export type MenuPureItem = {
+  type: 'pure';
+  content: React.ReactNode;
+};
+
 export type MenuItem = {
   type: 'item';
   label: {
@@ -26,4 +31,9 @@ export type MenuGroup = {
   subItems: (MenuItem | MenuSubItem)[];
 };
 
-export type DropDownMenuOptions = (MenuItem | MenuGroup | MenuSeparator)[];
+export type DropDownMenuOptions = (
+  | MenuItem
+  | MenuGroup
+  | MenuSeparator
+  | MenuPureItem
+)[];

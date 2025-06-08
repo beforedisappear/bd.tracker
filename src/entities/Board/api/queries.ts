@@ -158,6 +158,11 @@ export const taskQueries = {
   deleteTask: () =>
     mutationOptions({
       mutationFn: (dto: DeleteTaskDtoReq) => deleteTask(dto),
+      // TODO: add cache handling
+      onSuccess: (_, { boardId }) =>
+        queryClient.invalidateQueries({
+          queryKey: [...boardQueries.boardById(boardId)],
+        }),
     }),
 
   moveTask: () =>
@@ -173,5 +178,9 @@ export const taskQueries = {
   updateTask: () =>
     mutationOptions({
       mutationFn: (dto: UpdateTaskDtoReq) => updateTask(dto),
+      onSuccess: (_, { boardId }) =>
+        queryClient.invalidateQueries({
+          queryKey: [...boardQueries.boardById(boardId)],
+        }),
     }),
 };

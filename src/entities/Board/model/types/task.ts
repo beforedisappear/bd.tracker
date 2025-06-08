@@ -45,12 +45,14 @@ export interface MoveTaskDtoRes {
 
 export interface DeleteTaskDtoReq {
   taskId: string;
+  boardId: string; // for invalidation
 }
 
 export type DeleteTaskDtoRes = never;
 
 export interface UpdateTaskDtoReq {
   taskId: string;
+  boardId: string; // for invalidation
   title?: string;
   description?: string | null;
   color?: Color;

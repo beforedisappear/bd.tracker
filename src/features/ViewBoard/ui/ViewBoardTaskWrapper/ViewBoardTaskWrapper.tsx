@@ -3,14 +3,16 @@ import { useRouter } from 'next/navigation';
 
 import { getTaskClassName } from '../../lib/getTaskClassName';
 import { cn } from '@/shared/lib/css';
+import type { Color } from '@/entities/Board';
 
 interface Props {
   id: string;
+  color: Color;
   children: React.ReactNode;
 }
 
 export function ViewBoardTaskWrapper(props: Props) {
-  const { id, children } = props;
+  const { id, color, children } = props;
 
   const { push } = useRouter();
   const { attributes, listeners, setNodeRef, isDragging } = useSortable({
@@ -29,8 +31,8 @@ export function ViewBoardTaskWrapper(props: Props) {
       {...listeners}
       onClick={handleClick}
       className={cn(
-        getTaskClassName(),
-        'bg-card rounded-md p-3 shadow-sm border',
+        getTaskClassName(color),
+        'rounded-md p-3 shadow-sm border',
         { 'opacity-45': isDragging },
       )}
     >
