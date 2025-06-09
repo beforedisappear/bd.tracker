@@ -59,11 +59,15 @@ export const boardQueries = {
       select: res => res.data,
     }),
 
-  getBoardById: (dto: GetBoardByIdDtoReq) =>
-    queryOptions({
-      queryKey: [...boardQueries.boardById(dto.boardId)],
+  getBoardById: (dto: GetBoardByIdDtoReq) => {
+    const { boardId } = dto;
+
+    return queryOptions({
+      queryKey: [...boardQueries.boardById(boardId)],
       queryFn: () => getBoardById(dto),
-    }),
+      placeholderData: data => data,
+    });
+  },
 
   deleteBoard: () =>
     mutationOptions({

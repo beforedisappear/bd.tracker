@@ -8,11 +8,13 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 
-import type { Column } from '@/entities/Board';
+import type { Column, Color } from '@/entities/Board';
 
 interface Props {
   data: Column;
   sortableTaskIds: string[];
+  colors?: Color[];
+  isFiltered?: boolean;
 }
 
 // TODO: add SCROLL AREA
@@ -20,6 +22,7 @@ export function ViewBoardColumn(props: Props) {
   const {
     data: { id, name, tasks },
     sortableTaskIds,
+    colors,
   } = props;
 
   return (
@@ -35,9 +38,11 @@ export function ViewBoardColumn(props: Props) {
           items={sortableTaskIds}
           strategy={verticalListSortingStrategy}
         >
-          {tasks.map(task => (
-            <ViewBoardTask key={task.id} data={task} />
-          ))}
+          {tasks
+            .filter(task => !colors?.length || colors.includes(task.color))
+            .map(task => (
+              <ViewBoardTask key={task.id} data={task} />
+            ))}
         </SortableContext>
 
         <ViewBoardColumnCreateTaskBtn columnId={id} />

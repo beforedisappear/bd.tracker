@@ -6,15 +6,17 @@ import type { Task } from '@/entities/Board';
 
 interface Props {
   data: Task;
+  isFiltered?: boolean;
 }
 
 export function ViewBoardTask(props: Props) {
   const {
     data: { id, title, isDone, color },
+    isFiltered = false,
   } = props;
 
   return (
-    <ViewBoardTaskWrapper id={id} color={color}>
+    <ViewBoardTaskWrapper id={id} color={color} isFiltered={isFiltered}>
       <ViewBoardTaskHeader
         taskId={id}
         title={title}

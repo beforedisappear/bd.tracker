@@ -1,12 +1,6 @@
-import { Tag } from 'lucide-react';
-
-import { Button } from '@/shared/ui/c';
+import { Popover } from '@/shared/ui/c';
+import { FilterTasksByStickerTrigger } from '../FilterTasksByStickerTrigger/FilterTasksByStickerTrigger';
 
 export function FilterTasksBySticker() {
-  return (
-    <Button variant={null} size='sm'>
-      <Tag />
-      <span>Метка</span>
-    </Button>
-  );
+  return <Popover trigger={<FilterTasksByStickerTrigger />}></Popover>;
 }

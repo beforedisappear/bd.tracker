@@ -221,13 +221,6 @@ class TaskService extends BaseService {
       throw ApiError.forbidden('Cannot move task to a different project');
     }
 
-    // Если оба ID null, проверяем что колонка пустая
-    if (!nextTaskId && !previousTaskId && targetColumn.tasks.length > 0) {
-      throw ApiError.badRequest(
-        'Cannot move task to a non-empty column without specifying position',
-      );
-    }
-
     const { inProject } = await this.checkIsUserInProject(movedTask.projectId, {
       userId: initiatorId,
     });
@@ -295,6 +288,24 @@ class TaskService extends BaseService {
       if (nextTaskId) {
         await this.insertBeforeTask({ id, nextTaskId }, tx);
         return null;
+      }
+
+      // Если оба ID null, делаем задачу последней в колонке
+      if (isEmptyArgs) {
+        const lastTaskInColumn = await tx.task.findFirst({
+          where: {
+            columnId,
+            nextTaskId: null,
+            id: { not: id }, // Исключаем саму перемещаемую задачу
+          },
+        });
+
+        if (lastTaskInColumn) {
+          await this.insertAfterTask(
+            { id, previousTaskId: lastTaskInColumn.id },
+            tx,
+          );
+        }
       }
 
       return null;

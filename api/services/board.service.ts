@@ -131,17 +131,13 @@ class BoardService extends BaseService {
       },
     });
 
-    if (!board) {
-      throw ApiError.notFound('Board not found');
-    }
+    if (!board) throw ApiError.notFound('Board not found');
 
     const { inProject } = await this.checkIsUserInProject(board.project.id, {
       userId: initiatorId,
     });
 
-    if (!inProject) {
-      throw ApiError.forbidden('You are not in this project');
-    }
+    if (!inProject) throw ApiError.forbidden('You are not in this project');
 
     const { project, ...res } = board;
 

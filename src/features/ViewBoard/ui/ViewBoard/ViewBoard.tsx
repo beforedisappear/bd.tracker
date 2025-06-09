@@ -18,10 +18,17 @@ import {
   useSensors,
 } from '@dnd-kit/core';
 
-import { type Board, type Column, type Task } from '@/entities/Board';
+import {
+  type Board,
+  type Column,
+  type Task,
+  type Color,
+} from '@/entities/Board';
 
 interface Props {
   board: Board;
+  colors: Color[] | undefined;
+  isFiltered?: boolean;
 }
 
 interface MapColumnsAndTasksById {
@@ -30,7 +37,7 @@ interface MapColumnsAndTasksById {
 }
 
 export function ViewBoard(props: Props) {
-  const { board } = props;
+  const { board, colors, isFiltered = false } = props;
 
   const {
     columns,
@@ -41,13 +48,13 @@ export function ViewBoard(props: Props) {
     handleDragOver,
     handleDragMove,
     handleDragEnd,
-  } = useDragAndDropBoardItems({ board });
+  } = useDragAndDropBoardItems({ board, isFiltered });
 
   const { setNodeRef } = useDroppable({ id: board.id });
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: { distance: 5 }, //to support clicks
-      disabled: isMovingColumn || isMovingTask,
+      disabled: isMovingColumn || isMovingTask || isFiltered,
     }),
   );
 
@@ -92,6 +99,8 @@ export function ViewBoard(props: Props) {
               key={column.id}
               data={column}
               sortableTaskIds={sortableTaskIds}
+              colors={colors}
+              isFiltered={isFiltered}
             />
           ))}
         </div>

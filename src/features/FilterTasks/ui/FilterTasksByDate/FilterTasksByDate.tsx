@@ -1,12 +1,6 @@
-import { Calendar } from 'lucide-react';
-
-import { Button } from '@/shared/ui/c';
+import { Popover } from '@/shared/ui/c';
+import { FilterTasksByDateTrigger } from '../FilterTasksBySticker/FilterTasksByDateTrigger/FilterTasksByDateTrigger';
 
 export function FilterTasksByDate() {
-  return (
-    <Button variant={null} size='sm'>
-      <Calendar />
-      <span>Дата</span>
-    </Button>
-  );
+  return <Popover trigger={<FilterTasksByDateTrigger />}>123</Popover>;
 }

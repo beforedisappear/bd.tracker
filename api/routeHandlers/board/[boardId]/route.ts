@@ -17,9 +17,11 @@ export const GetBoardById = async (
   { params }: { params: Promise<GetBoardByIdReqParamsDto> },
 ) => {
   try {
+    const { userId } = await authService.verifyJwt(
+      getAccessTokenFromReq(request),
+    );
+
     const { boardId } = GetBoardByIdReqParamsSchema.parse(await params);
-    const accessToken = getAccessTokenFromReq(request);
-    const { userId } = await authService.verifyJwt(accessToken);
 
     const board = await boardService.getBoardById({
       id: boardId,

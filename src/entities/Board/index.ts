@@ -1,9 +1,16 @@
 export { boardQueries, columnQueries, taskQueries } from './api';
 
-export { BoardStoreProvider, useBoardStore } from './model/store';
+export {
+  BoardStoreProvider,
+  useBoardStore,
+  type BoardStore,
+} from './model/store';
 export { getDeleteBoardModal } from './model/selectors/getDeleteBoardModal';
 export { getDeleteColumnModal } from './model/selectors/getDeleteColumnModal';
 export { getCreateTaskModal } from './model/selectors/getCreateTaskModal';
+export { getMapColorTaskFilterByBoardId } from './model/selectors/getMapColorTaskFilterByBoardId';
+
+export { BoardTaskColorsInput } from './ui/BoardTaskColorsInput/BoardTaskColorsInput';
 
 export { mapColorToClassName } from './config';
 

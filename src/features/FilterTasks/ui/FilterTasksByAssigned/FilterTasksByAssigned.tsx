@@ -1,12 +1,6 @@
-import { User } from 'lucide-react';
-
-import { Button } from '@/shared/ui/c';
+import { Popover } from '@/shared/ui/c';
+import { FilterTasksByAssignedTrigger } from '../FilterTasksByAssignedTrigger/FilterTasksByAssignedTrigger';
 
 export function FilterTasksByAssigned() {
-  return (
-    <Button variant={null} size='sm'>
-      <User />
-      <span>Ответственный</span>
-    </Button>
-  );
+  return <Popover trigger={<FilterTasksByAssignedTrigger />}>123</Popover>;
 }

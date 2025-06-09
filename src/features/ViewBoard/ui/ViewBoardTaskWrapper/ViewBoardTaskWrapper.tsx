@@ -9,6 +9,7 @@ interface Props {
   id: string;
   color: Color;
   children: React.ReactNode;
+  isFiltered?: boolean;
 }
 
 export function ViewBoardTaskWrapper(props: Props) {

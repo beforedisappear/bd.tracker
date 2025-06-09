@@ -10,8 +10,12 @@ import { ProjectViewWrapper } from '../ProjectViewWrapper/ProjectViewWrapper';
 import { useQuery } from '@tanstack/react-query';
 import { useProject } from '@/shared/lib/navigation';
 import { useDeviceType } from '@/shared/lib/deviceType/useDeviceType';
+import {
+  useBoardStore,
+  boardQueries,
+  getMapColorTaskFilterByBoardId,
+} from '@/entities/Board';
 
-import { boardQueries } from '@/entities/Board';
 import { getContentMargin } from '../../lib/getContentMargin';
 import { restoreTasksOrder } from '../../lib/restoreTasksOrder/restoreTasksOrder';
 import { restoreColumnsOrder } from '../../lib/restoreColumnsOrder/restoreColumnsOrder';
@@ -21,6 +25,12 @@ export function ProjectView() {
   const { boardId } = useProject();
   const { isMobile } = useDeviceType();
 
+  const { mapColorTaskFilterByBoardId } = useBoardStore(
+    getMapColorTaskFilterByBoardId(),
+  );
+
+  const colors = mapColorTaskFilterByBoardId[boardId];
+
   const {
     data: board,
     isLoading,
@@ -29,7 +39,9 @@ export function ProjectView() {
     refetch,
     dataUpdatedAt,
   } = useQuery({
-    ...boardQueries.getBoardById({ boardId: boardId! }),
+    ...boardQueries.getBoardById({
+      boardId: boardId!,
+    }),
     enabled: !!boardId,
     select: res => {
       return {
@@ -46,6 +58,8 @@ export function ProjectView() {
   else if (isError || !board)
     return <ErrorBoundary className='m-auto' error={error} reset={refetch} />;
 
+  const isFiltered = colors && colors.length > 0 ? true : false;
+
   return (
     <ProjectViewWrapper>
       <div
@@ -53,7 +67,12 @@ export function ProjectView() {
         style={{ marginInline: getContentMargin(isMobile) }}
       >
         {/* TODO: add key to ViewBoard */}
-        <ViewBoard key={dataUpdatedAt} board={board} />
+        <ViewBoard
+          key={dataUpdatedAt}
+          board={board}
+          colors={colors}
+          isFiltered={isFiltered}
+        />
         <CreateColumn />
       </div>
 

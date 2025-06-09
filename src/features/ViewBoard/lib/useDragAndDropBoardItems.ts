@@ -1,6 +1,7 @@
 import { arrayMove } from '@dnd-kit/sortable';
 import { useState, useRef } from 'react';
 import { useMutation } from '@tanstack/react-query';
+import { useShowNotAllowedToMoveItemsToast } from './useShowNotAllowedToMoveToast';
 
 import { toast } from 'sonner';
 import { isTypeActive } from './isTypeActive';
@@ -24,10 +25,11 @@ import type {
 
 type Args = {
   board: Board;
+  isFiltered: boolean;
 };
 
 export function useDragAndDropBoardItems(args: Args) {
-  const { board } = args;
+  const { board, isFiltered } = args;
 
   const [columns, setColumns] = useState(board.columns);
   const [activeDraggableItem, setActiveDraggableItem] =
@@ -44,8 +46,18 @@ export function useDragAndDropBoardItems(args: Args) {
     taskQueries.moveTask(),
   );
 
+  const { showNotAllowedToMoveItemsToast } =
+    useShowNotAllowedToMoveItemsToast();
+
   const handleDragStart = (event: DragStartEvent) => {
     if (isMovingColumn || isMovingTask) return;
+
+    if (isFiltered) {
+      event.activatorEvent.preventDefault();
+      event.activatorEvent.stopPropagation();
+      showNotAllowedToMoveItemsToast();
+      return;
+    }
 
     if (!IsDraggableItem(event.active.data.current?.type)) return;
 
@@ -57,6 +69,8 @@ export function useDragAndDropBoardItems(args: Args) {
 
   const handleDragOver = (event: DragOverEvent) => {
     if (isMovingColumn || isMovingTask) return;
+
+    if (isFiltered) return;
 
     const { active, over } = event;
 
@@ -75,6 +89,8 @@ export function useDragAndDropBoardItems(args: Args) {
 
     if (isMovingColumn || isMovingTask || !over || over.id === active.id)
       return;
+
+    if (isFiltered) return;
 
     const isTaskActive = isTypeActive(active, 'Task'); // перетаскиваемый элемент - задача
     const isTaskOver = isTypeOver(over, 'Task'); // принимающий элемент - задача
@@ -172,6 +188,8 @@ export function useDragAndDropBoardItems(args: Args) {
 
   const handleDragEnd = (event: DragEndEvent) => {
     if (isMovingColumn || isMovingTask) return;
+
+    if (isFiltered) return;
 
     const { active, over } = event;
 
