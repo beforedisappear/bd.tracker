@@ -7,5 +7,4 @@ export const getMapColorTaskFilterByBoardId = () =>
   useShallow((state: BoardStore) => ({
     mapColorTaskFilterByBoardId: state.mapColorTaskFilterByBoardId,
     setMapColorTaskFilterByBoardId: state.setMapColorTaskFilterByBoardId,
-    // clearMapColorTaskFilterByBoardId: state.clearMapColorTaskFilterByBoardId,
   }));

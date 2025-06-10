@@ -1,8 +1,7 @@
 'use client';
 
-import { ErrorBoundary, PureInput } from '@/shared/ui/c';
+import { ErrorBoundary, MembersField, PureInput } from '@/shared/ui/c';
 import { TeamMembersFieldLoading } from './TeamMembersField.loading';
-import { TeamMembersFieldContent } from '../TeamMembersFieldContent/TeamMembersFieldContent';
 
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -55,9 +54,10 @@ export function TeamMembersField(props: Props) {
         )}
 
         {isSuccess && (
-          <TeamMembersFieldContent
+          <MembersField
             members={teamMembers}
-            withSearch={withSearch}
+            isExpanded={withSearch}
+            inputName='membersIds'
           />
         )}
       </div>

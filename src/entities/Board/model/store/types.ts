@@ -5,6 +5,7 @@ export interface BoardStoreState {
   currentColumnId: string | null;
   showCreateTaskModal: boolean;
   mapColorTaskFilterByBoardId: Record<string, Color[] | undefined>;
+  mapAssigneesTaskFilterByBoardId: Record<string, string[] | undefined>;
 }
 
 export interface BoardStoreActions {
@@ -12,7 +13,11 @@ export interface BoardStoreActions {
   setCurrentColumnId: (id: string | null) => void;
   setShowCreateTaskModal: (show: boolean) => void;
   setMapColorTaskFilterByBoardId: (boardId: string, colors: Color[]) => void;
-  clearMapColorTaskFilterByBoardId: () => void;
+  setMapAssigneesTaskFilterByBoardId: (
+    boardId: string,
+    assignees: string[],
+  ) => void;
+  clearAllMapFilters: () => void;
 }
 
 export type BoardStore = BoardStoreState & BoardStoreActions;

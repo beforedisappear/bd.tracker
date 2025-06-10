@@ -9,6 +9,7 @@ export { getDeleteBoardModal } from './model/selectors/getDeleteBoardModal';
 export { getDeleteColumnModal } from './model/selectors/getDeleteColumnModal';
 export { getCreateTaskModal } from './model/selectors/getCreateTaskModal';
 export { getMapColorTaskFilterByBoardId } from './model/selectors/getMapColorTaskFilterByBoardId';
+export { getMapAssigneesTaskFilterByBoardId } from './model/selectors/getMapAssigneesTaskFilterByBoardId';
 
 export { BoardTaskColorsInput } from './ui/BoardTaskColorsInput/BoardTaskColorsInput';
 

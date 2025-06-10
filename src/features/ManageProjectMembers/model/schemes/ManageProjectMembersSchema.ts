@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
-export const ManageProjectMembersSchema = z.object({
-  membersIds: z.record(z.string().uuid(), z.boolean()),
+import { TeamMembersFieldSchema } from '@/entities/Team';
+
+export const ManageProjectMembersSchema = TeamMembersFieldSchema.extend({
   keyword: z.string().optional(),
 });

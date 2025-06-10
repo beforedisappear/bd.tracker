@@ -4,6 +4,8 @@ export { useProjectStore } from './models/store/useProjectStore';
 export { getProjectMembersModal } from './models/selectors/getProjectMembersModal';
 export { getDeleteProjectModal } from './models/selectors/getDeleteProjectModal';
 
+export { ProjectMembersField } from './ui/ProjectMembersField/ProjectMembersField';
+
 export type {
   Project,
   ProjectWithFirstBoardId,

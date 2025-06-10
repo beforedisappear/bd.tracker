@@ -10,6 +10,7 @@ const defaultInitState: BoardStoreState = {
   showCreateTaskModal: false,
   currentColumnId: null, // for create or delete task
   mapColorTaskFilterByBoardId: {},
+  mapAssigneesTaskFilterByBoardId: {},
 };
 
 export const createBoardStore = (
@@ -33,7 +34,21 @@ export const createBoardStore = (
         },
       })),
 
-    clearMapColorTaskFilterByBoardId: () =>
-      set({ mapColorTaskFilterByBoardId: {} }),
+    setMapAssigneesTaskFilterByBoardId: (
+      boardId: string,
+      assignees: string[],
+    ) =>
+      set(state => ({
+        mapAssigneesTaskFilterByBoardId: {
+          ...state.mapAssigneesTaskFilterByBoardId,
+          [boardId]: assignees,
+        },
+      })),
+
+    clearAllMapFilters: () =>
+      set(() => ({
+        mapColorTaskFilterByBoardId: {},
+        mapAssigneesTaskFilterByBoardId: {},
+      })),
   }));
 };

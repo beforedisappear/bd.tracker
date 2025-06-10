@@ -7,7 +7,9 @@ import { useEffect } from 'react';
 
 interface Props {
   title?: string;
+  titleClassName?: string;
   description?: string;
+  descriptionClassName?: string;
   className?: string;
   error?: Error | null;
   reset?: () => void;
@@ -18,6 +20,8 @@ export function ErrorBoundary(props: Props) {
   const {
     title = 'Непредвиденная ошибка',
     description = 'При обработке вашего запроса произошла ошибка',
+    titleClassName,
+    descriptionClassName,
     className,
     // children,
     error,
@@ -38,8 +42,15 @@ export function ErrorBoundary(props: Props) {
       )}
     >
       <AlertCircle className='h-6 w-6 text-destructive mb-2' />
-      <h2 className='text-lg font-semibold'>{title}</h2>
-      <p className='text-sm text-muted-foreground mb-3'>{description}</p>
+      <h2 className={cn('text-lg font-semibold', titleClassName)}>{title}</h2>
+      <p
+        className={cn(
+          'text-sm text-muted-foreground mb-3',
+          descriptionClassName,
+        )}
+      >
+        {description}
+      </p>
       {reset && (
         <Button type='button' onClick={reset} size='sm' variant='outline'>
           <RefreshCw className='mr-2 h-4 w-4' />

@@ -1,8 +1,14 @@
 import { apiClient } from '@/shared/api/apiClient';
-import { GetProjectMembersDtoReq } from '../models/types/projectMember';
+import {
+  GetProjectMembersDtoReq,
+  GetProjectMembersDtoRes,
+} from '../models/types/projectMember';
 
 export const getProjectMembers = async (dto: GetProjectMembersDtoReq) => {
-  return apiClient.withAuth.get(`/project/${dto.projectId}/members`, {
-    params: { keyword: dto.keyword },
-  });
+  return apiClient.withAuth.get<GetProjectMembersDtoRes>(
+    `/project/${dto.projectId}/members`,
+    {
+      params: { keyword: dto.keyword },
+    },
+  );
 };
