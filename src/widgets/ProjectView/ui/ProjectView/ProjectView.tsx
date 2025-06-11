@@ -37,7 +37,6 @@ export function ProjectView() {
     isError,
     error,
     refetch,
-    dataUpdatedAt,
   } = useQuery({
     ...boardQueries.getBoardById({
       boardId: boardId!,
@@ -60,6 +59,8 @@ export function ProjectView() {
 
   const isFiltered = colors && colors.length > 0 ? true : false;
 
+  console.log(board);
+
   return (
     <ProjectViewWrapper>
       <div
@@ -68,7 +69,7 @@ export function ProjectView() {
       >
         {/* TODO: add key to ViewBoard */}
         <ViewBoard
-          key={dataUpdatedAt}
+          // key={dataUpdatedAt}
           board={board}
           colors={colors}
           isFiltered={isFiltered}

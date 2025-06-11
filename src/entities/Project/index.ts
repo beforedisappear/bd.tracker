@@ -6,6 +6,8 @@ export { getDeleteProjectModal } from './models/selectors/getDeleteProjectModal'
 
 export { ProjectMembersField } from './ui/ProjectMembersField/ProjectMembersField';
 
+export { ProjectMembersFieldSchema } from './models/schemes';
+
 export type {
   Project,
   ProjectWithFirstBoardId,

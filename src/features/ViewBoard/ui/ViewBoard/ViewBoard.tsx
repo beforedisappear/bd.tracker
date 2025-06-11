@@ -18,12 +18,7 @@ import {
   useSensors,
 } from '@dnd-kit/core';
 
-import {
-  type Board,
-  type Column,
-  type Task,
-  type Color,
-} from '@/entities/Board';
+import type { Board, Column, Task, Color } from '@/entities/Board';
 
 interface Props {
   board: Board;

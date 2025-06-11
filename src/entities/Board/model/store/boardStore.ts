@@ -1,5 +1,6 @@
 import { createStore as createZustandStore } from 'zustand/vanilla';
 
+import type { DateRange } from 'react-day-picker';
 import type { BoardStore, BoardStoreState } from './types';
 import type { Color } from '../types';
 
@@ -11,6 +12,7 @@ const defaultInitState: BoardStoreState = {
   currentColumnId: null, // for create or delete task
   mapColorTaskFilterByBoardId: {},
   mapAssigneesTaskFilterByBoardId: {},
+  mapDateTaskFilterByBoardId: {},
 };
 
 export const createBoardStore = (
@@ -42,6 +44,14 @@ export const createBoardStore = (
         mapAssigneesTaskFilterByBoardId: {
           ...state.mapAssigneesTaskFilterByBoardId,
           [boardId]: assignees,
+        },
+      })),
+
+    setMapDateTaskFilterByBoardId: (boardId: string, date: DateRange) =>
+      set(state => ({
+        mapDateTaskFilterByBoardId: {
+          ...state.mapDateTaskFilterByBoardId,
+          [boardId]: date,
         },
       })),
 

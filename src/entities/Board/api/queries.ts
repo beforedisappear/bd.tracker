@@ -182,9 +182,22 @@ export const taskQueries = {
   updateTask: () =>
     mutationOptions({
       mutationFn: (dto: UpdateTaskDtoReq) => updateTask(dto),
-      onSuccess: (_, { boardId }) =>
-        queryClient.invalidateQueries({
-          queryKey: [...boardQueries.boardById(boardId)],
-        }),
+      onSuccess: (res, { boardId }) =>
+        queryClient.setQueryData(
+          [...boardQueries.boardById(boardId)],
+          (old: GetBoardByIdDtoRes) => {
+            const newColumns = old.columns.map(column => ({
+              ...column,
+              tasks: column.tasks.map(task =>
+                task.id === res.data.id ? res.data : task,
+              ),
+            }));
+
+            return {
+              ...old,
+              columns: newColumns,
+            };
+          },
+        ),
     }),
 };

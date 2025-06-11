@@ -1,3 +1,4 @@
+import type { DateRange } from 'react-day-picker';
 import type { Color } from '../types';
 
 export interface BoardStoreState {
@@ -6,6 +7,7 @@ export interface BoardStoreState {
   showCreateTaskModal: boolean;
   mapColorTaskFilterByBoardId: Record<string, Color[] | undefined>;
   mapAssigneesTaskFilterByBoardId: Record<string, string[] | undefined>;
+  mapDateTaskFilterByBoardId: Record<string, DateRange | undefined>;
 }
 
 export interface BoardStoreActions {
@@ -17,6 +19,7 @@ export interface BoardStoreActions {
     boardId: string,
     assignees: string[],
   ) => void;
+  setMapDateTaskFilterByBoardId: (boardId: string, date: DateRange) => void;
   clearAllMapFilters: () => void;
 }
 

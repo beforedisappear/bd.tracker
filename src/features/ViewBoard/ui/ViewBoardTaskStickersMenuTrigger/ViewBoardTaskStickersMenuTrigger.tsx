@@ -13,15 +13,17 @@ export function ViewBoardTaskStickersMenuTrigger(props: Props) {
   };
 
   return (
-    <Button
-      variant={null}
-      size='sm'
-      className='p-1 h-6 gap-1 border border-dashed border-primary/60 text-primary/60'
-      onClick={handleClick}
-      {...rest}
-    >
-      <Plus className='!h-3 !w-3' />
-      <span className='text-[11px]'>Метка</span>
-    </Button>
+    <div className='flex gap-2'>
+      <Button
+        variant={null}
+        size='sm'
+        className='p-1 h-6 gap-1 border border-dashed border-primary/60 text-primary/60'
+        onClick={handleClick}
+        {...rest}
+      >
+        <Plus className='!h-3 !w-3' />
+        <span className='text-[11px]'>Метка</span>
+      </Button>
+    </div>
   );
 }

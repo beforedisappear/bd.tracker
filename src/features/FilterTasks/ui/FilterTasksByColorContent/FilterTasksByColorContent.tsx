@@ -38,6 +38,7 @@ export function FilterTasksByColorContent() {
         onSelect={onSelect}
         onClick={e => e.stopPropagation()}
       />
+
       <Button variant='outline' size='sm' onClick={onResetFilter}>
         Сбросить фильтр
       </Button>

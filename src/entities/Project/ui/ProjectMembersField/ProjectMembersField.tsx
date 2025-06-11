@@ -6,16 +6,22 @@ import { useProject } from '@/shared/lib/navigation';
 
 import { projectQueries } from '../../api';
 
+import { cn } from '@/shared/lib/css';
+
 import type { CheckedState } from '@radix-ui/react-checkbox';
+import type { MouseEvent } from 'react';
 
 interface Props {
   label?: string;
+  labelClassName?: string;
   onCheckedChange: (checked: CheckedState, memberId: string) => void;
+  onClick?: (e: MouseEvent<HTMLDivElement>) => void;
   customHeight?: number;
 }
 
 export function ProjectMembersField(props: Props) {
-  const { label, onCheckedChange, customHeight } = props;
+  const { label, onCheckedChange, customHeight, labelClassName, onClick } =
+    props;
 
   const { projectId } = useProject();
 
@@ -29,8 +35,12 @@ export function ProjectMembersField(props: Props) {
   else if (isError) return <ErrorBoundary />;
 
   return (
-    <div className='flex flex-col gap-2 flex-1'>
-      {label && <span className='text-sm font-medium'>{label}</span>}
+    <div className='flex flex-col gap-2 flex-1' onClick={onClick}>
+      {label && (
+        <span className={cn('text-sm font-medium', labelClassName)}>
+          {label}
+        </span>
+      )}
 
       <MembersField
         members={members}

@@ -1,4 +1,7 @@
-import { ProjectMembersField } from '@/entities/Project';
+import {
+  ProjectMembersField,
+  ProjectMembersFieldSchema,
+} from '@/entities/Project';
 import { Form } from '@/shared/ui/Form';
 
 import {
@@ -9,7 +12,6 @@ import { useProject } from '@/shared/lib/navigation';
 import { useForm } from 'react-hook-form';
 
 import { z } from 'zod';
-import { TeamMembersFieldSchema } from '@/entities/Team';
 
 import type { CheckedState } from '@radix-ui/react-checkbox';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -23,11 +25,11 @@ export function FilterTasksByAssignedContent() {
 
   const assignees = mapAssigneesTaskFilterByBoardId[boardId] ?? [];
 
-  const form = useForm<z.infer<typeof TeamMembersFieldSchema>>({
+  const form = useForm<z.infer<typeof ProjectMembersFieldSchema>>({
     defaultValues: {
       membersIds: Object.fromEntries(assignees.map(id => [id, true])),
     },
-    resolver: zodResolver(TeamMembersFieldSchema),
+    resolver: zodResolver(ProjectMembersFieldSchema),
   });
 
   const onCheckedChange = (checked: CheckedState, memberId: string) => {
@@ -47,6 +49,7 @@ export function FilterTasksByAssignedContent() {
     <Form {...form}>
       <ProjectMembersField
         label='Ответственный'
+        labelClassName='text-[10px] font-medium uppercase text-muted-foreground'
         customHeight={120}
         onCheckedChange={onCheckedChange}
       />
