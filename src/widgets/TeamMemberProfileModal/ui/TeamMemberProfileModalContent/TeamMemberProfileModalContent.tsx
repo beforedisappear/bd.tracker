@@ -14,8 +14,6 @@ import {
   useTeamStore,
   teamQueries,
 } from '@/entities/Team';
-import { getColorByFirstLetter } from '@/shared/lib/css';
-import { getInitials } from '@/shared/lib/data/getInitials';
 
 export function TeamMemberProfileModalContent() {
   const tenant = useTenant();
@@ -50,8 +48,7 @@ export function TeamMemberProfileModalContent() {
         src={''}
         alt={teamMember.name}
         className='grid place-items-center w-20 h-20 text-3xl'
-        fallback={getInitials(teamMember.name)}
-        style={{ backgroundColor: getColorByFirstLetter(teamMember.name) }}
+        initials={teamMember.name}
       />
 
       <div className='flex flex-col gap-2 flex-1'>

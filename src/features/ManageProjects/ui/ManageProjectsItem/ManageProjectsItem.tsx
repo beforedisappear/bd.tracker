@@ -4,8 +4,7 @@ import { ManageProjectsItemMenu } from '../ManageProjectsItemMenu/ManageProjects
 import { useRouter } from 'next/navigation';
 
 import { getProjectByIdRoutePath } from '@/shared/config/routes';
-import { cn, getColorByFirstLetter } from '@/shared/lib/css';
-import { getInitials } from '@/shared/lib/data';
+import { cn } from '@/shared/lib/css';
 import { getManageProjectsItemClassName } from '../../constants';
 import {
   getProjectMembersModal,
@@ -75,9 +74,8 @@ export function ManageProjectsItem({ project, tenant }: Props) {
             key={member.id}
             src={''}
             alt={member.name}
-            fallback={getInitials(member.name)}
-            className='flex items-center justify-center w-6 h-6 text-xs mr-[-6px] border-2 border-muted'
-            style={{ backgroundColor: getColorByFirstLetter(member.name) }}
+            initials={member.name}
+            className='grid place-content-center w-6 h-6 text-xs mr-[-6px] border-2 border-muted'
           />
         ))}
 

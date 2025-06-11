@@ -19,20 +19,23 @@ import {
 } from '@dnd-kit/core';
 
 import type { Board, Column, Task, Color } from '@/entities/Board';
-
-interface Props {
-  board: Board;
-  colors: Color[] | undefined;
-  isFiltered?: boolean;
-}
+import type { DateRange } from 'react-day-picker';
 
 interface MapColumnsAndTasksById {
   columns: Record<string, Column>;
   tasks: Record<string, Task>;
 }
 
+interface Props {
+  board: Board;
+  colors: Color[] | undefined;
+  assignees: string[] | undefined;
+  dateRange: DateRange | undefined;
+  isFiltered?: boolean;
+}
+
 export function ViewBoard(props: Props) {
-  const { board, colors, isFiltered = false } = props;
+  const { board, colors, assignees, dateRange, isFiltered = false } = props;
 
   const {
     columns,
@@ -95,6 +98,8 @@ export function ViewBoard(props: Props) {
               data={column}
               sortableTaskIds={sortableTaskIds}
               colors={colors}
+              assignees={assignees}
+              dateRange={dateRange}
               isFiltered={isFiltered}
             />
           ))}

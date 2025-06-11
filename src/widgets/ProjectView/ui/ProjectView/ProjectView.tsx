@@ -13,7 +13,7 @@ import { useDeviceType } from '@/shared/lib/deviceType/useDeviceType';
 import {
   useBoardStore,
   boardQueries,
-  getMapColorTaskFilterByBoardId,
+  getAllMapTaskFilters,
 } from '@/entities/Board';
 
 import { getContentMargin } from '../../lib/getContentMargin';
@@ -25,11 +25,15 @@ export function ProjectView() {
   const { boardId } = useProject();
   const { isMobile } = useDeviceType();
 
-  const { mapColorTaskFilterByBoardId } = useBoardStore(
-    getMapColorTaskFilterByBoardId(),
-  );
+  const {
+    mapColorTaskFilterByBoardId,
+    mapAssigneesTaskFilterByBoardId,
+    mapDateRangeTaskFilterByBoardId,
+  } = useBoardStore(getAllMapTaskFilters());
 
   const colors = mapColorTaskFilterByBoardId[boardId];
+  const assignees = mapAssigneesTaskFilterByBoardId[boardId];
+  const dateRange = mapDateRangeTaskFilterByBoardId[boardId];
 
   const {
     data: board,
@@ -38,28 +42,25 @@ export function ProjectView() {
     error,
     refetch,
   } = useQuery({
-    ...boardQueries.getBoardById({
-      boardId: boardId!,
-    }),
+    ...boardQueries.getBoardById({ boardId: boardId! }),
     enabled: !!boardId,
-    select: res => {
-      return {
-        ...res,
-        columns: restoreColumnsOrder(res.columns).map(column => ({
-          ...column,
-          tasks: restoreTasksOrder(column.tasks),
-        })),
-      };
-    },
+    select: res => ({
+      ...res,
+      columns: restoreColumnsOrder(res.columns).map(column => ({
+        ...column,
+        tasks: restoreTasksOrder(column.tasks),
+      })),
+    }),
   });
 
   if (isLoading) return <ViewBoardLoading />;
   else if (isError || !board)
     return <ErrorBoundary className='m-auto' error={error} reset={refetch} />;
 
-  const isFiltered = colors && colors.length > 0 ? true : false;
-
-  console.log(board);
+  const isFiltered =
+    (colors && colors.length > 0) || (assignees && assignees.length > 0)
+      ? true
+      : false;
 
   return (
     <ProjectViewWrapper>
@@ -67,11 +68,11 @@ export function ProjectView() {
         className='flex gap-4'
         style={{ marginInline: getContentMargin(isMobile) }}
       >
-        {/* TODO: add key to ViewBoard */}
         <ViewBoard
-          // key={dataUpdatedAt}
           board={board}
           colors={colors}
+          assignees={assignees}
+          dateRange={dateRange}
           isFiltered={isFiltered}
         />
         <CreateColumn />

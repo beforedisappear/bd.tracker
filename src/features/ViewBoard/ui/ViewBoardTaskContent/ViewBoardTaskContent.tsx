@@ -2,6 +2,7 @@ import { ViewBoardTaskStickersMenu } from '../ViewBoardTaskStickersMenu/ViewBoar
 import { ViewBoardAssigneesPopover } from '../ViewBoardAssigneesPopover/ViewBoardAssigneesPopover';
 
 import type { Task } from '@/entities/Board';
+import { ViewBoardTaskDateRangeMenu } from '../ViewBoardTaskDateRangeMenu/ViewBoardTaskDateRangeMenu';
 
 interface Props {
   data: Task;
@@ -12,7 +13,14 @@ export function ViewBoardTaskContent(props: Props) {
 
   return (
     <div className='flex gap-2 justify-between'>
-      <ViewBoardTaskStickersMenu />
+      <div className='flex gap-2 flex-wrap'>
+        <ViewBoardTaskStickersMenu />
+        <ViewBoardTaskDateRangeMenu
+          taskId={data.id}
+          startDate={data.startDate}
+          endDate={data.endDate}
+        />
+      </div>
 
       <ViewBoardAssigneesPopover taskId={data.id} assignees={data.assignees} />
     </div>

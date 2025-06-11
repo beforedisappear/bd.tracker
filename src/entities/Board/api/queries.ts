@@ -72,10 +72,12 @@ export const boardQueries = {
   deleteBoard: () =>
     mutationOptions({
       mutationFn: (dto: DeleteBoardDtoReq) => deleteBoard(dto),
-      onSuccess: (_, { projectId }) => {
+      onSuccess: (_, { projectId, boardId }) => {
         queryClient.invalidateQueries({
           queryKey: [...boardQueries.all(projectId)],
         });
+
+        queryClient.setQueryData(boardQueries.boardById(boardId), {});
       },
     }),
 };

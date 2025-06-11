@@ -10,7 +10,11 @@ export { getDeleteColumnModal } from './model/selectors/getDeleteColumnModal';
 export { getCreateTaskModal } from './model/selectors/getCreateTaskModal';
 export { getMapColorTaskFilterByBoardId } from './model/selectors/getMapColorTaskFilterByBoardId';
 export { getMapAssigneesTaskFilterByBoardId } from './model/selectors/getMapAssigneesTaskFilterByBoardId';
-export { getMapDateTaskFilterByBoardId } from './model/selectors/getMapDateTaskFilterByBoardId';
+export { getMapDateRangeTaskFilterByBoardId } from './model/selectors/getMapDateRangeTaskFilterByBoardId';
+export { getAllMapTaskFilters } from './model/selectors/getAllMapTaskFilters';
+
+// export { mapColumnsById } from './lib/mapColumnsById';
+// export { mapTasksById } from './lib/mapTasksById';
 
 export { BoardTaskColorsInput } from './ui/BoardTaskColorsInput/BoardTaskColorsInput';
 

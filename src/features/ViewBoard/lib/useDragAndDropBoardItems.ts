@@ -1,5 +1,5 @@
 import { arrayMove } from '@dnd-kit/sortable';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useShowNotAllowedToMoveItemsToast } from './useShowNotAllowedToMoveToast';
 
@@ -37,6 +37,10 @@ export function useDragAndDropBoardItems(args: Args) {
 
   const lastValidOver = useRef<Over>(null);
   const lastValidColumns = useRef<Column[]>(null); // для сохранения состояния columns перед мутацией
+
+  useEffect(() => {
+    setColumns(board.columns);
+  }, [board.columns]);
 
   const { mutateAsync: moveColumn, isPending: isMovingColumn } = useMutation(
     columnQueries.moveColumn(),

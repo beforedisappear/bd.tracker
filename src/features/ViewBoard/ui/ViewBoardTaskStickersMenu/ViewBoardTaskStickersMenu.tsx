@@ -1,6 +1,7 @@
 import { Popover } from '@/shared/ui/c';
 import { ViewBoardTaskStickersMenuTrigger } from '../ViewBoardTaskStickersMenuTrigger/ViewBoardTaskStickersMenuTrigger';
 import { useState } from 'react';
+import { Calendar } from 'lucide-react';
 
 export function ViewBoardTaskStickersMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,8 +12,9 @@ export function ViewBoardTaskStickersMenu() {
       open={isOpen}
       onOpenChange={setIsOpen}
       className='w-56'
+      content={{ align: 'start' }}
     >
-      123
+      <Calendar className='!h-3 !w-3' />
     </Popover>
   );
 }

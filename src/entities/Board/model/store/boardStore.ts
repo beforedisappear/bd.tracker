@@ -12,7 +12,7 @@ const defaultInitState: BoardStoreState = {
   currentColumnId: null, // for create or delete task
   mapColorTaskFilterByBoardId: {},
   mapAssigneesTaskFilterByBoardId: {},
-  mapDateTaskFilterByBoardId: {},
+  mapDateRangeTaskFilterByBoardId: {},
 };
 
 export const createBoardStore = (
@@ -47,10 +47,10 @@ export const createBoardStore = (
         },
       })),
 
-    setMapDateTaskFilterByBoardId: (boardId: string, date: DateRange) =>
+    setMapDateRangeTaskFilterByBoardId: (boardId: string, date: DateRange) =>
       set(state => ({
-        mapDateTaskFilterByBoardId: {
-          ...state.mapDateTaskFilterByBoardId,
+        mapDateRangeTaskFilterByBoardId: {
+          ...state.mapDateRangeTaskFilterByBoardId,
           [boardId]: date,
         },
       })),
@@ -59,6 +59,7 @@ export const createBoardStore = (
       set(() => ({
         mapColorTaskFilterByBoardId: {},
         mapAssigneesTaskFilterByBoardId: {},
+        mapDateTaskFilterByBoardId: {},
       })),
   }));
 };

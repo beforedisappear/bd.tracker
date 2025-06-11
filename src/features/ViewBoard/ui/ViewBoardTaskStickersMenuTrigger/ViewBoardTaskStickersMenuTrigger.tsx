@@ -1,4 +1,4 @@
-import { Plus } from 'lucide-react';
+import { Tag } from 'lucide-react';
 import { Button, type ButtonProps } from '@/shared/ui/c';
 import type { MouseEvent } from 'react';
 
@@ -21,8 +21,7 @@ export function ViewBoardTaskStickersMenuTrigger(props: Props) {
         onClick={handleClick}
         {...rest}
       >
-        <Plus className='!h-3 !w-3' />
-        <span className='text-[11px]'>Метка</span>
+        <Tag className='!h-3 !w-3' />
       </Button>
     </div>
   );

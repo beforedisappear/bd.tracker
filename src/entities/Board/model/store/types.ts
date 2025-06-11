@@ -7,19 +7,22 @@ export interface BoardStoreState {
   showCreateTaskModal: boolean;
   mapColorTaskFilterByBoardId: Record<string, Color[] | undefined>;
   mapAssigneesTaskFilterByBoardId: Record<string, string[] | undefined>;
-  mapDateTaskFilterByBoardId: Record<string, DateRange | undefined>;
+  mapDateRangeTaskFilterByBoardId: Record<string, DateRange | undefined>;
 }
 
 export interface BoardStoreActions {
-  setShowDeleteColumnModal: (show: boolean) => void;
   setCurrentColumnId: (id: string | null) => void;
+  setShowDeleteColumnModal: (show: boolean) => void;
   setShowCreateTaskModal: (show: boolean) => void;
   setMapColorTaskFilterByBoardId: (boardId: string, colors: Color[]) => void;
   setMapAssigneesTaskFilterByBoardId: (
     boardId: string,
     assignees: string[],
   ) => void;
-  setMapDateTaskFilterByBoardId: (boardId: string, date: DateRange) => void;
+  setMapDateRangeTaskFilterByBoardId: (
+    boardId: string,
+    date: DateRange,
+  ) => void;
   clearAllMapFilters: () => void;
 }
 

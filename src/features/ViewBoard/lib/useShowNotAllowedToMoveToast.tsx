@@ -1,16 +1,14 @@
 import { Button } from '@/shared/ui/c';
 
-import { useBoardStore } from '@/entities/Board';
-
 import { toast } from 'sonner';
 
+import { useBoardStore } from '@/entities/Board';
+
 export const useShowNotAllowedToMoveItemsToast = () => {
-  const clearMapColorTaskFilterByBoardId = useBoardStore(
-    state => state.clearMapColorTaskFilterByBoardId,
-  );
+  const clearAllMapFilters = useBoardStore(state => state.clearAllMapFilters);
 
   const onResetFilters = () => {
-    clearMapColorTaskFilterByBoardId();
+    clearAllMapFilters();
     toast.dismiss();
   };
 

@@ -2,16 +2,21 @@ import { Button, Calendar } from '@/shared/ui/c';
 
 import { useState } from 'react';
 import { useProject } from '@/shared/lib/navigation';
-import { useBoardStore, getMapDateTaskFilterByBoardId } from '@/entities/Board';
+import {
+  useBoardStore,
+  getMapDateRangeTaskFilterByBoardId,
+} from '@/entities/Board';
 
 import type { DateRange } from 'react-day-picker';
 
-export function FilterTasksByDateContent() {
+export function FilterTasksByDateRangeContent() {
   const { boardId } = useProject();
-  const { setMapDateTaskFilterByBoardId, mapDateTaskFilterByBoardId } =
-    useBoardStore(getMapDateTaskFilterByBoardId());
+  const {
+    setMapDateRangeTaskFilterByBoardId,
+    mapDateRangeTaskFilterByBoardId,
+  } = useBoardStore(getMapDateRangeTaskFilterByBoardId());
 
-  const dateRange = mapDateTaskFilterByBoardId[boardId];
+  const dateRange = mapDateRangeTaskFilterByBoardId[boardId];
 
   const [selected, setSelected] = useState<DateRange | undefined>(dateRange);
 
@@ -20,11 +25,14 @@ export function FilterTasksByDateContent() {
 
     if (!newSelected?.from || !newSelected?.to) return;
 
-    setMapDateTaskFilterByBoardId(boardId, newSelected);
+    setMapDateRangeTaskFilterByBoardId(boardId, newSelected);
   };
 
   const onResetFilter = () => {
-    setMapDateTaskFilterByBoardId(boardId, { from: undefined, to: undefined });
+    setMapDateRangeTaskFilterByBoardId(boardId, {
+      from: undefined,
+      to: undefined,
+    });
     setSelected(undefined);
   };
 
@@ -42,7 +50,7 @@ export function FilterTasksByDateContent() {
         onSelect={handleSelect}
       />
 
-      <Button variant='outline' size='sm' onClick={onResetFilter}>
+      <Button variant='secondary' size='sm' onClick={onResetFilter}>
         Сбросить фильтр
       </Button>
     </div>

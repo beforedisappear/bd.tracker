@@ -11,7 +11,7 @@ import { useProject } from '@/shared/lib/navigation';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { taskQueries, type Task } from '@/entities/Board';
+import { Task, taskQueries } from '@/entities/Board';
 import type { CheckedState } from '@radix-ui/react-checkbox';
 
 interface Props {

@@ -1,7 +1,7 @@
 import {
   FilterTasksByAssigned,
   FilterTasksByColor,
-  FilterTasksByDate,
+  FilterTasksByDateRange,
   FilterTasksBySticker,
 } from '@/features/FilterTasks';
 
@@ -11,7 +11,7 @@ export function TaskFilters() {
     <div className='flex flex-row gap-2 h-full bg-muted rounded-md'>
       <FilterTasksByAssigned />
       <FilterTasksByColor />
-      <FilterTasksByDate />
+      <FilterTasksByDateRange />
       <FilterTasksBySticker />
     </div>
   );
