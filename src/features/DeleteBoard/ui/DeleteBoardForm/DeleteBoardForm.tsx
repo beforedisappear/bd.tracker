@@ -51,13 +51,13 @@ export function DeleteBoardForm(props: Props) {
     )?.id;
 
     deleteBoard({ projectId, boardId })
-      .then(() => onClose())
       .then(() => toast.success(SUCCESSFUL_SENDING_MESSAGE))
       .then(() => {
         if (!anotherBoardId) return push(getTeamRoutePath(tenant));
         push(getProjectByIdRoutePath(tenant, projectId, anotherBoardId));
       })
-      .catch(e => toast.error(getErrorMessage(e)));
+      .catch(e => toast.error(getErrorMessage(e)))
+      .finally(() => onClose());
   };
 
   return (

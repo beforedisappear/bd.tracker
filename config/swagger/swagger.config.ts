@@ -67,6 +67,14 @@ import {
 } from 'api/routeHandlers/task/[taskId]/doc';
 import { PatchMoveTaskDoc } from 'api/routeHandlers/task/[taskId]/move/doc';
 import { PatchUpdateTaskDoc } from 'api/routeHandlers/task/[taskId]/update/doc';
+import {
+  GetBoardStickersDoc,
+  PostCreateStickerDoc,
+} from 'api/routeHandlers/board/[boardId]/sticker/doc';
+import {
+  DeleteStickerDoc,
+  PatchUpdateStickerDoc,
+} from 'api/routeHandlers/board/[boardId]/sticker/[stickerId]/doc';
 
 // setup open api for zod
 extendZodWithOpenApi(z);
@@ -138,6 +146,12 @@ openAPIRegistry.registerPath(GetProjectBoardsDoc(bearerAuth.name));
 openAPIRegistry.registerPath(GetBoardByIdDoc(bearerAuth.name));
 openAPIRegistry.registerPath(DeleteBoardByIdDoc(bearerAuth.name));
 openAPIRegistry.registerPath(PatchRenameBoardDoc(bearerAuth.name));
+
+//board strickers
+openAPIRegistry.registerPath(GetBoardStickersDoc(bearerAuth.name));
+openAPIRegistry.registerPath(PostCreateStickerDoc(bearerAuth.name));
+openAPIRegistry.registerPath(PatchUpdateStickerDoc(bearerAuth.name));
+openAPIRegistry.registerPath(DeleteStickerDoc(bearerAuth.name));
 
 //column main
 openAPIRegistry.registerPath(PostCreateColumnDoc(bearerAuth.name));

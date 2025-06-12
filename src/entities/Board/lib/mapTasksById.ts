@@ -8,6 +8,6 @@ export function mapTasksById(board: Board): Record<string, Task> {
       });
       return acc;
     },
-    {} as Record<string, Board['columns'][number]['tasks'][number]>,
+    {} as Record<string, Task>,
   );
 }

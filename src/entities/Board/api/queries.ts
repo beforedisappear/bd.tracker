@@ -77,7 +77,9 @@ export const boardQueries = {
           queryKey: [...boardQueries.all(projectId)],
         });
 
-        queryClient.setQueryData(boardQueries.boardById(boardId), {});
+        queryClient.removeQueries({
+          queryKey: [...boardQueries.boardById(boardId)],
+        });
       },
     }),
 };

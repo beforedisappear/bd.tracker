@@ -20,22 +20,24 @@ export function ViewBoardAssigneesPopoverTrigger(props: Props) {
 
   if (assignees.length > 0)
     return (
-      <Button
-        variant={null}
-        className='h-6 p-0 gap-0'
-        onClick={handleClick}
-        {...rest}
-      >
-        {assignees.slice(0, 3).map(user => (
-          <Avatar
-            key={user.id}
-            src=''
-            alt={user.name}
-            initials={user.name}
-            className='grid place-content-center h-6 w-6 text-xs ml-[-10px] border-2 border-muted'
-          />
-        ))}
-      </Button>
+      <div className='flex justify-end min-w-14'>
+        <Button
+          variant={null}
+          className='h-6 p-0 gap-0'
+          onClick={handleClick}
+          {...rest}
+        >
+          {assignees.slice(0, 3).map(user => (
+            <Avatar
+              key={user.id}
+              src=''
+              alt={user.name}
+              initials={user.name}
+              className='grid place-content-center h-6 w-6 text-xs ml-[-10px] border-2 border-muted'
+            />
+          ))}
+        </Button>
+      </div>
     );
 
   return (

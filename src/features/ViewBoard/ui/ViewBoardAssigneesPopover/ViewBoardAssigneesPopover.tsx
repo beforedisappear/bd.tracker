@@ -13,6 +13,7 @@ export function ViewBoardAssigneesPopover(props: Props) {
     <Popover
       trigger={<ViewBoardAssigneesPopoverTrigger assignees={props.assignees} />}
       className='flex flex-col w-80 h-[180px] gap-2'
+      content={{ align: 'end' }}
     >
       <ViewBoardAssigneesPopoverContent {...props} />
     </Popover>
