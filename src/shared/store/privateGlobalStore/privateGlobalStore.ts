@@ -11,7 +11,8 @@ const defaultInitState: IPrivateGlobalStoreState = {
   showProjectMembersModal: false,
   showDeleteProjectModal: false,
   showDeleteBoardModal: false,
-  deletingBoardId: null,
+  showManageStickersModal: false,
+  currentBoardId: null,
 };
 
 export const createPrivateGlobalStore = (
@@ -23,11 +24,15 @@ export const createPrivateGlobalStore = (
       set({ teamIdBySlugMap: map }),
     setShowProjectMembersModal: (show: boolean) =>
       set({ showProjectMembersModal: show }),
-    setCurrentProjectId: (id: string | null) => set({ currentProjectId: id }),
     setShowDeleteProjectModal: (show: boolean) =>
       set({ showDeleteProjectModal: show }),
     setShowDeleteBoardModal: (show: boolean) =>
       set({ showDeleteBoardModal: show }),
-    setDeletingBoardId: (id: string | null) => set({ deletingBoardId: id }),
+    setShowManageStickersModal: (show: boolean) =>
+      set({
+        showManageStickersModal: show,
+      }),
+    setCurrentBoardId: (id: string | null) => set({ currentBoardId: id }),
+    setCurrentProjectId: (id: string | null) => set({ currentProjectId: id }),
   }));
 };

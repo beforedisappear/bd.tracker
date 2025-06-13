@@ -44,7 +44,7 @@ export function DeleteBoardForm(props: Props) {
 
     const allBoards = queryClient.getQueryData<
       AxiosResponse<GetAllBoardsDtoRes>
-    >(boardQueries.all(projectId));
+    >(boardQueries.allBoards(projectId));
 
     const anotherBoardId = allBoards?.data.find(
       board => board.id !== boardId,

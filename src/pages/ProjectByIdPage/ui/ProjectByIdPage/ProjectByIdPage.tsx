@@ -12,6 +12,7 @@ import { ProjectStoreProvider } from '@/entities/Project';
 import { BoardStoreProvider } from '@/entities/Board';
 
 import { useScrollLock } from '@/shared/lib/ui';
+import { ManageStickers } from '@/features/ManageStickers';
 
 export function ProjectByIdPage() {
   useScrollLock({ enabled: true, type: 'x' });
@@ -30,6 +31,7 @@ export function ProjectByIdPage() {
 
         <ManageProjectMembers />
         <DeleteBoard />
+        <ManageStickers />
         <TaskOverviewSheet />
       </BoardStoreProvider>
     </ProjectStoreProvider>

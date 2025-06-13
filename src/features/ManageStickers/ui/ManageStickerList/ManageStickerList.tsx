@@ -1,0 +1,23 @@
+import { type Sticker } from '@/entities/Board';
+
+import { ManageStickersCreateForm } from '../ManageStickersCreateForm/ManageStickersCreateForm';
+import { ManageStickerListItem } from '../ManageStickerListItem/ManageStickerListItem';
+
+interface Props {
+  boardId: string;
+  data: Sticker[];
+}
+
+export function ManageStickerList(props: Props) {
+  const { boardId, data } = props;
+
+  return (
+    <div className='flex flex-col gap-2'>
+      {data.map(el => (
+        <ManageStickerListItem key={el.id} boardId={boardId} data={el} />
+      ))}
+
+      <ManageStickersCreateForm boardId={boardId} />
+    </div>
+  );
+}

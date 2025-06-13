@@ -1,4 +1,4 @@
-import { BoardTaskColorsInput, type Color } from '@/entities/Board';
+import { BoardColorInput, type Color } from '@/entities/Board';
 import type { MouseEvent } from 'react';
 
 interface Props {
@@ -10,11 +10,12 @@ export function ViewBoardTaskMenuItemColors(props: Props) {
   const { currentColor, onSelect } = props;
 
   return (
-    <BoardTaskColorsInput
+    <BoardColorInput
       currentColor={currentColor}
       onSelect={onSelect}
       onClick={e => e.stopPropagation()}
       className='px-2 py-1'
+      label='Цвет задачи'
     />
   );
 }

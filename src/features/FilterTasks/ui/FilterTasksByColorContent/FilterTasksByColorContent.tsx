@@ -1,7 +1,7 @@
 import { Button } from '@/shared/ui/c';
 
 import {
-  BoardTaskColorsInput,
+  BoardColorInput,
   getMapColorTaskFilterByBoardId,
   useBoardStore,
   type Color,
@@ -33,10 +33,11 @@ export function FilterTasksByColorContent() {
 
   return (
     <>
-      <BoardTaskColorsInput
+      <BoardColorInput
         currentColor={mapColorTaskFilterByBoardId[boardId]}
         onSelect={onSelect}
         onClick={e => e.stopPropagation()}
+        label='Цвет задачи'
       />
 
       <Button variant='secondary' size='sm' onClick={onResetFilter}>

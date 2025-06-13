@@ -9,7 +9,7 @@ interface Props {
 
 export function BoardSticker(props: Props) {
   const {
-    data: { id, name, color },
+    data: { name, color },
   } = props;
 
   const stickerColor = mapColorToClassName[color];
@@ -17,7 +17,7 @@ export function BoardSticker(props: Props) {
   return (
     <Badge
       variant='secondary'
-      className={cn('w-fit hover:bg-initial', stickerColor)}
+      className={cn('w-fit  hover:bg-initial', stickerColor)}
     >
       {name}
     </Badge>

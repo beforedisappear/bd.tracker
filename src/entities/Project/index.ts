@@ -3,6 +3,7 @@ export { ProjectStoreProvider } from './models/store/ProjectStoreProvider';
 export { useProjectStore } from './models/store/useProjectStore';
 export { getProjectMembersModal } from './models/selectors/getProjectMembersModal';
 export { getDeleteProjectModal } from './models/selectors/getDeleteProjectModal';
+export { getProjectMembersModalActions } from './models/selectors/getProjectMembersModalActions';
 
 export { ProjectMembersField } from './ui/ProjectMembersField/ProjectMembersField';
 

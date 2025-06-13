@@ -9,6 +9,6 @@ export const updateBoardSticker = (dto: UpdateBoardStickerDtoReq) => {
 
   return apiClient.withAuth.patch<UpdateBoardStickerDtoRes>(
     `/board/${boardId}/sticker/${stickerId}`,
-    { data: body },
+    body,
   );
 };

@@ -27,5 +27,14 @@ export function FilterTasksByStickerContent() {
       />
     );
 
-  return <FilterTasksByStickerForm data={data} />;
+  //TODO: add scroll area
+  return (
+    <div className='flex flex-col gap-2'>
+      <span className='text-[10px] font-medium uppercase text-muted-foreground'>
+        Метки задачи
+      </span>
+
+      <FilterTasksByStickerForm data={data} />
+    </div>
+  );
 }

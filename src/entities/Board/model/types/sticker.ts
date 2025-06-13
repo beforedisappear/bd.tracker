@@ -19,7 +19,7 @@ export type GetAllBoardStickersDotRes = Sticker[];
 export interface CreateBoardStickerDtoReq {
   boardId: string;
   name: string;
-  color: Color;
+  color?: Color;
 }
 
 export type CreateBoardStickerDtoRes = Sticker;
