@@ -1,6 +1,7 @@
 import { ScrollArea, Checkbox } from '@/shared/ui/c';
 import { memo } from 'react';
 import type { CheckedState } from '@radix-ui/react-checkbox';
+import { cn } from '@/shared/lib/css';
 
 type Member = {
   id: string;
@@ -29,7 +30,8 @@ export const MembersField = memo((props: Props) => {
     <ScrollArea
       type='always'
       style={{ height: customHeight }}
-      className={isExpanded ? 'h-40' : 'h-52'}
+      className={cn('h-40 pr-4', { ['h-52']: isExpanded })}
+      scrollBar={{ className: '!right-[3px]' }}
     >
       {members.map(member => (
         <Checkbox
@@ -38,6 +40,7 @@ export const MembersField = memo((props: Props) => {
           label={member.name}
           className='h-6 items-center'
           labelClassName='font-normal text-base truncate max-w-64'
+          withRightLabel
           onCheckedChange={checked => {
             onCheckedChange?.(checked, member.id);
           }}

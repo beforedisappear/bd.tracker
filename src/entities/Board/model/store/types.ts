@@ -8,6 +8,7 @@ export interface BoardStoreState {
   mapColorTaskFilterByBoardId: Record<string, Color[] | undefined>;
   mapAssigneesTaskFilterByBoardId: Record<string, string[] | undefined>;
   mapDateRangeTaskFilterByBoardId: Record<string, DateRange | undefined>;
+  mapStickerTaskFilterByBoardId: Record<string, string[] | undefined>;
 }
 
 export interface BoardStoreActions {
@@ -22,6 +23,10 @@ export interface BoardStoreActions {
   setMapDateRangeTaskFilterByBoardId: (
     boardId: string,
     date: DateRange,
+  ) => void;
+  setMapStickerTaskFilterByBoardId: (
+    boardId: string,
+    stickers: string[],
   ) => void;
   clearAllMapFilters: () => void;
 }

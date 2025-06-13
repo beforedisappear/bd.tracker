@@ -1,7 +1,8 @@
-import { type MouseEvent } from 'react';
+import { MoreVerticalIcon } from 'lucide-react';
 
 import { Button, type ButtonProps } from '@/shared/ui/c';
-import { MoreVerticalIcon } from 'lucide-react';
+
+import type { MouseEvent } from 'react';
 
 interface Props extends ButtonProps {}
 

@@ -18,6 +18,11 @@ import { deleteTask } from './task/deleteTask';
 import { updateTask } from './task/updateTask';
 import { getTaskById } from './task/getTaskById';
 
+import { getAllBoardStickers } from './sticker/getAllBoardStickers';
+import { createBoardSticker } from './sticker/createBoardSticker';
+import { updateBoardSticker } from './sticker/updateBoardSticker';
+import { deleteBoardSticker } from './sticker/deleteBoardSticker';
+
 import type {
   Column,
   Board,
@@ -35,26 +40,20 @@ import type {
   RenameColumnDtoReq,
   UpdateTaskDtoReq,
   GetTaskByIdDtoReq,
+  GetAllBoardStickersDtoReq,
+  CreateBoardStickerDtoReq,
+  UpdateBoardStickerDtoReq,
+  DeleteBoardStickerDtoReq,
 } from '../model/types';
 
 export const boardQueries = {
-  all: (projectId: string) => ['boards', projectId],
+  allBoards: (projectId: string) => ['boards', projectId],
 
   boardById: (boardId: string) => ['board', boardId],
 
-  createBoard: () =>
-    mutationOptions({
-      mutationFn: (dto: CreateBoardDtoReq) => createBoard(dto),
-      onSuccess: (_, { projectId }) => {
-        queryClient.invalidateQueries({
-          queryKey: [...boardQueries.all(projectId)],
-        });
-      },
-    }),
-
   getAllBoards: (dto: GetAllBoardsDtoReq) =>
     queryOptions({
-      queryKey: [...boardQueries.all(dto.projectId)],
+      queryKey: [...boardQueries.allBoards(dto.projectId)],
       queryFn: () => getAllBoards(dto),
       select: res => res.data,
     }),
@@ -69,12 +68,22 @@ export const boardQueries = {
     });
   },
 
+  createBoard: () =>
+    mutationOptions({
+      mutationFn: (dto: CreateBoardDtoReq) => createBoard(dto),
+      onSuccess: (_, { projectId }) => {
+        queryClient.invalidateQueries({
+          queryKey: [...boardQueries.allBoards(projectId)],
+        });
+      },
+    }),
+
   deleteBoard: () =>
     mutationOptions({
       mutationFn: (dto: DeleteBoardDtoReq) => deleteBoard(dto),
       onSuccess: (_, { projectId, boardId }) => {
         queryClient.invalidateQueries({
-          queryKey: [...boardQueries.all(projectId)],
+          queryKey: [...boardQueries.allBoards(projectId)],
         });
 
         queryClient.removeQueries({
@@ -203,5 +212,43 @@ export const taskQueries = {
             };
           },
         ),
+    }),
+};
+
+export const stickerQueries = {
+  allStickers: () => ['stickers'],
+
+  getBoardStickers: (dto: GetAllBoardStickersDtoReq) =>
+    queryOptions({
+      queryKey: [...stickerQueries.allStickers()],
+      queryFn: () => getAllBoardStickers(dto),
+      select: res => res.data,
+    }),
+
+  createSticker: () =>
+    mutationOptions({
+      mutationFn: (dto: CreateBoardStickerDtoReq) => createBoardSticker(dto),
+      onSuccess: () =>
+        queryClient.invalidateQueries({
+          queryKey: [...stickerQueries.allStickers()],
+        }),
+    }),
+
+  updateSticker: () =>
+    mutationOptions({
+      mutationFn: (dto: UpdateBoardStickerDtoReq) => updateBoardSticker(dto),
+      onSuccess: () =>
+        queryClient.invalidateQueries({
+          queryKey: [...stickerQueries.allStickers()],
+        }),
+    }),
+
+  deleteSticker: () =>
+    mutationOptions({
+      mutationFn: (dto: DeleteBoardStickerDtoReq) => deleteBoardSticker(dto),
+      onSuccess: () =>
+        queryClient.invalidateQueries({
+          queryKey: [...stickerQueries.allStickers()],
+        }),
     }),
 };

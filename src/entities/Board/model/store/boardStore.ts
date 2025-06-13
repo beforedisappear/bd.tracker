@@ -13,6 +13,7 @@ const defaultInitState: BoardStoreState = {
   mapColorTaskFilterByBoardId: {},
   mapAssigneesTaskFilterByBoardId: {},
   mapDateRangeTaskFilterByBoardId: {},
+  mapStickerTaskFilterByBoardId: {},
 };
 
 export const createBoardStore = (
@@ -55,11 +56,20 @@ export const createBoardStore = (
         },
       })),
 
+    setMapStickerTaskFilterByBoardId: (boardId: string, stickers: string[]) =>
+      set(state => ({
+        mapStickerTaskFilterByBoardId: {
+          ...state.mapStickerTaskFilterByBoardId,
+          [boardId]: stickers,
+        },
+      })),
+
     clearAllMapFilters: () =>
       set(() => ({
         mapColorTaskFilterByBoardId: {},
         mapAssigneesTaskFilterByBoardId: {},
-        mapDateTaskFilterByBoardId: {},
+        mapDateRangeTaskFilterByBoardId: {},
+        mapStickerTaskFilterByBoardId: {},
       })),
   }));
 };

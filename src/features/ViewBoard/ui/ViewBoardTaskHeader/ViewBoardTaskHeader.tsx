@@ -25,7 +25,7 @@ export function ViewBoardTaskHeader(props: Props) {
   const [isChecked, setIsChecked] = useState(isDone);
   const { mutateAsync: updateTask } = useMutation(taskQueries.updateTask());
 
-  const handleChange = (value: boolean) => {
+  const onSetTaskCompletion = (value: boolean) => {
     setIsChecked(value);
     updateTask({ taskId, boardId, isDone: value }).catch(e => {
       setIsChecked(isDone);
@@ -37,7 +37,7 @@ export function ViewBoardTaskHeader(props: Props) {
     <div className='flex items-center gap-2'>
       <PureCheckbox
         checked={isChecked}
-        onCheckedChange={handleChange}
+        onCheckedChange={onSetTaskCompletion}
         onClick={e => e.stopPropagation()}
       />
 
@@ -54,6 +54,7 @@ export function ViewBoardTaskHeader(props: Props) {
         taskId={taskId}
         isChecked={isChecked}
         currentColor={color}
+        onSetTaskCompletion={onSetTaskCompletion}
       />
     </div>
   );

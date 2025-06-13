@@ -28,7 +28,7 @@ export function ViewBoardTaskDateRangeMenu(props: Props) {
       open={isOpen}
       onOpenChange={setIsOpen}
       className='w-auto p-0'
-      content={{ align: 'center' }}
+      content={{ align: 'start' }}
     >
       <ViewBoardTaskDateRangeMenuContent {...props} onClose={onClose} />
     </Popover>

@@ -18,10 +18,11 @@ interface Props {
   taskId: string;
   isChecked: boolean;
   currentColor: Color;
+  onSetTaskCompletion: (value: boolean) => void;
 }
 
 export function ViewBoardTaskMenu(props: Props) {
-  const { taskId, isChecked, currentColor } = props;
+  const { taskId, isChecked, currentColor, onSetTaskCompletion } = props;
 
   const { boardId } = useProject();
   const [isOpen, setIsOpen] = useState(false);
@@ -53,10 +54,7 @@ export function ViewBoardTaskMenu(props: Props) {
       },
       onSelect: e => {
         e.stopPropagation();
-        setIsOpen(false);
-        updateTask({ taskId, boardId, isDone: !isChecked }).catch(e => {
-          toast.error(getErrorMessage(e));
-        });
+        onSetTaskCompletion(!isChecked);
       },
     },
     {

@@ -12,9 +12,9 @@ import { useProject } from '@/shared/lib/navigation';
 import { useForm } from 'react-hook-form';
 
 import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import type { CheckedState } from '@radix-ui/react-checkbox';
-import { zodResolver } from '@hookform/resolvers/zod';
 
 export function FilterTasksByAssignedContent() {
   const { boardId } = useProject();

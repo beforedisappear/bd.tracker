@@ -25,15 +25,14 @@ export function ProjectView() {
   const { boardId } = useProject();
   const { isMobile } = useDeviceType();
 
-  const {
-    mapColorTaskFilterByBoardId,
-    mapAssigneesTaskFilterByBoardId,
-    mapDateRangeTaskFilterByBoardId,
-  } = useBoardStore(getAllMapTaskFilters());
+  const { colorMap, assigneesMap, dateRangeMap, stickersMap } = useBoardStore(
+    getAllMapTaskFilters(),
+  );
 
-  const colors = mapColorTaskFilterByBoardId[boardId];
-  const assignees = mapAssigneesTaskFilterByBoardId[boardId];
-  const dateRange = mapDateRangeTaskFilterByBoardId[boardId];
+  const colors = colorMap[boardId];
+  const assignees = assigneesMap[boardId];
+  const dateRange = dateRangeMap[boardId];
+  const stickers = stickersMap[boardId];
 
   const {
     data: board,
@@ -73,6 +72,7 @@ export function ProjectView() {
           colors={colors}
           assignees={assignees}
           dateRange={dateRange}
+          stickers={stickers}
           isFiltered={isFiltered}
         />
         <CreateColumn />

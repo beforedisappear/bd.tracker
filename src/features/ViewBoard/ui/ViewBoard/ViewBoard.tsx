@@ -31,11 +31,19 @@ interface Props {
   colors: Color[] | undefined;
   assignees: string[] | undefined;
   dateRange: DateRange | undefined;
+  stickers: string[] | undefined;
   isFiltered?: boolean;
 }
 
 export function ViewBoard(props: Props) {
-  const { board, colors, assignees, dateRange, isFiltered = false } = props;
+  const {
+    board,
+    colors,
+    assignees,
+    dateRange,
+    stickers,
+    isFiltered = false,
+  } = props;
 
   const {
     columns,
@@ -100,6 +108,7 @@ export function ViewBoard(props: Props) {
               colors={colors}
               assignees={assignees}
               dateRange={dateRange}
+              stickers={stickers}
               isFiltered={isFiltered}
             />
           ))}

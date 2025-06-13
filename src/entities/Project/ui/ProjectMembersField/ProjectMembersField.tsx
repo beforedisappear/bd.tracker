@@ -20,7 +20,7 @@ interface Props {
 }
 
 export function ProjectMembersField(props: Props) {
-  const { label, onCheckedChange, customHeight, labelClassName, onClick } =
+  const { label, customHeight, labelClassName, onClick, onCheckedChange } =
     props;
 
   const { projectId } = useProject();

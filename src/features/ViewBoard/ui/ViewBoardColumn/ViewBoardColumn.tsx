@@ -7,10 +7,10 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
+import { isWithinInterval, parseISO } from 'date-fns';
 
 import type { Column, Color } from '@/entities/Board';
 import type { DateRange } from 'react-day-picker';
-import { isWithinInterval, parseISO } from 'date-fns';
 
 interface Props {
   data: Column;
@@ -18,6 +18,7 @@ interface Props {
   colors?: Color[];
   assignees?: string[];
   dateRange?: DateRange;
+  stickers?: string[];
   isFiltered?: boolean;
 }
 
@@ -28,6 +29,7 @@ export function ViewBoardColumn(props: Props) {
     sortableTaskIds,
     colors,
     assignees,
+    stickers,
     dateRange,
   } = props;
 
@@ -52,6 +54,11 @@ export function ViewBoardColumn(props: Props) {
                 task.assignees.some(assignee =>
                   assignees.includes(assignee.id),
                 ),
+            )
+            .filter(
+              task =>
+                !stickers?.length ||
+                task.stickers.some(sticker => stickers.includes(sticker.id)),
             )
             .filter(task => {
               if (!dateRange?.from || !dateRange?.to) return true;
