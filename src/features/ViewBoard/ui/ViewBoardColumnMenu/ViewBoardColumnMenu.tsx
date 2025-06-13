@@ -4,7 +4,6 @@ import { DropdownMenu, type DropDownMenuOptions } from '@/shared/ui/c';
 import { ViewBoardColumnMenuTrigger } from '../ViewBoardColumnMenuTrigger/ViewBoardColumnMenuTrigger';
 
 import { useBoardStore, getDeleteColumnModal } from '@/entities/Board';
-import { useState } from 'react';
 
 interface Props {
   columnId: string;
@@ -12,7 +11,6 @@ interface Props {
 
 export function ViewBoardColumnMenu(props: Props) {
   const { columnId } = props;
-  const [isOpen, setIsOpen] = useState(false);
 
   const { setShowDeleteColumnModal, setCurrentColumnId } = useBoardStore(
     getDeleteColumnModal(),
@@ -41,14 +39,6 @@ export function ViewBoardColumnMenu(props: Props) {
   ];
 
   return (
-    <DropdownMenu
-      trigger={<ViewBoardColumnMenuTrigger />}
-      contentProps={{
-        onFocusOutside: () => setIsOpen(false),
-      }}
-      options={options}
-      open={isOpen}
-      onOpenChange={setIsOpen}
-    />
+    <DropdownMenu trigger={<ViewBoardColumnMenuTrigger />} options={options} />
   );
 }

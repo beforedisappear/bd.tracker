@@ -104,7 +104,6 @@ export function ViewBoardTaskMenu(props: Props) {
       trigger={<ViewBoardTaskMenuTrigger />}
       open={isOpen}
       onOpenChange={setIsOpen}
-      contentProps={{ onFocusOutside: () => setIsOpen(false) }}
     />
   );
 }

@@ -37,11 +37,12 @@ export function DropdownMenu(props: IProps) {
     options = [],
     className,
     contentProps,
+    modal = false,
     ...restProps
   } = props;
 
   return (
-    <DropdownMenuContainer {...restProps}>
+    <DropdownMenuContainer modal={modal} {...restProps}>
       <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
 
       <DropdownMenuContent className={className} {...contentProps}>

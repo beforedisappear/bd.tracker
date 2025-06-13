@@ -3,11 +3,11 @@ import { PencilIcon, TrashIcon } from 'lucide-react';
 import { DropdownMenu, type DropDownMenuOptions } from '@/shared/ui/c';
 import { SelectBoardItemMenuTrigger } from '../SelectBoardItemMenuTrigger/SelectBoardItemMenuTrigger';
 
-import { useState } from 'react';
 import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
 
 import { getDeleteBoardModal } from '@/entities/Board';
 import { toast } from 'sonner';
+
 import { LAST_BOARD_ERROR_MESSAGE } from '../../constants';
 
 interface Props {
@@ -17,8 +17,6 @@ interface Props {
 
 export function SelectBoardItemMenu(props: Props) {
   const { boardId, countOfBoards } = props;
-
-  const [isOpen, setIsOpen] = useState(false);
 
   const { setShowDeleteBoardModal, setDeletingBoardId } = usePrivateGlobalStore(
     getDeleteBoardModal(),
@@ -48,14 +46,6 @@ export function SelectBoardItemMenu(props: Props) {
   ];
 
   return (
-    <DropdownMenu
-      trigger={<SelectBoardItemMenuTrigger />}
-      options={options}
-      open={isOpen}
-      onOpenChange={setIsOpen}
-      contentProps={{
-        onFocusOutside: () => setIsOpen(false),
-      }}
-    />
+    <DropdownMenu trigger={<SelectBoardItemMenuTrigger />} options={options} />
   );
 }
