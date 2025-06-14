@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { AcceptInvitationToTeamReqQuerySchema } from './dto';
+import { AcceptInvitationToTeamReqBodySchema } from './dto';
 
-export type AcceptInvitationToTeamReqQuery = z.infer<
-  typeof AcceptInvitationToTeamReqQuerySchema
+export type AcceptInvitationToTeamReqBody = z.infer<
+  typeof AcceptInvitationToTeamReqBodySchema
 >;

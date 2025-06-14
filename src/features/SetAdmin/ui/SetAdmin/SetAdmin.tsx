@@ -5,7 +5,7 @@ import { SetAdminTrigger } from '../SetAdminTrigger/SetAdminTrigger';
 
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
+import { useTenant } from '@/shared/lib/navigation';
 
 import { getErrorMessage } from '@/shared/lib/error';
 import {
@@ -22,7 +22,7 @@ interface Props {
 }
 
 export function SetAdmin({ isAdmin }: Props) {
-  const { tenant } = useParams<{ tenant: string }>()!;
+  const tenant = useTenant();
   const { currentTeamMemberId } = useTeamStore(getCurrentTeamMemberId());
   const [showSetAdminModal, setShowSetAdminModal] = useState(false);
 

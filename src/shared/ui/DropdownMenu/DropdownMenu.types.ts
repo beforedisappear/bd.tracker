@@ -1,5 +1,12 @@
+import { type MouseEvent } from 'react';
+
 export type MenuSeparator = {
   type: 'separator';
+};
+
+export type MenuPureItem = {
+  type: 'pure';
+  content: React.ReactNode;
 };
 
 export type MenuItem = {
@@ -10,7 +17,7 @@ export type MenuItem = {
   };
   shortcut?: string;
   disabled?: boolean;
-  onSelect?: () => void;
+  onSelect?: (e: MouseEvent<HTMLDivElement>) => void;
 };
 
 export type MenuSubItem = {
@@ -24,4 +31,9 @@ export type MenuGroup = {
   subItems: (MenuItem | MenuSubItem)[];
 };
 
-export type DropDownMenuOptions = (MenuItem | MenuGroup | MenuSeparator)[];
+export type DropDownMenuOptions = (
+  | MenuItem
+  | MenuGroup
+  | MenuSeparator
+  | MenuPureItem
+)[];

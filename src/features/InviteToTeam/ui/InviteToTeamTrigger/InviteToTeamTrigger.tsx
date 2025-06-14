@@ -1,7 +1,7 @@
 import { UserRoundPlus } from 'lucide-react';
 
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
+import { useTenant } from '@/shared/lib/navigation';
 
 import { teamQueries } from '@/entities/Team';
 import { toast } from 'sonner';
@@ -17,7 +17,7 @@ interface Props extends ButtonProps {
 export function InviteToTeamTrigger(props: Props) {
   const { text, variant = 'outline', ...restProps } = props;
 
-  const { tenant } = useParams<{ tenant: string }>()!;
+  const tenant = useTenant();
 
   const { data, isLoading } = useQuery(
     teamQueries.getHaveAccessToTeam({ idOrSlug: tenant }),

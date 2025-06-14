@@ -4,7 +4,7 @@ import { InviteToTeamContent } from '../InviteToTeamContent/InviteToTeamContent'
 
 import { useCallback, useState } from 'react';
 
-import { INVITE_TO_TEAM_TITLE } from '../../config';
+import { INVITE_TO_TEAM_TITLE } from '../../constants';
 
 interface Props {
   btnText: string;

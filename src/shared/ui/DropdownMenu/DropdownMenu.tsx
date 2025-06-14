@@ -20,7 +20,7 @@ import {
   getMenuSubItem,
 } from './DropdownMenu.utils';
 import type { DropDownMenuOptions } from './DropdownMenu.types';
-import type { ComponentProps } from 'react';
+import { Fragment, type ComponentProps } from 'react';
 
 interface IProps extends ComponentProps<typeof DropdownMenuContainer> {
   trigger: React.ReactNode;
@@ -37,11 +37,12 @@ export function DropdownMenu(props: IProps) {
     options = [],
     className,
     contentProps,
+    modal = false,
     ...restProps
   } = props;
 
   return (
-    <DropdownMenuContainer {...restProps}>
+    <DropdownMenuContainer modal={modal} {...restProps}>
       <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
 
       <DropdownMenuContent className={className} {...contentProps}>
@@ -70,6 +71,9 @@ export function DropdownMenu(props: IProps) {
           }
 
           if (el.type === 'separator') return getMenuSeparator();
+
+          if (el.type === 'pure')
+            return <Fragment key={uuidv4()}>{el.content}</Fragment>;
 
           return <></>;
         })}

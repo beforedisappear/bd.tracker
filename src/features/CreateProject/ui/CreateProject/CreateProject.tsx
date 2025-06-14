@@ -1,29 +1,15 @@
-'use client';
+import { useDeviceType } from '@/shared/lib/deviceType/c';
 
-import { Dialog } from '@/shared/ui/Dialog/Dialog';
-import { CreateProjectTrigger } from '../CreateProjectTrigger/CreateProjectTrigger';
-import { CreateProjectForm } from '../CreateProjectForm/CreateProjectForm';
+import { LazyCreateProjectDesktop } from './CreateProject.desktop.async';
+import { LazyCreateProjectMobile } from './CreateProject.mobile.async';
 
-import { useCallback, useState } from 'react';
-
-import { CREATE_PROJECT_TITLE } from '../../config';
-
-export function CreateProject() {
-  const [showCreateProjectModal, setShowCreateProjectModal] = useState(false);
-
-  const onClose = useCallback(() => {
-    setShowCreateProjectModal(false);
-  }, []);
+export const CreateProject = () => {
+  const { isMobile, isDesktop } = useDeviceType();
 
   return (
-    <Dialog
-      title={CREATE_PROJECT_TITLE}
-      trigger={<CreateProjectTrigger />}
-      className='h-[500px] w-full max-w-[600px]'
-      open={showCreateProjectModal}
-      onOpenChange={setShowCreateProjectModal}
-    >
-      <CreateProjectForm onClose={onClose} />
-    </Dialog>
+    <>
+      {isMobile && <LazyCreateProjectMobile />}
+      {isDesktop && <LazyCreateProjectDesktop />}
+    </>
   );
-}
+};

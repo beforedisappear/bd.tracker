@@ -1,0 +1,15 @@
+export type Color =
+  | 'SLATE'
+  | 'ROSE'
+  | 'AMBER'
+  | 'YELLOW'
+  | 'LIME'
+  | 'GREEN'
+  | 'TEAL'
+  | 'SKY'
+  | 'INDIGO'
+  | 'VIOLET'
+  | 'GRAY'
+  | 'RED'
+  | 'ORANGE'
+  | 'EMERALD';

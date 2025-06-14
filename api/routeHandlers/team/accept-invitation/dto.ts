@@ -3,7 +3,7 @@ import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 
 extendZodWithOpenApi(z);
 
-export const AcceptInvitationToTeamReqQuerySchema = z.object({
+export const AcceptInvitationToTeamReqBodySchema = z.object({
   invitationId: z.string().uuid(),
   token: z.string(),
 });

@@ -4,14 +4,12 @@ import { Button, Form, Input } from '@/shared/ui/c';
 import { Avatar } from '@/shared/ui/s';
 
 import { useForm } from 'react-hook-form';
-import { useMemo } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { userQueries } from '../../api/queries';
 
-import { cn, getColorByFirstLetter } from '@/shared/lib/css';
+import { cn } from '@/shared/lib/css';
 import { toast } from 'sonner';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { getInitials } from '@/shared/lib/data';
 
 import {
   ERROR_MESSAGE,
@@ -45,9 +43,6 @@ export function UserForm(props: Props) {
       .catch(() => toast.error(ERROR_MESSAGE, { id: toastId }));
   });
 
-  const color = useMemo(() => getColorByFirstLetter(user.name), [user]);
-  const initials = useMemo(() => getInitials(user.name), [user]);
-
   return (
     <Form {...form}>
       <form
@@ -59,9 +54,8 @@ export function UserForm(props: Props) {
           alt='avatar'
           height={100}
           width={100}
-          fallback={initials}
+          initials={user.name}
           className='grid place-items-center w-20 h-20 text-4xl font-semibold'
-          style={{ backgroundColor: color }}
         />
 
         <Input name='name' placeholder='Отображаемое имя' />

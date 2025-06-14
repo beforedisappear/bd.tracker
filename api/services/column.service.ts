@@ -1,7 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ApiError } from 'api/errors/apiError';
 import { prismaService } from 'config/prisma';
 import { BaseService } from './base.service';
+
+import type { PrismaClient } from '@prisma/client';
 
 class ColumnService extends BaseService {
   async createColumn(args: {
@@ -20,13 +21,12 @@ class ColumnService extends BaseService {
       throw ApiError.notFound('Board not found');
     }
 
-    const { inTeam } = await this.checkIsUserInTeam(board.project.team.id, {
+    const { inProject } = await this.checkIsUserInProject(board.projectId, {
       userId: initiatorId,
     });
 
-    if (!inTeam) {
-      throw ApiError.forbidden('You are not in this team');
-    }
+    if (!inProject)
+      throw ApiError.forbidden('You are not member of this project');
 
     // Get the last column to link it with the new one
     const lastColumn = await prismaService.column.findFirst({
@@ -38,7 +38,7 @@ class ColumnService extends BaseService {
         name,
         boardId,
         projectId: board.projectId,
-        // If there's a last column, link it with the new one
+        // если есть последняя колонка, то связываем ее с новой
         ...(lastColumn && {
           previousColumn: {
             connect: { id: lastColumn.id },
@@ -56,7 +56,6 @@ class ColumnService extends BaseService {
     const column = await prismaService.column.findUnique({
       where: { id },
       include: {
-        board: { include: { project: { include: { team: true } } } },
         previousColumn: true,
         nextColumn: true,
       },
@@ -66,38 +65,26 @@ class ColumnService extends BaseService {
       throw ApiError.notFound('Column not found');
     }
 
-    const { inTeam } = await this.checkIsUserInTeam(
-      column.board.project.team.id,
-      {
-        userId: initiatorId,
-      },
-    );
+    const { inProject } = await this.checkIsUserInProject(column.projectId, {
+      userId: initiatorId,
+    });
 
-    if (!inTeam) {
-      throw ApiError.forbidden('You are not in this team');
-    }
+    if (!inProject)
+      throw ApiError.forbidden('You are not member of this project');
 
     const deletedColumn = await prismaService.$transaction(async tx => {
-      // Delete all tasks in the column
+      // удаляем все задачи в колонке
       await tx.task.deleteMany({ where: { columnId: id } });
 
-      // Update the links between previous and next columns
-      if (column.previousColumn && column.nextColumn) {
-        await tx.column.update({
-          where: { id: column.previousColumn.id },
-          data: { nextColumnId: column.nextColumn.id },
-        });
-      } else if (column.previousColumn) {
-        await tx.column.update({
-          where: { id: column.previousColumn.id },
-          data: { nextColumnId: null },
-        });
-      } else if (column.nextColumn) {
-        await tx.column.update({
-          where: { id: column.nextColumn.id },
-          data: { previousColumn: { disconnect: true } },
-        });
-      }
+      // обновляем ссылки у соседних колонок
+      await this.extractColumn(
+        {
+          id,
+          previousColumnId: column.previousColumn?.id ?? null,
+          nextColumnId: column.nextColumn?.id ?? null,
+        },
+        tx,
+      );
 
       return tx.column.delete({ where: { id } });
     });
@@ -117,223 +104,276 @@ class ColumnService extends BaseService {
       throw ApiError.notFound('Column not found');
     }
 
-    const { inTeam } = await this.checkIsUserInTeam(
-      column.board.project.team.id,
-      {
-        userId: initiatorId,
-      },
-    );
+    const { inProject } = await this.checkIsUserInProject(column.projectId, {
+      userId: initiatorId,
+    });
 
-    if (!inTeam) {
-      throw ApiError.forbidden('You are not in this team');
-    }
+    if (!inProject)
+      throw ApiError.forbidden('You are not member of this project');
 
     const renamedColumn = await prismaService.column.update({
       where: { id },
       data: { name },
     });
 
-    return renamedColumn;
+    return { id: renamedColumn.id };
   }
 
   async moveColumn(args: {
     id: string;
-    newPosition: 'start' | 'end' | { afterColumnId: string };
+    nextColumnId: string | null;
+    previousColumnId: string | null;
     initiatorId: string;
   }) {
-    const { id, newPosition, initiatorId } = args;
+    const { id, nextColumnId, previousColumnId, initiatorId } = args;
 
-    const column = await prismaService.column.findUnique({
-      where: { id },
-      include: {
-        board: { include: { project: { include: { team: true } } } },
-        previousColumn: true,
-        nextColumn: true,
-      },
-    });
-
-    if (!column) {
-      throw ApiError.notFound('Column not found');
-    }
-
-    const { inTeam } = await this.checkIsUserInTeam(
-      column.board.project.team.id,
-      {
-        userId: initiatorId,
-      },
-    );
-
-    if (!inTeam) {
-      throw ApiError.forbidden('You are not in this team');
-    }
-
-    const movedColumn = await prismaService.$transaction(async tx => {
-      // First, remove the column from its current position
-      if (column.previousColumn) {
-        await tx.column.update({
-          where: { id: column.previousColumn.id },
-          data: { nextColumnId: column.nextColumn?.id || null },
-        });
-      }
-
-      if (column.nextColumn) {
-        await tx.column.update({
-          where: { id: column.nextColumn.id },
-          data: { previousColumn: { disconnect: true } },
-        });
-      }
-
-      // Then, place it in the new position
-      if (newPosition === 'start') {
-        const firstColumn = await tx.column.findFirst({
-          where: { boardId: column.boardId, previousColumn: null },
-        });
-
-        if (firstColumn) {
-          await tx.column.update({
-            where: { id: firstColumn.id },
-            data: { previousColumn: { connect: { id } } },
-          });
-        }
-
-        return tx.column.update({
-          where: { id },
-          data: { previousColumn: { disconnect: true } },
-        });
-      } else if (newPosition === 'end') {
-        const lastColumn = await tx.column.findFirst({
-          where: { boardId: column.boardId, nextColumn: null },
-        });
-
-        if (lastColumn) {
-          await tx.column.update({
-            where: { id: lastColumn.id },
-            data: { nextColumn: { connect: { id } } },
-          });
-        }
-
-        return tx.column.update({
-          where: { id },
-          data: { nextColumn: { disconnect: true } },
-        });
-      } else {
-        const afterColumn = await tx.column.findUnique({
-          where: { id: newPosition.afterColumnId },
-          include: { nextColumn: true },
-        });
-
-        if (!afterColumn) {
-          throw ApiError.notFound('Target column not found');
-        }
-
-        if (afterColumn.nextColumn) {
-          await tx.column.update({
-            where: { id: afterColumn.nextColumn.id },
-            data: { previousColumn: { connect: { id } } },
-          });
-        }
-
-        await tx.column.update({
-          where: { id: afterColumn.id },
-          data: { nextColumn: { connect: { id } } },
-        });
-
-        return tx.column.update({
-          where: { id },
-          data: { previousColumn: { connect: { id: afterColumn.id } } },
-        });
-      }
-    });
-
-    return movedColumn;
-  }
-
-  async getColumnById(args: { id: string; initiatorId: string }) {
-    const { id, initiatorId } = args;
-
-    const column = await prismaService.column.findUnique({
-      where: { id },
-      include: {
-        board: { include: { project: { include: { team: true } } } },
-        tasks: {
-          include: {
-            assignees: true,
-            stickers: true,
-          },
-        },
-        previousColumn: true,
-        nextColumn: true,
-      },
-    });
-
-    if (!column) {
-      throw ApiError.notFound('Column not found');
-    }
-
-    const { inTeam } = await this.checkIsUserInTeam(
-      column.board.project.team.id,
-      {
-        userId: initiatorId,
-      },
-    );
-
-    if (!inTeam) {
-      throw ApiError.forbidden('You are not in this team');
-    }
-
-    return column;
-  }
-
-  async getAllColumns(args: { boardId: string; initiatorId: string }) {
-    const { boardId, initiatorId } = args;
-
-    const board = await prismaService.board.findUnique({
-      where: { id: boardId },
-      include: { project: { include: { team: true } } },
-    });
-
-    if (!board) {
-      throw ApiError.notFound('Board not found');
-    }
-
-    const { inTeam } = await this.checkIsUserInTeam(board.project.team.id, {
-      userId: initiatorId,
-    });
-
-    if (!inTeam) {
-      throw ApiError.forbidden('You are not in this team');
-    }
-
-    // Get all columns and sort them by their linked list order
-    const columns = await prismaService.column.findMany({
-      where: { boardId },
-      include: {
-        tasks: {
-          include: {
-            assignees: true,
-            stickers: true,
-          },
-        },
-        previousColumn: true,
-        nextColumn: true,
-      },
-    });
-
-    // Find the first column (the one without a previous column)
-    const firstColumn = columns.find(col => !col.previousColumn);
-    if (!firstColumn) return [];
-
-    // Build the ordered array
-    const orderedColumns: typeof columns = [];
-    let currentColumn: typeof firstColumn | undefined = firstColumn;
-    while (currentColumn) {
-      orderedColumns.push(currentColumn);
-      currentColumn = columns.find(
-        col => col.id === currentColumn!.nextColumnId,
+    // Если ничего не передано, то выкидываем ошибку
+    if (!nextColumnId && !previousColumnId) {
+      throw ApiError.badRequest(
+        'Either nextColumnId or previousColumnId must be provided',
       );
     }
 
-    return orderedColumns;
+    // Если передали оба, то выкидываем ошибку
+    if (nextColumnId && previousColumnId) {
+      throw ApiError.badRequest(
+        'Only one of nextColumnId or previousColumnId must be provided',
+      );
+    }
+
+    const movedColumn = await prismaService.column.findUnique({
+      where: { id },
+      include: {
+        board: { include: { project: { include: { team: true } } } },
+        previousColumn: true,
+        nextColumn: true,
+      },
+    });
+
+    if (!movedColumn) {
+      throw ApiError.notFound('Column not found');
+    }
+
+    const { inProject } = await this.checkIsUserInProject(
+      movedColumn.projectId,
+      { userId: initiatorId },
+    );
+
+    if (!inProject)
+      throw ApiError.forbidden('You are not member of this project');
+
+    await prismaService.$transaction(async tx => {
+      // 1. Корректно обновляем старые связи перемещаемой колонки
+      if (movedColumn.previousColumn && movedColumn.nextColumn) {
+        // Колонка была между двумя — связываем их напрямую
+        await this.extractColumn(
+          {
+            id: movedColumn.id,
+            previousColumnId: movedColumn.previousColumn.id,
+            nextColumnId: movedColumn.nextColumn.id,
+          },
+          tx,
+        );
+      } else if (movedColumn.previousColumn) {
+        // Колонка была последней
+        await this.extractColumn(
+          {
+            id: movedColumn.id,
+            previousColumnId: movedColumn.previousColumn.id,
+            nextColumnId: null,
+          },
+          tx,
+        );
+      } else if (movedColumn.nextColumn) {
+        // Колонка была первой
+        await this.extractColumn(
+          {
+            id: movedColumn.id,
+            previousColumnId: null,
+            nextColumnId: movedColumn.nextColumn.id,
+          },
+          tx,
+        );
+      }
+
+      // 2. Обновляем перемещаемую колонку и новые связи
+
+      // вставка после указанной колонки
+      if (previousColumnId) {
+        await this.insertAfterColumn({ id, previousColumnId }, tx);
+        return null;
+      }
+
+      // вставка перед указанной колонкой
+      if (nextColumnId) {
+        await this.insertBeforeColumn({ id, nextColumnId }, tx);
+        return null;
+      }
+    });
+
+    return null;
+  }
+
+  //вставляем колонку после указанной колонки
+  private async insertAfterColumn(
+    args: { id: string; previousColumnId: string },
+    tx: PrismaClient,
+  ) {
+    const { id, previousColumnId } = args;
+
+    // проверяем, что предыдущая колонка существует
+    const previousColumn = await tx.column.findUnique({
+      where: { id: previousColumnId },
+      include: { nextColumn: true },
+    });
+
+    if (!previousColumn) throw ApiError.notFound('Previous column not found');
+
+    // обновляем ссылки на предыдущую и следующую колонку перемещаемой колонки
+    await tx.column.update({
+      where: { id },
+      data: {
+        previousColumn: { connect: { id: previousColumnId } },
+        nextColumn: previousColumn.nextColumn
+          ? { connect: { id: previousColumn.nextColumn.id } }
+          : { disconnect: true },
+      },
+    });
+
+    // назначем movedColumn в качестве next для previousColumn
+    await tx.column.update({
+      where: { id: previousColumnId },
+      data: { nextColumn: { connect: { id } } },
+    });
+
+    // назначем movedColumn в качестве previous для nextColumn у previousColumn
+    if (previousColumn.nextColumn) {
+      await tx.column.update({
+        where: { id: previousColumn.nextColumn.id },
+        data: {
+          previousColumn: { connect: { id } },
+        },
+      });
+    }
+
+    return null;
+  }
+
+  //вставляем колонку перед указанной колонкой
+  private async insertBeforeColumn(
+    args: { id: string; nextColumnId: string },
+    tx: PrismaClient,
+  ) {
+    const { id, nextColumnId } = args;
+
+    // проверяем, что следующая колонка существует
+    const nextColumn = await tx.column.findUnique({
+      where: { id: nextColumnId },
+      include: { previousColumn: true },
+    });
+
+    if (!nextColumn) throw ApiError.notFound('Next column not found');
+
+    // обновляем ссылки на предыдущую и следующую колонку перемещаемой колонки
+    await tx.column.update({
+      where: { id },
+      data: {
+        nextColumn: { connect: { id: nextColumnId } },
+        previousColumn: nextColumn.previousColumn
+          ? { connect: { id: nextColumn.previousColumn.id } }
+          : { disconnect: true },
+      },
+    });
+
+    // назначаем movedColumn в качестве previous для nextColumn
+    await tx.column.update({
+      where: { id: nextColumnId },
+      data: { previousColumn: { connect: { id } } },
+    });
+
+    // назначаем movedColumn в качестве next для previousColumn у nextColumn
+    if (nextColumn.previousColumn) {
+      await tx.column.update({
+        where: { id: nextColumn.previousColumn.id },
+        data: { nextColumn: { connect: { id } } },
+      });
+    }
+
+    return null;
+  }
+
+  //извлекаем колонку из текущего места и корректно обновляем ссылки на соседние колонки
+  private async extractColumn(
+    args: {
+      id: string;
+      previousColumnId: string | null;
+      nextColumnId: string | null;
+    },
+    tx: PrismaClient,
+  ) {
+    const { id, previousColumnId, nextColumnId } = args;
+
+    // если у переданной колонки есть и предыдущая и следующая колонка
+    if (previousColumnId && nextColumnId) {
+      await Promise.all([
+        //очищаем ссылки на предыдущую и следующую колонку
+        this.clearColumnConnections({ id }, tx),
+        //связываем соседние колонки переданной колонки между собой
+        tx.column.update({
+          where: { id: previousColumnId },
+          data: { nextColumn: { connect: { id: nextColumnId } } },
+        }),
+        tx.column.update({
+          where: { id: nextColumnId },
+          data: { previousColumn: { connect: { id: previousColumnId } } },
+        }),
+      ]);
+      return null;
+    }
+
+    // если переднная колонка - последняя
+    if (previousColumnId) {
+      await Promise.all([
+        this.clearColumnConnections({ id }, tx),
+        tx.column.update({
+          where: { id },
+          data: { nextColumn: { disconnect: true } },
+        }),
+      ]);
+
+      return null;
+    }
+
+    // если переданная колонка - первая
+    if (nextColumnId) {
+      await Promise.all([
+        this.clearColumnConnections({ id }, tx),
+        tx.column.update({
+          where: { id },
+          data: { previousColumn: { disconnect: true } },
+        }),
+      ]);
+
+      return null;
+    }
+
+    // если переданная колонка - единственная
+    await this.clearColumnConnections({ id }, tx);
+
+    return null;
+  }
+
+  //очищаем ссылки на предыдущую и следующую колонку
+  private async clearColumnConnections(args: { id: string }, tx: PrismaClient) {
+    const { id } = args;
+
+    await tx.column.update({
+      where: { id },
+      data: {
+        previousColumn: { disconnect: true },
+        nextColumn: { disconnect: true },
+      },
+    });
   }
 }
 

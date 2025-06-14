@@ -9,7 +9,13 @@ const getColorByFirstLetter = (name: string) => {
     '#3498DB', // Y-Z
   ];
 
-  const firstLetter = name.charAt(0).toUpperCase();
+  const firstChar = name.charAt(0);
+
+  if (/[0-9]/.test(firstChar)) {
+    return '#E67E22';
+  }
+
+  const firstLetter = firstChar.toUpperCase();
   const charCode = firstLetter.charCodeAt(0);
 
   const index = Math.floor((charCode - 65) / 4);

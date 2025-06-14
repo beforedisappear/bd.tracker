@@ -2,42 +2,50 @@ import { Avatar } from '@/shared/ui/s';
 import { ManageProjectsItemMenu } from '../ManageProjectsItemMenu/ManageProjectsItemMenu';
 
 import { useRouter } from 'next/navigation';
-import { useMutation } from '@tanstack/react-query';
 
-import { getErrorMessage } from '@/shared/lib/error';
 import { getProjectByIdRoutePath } from '@/shared/config/routes';
-import { cn, getColorByFirstLetter } from '@/shared/lib/css';
-import { getInitials } from '@/shared/lib/data';
-import { getManageProjectsItemClassName } from '../../config';
-import { projectQueries } from '@/entities/Project';
-import { toast } from 'sonner';
+import { cn } from '@/shared/lib/css';
+import { getManageProjectsItemClassName } from '../../constants';
+import {
+  getProjectMembersModal,
+  getDeleteProjectModal,
+} from '@/entities/Project';
+import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
 
-import type { Project } from '@/entities/Project';
+import type { ProjectWithFirstBoardId } from '@/entities/Project';
 import type { MouseEvent } from 'react';
 
 interface Props {
-  project: Project;
+  project: ProjectWithFirstBoardId;
   tenant: string;
 }
 
+//TODO: продумать доступность к проекту
 export function ManageProjectsItem({ project, tenant }: Props) {
   const router = useRouter();
 
-  const { mutateAsync: deleteProject } = useMutation(
-    projectQueries.deleteProject(),
+  const { setShowProjectMembersModal, setCurrentProjectId } =
+    usePrivateGlobalStore(getProjectMembersModal());
+  const { setShowDeleteProjectModal } = usePrivateGlobalStore(
+    getDeleteProjectModal(),
   );
 
   const onRedirectToProjectPage = (e: MouseEvent<HTMLDivElement>) => {
-    if (e.target !== e.currentTarget) return;
+    if (!e.currentTarget.contains(e.target as Node)) return;
 
-    router.push(getProjectByIdRoutePath(tenant, project.id));
+    router.push(
+      getProjectByIdRoutePath(tenant, project.id, project.firstBoardId),
+    );
   };
 
-  //TODO: вызывать модалку DeleteProject
-  const onDeleteProject = async () => {
-    deleteProject({ projectId: project.id, teamIdOrSlug: tenant }).catch(e =>
-      toast.error(getErrorMessage(e)),
-    );
+  const onOpenProjectMembersModal = () => {
+    setCurrentProjectId(project.id);
+    setShowProjectMembersModal(true);
+  };
+
+  const onOpenDeleteProjectModal = () => {
+    setCurrentProjectId(project.id);
+    setShowDeleteProjectModal(true);
   };
 
   return (
@@ -55,8 +63,8 @@ export function ManageProjectsItem({ project, tenant }: Props) {
 
         <ManageProjectsItemMenu
           onRenameProject={() => {}}
-          onParticipants={() => {}}
-          onDeleteProject={onDeleteProject}
+          onParticipants={onOpenProjectMembersModal}
+          onDeleteProject={onOpenDeleteProjectModal}
         />
       </div>
 
@@ -66,9 +74,8 @@ export function ManageProjectsItem({ project, tenant }: Props) {
             key={member.id}
             src={''}
             alt={member.name}
-            fallback={getInitials(member.name)}
-            className='flex items-center justify-center w-6 h-6 text-xs mr-[-6px] border-2 border-muted'
-            style={{ backgroundColor: getColorByFirstLetter(member.name) }}
+            initials={member.name}
+            className='grid place-content-center w-6 h-6 text-xs mr-[-6px] border-2 border-muted'
           />
         ))}
 

@@ -8,9 +8,13 @@ export interface Project {
   members: ProjectMember[];
 }
 
-export type GetProjectsByTeamDtoRes = Project[];
+export interface ProjectWithFirstBoardId extends Project {
+  firstBoardId: string;
+}
 
-export interface GetProjectsByTeamDto {
+export type GetProjectsByTeamDtoRes = ProjectWithFirstBoardId[];
+
+export interface GetProjectsByTeamDtoReq {
   teamIdOrSlug: string;
 }
 
@@ -28,3 +32,16 @@ export interface DeleteProjectDtoReq {
 }
 
 export type DeleteProjectDtoRes = unknown;
+
+// export interface GetProjectByIdDtoReq {
+//   projectId: string;
+// }
+
+// export interface GetProjectByIdDtoRes {
+//   id: string;
+//   name: string;
+//   description: string;
+//   createdAt: string;
+//   members: ProjectMember[];
+//   boards: SummaryBoard[];
+// }

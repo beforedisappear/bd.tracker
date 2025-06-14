@@ -2,7 +2,8 @@
 'use client';
 
 import { Sidebar, useSidebar } from '@/shared/ui/c';
-import { useParams, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
+import { useTenant } from '@/shared/lib/navigation';
 import { useDeviceType } from '@/shared/lib/deviceType/c';
 import { useEffect } from 'react';
 import { useMainSidebarProjects } from '../../lib';
@@ -19,7 +20,7 @@ export function MainSidebar({}: Props) {
   const { isMobile } = useDeviceType();
   const { setIsSidebarOpen } = useSidebar();
   const pathname = usePathname()!;
-  const { tenant } = useParams<{ tenant: string }>()!;
+  const tenant = useTenant();
 
   const projects = useMainSidebarProjects(tenant);
 

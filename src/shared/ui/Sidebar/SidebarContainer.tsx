@@ -28,7 +28,7 @@ export const SidebarContainer = forwardRef<HTMLDivElement, Props>(
       <div
         ref={ref}
         className={cn('group peer block text-sidebar-foreground', {
-          ['fixed z-50']: isMobile,
+          ['fixed z-[100]']: isMobile,
         })}
         data-state={state}
         data-collapsible={state === 'collapsed' ? collapsible : ''}

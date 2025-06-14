@@ -5,7 +5,7 @@ import { DeleteTeamMemberTrigger } from '../DeleteTeamMemberTrigger/DeleteTeamMe
 
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
+import { useTenant } from '@/shared/lib/navigation';
 
 import {
   getCurrentTeamMemberId,
@@ -23,7 +23,7 @@ interface Props {
 export function DeleteTeamMember(props: Props) {
   const { onComplete } = props;
 
-  const { tenant } = useParams<{ tenant: string }>()!;
+  const tenant = useTenant();
   const { currentTeamMemberId } = useTeamStore(getCurrentTeamMemberId());
   const [open, setOpen] = useState(false);
 

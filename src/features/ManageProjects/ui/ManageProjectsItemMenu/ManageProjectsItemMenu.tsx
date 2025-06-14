@@ -1,6 +1,7 @@
 import { SquarePen, Users, Trash } from 'lucide-react';
+
 import { DropdownMenu } from '@/shared/ui/c';
-import { ManageProjectsItemPopoverTrigger } from '../ManageProjectsItemPopoverTrigger/ManageProjectsItemPopoverTrigger';
+import { ManageProjectsItemMenuTrigger } from '../ManageProjectsItemMenuTrigger/ManageProjectsItemMenuTrigger';
 
 interface Props {
   onRenameProject: () => void;
@@ -13,10 +14,9 @@ export function ManageProjectsItemMenu(props: Props) {
 
   return (
     <DropdownMenu
-      trigger={<ManageProjectsItemPopoverTrigger />}
-      contentProps={{
-        align: 'start',
-      }}
+      trigger={<ManageProjectsItemMenuTrigger />}
+      contentProps={{ align: 'start' }}
+      // TODO: add handling
       options={[
         {
           type: 'item',

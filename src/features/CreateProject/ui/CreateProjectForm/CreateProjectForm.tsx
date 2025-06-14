@@ -3,13 +3,15 @@ import { TeamMembersField } from '@/entities/Team';
 
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
+import { useTenant } from '@/shared/lib/navigation';
+import { useDeviceType } from '@/shared/lib/deviceType/c';
 
 import { z } from 'zod';
 import { projectQueries } from '@/entities/Project';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { getErrorMessage } from '@/shared/lib/error';
 import { toast } from 'sonner';
+import { cn } from '@/shared/lib/css';
 
 import {
   SENDING_DATA_MESSAGE,
@@ -17,15 +19,16 @@ import {
 } from '@/shared/constants';
 
 import { CreateProjectSchema } from '../../model/schemes';
-
 interface Props {
   onClose: () => void;
+  className?: string;
 }
 
 export function CreateProjectForm(props: Props) {
-  const { onClose } = props;
+  const { onClose, className } = props;
 
-  const { tenant } = useParams<{ tenant: string }>()!;
+  const tenant = useTenant();
+  const { isMobile } = useDeviceType();
   const form = useForm<z.infer<typeof CreateProjectSchema>>({
     resolver: zodResolver(CreateProjectSchema),
   });
@@ -53,7 +56,10 @@ export function CreateProjectForm(props: Props) {
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className='flex flex-col h-full gap-6'>
+      <form
+        onSubmit={onSubmit}
+        className={cn('flex flex-col h-full gap-6', className)}
+      >
         <Input
           name='name'
           label='Название проекта'
@@ -63,7 +69,9 @@ export function CreateProjectForm(props: Props) {
         <TeamMembersField label='Участники Проекта' />
 
         <div className='flex justify-end gap-2 mt-auto'>
-          <Button type='submit'>Создать</Button>
+          <Button type='submit' className={cn({ 'w-full': isMobile })}>
+            Создать
+          </Button>
         </div>
       </form>
     </Form>

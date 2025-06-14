@@ -18,14 +18,12 @@ export const GetProjectBoardsReqQuerySchema = z.object({
 });
 
 //TODO: add fields
-export const GetProjectBoardsResSchema = z.object({
-  boards: z.array(
-    z.object({
-      id: z.string(),
-      name: z.string(),
-      projectId: z.string(),
-      createdAt: z.string(),
-      updatedAt: z.string(),
-    }),
-  ),
-});
+export const GetProjectBoardsResSchema = z.array(
+  z.object({
+    id: z.string(),
+    name: z.string(),
+    projectId: z.string(),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+  }),
+);

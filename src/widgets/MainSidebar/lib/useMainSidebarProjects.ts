@@ -19,7 +19,7 @@ export const useMainSidebarProjects = (tenant: string) => {
     type: 'item-link' as const,
     link: {
       title: project.name,
-      url: getProjectByIdRoutePath(tenant, project.id),
+      url: getProjectByIdRoutePath(tenant, project.id, project.firstBoardId),
     },
   }));
 

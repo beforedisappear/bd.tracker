@@ -3,7 +3,7 @@ import { buttonVariants } from '../s';
 
 export const calendarClassNames = (mode?: string) => ({
   months: 'flex flex-row space-x-4 space-y-0 sm:flex-col sm:space-y-4',
-  month: 'space-y-4',
+  month: 'space-y-4 w-full',
   caption: 'flex justify-center pt-1 relative items-center',
   caption_label: 'fl-upc text-sm font-medium',
   nav: 'space-x-1 flex items-center',
@@ -13,7 +13,7 @@ export const calendarClassNames = (mode?: string) => ({
   ),
   nav_button_previous: 'absolute left-1',
   nav_button_next: 'absolute right-1',
-  table: 'w-full border-collapse space-y-1',
+  table: 'border-collapse space-y-1 w-fit mx-auto',
   head_row: 'flex',
   head_cell:
     'fl-upc text-muted-foreground rounded-md w-8 font-normal text-[0.8rem]',
