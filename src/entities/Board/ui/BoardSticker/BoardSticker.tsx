@@ -7,7 +7,7 @@ import type { MouseEvent } from 'react';
 
 interface Props {
   data: Sticker;
-  onClick: (e: MouseEvent<HTMLDivElement>) => void;
+  onClick?: (e: MouseEvent<HTMLDivElement>) => void;
 }
 
 export function BoardSticker(props: Props) {

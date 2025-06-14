@@ -130,6 +130,7 @@ export const taskQueries = {
     queryOptions({
       queryKey: [...taskQueries.taskById(dto.taskId)],
       queryFn: () => getTaskById(dto),
+      placeholderData: data => data ?? undefined,
       select: res => res.data,
     }),
 
@@ -195,7 +196,7 @@ export const taskQueries = {
   updateTask: () =>
     mutationOptions({
       mutationFn: (dto: UpdateTaskDtoReq) => updateTask(dto),
-      onSuccess: (res, { boardId }) =>
+      onSuccess: (res, { boardId, taskId }) => {
         queryClient.setQueryData(
           [...boardQueries.boardById(boardId)],
           (old: GetBoardByIdDtoRes) => {
@@ -211,7 +212,12 @@ export const taskQueries = {
               columns: newColumns,
             };
           },
-        ),
+        );
+
+        queryClient.invalidateQueries({
+          queryKey: taskQueries.taskById(taskId),
+        });
+      },
     }),
 };
 

@@ -8,7 +8,10 @@ class TaskService extends BaseService {
   async getTaskById(args: { id: string; initiatorId: string }) {
     const { id, initiatorId } = args;
 
-    const task = await prismaService.task.findUnique({ where: { id } });
+    const task = await prismaService.task.findUnique({
+      where: { id },
+      include: { stickers: true, assignees: true },
+    });
 
     if (!task) throw ApiError.notFound('Task not found');
 
