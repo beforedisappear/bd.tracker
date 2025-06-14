@@ -120,6 +120,10 @@ export const columnQueries = {
   moveColumn: () =>
     mutationOptions({
       mutationFn: (dto: MoveColumnDtoReq) => moveColumn(dto),
+      onSuccess: (_, { boardId }) =>
+        queryClient.invalidateQueries({
+          queryKey: [...boardQueries.boardById(boardId)],
+        }),
     }),
 };
 

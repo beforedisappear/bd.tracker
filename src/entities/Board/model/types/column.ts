@@ -38,8 +38,18 @@ export interface RenameColumnDtoRes {
 }
 
 export type MoveColumnDtoReq =
-  | { nextColumnId: string; previousColumnId: null; columnId: string }
-  | { nextColumnId: null; previousColumnId: string; columnId: string };
+  | {
+      nextColumnId: string;
+      previousColumnId: null;
+      columnId: string;
+      boardId: string;
+    }
+  | {
+      nextColumnId: null;
+      previousColumnId: string;
+      columnId: string;
+      boardId: string;
+    };
 
 export interface MoveColumnDtoRes {
   id: string;

@@ -220,11 +220,13 @@ export function useDragAndDropBoardItems(args: Args) {
 
       const dto = isBefore
         ? {
+            boardId: board.id,
             columnId: active.id as string,
             nextColumnId: over.id as string,
             previousColumnId: null,
           }
         : {
+            boardId: board.id,
             columnId: active.id as string,
             nextColumnId: null,
             previousColumnId: over.id as string,
