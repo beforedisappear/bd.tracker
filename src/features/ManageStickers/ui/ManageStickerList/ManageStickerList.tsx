@@ -2,6 +2,7 @@ import { type Sticker } from '@/entities/Board';
 
 import { ManageStickersCreateForm } from '../ManageStickersCreateForm/ManageStickersCreateForm';
 import { ManageStickerListItem } from '../ManageStickerListItem/ManageStickerListItem';
+import { ManageStickerListPlaceholder } from './ManageStickerList.placeholder';
 
 interface Props {
   boardId: string;
@@ -16,6 +17,8 @@ export function ManageStickerList(props: Props) {
       {data.map(el => (
         <ManageStickerListItem key={el.id} boardId={boardId} data={el} />
       ))}
+
+      {data.length === 0 && <ManageStickerListPlaceholder />}
 
       <ManageStickersCreateForm boardId={boardId} />
     </div>

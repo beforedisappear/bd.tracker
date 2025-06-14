@@ -26,6 +26,7 @@ export { getDeleteBoardModalActions } from './model/selectors/getDeleteBoardModa
 
 export { BoardColorInput } from './ui/BoardColorInput/BoardColorInput';
 export { BoardSticker } from './ui/BoardSticker/BoardSticker';
+export { BoardStickerInput } from './ui/BoardStickerField/BoardStickerField';
 
 export { mapColorToClassName } from './config';
 

@@ -92,6 +92,7 @@ class TaskService extends BaseService {
     startDate?: string | null;
     endDate?: string | null;
     assigneeIds?: string[];
+    stickerIds?: string[];
     initiatorId: string;
   }) {
     const {
@@ -104,6 +105,7 @@ class TaskService extends BaseService {
       startDate,
       endDate,
       assigneeIds,
+      stickerIds,
       initiatorId,
     } = args;
 
@@ -133,6 +135,12 @@ class TaskService extends BaseService {
           ? {
               set: [], // Clear existing assignees
               connect: assigneeIds.map(id => ({ id })),
+            }
+          : undefined,
+        stickers: stickerIds
+          ? {
+              set: [],
+              connect: stickerIds.map(id => ({ id })),
             }
           : undefined,
       },

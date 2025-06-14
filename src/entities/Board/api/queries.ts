@@ -216,11 +216,11 @@ export const taskQueries = {
 };
 
 export const stickerQueries = {
-  allStickers: () => ['stickers'],
+  allStickers: (boardId: string) => ['stickers', boardId],
 
   getBoardStickers: (dto: GetAllBoardStickersDtoReq) =>
     queryOptions({
-      queryKey: [...stickerQueries.allStickers()],
+      queryKey: [...stickerQueries.allStickers(dto.boardId)],
       queryFn: () => getAllBoardStickers(dto),
       select: res => res.data,
     }),
@@ -228,27 +228,27 @@ export const stickerQueries = {
   createSticker: () =>
     mutationOptions({
       mutationFn: (dto: CreateBoardStickerDtoReq) => createBoardSticker(dto),
-      onSuccess: () =>
+      onSuccess: (_, { boardId }) =>
         queryClient.invalidateQueries({
-          queryKey: [...stickerQueries.allStickers()],
+          queryKey: [...stickerQueries.allStickers(boardId)],
         }),
     }),
 
   updateSticker: () =>
     mutationOptions({
       mutationFn: (dto: UpdateBoardStickerDtoReq) => updateBoardSticker(dto),
-      onSuccess: () =>
+      onSuccess: (_, { boardId }) =>
         queryClient.invalidateQueries({
-          queryKey: [...stickerQueries.allStickers()],
+          queryKey: [...stickerQueries.allStickers(boardId)],
         }),
     }),
 
   deleteSticker: () =>
     mutationOptions({
       mutationFn: (dto: DeleteBoardStickerDtoReq) => deleteBoardSticker(dto),
-      onSuccess: () =>
+      onSuccess: (_, { boardId }) =>
         queryClient.invalidateQueries({
-          queryKey: [...stickerQueries.allStickers()],
+          queryKey: [...stickerQueries.allStickers(boardId)],
         }),
     }),
 };

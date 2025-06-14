@@ -44,11 +44,11 @@ export function ViewBoardAssigneesPopoverTrigger(props: Props) {
     <Button
       variant={null}
       size='sm'
-      className='p-1 h-6 gap-1 border border-dashed border-primary/60 text-primary/60'
+      className='p-1 size-6 gap-1 border border-dashed border-primary/60 text-primary/60'
       onClick={handleClick}
       {...rest}
     >
-      <UserIcon />
+      <UserIcon className='!size-3.5' />
     </Button>
   );
 }

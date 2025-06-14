@@ -2,20 +2,23 @@ import { Popover } from '@/shared/ui/c';
 import { ViewBoardTaskStickersMenuTrigger } from '../ViewBoardTaskStickersMenuTrigger/ViewBoardTaskStickersMenuTrigger';
 import { ViewBoardTaskStickersMenuContent } from '../ViewBoardTaskStickersMenuContent/ViewBoardTaskStickersMenuContent';
 
-import { useState } from 'react';
+import type { Sticker } from '@/entities/Board';
 
-export function ViewBoardTaskStickersMenu() {
-  const [isOpen, setIsOpen] = useState(false);
+interface Props {
+  taskId: string;
+  stickers: Sticker[];
+}
+
+export function ViewBoardTaskStickersMenu(props: Props) {
+  const { taskId, stickers } = props;
 
   return (
     <Popover
-      trigger={<ViewBoardTaskStickersMenuTrigger />}
-      open={isOpen}
-      onOpenChange={setIsOpen}
-      className='w-56'
+      trigger={<ViewBoardTaskStickersMenuTrigger stickers={stickers} />}
+      className='flex flex-col w-56 min-h-36'
       content={{ align: 'start' }}
     >
-      <ViewBoardTaskStickersMenuContent />
+      <ViewBoardTaskStickersMenuContent taskId={taskId} stickers={stickers} />
     </Popover>
   );
 }

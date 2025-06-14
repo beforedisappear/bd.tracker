@@ -26,11 +26,11 @@ export function ViewBoardTaskDateRangeMenuTrigger(props: Props) {
       <Button
         variant={null}
         size='sm'
-        className='p-1 h-6 gap-1 border border-dashed border-primary/60 text-primary/60'
+        className='p-1 h-6 min-w-6 w-auto gap-1 border border-dashed border-primary/60 text-primary/60'
         onClick={handleClick}
         {...rest}
       >
-        {!formattedDate && <Calendar className='!h-3 !w-3' />}
+        {!formattedDate && <Calendar className='!size-3.5' />}
         {formattedDate && (
           <span className='text-xs font-normal'>{formattedDate}</span>
         )}

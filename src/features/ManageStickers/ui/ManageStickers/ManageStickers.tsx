@@ -1,23 +1,15 @@
-import { Dialog } from '@/shared/ui/c';
-import { ManageStickersContent } from '../ManageStickersContent/ManageStickersContent';
+import { LazyManageStickersMobile } from './ManageStickers.mobile.async';
+import { LazyManageStickersDesktop } from './ManageStickers.desktop.async';
 
-import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
-
-import { getManageStickersModal } from '@/entities/Board';
-
-import { MANAGE_STICKERS_TITLE } from '../../constants';
+import { useDeviceType } from '@/shared/lib/deviceType/c';
 
 export function ManageStickers() {
-  const { show, setShow } = usePrivateGlobalStore(getManageStickersModal());
+  const { isMobile, isDesktop } = useDeviceType();
 
   return (
-    <Dialog
-      title={MANAGE_STICKERS_TITLE}
-      className='h-[400px]'
-      open={show}
-      onOpenChange={setShow}
-    >
-      <ManageStickersContent />
-    </Dialog>
+    <>
+      {isMobile && <LazyManageStickersMobile />}
+      {isDesktop && <LazyManageStickersDesktop />}
+    </>
   );
 }
