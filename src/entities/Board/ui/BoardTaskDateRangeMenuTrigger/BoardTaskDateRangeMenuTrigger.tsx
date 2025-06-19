@@ -8,7 +8,7 @@ interface Props extends ButtonProps {
   endDate: string | null;
 }
 
-export function ViewBoardTaskDateRangeMenuTrigger(props: Props) {
+export function BoardTaskDateRangeMenuTrigger(props: Props) {
   const { onClick, startDate, endDate, ...rest } = props;
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {

@@ -7,7 +7,7 @@ interface Props extends ButtonProps {
   stickers: Sticker[];
 }
 
-export function ViewBoardTaskStickersMenuTrigger(props: Props) {
+export function BoardTaskStickersMenuTrigger(props: Props) {
   const { onClick, stickers, ...rest } = props;
 
   const handleBtnClick = (e: MouseEvent<HTMLButtonElement>) => {

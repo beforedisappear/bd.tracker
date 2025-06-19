@@ -14,7 +14,7 @@ interface Props {
   onClose?: () => void;
 }
 
-export function ViewBoardTaskDateRangeMenuContent(props: Props) {
+export function BoardTaskDateRangeMenuContent(props: Props) {
   const { taskId, startDate, endDate, onClose } = props;
 
   const { boardId } = useProject();

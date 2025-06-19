@@ -1,6 +1,6 @@
 import { ViewBoardTaskWrapper } from '../ViewBoardTaskWrapper/ViewBoardTaskWrapper';
-import { ViewBoardTaskHeader } from '../ViewBoardTaskHeader/ViewBoardTaskHeader';
 import { ViewBoardTaskContent } from '../ViewBoardTaskContent/ViewBoardTaskContent';
+import { BoardTaskHeader } from '@/entities/Board';
 
 import type { Task } from '@/entities/Board';
 
@@ -17,7 +17,7 @@ export function ViewBoardTask(props: Props) {
 
   return (
     <ViewBoardTaskWrapper id={id} color={color} isFiltered={isFiltered}>
-      <ViewBoardTaskHeader
+      <BoardTaskHeader
         taskId={id}
         title={title}
         isDone={isDone}

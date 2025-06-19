@@ -1,4 +1,4 @@
-import { Task, BoardSticker } from '@/entities/Board';
+import { Task, BoardSticker, BoardTaskHeader } from '@/entities/Board';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import { Avatar } from '@/shared/ui/Avatar/Avatar';
@@ -37,7 +37,7 @@ export function TaskOverviewSheetContent({
 
   return (
     <Form {...form}>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      {/* <form onSubmit={handleSubmit(onSubmit)}>
         <div className='space-y-6 pt-4'>
           <div className='flex items-center w-full gap-3 mb-6'>
             <Checkbox
@@ -156,7 +156,17 @@ export function TaskOverviewSheetContent({
             <Button type='submit'>Сохранить</Button>
           </div>
         </div>
-      </form>
+      </form> */}
+      <div>
+        <BoardTaskHeader
+          taskId={task.id}
+          title={task.title}
+          isDone={task.isDone}
+          color={task.color}
+          titleClassName='text-xl font-semibold'
+          offCheckTitleStyle
+        />
+      </div>
     </Form>
   );
 }

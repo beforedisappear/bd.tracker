@@ -1,8 +1,9 @@
-import { taskQueries } from '@/entities/Board';
-import { Skeleton } from '@/shared/ui/s';
-import { useQuery } from '@tanstack/react-query';
 import { TaskOverviewSheetContent } from '../TaskOverviewSheetContent/TaskOverviewSheetContent';
 import { ErrorBoundary } from '@/shared/ui/c';
+import { TaskOverviewSheetContainerLoading } from './TaskOverviewSheetContainer.loading';
+
+import { taskQueries } from '@/entities/Board';
+import { useQuery } from '@tanstack/react-query';
 
 interface Props {
   taskId: string | null;
@@ -21,8 +22,9 @@ export function TaskOverviewSheetContainer(props: Props) {
     enabled: !!taskId,
   });
 
-  if (isLoading) return <Skeleton />;
-  else if (isError || !isSuccess) return <ErrorBoundary />;
+  if (isLoading) return <TaskOverviewSheetContainerLoading />;
+  else if (isError || !isSuccess)
+    return <ErrorBoundary className='m-auto w-full h-full' />;
 
   return <TaskOverviewSheetContent task={task} />;
 }

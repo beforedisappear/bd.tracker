@@ -1,5 +1,5 @@
 import { PureCheckbox } from '@/shared/ui/c';
-import { ViewBoardTaskMenu } from '../ViewBoardTaskMenu/ViewBoardTaskMenu';
+import { BoardTaskHeaderMenu } from '../BoardTaskHeaderMenu/BoardTaskHeaderMenu';
 
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
@@ -16,10 +16,19 @@ interface Props {
   title: string;
   isDone: boolean;
   color: Color;
+  titleClassName?: string;
+  offCheckTitleStyle?: boolean;
 }
 
-export function ViewBoardTaskHeader(props: Props) {
-  const { taskId, title, isDone, color } = props;
+export function BoardTaskHeader(props: Props) {
+  const {
+    taskId,
+    title,
+    isDone,
+    color,
+    titleClassName,
+    offCheckTitleStyle = false,
+  } = props;
 
   const { boardId } = useProject();
   const [isChecked, setIsChecked] = useState(isDone);
@@ -44,13 +53,17 @@ export function ViewBoardTaskHeader(props: Props) {
       <span
         className={cn(
           'font-normal text-sm line-clamp-1 cursor-pointer select-none flex-1',
-          { 'line-through text-muted-foreground opacity-50': isChecked },
+          titleClassName,
+          {
+            'line-through text-muted-foreground opacity-50':
+              isChecked && !offCheckTitleStyle,
+          },
         )}
       >
         {title}
       </span>
 
-      <ViewBoardTaskMenu
+      <BoardTaskHeaderMenu
         taskId={taskId}
         isChecked={isChecked}
         currentColor={color}

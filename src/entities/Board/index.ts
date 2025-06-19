@@ -27,6 +27,10 @@ export { getDeleteBoardModalActions } from './model/selectors/getDeleteBoardModa
 export { BoardColorInput } from './ui/BoardColorInput/BoardColorInput';
 export { BoardSticker } from './ui/BoardSticker/BoardSticker';
 export { BoardStickerInput } from './ui/BoardStickerField/BoardStickerField';
+export { BoardTaskHeader } from './ui/BoardTaskHeader/BoardTaskHeader';
+export { BoardTaskStickersMenu } from './ui/BoardTaskStickersMenu/BoardTaskStickersMenu';
+export { BoardTaskDateRangeMenu } from './ui/BoardTaskDateRangeMenu/BoardTaskDateRangeMenu';
+export { BoardAssigneesPopover } from './ui/BoardAssigneesPopover/BoardAssigneesPopover';
 
 export { mapColorToClassName } from './config';
 

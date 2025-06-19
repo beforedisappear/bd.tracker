@@ -6,7 +6,7 @@ import type { MouseEvent } from 'react';
 
 interface Props extends ButtonProps {}
 
-export function ViewBoardTaskMenuTrigger(props: Props) {
+export function BoardTaskHeaderMenuTrigger(props: Props) {
   const { onClick, ...restProps } = props;
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {

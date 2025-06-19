@@ -10,7 +10,7 @@ interface Props extends ButtonProps {
   assignees: Task['assignees'];
 }
 
-export function ViewBoardAssigneesPopoverTrigger(props: Props) {
+export function BoardAssigneesPopoverTrigger(props: Props) {
   const { onClick, assignees, ...rest } = props;
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {

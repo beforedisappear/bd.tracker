@@ -1,6 +1,6 @@
 import { Popover } from '@/shared/ui/c';
-import { ViewBoardTaskDateRangeMenuTrigger } from '../ViewBoardTaskDateRangeMenuTrigger/ViewBoardTaskDateRangeMenuTrigger';
-import { ViewBoardTaskDateRangeMenuContent } from '../ViewBoardTaskDateRangeMenuContent/ViewBoardTaskDateRangeMenuContent';
+import { BoardTaskDateRangeMenuTrigger } from '../BoardTaskDateRangeMenuTrigger/BoardTaskDateRangeMenuTrigger';
+import { BoardTaskDateRangeMenuContent } from '../BoardTaskDateRangeMenuContent/BoardTaskDateRangeMenuContent';
 
 import { useCallback, useState } from 'react';
 
@@ -10,7 +10,7 @@ interface Props {
   endDate: string | null;
 }
 
-export function ViewBoardTaskDateRangeMenu(props: Props) {
+export function BoardTaskDateRangeMenu(props: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   const onClose = useCallback(() => {
@@ -20,7 +20,7 @@ export function ViewBoardTaskDateRangeMenu(props: Props) {
   return (
     <Popover
       trigger={
-        <ViewBoardTaskDateRangeMenuTrigger
+        <BoardTaskDateRangeMenuTrigger
           startDate={props.startDate}
           endDate={props.endDate}
         />
@@ -30,7 +30,7 @@ export function ViewBoardTaskDateRangeMenu(props: Props) {
       className='w-auto p-0'
       content={{ align: 'start' }}
     >
-      <ViewBoardTaskDateRangeMenuContent {...props} onClose={onClose} />
+      <BoardTaskDateRangeMenuContent {...props} onClose={onClose} />
     </Popover>
   );
 }

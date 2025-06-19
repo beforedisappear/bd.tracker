@@ -14,7 +14,7 @@ interface Props {
   stickers: Sticker[];
 }
 
-export function ViewBoardTaskStickersMenuContent(props: Props) {
+export function BoardTaskStickersMenuContent(props: Props) {
   const { stickers, taskId } = props;
 
   const { boardId } = useProject();

@@ -19,7 +19,7 @@ interface Props {
   assignees: Task['assignees'];
 }
 
-export function ViewBoardAssigneesPopoverContent(props: Props) {
+export function BoardAssigneesPopoverContent(props: Props) {
   const { taskId, assignees } = props;
 
   const { boardId } = useProject();

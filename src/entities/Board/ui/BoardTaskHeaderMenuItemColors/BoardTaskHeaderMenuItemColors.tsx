@@ -6,7 +6,7 @@ interface Props {
   onSelect: (e: MouseEvent<HTMLButtonElement>, color: Color) => void;
 }
 
-export function ViewBoardTaskMenuItemColors(props: Props) {
+export function BoardTaskHeaderMenuItemColors(props: Props) {
   const { currentColor, onSelect } = props;
 
   return (

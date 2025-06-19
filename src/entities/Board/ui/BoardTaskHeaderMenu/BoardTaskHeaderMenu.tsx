@@ -1,8 +1,8 @@
 import { PencilIcon, TrashIcon, CheckCircle2Icon } from 'lucide-react';
 
-import { ViewBoardTaskMenuItemColors } from '../ViewBoardTaskMenuItemColors/ViewBoardTaskMenuItemColors';
+import { BoardTaskHeaderMenuItemColors } from '../BoardTaskHeaderMenuItemColors/BoardTaskHeaderMenuItemColors';
 import { DropdownMenu, type DropDownMenuOptions } from '@/shared/ui/c';
-import { ViewBoardTaskMenuTrigger } from '../ViewBoardTaskMenuTrigger/ViewBoardTaskMenuTrigger';
+import { BoardTaskHeaderMenuTrigger } from '../BoardTaskHeaderMenuTrigger/BoardTaskHeaderMenuTrigger';
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useProject } from '@/shared/lib/navigation';
@@ -21,7 +21,7 @@ interface Props {
   onSetTaskCompletion: (value: boolean) => void;
 }
 
-export function ViewBoardTaskMenu(props: Props) {
+export function BoardTaskHeaderMenu(props: Props) {
   const { taskId, isChecked, currentColor, onSetTaskCompletion } = props;
 
   const { boardId } = useProject();
@@ -73,7 +73,7 @@ export function ViewBoardTaskMenu(props: Props) {
     {
       type: 'pure',
       content: (
-        <ViewBoardTaskMenuItemColors
+        <BoardTaskHeaderMenuItemColors
           currentColor={currentColor}
           onSelect={onSelectColor}
         />
@@ -101,7 +101,7 @@ export function ViewBoardTaskMenu(props: Props) {
   return (
     <DropdownMenu
       options={options}
-      trigger={<ViewBoardTaskMenuTrigger />}
+      trigger={<BoardTaskHeaderMenuTrigger />}
       open={isOpen}
       onOpenChange={setIsOpen}
     />
