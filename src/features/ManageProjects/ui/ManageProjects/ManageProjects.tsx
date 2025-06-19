@@ -5,9 +5,10 @@ import { ManageProjectsPlaceholder } from './ManageProjects.placeholder';
 
 import { useTenant } from '@/shared/lib/navigation';
 import { useQuery } from '@tanstack/react-query';
+
+import { cn } from '@/shared/lib/css';
 import { projectQueries } from '@/entities/Project';
 import { getManageProjectsContainerClassName } from '../../constants';
-import { cn } from '@/shared/lib/css';
 
 export function ManageProjects() {
   const tenant = useTenant();

@@ -1,0 +1,1 @@
+export { useTeamAccess } from './useTeamAccess';

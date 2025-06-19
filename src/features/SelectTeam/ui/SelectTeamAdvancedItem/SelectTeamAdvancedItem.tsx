@@ -1,7 +1,6 @@
 import { LayoutGrid, Pencil, Trash } from 'lucide-react';
-import { cn } from '@/shared/lib/css';
 
-import { Button } from '@/shared/ui/c';
+import { Button, RenameInput } from '@/shared/ui/c';
 
 import { useRef, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
@@ -29,9 +28,10 @@ interface Props {
 export function SelectTeamAdvancedItem(props: Props) {
   const { team, isCurrentTeam, onDeleteTeam } = props;
 
+  const { push } = useRouter();
+
   const isAdmin = team.admin;
   const isOwner = team.owned;
-  const { push } = useRouter();
 
   const inputRef = useRef<HTMLInputElement>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -47,19 +47,19 @@ export function SelectTeamAdvancedItem(props: Props) {
   const onEndEditing = (e: FocusEvent<HTMLInputElement>) => {
     setIsEditing(false);
 
+    const name = e.target.value;
+
+    if (name === team.name) return;
+
     try {
-      RenameTeamSchema.parse({ name: e.target.value });
+      RenameTeamSchema.parse({ name });
     } catch (error) {
       if (error instanceof ZodError) toast.error(getZodErrorMessage(error));
       setTeamName(team.name);
       return;
     }
 
-    const value = e.target.value;
-
-    if (value === team.name) return;
-
-    renameTeam({ idOrSlug: team.id, name: e.target.value })
+    renameTeam({ idOrSlug: team.id, name })
       .then(({ data: { slug } }) => {
         //if the team is the current team, then update slug in the url
         if (isCurrentTeam) push(getProfileRoutePath(slug), { scroll: false });
@@ -82,23 +82,17 @@ export function SelectTeamAdvancedItem(props: Props) {
   return (
     <div
       key={team.id}
-      className='flex items-center gap-2 px-1 h-6
-      hover:bg-primary/5'
+      className='flex items-center gap-2 px-1 h-6'
       onClick={isEditing ? undefined : onRedirectToTeam}
     >
       <LayoutGrid className='w-4 h-4' />
 
-      <input
-        type='text'
+      <RenameInput
         ref={inputRef}
         value={teamName}
         onChange={e => setTeamName(e.target.value)}
         onBlur={onEndEditing}
-        readOnly={!isEditing}
-        className={cn(
-          'border-none outline-none bg-transparent w-full cursor-pointer',
-          { 'cursor-text': isEditing },
-        )}
+        isEditing={isEditing}
       />
 
       <div data-ignore='true' className='flex items-center gap-2 ml-auto'>

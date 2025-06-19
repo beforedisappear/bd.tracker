@@ -26,6 +26,7 @@ export { PureCheckbox } from './Checkbox/PureCheckbox';
 export { Popover } from './Popover/Popover';
 export { MembersField } from './MemberField/MemberField';
 export { Calendar } from './Calendar/Calendar';
+export { RenameInput } from './RenameInput/RenameInput';
 
 //custom
 export { ErrorBoundary } from './ErrorBoundary/ErrorBoundary';

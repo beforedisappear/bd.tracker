@@ -54,11 +54,7 @@ export function TeamMembersField(props: Props) {
         )}
 
         {isSuccess && (
-          <MembersField
-            members={teamMembers}
-            isExpanded={withSearch}
-            inputName='membersIds'
-          />
+          <MembersField members={teamMembers} inputName='membersIds' />
         )}
       </div>
     </div>

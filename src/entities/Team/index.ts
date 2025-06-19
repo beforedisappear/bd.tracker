@@ -1,5 +1,6 @@
 export { teamQueries } from './api';
 export { useTeamStore, TeamStoreProvider } from './models/store';
+export { useTeamAccess } from './lib';
 export {
   getDeleteTeamModal,
   getDeletingTeam,

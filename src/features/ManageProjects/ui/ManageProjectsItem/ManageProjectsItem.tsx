@@ -1,34 +1,36 @@
-import { Avatar } from '@/shared/ui/s';
-import { ManageProjectsItemMenu } from '../ManageProjectsItemMenu/ManageProjectsItemMenu';
+import { ManageProjectsItemMembers } from '../ManageProjectsItemMembers/ManageProjectsItemMembers';
+import { ManageProjectsItemMenu } from '../ManageProjectsItemMenu';
+import { RenameInput } from '@/shared/ui/c';
 
 import { useRouter } from 'next/navigation';
+import { useProjectNameEditing } from '../../lib';
+import { useTeamAccess } from '@/entities/Team';
+import { useRef, type MouseEvent } from 'react';
 
-import { getProjectByIdRoutePath } from '@/shared/config/routes';
 import { cn } from '@/shared/lib/css';
+import { getProjectByIdRoutePath } from '@/shared/config/routes';
 import { getManageProjectsItemClassName } from '../../constants';
-import {
-  getProjectMembersModal,
-  getDeleteProjectModal,
-} from '@/entities/Project';
-import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
 
 import type { ProjectWithFirstBoardId } from '@/entities/Project';
-import type { MouseEvent } from 'react';
 
 interface Props {
-  project: ProjectWithFirstBoardId;
   tenant: string;
+  project: ProjectWithFirstBoardId;
 }
 
-//TODO: продумать доступность к проекту
 export function ManageProjectsItem({ project, tenant }: Props) {
   const router = useRouter();
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const { setShowProjectMembersModal, setCurrentProjectId } =
-    usePrivateGlobalStore(getProjectMembersModal());
-  const { setShowDeleteProjectModal } = usePrivateGlobalStore(
-    getDeleteProjectModal(),
-  );
+  const { isEnoughAccess } = useTeamAccess();
+
+  const {
+    isEditing,
+    projectName,
+    setProjectName,
+    onStartEditing,
+    onEndEditing,
+  } = useProjectNameEditing({ project, tenant, inputRef });
 
   const onRedirectToProjectPage = (e: MouseEvent<HTMLDivElement>) => {
     if (!e.currentTarget.contains(e.target as Node)) return;
@@ -36,16 +38,6 @@ export function ManageProjectsItem({ project, tenant }: Props) {
     router.push(
       getProjectByIdRoutePath(tenant, project.id, project.firstBoardId),
     );
-  };
-
-  const onOpenProjectMembersModal = () => {
-    setCurrentProjectId(project.id);
-    setShowProjectMembersModal(true);
-  };
-
-  const onOpenDeleteProjectModal = () => {
-    setCurrentProjectId(project.id);
-    setShowDeleteProjectModal(true);
   };
 
   return (
@@ -57,34 +49,24 @@ export function ManageProjectsItem({ project, tenant }: Props) {
       onClick={onRedirectToProjectPage}
     >
       <div className='flex justify-between w-full h-6 gap-1'>
-        <span className='line-clamp-1 text-sm font-medium text-muted-foreground text-left'>
-          {project.name}
-        </span>
-
-        <ManageProjectsItemMenu
-          onRenameProject={() => {}}
-          onParticipants={onOpenProjectMembersModal}
-          onDeleteProject={onOpenDeleteProjectModal}
+        <RenameInput
+          ref={inputRef}
+          isEditing={isEditing}
+          value={projectName}
+          onChange={e => setProjectName(e.target.value)}
+          onBlur={onEndEditing}
+          className='text-muted-foreground'
         />
-      </div>
 
-      <div className='flex items-center w-fit'>
-        {project.members.slice(0, 5).map(member => (
-          <Avatar
-            key={member.id}
-            src={''}
-            alt={member.name}
-            initials={member.name}
-            className='grid place-content-center w-6 h-6 text-xs mr-[-6px] border-2 border-muted'
+        {isEnoughAccess && (
+          <ManageProjectsItemMenu
+            projectId={project.id}
+            onRenameProject={onStartEditing}
           />
-        ))}
-
-        {project.members.length > 5 && (
-          <span className='flex items-center justify-center w-7 h-6 text-xs text-muted-foreground ml-[2px] rounded-full bg-muted'>
-            +{project.members.length - 5}
-          </span>
         )}
       </div>
+
+      <ManageProjectsItemMembers members={project.members} />
     </div>
   );
 }

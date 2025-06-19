@@ -7,11 +7,11 @@ import { TeamMemberProfileModalContentLoading } from './TeamMemberProfileModalCo
 
 import { useQuery } from '@tanstack/react-query';
 import { useTenant } from '@/shared/lib/navigation';
-
 import {
+  useTeamStore,
+  useTeamAccess,
   getCurrentTeamMemberId,
   getTeamMemberProfileModal,
-  useTeamStore,
   teamQueries,
 } from '@/entities/Team';
 
@@ -21,6 +21,8 @@ export function TeamMemberProfileModalContent() {
   const { setShowTeamMemberProfileModal } = useTeamStore(
     getTeamMemberProfileModal(),
   );
+
+  const { isEnoughAccess } = useTeamAccess();
 
   //TODO: add placeholder from setQueryData null
   const {
@@ -80,9 +82,13 @@ export function TeamMemberProfileModalContent() {
           </div>
         )}
 
-        {!teamMember.isOwner && <SetAdmin isAdmin={teamMember.isAdmin} />}
+        {!teamMember.isOwner && isEnoughAccess && (
+          <SetAdmin isAdmin={teamMember.isAdmin} />
+        )}
 
-        {!teamMember.isOwner && <DeleteTeamMember onComplete={onComplete} />}
+        {!teamMember.isOwner && isEnoughAccess && (
+          <DeleteTeamMember onComplete={onComplete} />
+        )}
 
         {/* datas */}
         <div className='flex flex-col gap-0.5 mt-2'>

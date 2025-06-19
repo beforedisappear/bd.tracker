@@ -40,7 +40,7 @@ export function Card(props: Props) {
   return (
     <CardContainer className={className}>
       {hasHeader && (
-        <CardHeader className={headerClassName}>
+        <CardHeader className={cn(headerClassName, 'md:p-4 md:pb-0')}>
           {title && <CardTitle className={titleClassName}>{title}</CardTitle>}
 
           {description && (
@@ -54,13 +54,17 @@ export function Card(props: Props) {
       )}
 
       {children && (
-        <CardContent className={cn({ 'pt-6': !hasHeader }, contentClassName)}>
+        <CardContent
+          className={cn({ 'pt-6': !hasHeader }, contentClassName, 'md:p-4')}
+        >
           {children}
         </CardContent>
       )}
 
       {footerContent && (
-        <CardFooter className={footerClassName}>{footerContent}</CardFooter>
+        <CardFooter className={cn(footerClassName, 'md:p-4')}>
+          {footerContent}
+        </CardFooter>
       )}
     </CardContainer>
   );

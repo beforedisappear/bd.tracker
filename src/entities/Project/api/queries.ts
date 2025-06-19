@@ -9,6 +9,7 @@ import { deleteProject } from './deleteProject';
 import { addProjectMember } from './addProjectMember';
 import { removeProjectMember } from './removeProjectMembet';
 import { updateProjectMembers } from './updateProjectMembers';
+import { renameProject } from './renameProject';
 
 import type {
   GetProjectsByTeamDtoReq,
@@ -18,6 +19,7 @@ import type {
   AddProjectMemberDtoReq,
   RemoveProjectMemberDtoReq,
   UpdateProjectMembersDtoReq,
+  RenameProjectDtoReq,
 } from '../models/types';
 
 export const projectQueries = {
@@ -46,6 +48,16 @@ export const projectQueries = {
         queryClient.invalidateQueries({
           queryKey: [...projectQueries.teamProjects(teamIdOrSlug)],
         }),
+    }),
+
+  renameProject: () =>
+    mutationOptions({
+      mutationFn: (dto: RenameProjectDtoReq) => renameProject(dto),
+      onSuccess: (_, { teamIdOrSlug }) => {
+        queryClient.invalidateQueries({
+          queryKey: [...projectQueries.teamProjects(teamIdOrSlug)],
+        });
+      },
     }),
 
   //TODO: add optimistic update

@@ -446,7 +446,7 @@ class TeamService extends BaseService {
     );
 
     if (memberId === initiatorId)
-      throw ApiError.badRequest('You cannot remove yourself from the team');
+      throw ApiError.forbidden('You cannot remove yourself from the team');
 
     if (!inTeam) {
       throw ApiError.notFound('User is not a member of this team');

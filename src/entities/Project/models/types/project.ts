@@ -33,6 +33,14 @@ export interface DeleteProjectDtoReq {
 
 export type DeleteProjectDtoRes = unknown;
 
+export interface RenameProjectDtoReq {
+  teamIdOrSlug: string;
+  projectId: string;
+  name: string;
+}
+
+export type RenameProjectDtoRes = { id: string };
+
 // export interface GetProjectByIdDtoReq {
 //   projectId: string;
 // }

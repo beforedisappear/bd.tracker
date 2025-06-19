@@ -24,15 +24,15 @@ class ProjectService extends BaseService {
   //TODO: add permisson
   async createProject(args: {
     teamIdOrSlug: string;
-    creatorId: string;
+    initiatorId: string;
     name: string;
     membersIds?: string[];
   }) {
-    const { teamIdOrSlug, creatorId, name, membersIds = [] } = args;
+    const { teamIdOrSlug, initiatorId, name, membersIds = [] } = args;
 
     const { isAdmin, isOwner, team } = await this.checkIsUserInTeam(
       teamIdOrSlug,
-      { userId: creatorId },
+      { userId: initiatorId },
     );
 
     if (!isAdmin && !isOwner) {
