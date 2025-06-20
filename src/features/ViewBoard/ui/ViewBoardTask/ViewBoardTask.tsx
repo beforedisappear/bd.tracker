@@ -2,6 +2,11 @@ import { ViewBoardTaskWrapper } from '../ViewBoardTaskWrapper/ViewBoardTaskWrapp
 import { ViewBoardTaskContent } from '../ViewBoardTaskContent/ViewBoardTaskContent';
 import { BoardTaskHeader } from '@/entities/Board';
 
+import { useRouter } from 'next/navigation';
+import { useCallback } from 'react';
+
+import { TASK_PARAM } from '@/shared/config/routes';
+
 import type { Task } from '@/entities/Board';
 
 interface Props {
@@ -15,6 +20,17 @@ export function ViewBoardTask(props: Props) {
     isFiltered = false,
   } = props;
 
+  const { push } = useRouter();
+
+  const onTaskClose = useCallback(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+
+    if (!searchParams.has(TASK_PARAM)) return;
+
+    searchParams.delete(TASK_PARAM);
+    push(`?${searchParams.toString()}`);
+  }, [push]);
+
   return (
     <ViewBoardTaskWrapper id={id} color={color} isFiltered={isFiltered}>
       <BoardTaskHeader
@@ -22,6 +38,7 @@ export function ViewBoardTask(props: Props) {
         title={title}
         isDone={isDone}
         color={color}
+        onClose={onTaskClose}
       />
 
       <ViewBoardTaskContent data={props.data} />

@@ -2,6 +2,7 @@ import { useSortable } from '@dnd-kit/sortable';
 import { useRouter } from 'next/navigation';
 
 import { getTaskClassName } from '../../lib/getTaskClassName';
+import { getTaskParams } from '@/shared/config/routes';
 import { cn } from '@/shared/lib/css';
 import type { Color } from '@/entities/Board';
 
@@ -22,7 +23,7 @@ export function ViewBoardTaskWrapper(props: Props) {
   });
 
   const handleClick = () => {
-    push(`?task=${id}`, { scroll: false });
+    push(getTaskParams(id), { scroll: false });
   };
 
   return (

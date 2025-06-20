@@ -7,10 +7,11 @@ import { useQuery } from '@tanstack/react-query';
 
 interface Props {
   taskId: string | null;
+  onClose: () => void;
 }
 
 export function TaskOverviewSheetContainer(props: Props) {
-  const { taskId } = props;
+  const { taskId, onClose } = props;
 
   const {
     data: task,
@@ -26,5 +27,5 @@ export function TaskOverviewSheetContainer(props: Props) {
   else if (isError || !isSuccess)
     return <ErrorBoundary className='m-auto w-full h-full' />;
 
-  return <TaskOverviewSheetContent task={task} />;
+  return <TaskOverviewSheetContent task={task} onClose={onClose} />;
 }

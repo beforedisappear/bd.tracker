@@ -19,10 +19,12 @@ interface Props {
   isChecked: boolean;
   currentColor: Color;
   onSetTaskCompletion: (value: boolean) => void;
+  onClose: () => void;
 }
 
 export function BoardTaskHeaderMenu(props: Props) {
-  const { taskId, isChecked, currentColor, onSetTaskCompletion } = props;
+  const { taskId, isChecked, currentColor, onSetTaskCompletion, onClose } =
+    props;
 
   const { boardId } = useProject();
   const [isOpen, setIsOpen] = useState(false);
@@ -91,9 +93,10 @@ export function BoardTaskHeaderMenu(props: Props) {
       onSelect: e => {
         e.stopPropagation();
         setIsOpen(false);
-        deleteTask({ taskId, boardId }).catch(e => {
-          toast.error(getErrorMessage(e));
-        });
+
+        deleteTask({ taskId, boardId })
+          .then(() => onClose?.())
+          .catch(e => toast.error(getErrorMessage(e)));
       },
     },
   ];

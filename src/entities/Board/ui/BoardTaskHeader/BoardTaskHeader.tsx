@@ -18,6 +18,7 @@ interface Props {
   color: Color;
   titleClassName?: string;
   offCheckTitleStyle?: boolean;
+  onClose: () => void;
 }
 
 export function BoardTaskHeader(props: Props) {
@@ -28,6 +29,7 @@ export function BoardTaskHeader(props: Props) {
     color,
     titleClassName,
     offCheckTitleStyle = false,
+    onClose,
   } = props;
 
   const { boardId } = useProject();
@@ -68,6 +70,7 @@ export function BoardTaskHeader(props: Props) {
         isChecked={isChecked}
         currentColor={color}
         onSetTaskCompletion={onSetTaskCompletion}
+        onClose={onClose}
       />
     </div>
   );

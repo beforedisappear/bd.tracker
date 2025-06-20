@@ -9,8 +9,9 @@ import { Button } from '@/shared/ui/Button/Button';
 import { Badge } from '@/shared/ui/Badge/Badge';
 import { MoreVerticalIcon } from 'lucide-react';
 
-interface TaskOverviewSheetContentProps {
+interface Props {
   task: Task;
+  onClose: () => void;
 }
 
 interface TaskFormFields {
@@ -18,9 +19,9 @@ interface TaskFormFields {
   isDone: boolean;
 }
 
-export function TaskOverviewSheetContent({
-  task,
-}: TaskOverviewSheetContentProps) {
+export function TaskOverviewSheetContent(props: Props) {
+  const { task, onClose } = props;
+
   const form = useForm<TaskFormFields>({
     defaultValues: {
       description: task.description ?? '',
@@ -165,6 +166,7 @@ export function TaskOverviewSheetContent({
           color={task.color}
           titleClassName='text-xl font-semibold'
           offCheckTitleStyle
+          onClose={onClose}
         />
       </div>
     </Form>
