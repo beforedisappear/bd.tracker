@@ -5,7 +5,7 @@ import { useDeviceType } from '@/shared/lib/deviceType/c';
 import { LazyInviteToTeamDesktop } from './InviteToTeam.desktop.async';
 import { LazyInviteToTeamMobile } from './InviteToTeam.mobile.async';
 
-import { INVITE_TO_TEAM_BTN_TEXT } from '../../config';
+import { INVITE_TO_TEAM_BTN_TEXT } from '../../constants';
 
 export function InviteToTeam() {
   const { isMobile, isDesktop } = useDeviceType();

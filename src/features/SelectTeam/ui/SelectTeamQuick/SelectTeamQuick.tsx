@@ -4,7 +4,7 @@ import { Skeleton } from '@/shared/ui/s';
 import { SelectTeamQuickForm } from '../SelectTeamQuickForm/SelectTeamQuickForm';
 
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
+import { useTenant } from '@/shared/lib/navigation';
 
 import { teamQueries } from '@/entities/Team';
 import { selectAdapter } from '@/shared/lib/input';
@@ -12,7 +12,7 @@ import { selectAdapter } from '@/shared/lib/input';
 interface Props {}
 
 export function SelectTeamQuick({}: Props) {
-  const { tenant } = useParams<{ tenant: string }>()!;
+  const tenant = useTenant();
 
   const {
     data: userTeamList,

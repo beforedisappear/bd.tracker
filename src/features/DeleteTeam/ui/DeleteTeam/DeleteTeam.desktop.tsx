@@ -6,7 +6,7 @@ import { DeleteTeamTrigger } from '../DeleteTeamTrigger/DeleteTeamTrigger';
 
 import { useTeamStore } from '@/entities/Team';
 
-import { DELETE_TEAM_TITLE } from '../../constants';
+import { DELETE_TEAM_DESCRIPTION, DELETE_TEAM_TITLE } from '../../constants';
 interface Props {
   hideTrigger?: boolean;
 }
@@ -19,17 +19,23 @@ export function DeleteTeamDesktop(props: Props) {
   );
   const showDeleteTeamModal = useTeamStore(state => state.showDeleteTeamModal);
 
+  const onCloseModal = () => {
+    setShowDeleteTeamModal(false);
+  };
+
   return (
     <Dialog
       title={DELETE_TEAM_TITLE}
       titleClassName='text-center'
+      description={DELETE_TEAM_DESCRIPTION}
+      descClassName='text-left'
       trigger={hideTrigger ? null : <DeleteTeamTrigger />}
       className='h-48 max-w-96'
       data-testid='delete-team-dialog'
       onOpenChange={setShowDeleteTeamModal}
       open={showDeleteTeamModal}
     >
-      <DeleteTeamForm />
+      <DeleteTeamForm onClose={onCloseModal} />
     </Dialog>
   );
 }

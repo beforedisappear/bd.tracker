@@ -1,9 +1,7 @@
 import { UserRoundPlus } from 'lucide-react';
 
-import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
+import { useTeamAccess } from '@/entities/Team';
 
-import { teamQueries } from '@/entities/Team';
 import { toast } from 'sonner';
 
 import { Button, type ButtonProps } from '@/shared/ui/c';
@@ -17,13 +15,7 @@ interface Props extends ButtonProps {
 export function InviteToTeamTrigger(props: Props) {
   const { text, variant = 'outline', ...restProps } = props;
 
-  const { tenant } = useParams<{ tenant: string }>()!;
-
-  const { data, isLoading } = useQuery(
-    teamQueries.getHaveAccessToTeam({ idOrSlug: tenant }),
-  );
-
-  const isDisabled = !(data?.isOwner || data?.isAdmin);
+  const { isEnoughAccess, isLoading } = useTeamAccess();
 
   const onHandleClick = () => {
     toast.error(RESTRICTED_MESSAGE);
@@ -36,7 +28,7 @@ export function InviteToTeamTrigger(props: Props) {
       variant={variant}
       className='w-fit'
       disabled={isLoading}
-      {...(isDisabled && { onClick: onHandleClick })}
+      {...(!isEnoughAccess && { onClick: onHandleClick })}
     >
       <UserRoundPlus />
       <span>{text}</span>

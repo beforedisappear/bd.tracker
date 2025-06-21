@@ -21,6 +21,10 @@ export const WithLabel: Story = {
   args: { label: 'Checkbox label' },
 };
 
+export const WithRightLabel: Story = {
+  args: { label: 'Right Checkbox label', withRightLabel: true },
+};
+
 export const WithDescription: Story = {
   args: { description: 'Some checkbox description' },
 };

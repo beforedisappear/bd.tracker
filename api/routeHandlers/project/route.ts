@@ -27,7 +27,7 @@ export async function PostCreateProject(request: NextRequest) {
       teamIdOrSlug: data.teamIdOrSlug,
       name: data.name,
       membersIds: data.membersIds,
-      creatorId: userId,
+      initiatorId: userId,
     });
 
     return NextResponse.json(newTeam, {

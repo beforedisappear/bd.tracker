@@ -1,43 +1,54 @@
-import { Avatar } from '@/shared/ui/s';
-import { ManageProjectsItemMenu } from '../ManageProjectsItemMenu/ManageProjectsItemMenu';
+import { ManageProjectsItemMembers } from '../ManageProjectsItemMembers/ManageProjectsItemMembers';
+import { ManageProjectsItemMenu } from '../ManageProjectsItemMenu';
+import { RenameInput, type RenameInputMethods } from '@/shared/ui/c';
 
 import { useRouter } from 'next/navigation';
+import { useTeamAccess } from '@/entities/Team';
 import { useMutation } from '@tanstack/react-query';
+import { useRef, type MouseEvent } from 'react';
 
-import { getErrorMessage } from '@/shared/lib/error';
-import { getProjectByIdRoutePath } from '@/shared/config/routes';
-import { cn, getColorByFirstLetter } from '@/shared/lib/css';
-import { getInitials } from '@/shared/lib/data';
-import { getManageProjectsItemClassName } from '../../config';
-import { projectQueries } from '@/entities/Project';
+import {
+  projectQueries,
+  RenameProjectSchema,
+  type ProjectWithFirstBoardId,
+} from '@/entities/Project';
+
+import { cn } from '@/shared/lib/css';
 import { toast } from 'sonner';
-
-import type { Project } from '@/entities/Project';
-import type { MouseEvent } from 'react';
+import { getProjectByIdRoutePath } from '@/shared/config/routes';
+import { getErrorMessage } from '@/shared/lib/error';
+import { getManageProjectsItemClassName } from '../../constants';
 
 interface Props {
-  project: Project;
   tenant: string;
+  project: ProjectWithFirstBoardId;
 }
 
 export function ManageProjectsItem({ project, tenant }: Props) {
   const router = useRouter();
+  const { isEnoughAccess } = useTeamAccess();
+  const methodsRef = useRef<RenameInputMethods>(null);
 
-  const { mutateAsync: deleteProject } = useMutation(
-    projectQueries.deleteProject(),
+  const { mutateAsync: renameProject } = useMutation(
+    projectQueries.renameProject(),
   );
 
-  const onRedirectToProjectPage = (e: MouseEvent<HTMLDivElement>) => {
-    if (e.target !== e.currentTarget) return;
-
-    router.push(getProjectByIdRoutePath(tenant, project.id));
+  const onRenameProject = (name: string) => {
+    renameProject({ teamIdOrSlug: tenant, projectId: project.id, name })
+      .then(() => {})
+      .catch(e => toast.error(getErrorMessage(e)));
   };
 
-  //TODO: вызывать модалку DeleteProject
-  const onDeleteProject = async () => {
-    deleteProject({ projectId: project.id, teamIdOrSlug: tenant }).catch(e =>
-      toast.error(getErrorMessage(e)),
+  const onRedirectToProjectPage = (e: MouseEvent<HTMLDivElement>) => {
+    if (!e.currentTarget.contains(e.target as Node)) return;
+
+    const path = getProjectByIdRoutePath(
+      tenant,
+      project.id,
+      project.firstBoardId,
     );
+
+    router.push(path);
   };
 
   return (
@@ -49,35 +60,23 @@ export function ManageProjectsItem({ project, tenant }: Props) {
       onClick={onRedirectToProjectPage}
     >
       <div className='flex justify-between w-full h-6 gap-1'>
-        <span className='line-clamp-1 text-sm font-medium text-muted-foreground text-left'>
-          {project.name}
-        </span>
-
-        <ManageProjectsItemMenu
-          onRenameProject={() => {}}
-          onParticipants={() => {}}
-          onDeleteProject={onDeleteProject}
+        <RenameInput
+          methodsRef={methodsRef}
+          initialName={project.name}
+          schema={RenameProjectSchema}
+          className='text-muted-foreground'
+          onRename={onRenameProject}
         />
-      </div>
 
-      <div className='flex items-center w-fit'>
-        {project.members.slice(0, 5).map(member => (
-          <Avatar
-            key={member.id}
-            src={''}
-            alt={member.name}
-            fallback={getInitials(member.name)}
-            className='flex items-center justify-center w-6 h-6 text-xs mr-[-6px] border-2 border-muted'
-            style={{ backgroundColor: getColorByFirstLetter(member.name) }}
+        {isEnoughAccess && (
+          <ManageProjectsItemMenu
+            projectId={project.id}
+            onRenameProject={() => methodsRef.current?.onStartEditing?.()}
           />
-        ))}
-
-        {project.members.length > 5 && (
-          <span className='flex items-center justify-center w-7 h-6 text-xs text-muted-foreground ml-[2px] rounded-full bg-muted'>
-            +{project.members.length - 5}
-          </span>
         )}
       </div>
+
+      <ManageProjectsItemMembers members={project.members} />
     </div>
   );
 }

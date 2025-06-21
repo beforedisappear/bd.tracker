@@ -24,15 +24,15 @@ class ProjectService extends BaseService {
   //TODO: add permisson
   async createProject(args: {
     teamIdOrSlug: string;
-    creatorId: string;
+    initiatorId: string;
     name: string;
     membersIds?: string[];
   }) {
-    const { teamIdOrSlug, creatorId, name, membersIds = [] } = args;
+    const { teamIdOrSlug, initiatorId, name, membersIds = [] } = args;
 
     const { isAdmin, isOwner, team } = await this.checkIsUserInTeam(
       teamIdOrSlug,
-      { userId: creatorId },
+      { userId: initiatorId },
     );
 
     if (!isAdmin && !isOwner) {
@@ -52,14 +52,26 @@ class ProjectService extends BaseService {
         throw ApiError.badRequest('One or more team members were not found');
     }
 
-    const project = await prismaService.project.create({
-      data: {
-        name,
-        teamId: team.id,
-        members: {
-          connect: [...membersIds.map(id => ({ id }))],
+    const project = await prismaService.$transaction(async tx => {
+      const newProject = await tx.project.create({
+        data: {
+          name,
+          teamId: team.id,
+          members: {
+            connect: [...membersIds.map(id => ({ id }))],
+          },
         },
-      },
+      });
+
+      // Create a new board for the project
+      await tx.board.create({
+        data: {
+          name: 'Новая доска',
+          projectId: newProject.id,
+        },
+      });
+
+      return newProject;
     });
 
     return project;
@@ -73,9 +85,7 @@ class ProjectService extends BaseService {
       include: { team: true },
     });
 
-    if (!project) {
-      throw ApiError.notFound('Project not found');
-    }
+    if (!project) throw ApiError.notFound('Project not found');
 
     const teamFromProject = project.team;
 
@@ -157,10 +167,19 @@ class ProjectService extends BaseService {
       where: { teamId: team.id },
       include: {
         members: true,
+        boards: {
+          select: { id: true },
+          orderBy: { createdAt: 'asc' },
+          take: 1,
+        },
       },
     });
 
-    return projects;
+    return projects.map(project => ({
+      ...project,
+      firstBoardId: project.boards[0]?.id as string,
+      boards: undefined, // remove boards from response since we only needed firstBoardId
+    }));
   }
 
   async getProjectById(args: { id: string; initiatorId: string }) {
@@ -267,6 +286,36 @@ class ProjectService extends BaseService {
     await prismaService.project.update({
       where: { id: projectId },
       data: { members: { disconnect: { id: member.id } } },
+    });
+
+    return null;
+  }
+
+  async updateProjectMembers(args: {
+    projectId: string;
+    membersIds: string[];
+    initiatorId: string;
+  }) {
+    const { projectId, membersIds, initiatorId } = args;
+
+    const project = await prismaService.project.findUnique({
+      where: { id: projectId },
+      include: { team: true },
+    });
+
+    if (!project) throw ApiError.notFound('Project not found');
+
+    const { isAdmin, isOwner } = await this.checkIsUserInTeam(project.team.id, {
+      userId: initiatorId,
+    });
+
+    if (!isAdmin && !isOwner) {
+      throw ApiError.forbidden('You are not allowed to update this project');
+    }
+
+    await prismaService.project.update({
+      where: { id: projectId },
+      data: { members: { set: membersIds.map(id => ({ id })) } },
     });
 
     return null;

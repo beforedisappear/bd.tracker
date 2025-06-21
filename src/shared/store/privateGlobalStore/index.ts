@@ -4,3 +4,4 @@ export {
   type PrivateGlobalStoreApi,
 } from './privateGlobalStore';
 export { usePrivateGlobalStore } from './usePrivateGlobalStore';
+export type { PrivateGlobalStore } from './types';

@@ -6,23 +6,23 @@ import { DeleteTeamMember } from '@/features/DeleteTeamMember';
 import { TeamMemberProfileModalContentLoading } from './TeamMemberProfileModalContent.loading';
 
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
-
+import { useTenant } from '@/shared/lib/navigation';
 import {
+  useTeamStore,
+  useTeamAccess,
   getCurrentTeamMemberId,
   getTeamMemberProfileModal,
-  useTeamStore,
   teamQueries,
 } from '@/entities/Team';
-import { getColorByFirstLetter } from '@/shared/lib/css';
-import { getInitials } from '@/shared/lib/data/getInitials';
 
 export function TeamMemberProfileModalContent() {
-  const { tenant } = useParams<{ tenant: string }>()!;
+  const tenant = useTenant();
   const { currentTeamMemberId } = useTeamStore(getCurrentTeamMemberId());
   const { setShowTeamMemberProfileModal } = useTeamStore(
     getTeamMemberProfileModal(),
   );
+
+  const { isEnoughAccess } = useTeamAccess();
 
   //TODO: add placeholder from setQueryData null
   const {
@@ -32,7 +32,7 @@ export function TeamMemberProfileModalContent() {
   } = useQuery({
     ...teamQueries.getTeamMemberById({
       teamIdOrSlug: tenant,
-      memberId: currentTeamMemberId as string,
+      memberId: currentTeamMemberId!,
     }),
     enabled: !!currentTeamMemberId,
   });
@@ -50,8 +50,7 @@ export function TeamMemberProfileModalContent() {
         src={''}
         alt={teamMember.name}
         className='grid place-items-center w-20 h-20 text-3xl'
-        fallback={getInitials(teamMember.name)}
-        style={{ backgroundColor: getColorByFirstLetter(teamMember.name) }}
+        initials={teamMember.name}
       />
 
       <div className='flex flex-col gap-2 flex-1'>
@@ -83,9 +82,13 @@ export function TeamMemberProfileModalContent() {
           </div>
         )}
 
-        {!teamMember.isOwner && <SetAdmin isAdmin={teamMember.isAdmin} />}
+        {!teamMember.isOwner && isEnoughAccess && (
+          <SetAdmin isAdmin={teamMember.isAdmin} />
+        )}
 
-        {!teamMember.isOwner && <DeleteTeamMember onComplete={onComplete} />}
+        {!teamMember.isOwner && isEnoughAccess && (
+          <DeleteTeamMember onComplete={onComplete} />
+        )}
 
         {/* datas */}
         <div className='flex flex-col gap-0.5 mt-2'>

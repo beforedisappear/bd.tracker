@@ -1,7 +1,5 @@
 import { Crown, UserRoundCog } from 'lucide-react';
 
-import { getColorByFirstLetter } from '@/shared/lib/css';
-import { getInitials } from '@/shared/lib/data';
 import { Avatar } from '@/shared/ui/s';
 
 import type { TeamMember } from '@/entities/Team';
@@ -20,12 +18,12 @@ export function ViewTeamMembersItem(props: Props) {
     hover:bg-zinc-200 dark:hover:bg-zinc-800'
       onClick={() => onOpenProfile(member.id)}
     >
+      {/* TODO: create UserAvatar ui component */}
       <Avatar
         src={''}
         alt={member.name}
-        fallback={getInitials(member.name)}
+        initials={member.name}
         className='grid place-items-center w-6 h-6 text-xs'
-        style={{ backgroundColor: getColorByFirstLetter(member.name) }}
       />
 
       <div className='flex items-center gap-2 w-64'>

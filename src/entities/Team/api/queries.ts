@@ -54,7 +54,10 @@ export const teamQueries = {
 
   getTeamMembers: (dto: GetTeamMembersDtoReq) =>
     queryOptions({
-      queryKey: [...teamQueries.teamMembers(dto.idOrSlug)],
+      queryKey: [
+        ...teamQueries.teamMembers(dto.idOrSlug),
+        ...(dto.keyword ? ['keyword', dto.keyword] : []),
+      ],
       queryFn: () => getTeamMembers(dto),
       select: res => res.data,
     }),

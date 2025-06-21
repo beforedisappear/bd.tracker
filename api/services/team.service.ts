@@ -75,7 +75,15 @@ class TeamService extends BaseService {
 
     const adminIds = team.admins.map(a => a.id);
 
-    const teamMembers = [team.owner, ...team.members].map(member => ({
+    const withOwner =
+      !keyword ||
+      team.owner.name.toLowerCase().includes(keyword.toLowerCase()) ||
+      team.owner.email.toLowerCase().includes(keyword.toLowerCase());
+
+    const teamMembers = [
+      ...(withOwner ? [team.owner] : []),
+      ...team.members,
+    ].map(member => ({
       ...member,
       isOwner: member.id === team.ownerId,
       isAdmin: adminIds.includes(member.id),
@@ -368,9 +376,7 @@ class TeamService extends BaseService {
       await tx.team.update({
         where: { id: invitation.teamId },
         data: {
-          members: {
-            connect: { id: user.id },
-          },
+          members: { connect: { id: user.id } },
           projects:
             invitation.projectIds.length > 0
               ? { connect: invitation.projectIds.map(id => ({ id })) }
@@ -440,7 +446,7 @@ class TeamService extends BaseService {
     );
 
     if (memberId === initiatorId)
-      throw ApiError.badRequest('You cannot remove yourself from the team');
+      throw ApiError.forbidden('You cannot remove yourself from the team');
 
     if (!inTeam) {
       throw ApiError.notFound('User is not a member of this team');

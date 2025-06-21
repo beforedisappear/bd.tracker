@@ -3,7 +3,7 @@ import { useContext } from 'react';
 
 import { PrivateGlobalStoreContext } from './PrivateGlobalStoreContext';
 
-import type { PrivateGlobalStore } from './privateGlobalStore';
+import type { PrivateGlobalStore } from './types';
 
 export const usePrivateGlobalStore = <T>(
   selector: (store: PrivateGlobalStore) => T,

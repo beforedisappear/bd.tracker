@@ -1,4 +1,4 @@
-import { apiClient } from '@/shared/api/apiClient';
+import { apiClient } from '@/shared/api/c';
 
 import type { DeleteProjectDtoReq, DeleteProjectDtoRes } from '../models/types';
 

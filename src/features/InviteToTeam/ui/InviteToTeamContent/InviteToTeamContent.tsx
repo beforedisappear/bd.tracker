@@ -1,7 +1,7 @@
 import { projectQueries } from '@/entities/Project';
 
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
+import { useTenant } from '@/shared/lib/navigation';
 import { InviteToTeamForm } from '../InviteToTeamForm/InviteToTeamForm';
 import { InviteToTeamContentLoading } from './InviteToTeamContent.loading';
 
@@ -11,7 +11,8 @@ interface Props {
 
 export function InviteToTeamContent(props: Props) {
   const { onClose } = props;
-  const { tenant } = useParams<{ tenant: string }>()!;
+
+  const tenant = useTenant();
 
   const {
     data: projects,

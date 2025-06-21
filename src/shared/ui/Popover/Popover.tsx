@@ -3,12 +3,15 @@
 import * as PopoverPrimitive from '@radix-ui/react-popover';
 
 import { PopoverContent } from './PopoverContent';
+
 import type { ComponentProps } from 'react';
+
+export type PopoverContentProps = ComponentProps<typeof PopoverContent>;
 
 interface IProps extends ComponentProps<typeof PopoverContainer> {
   trigger: React.ReactNode;
   className?: string;
-  content?: ComponentProps<typeof PopoverContent>;
+  content?: PopoverContentProps;
 }
 
 const PopoverContainer = PopoverPrimitive.Root;

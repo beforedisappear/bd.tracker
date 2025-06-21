@@ -10,6 +10,7 @@ import { Drawer as DrawerPrimitive } from 'vaul';
 import { Button } from '../Button/Button';
 
 import { type ComponentProps, type PropsWithChildren } from 'react';
+import { cn } from '@/shared/lib/css';
 
 const DrawerTrigger = DrawerPrimitive.Trigger;
 
@@ -48,7 +49,7 @@ export function Drawer(props: Props) {
     <DrawerContainer {...restProps} repositionInputs={false}>
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
 
-      <DrawerContent className={className}>
+      <DrawerContent className={cn(className, 'px-4')}>
         <DrawerHeader>
           <DrawerTitle className={titleClassName}>{title}</DrawerTitle>
           {description && (

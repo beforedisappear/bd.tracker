@@ -1,0 +1,134 @@
+import { ViewBoardColumn } from '../ViewBoardColumn/ViewBoardColumn';
+import { ViewBoardTask } from '../ViewBoardTask/ViewBoardTask';
+
+import {
+  horizontalListSortingStrategy,
+  SortableContext,
+} from '@dnd-kit/sortable';
+import { useDragAndDropBoardItems } from '../../lib/useDragAndDropBoardItems';
+import { useMemo } from 'react';
+import { useDebounce } from '@/shared/lib/ui';
+import {
+  DndContext,
+  DragOverlay,
+  PointerSensor,
+  closestCenter,
+  useDroppable,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+
+import type { Board, Column, Task, Color } from '@/entities/Board';
+import type { DateRange } from 'react-day-picker';
+
+interface MapColumnsAndTasksById {
+  columns: Record<string, Column>;
+  tasks: Record<string, Task>;
+}
+
+interface Props {
+  board: Board;
+  colors: Color[] | undefined;
+  assignees: string[] | undefined;
+  dateRange: DateRange | undefined;
+  stickers: string[] | undefined;
+  isFiltered?: boolean;
+}
+
+export function ViewBoard(props: Props) {
+  const {
+    board,
+    colors,
+    assignees,
+    dateRange,
+    stickers,
+    isFiltered = false,
+  } = props;
+
+  const {
+    columns,
+    activeDraggableItem,
+    isMovingColumn,
+    isMovingTask,
+    handleDragStart,
+    handleDragOver,
+    handleDragMove,
+    handleDragEnd,
+  } = useDragAndDropBoardItems({ board, isFiltered });
+
+  const { setNodeRef } = useDroppable({ id: board.id });
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: { distance: 5 }, //to support clicks
+      disabled: isMovingColumn || isMovingTask || isFiltered,
+    }),
+  );
+
+  const debouncedHandleDragMove = useDebounce(handleDragMove, 25);
+
+  const mapColumnsAndTasksById: MapColumnsAndTasksById = useMemo(() => {
+    return columns.reduce(
+      (acc, column) => {
+        acc.columns[column.id] = column;
+
+        column.tasks.forEach(task => {
+          acc.tasks[task.id] = task;
+        });
+
+        return acc;
+      },
+      { columns: {}, tasks: {} } as MapColumnsAndTasksById,
+    );
+  }, [columns]);
+
+  if (board.columns.length === 0) return null;
+
+  const sortableColumnIds = Object.keys(mapColumnsAndTasksById.columns);
+  const sortableTaskIds = Object.keys(mapColumnsAndTasksById.tasks);
+
+  return (
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragStart={handleDragStart}
+      onDragMove={debouncedHandleDragMove}
+      onDragOver={handleDragOver}
+      onDragEnd={handleDragEnd}
+    >
+      <SortableContext
+        items={sortableColumnIds}
+        strategy={horizontalListSortingStrategy}
+      >
+        <div className='flex gap-4 h-full' ref={setNodeRef}>
+          {columns.map(column => (
+            <ViewBoardColumn
+              key={column.id}
+              data={column}
+              sortableTaskIds={sortableTaskIds}
+              colors={colors}
+              assignees={assignees}
+              dateRange={dateRange}
+              stickers={stickers}
+              isFiltered={isFiltered}
+            />
+          ))}
+        </div>
+      </SortableContext>
+
+      <DragOverlay>
+        {activeDraggableItem && activeDraggableItem.type === 'Column' && (
+          <ViewBoardColumn
+            data={mapColumnsAndTasksById.columns[activeDraggableItem.id]}
+            sortableTaskIds={sortableTaskIds}
+          />
+        )}
+
+        {activeDraggableItem && activeDraggableItem.type === 'Task' && (
+          <ViewBoardTask
+            data={mapColumnsAndTasksById.tasks[activeDraggableItem.id]}
+          />
+        )}
+      </DragOverlay>
+    </DndContext>
+  );
+}

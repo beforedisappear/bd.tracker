@@ -1,17 +1,16 @@
 import { teamService } from 'api/services/team.service';
 
 import { ErrorResponse } from 'api/errors/errorResponse';
-import { getQueryParams } from 'api/utils';
 
 import { type NextRequest, NextResponse } from 'next/server';
 
-import { AcceptInvitationToTeamReqQuerySchema } from './dto';
+import { AcceptInvitationToTeamReqBodySchema } from './dto';
 
 export async function PostAcceptInvitationToTeam(request: NextRequest) {
   try {
-    const query = getQueryParams(request, ['invitationId', 'token']);
-
-    const data = AcceptInvitationToTeamReqQuerySchema.parse(query);
+    const data = AcceptInvitationToTeamReqBodySchema.parse(
+      await request.json(),
+    );
 
     await teamService.acceptInvitaion(data);
 

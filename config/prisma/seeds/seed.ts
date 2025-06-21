@@ -4,6 +4,7 @@ import { createTeam } from './team.seed';
 
 const prisma = new PrismaClient();
 
+//TODO: finish seed
 async function main() {
   const { user1, testUser } = await createUsers();
 

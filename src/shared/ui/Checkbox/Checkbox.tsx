@@ -23,13 +23,14 @@ type BaseProps = Omit<
 
 interface IProps extends BaseProps {
   name: string;
-  label?: string;
+  label?: React.ReactNode;
   description?: string;
   errorMessageTestId?: string;
   inputClassName?: string;
   labelClassName?: string;
   descriptionClassName?: string;
   hideErrorMessage?: boolean;
+  withRightLabel?: boolean;
 }
 
 export const Checkbox = (props: IProps) => {
@@ -46,6 +47,7 @@ export const Checkbox = (props: IProps) => {
     labelClassName,
     descriptionClassName,
     hideErrorMessage = false,
+    withRightLabel = false,
     ...restProps
   } = props;
 
@@ -59,7 +61,10 @@ export const Checkbox = (props: IProps) => {
       render={({ field }) => (
         <FormItem
           className={cn(
-            'flex flex-row items-start space-x-3 space-y-0',
+            'flex flex-row items-start gap-2 space-y-0',
+            {
+              ['flex-row-reverse items-center justify-between']: withRightLabel,
+            },
             className,
           )}
         >

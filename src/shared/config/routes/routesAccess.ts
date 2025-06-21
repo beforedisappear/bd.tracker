@@ -9,7 +9,7 @@ export const routesAccess: Record<AppRoutes, RouteAccess> = {
   [AppRoutes.HOME]: 'private',
   [AppRoutes.PROFILE]: 'private',
   [AppRoutes.TEAM]: 'private',
-  [AppRoutes.PROJECT]: 'private',
+  [AppRoutes.PROJECT_BY_ID]: 'private',
 
   //service
   [AppRoutes.INVITE]: 'service',

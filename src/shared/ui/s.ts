@@ -11,3 +11,6 @@ export { CommentCard } from './CommentCard/CommentCard';
 
 //utils
 export { buttonVariants } from './Button/Button.utils';
+
+//types
+export { type BadgeProps } from './Badge/Badge';

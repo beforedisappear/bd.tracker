@@ -14,7 +14,7 @@ export function CreateTeamMobile() {
       trigger={<CreateTeamTrigger />}
       className='h-[400px]'
     >
-      <CreateTeamForm className='p-6' />
+      <CreateTeamForm />
     </Drawer>
   );
 }

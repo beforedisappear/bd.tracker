@@ -1,18 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { GetBoardByIdReqParamsDto, RenameBoardReqBodyDto } from './types';
 import { ErrorResponse } from 'api/errors/errorResponse';
 import { authService } from 'api/services/auth.service';
 import { boardService } from 'api/services/board.service';
 import { getAccessTokenFromReq } from 'api/utils/getAccessTokenFromReq';
+import {
+  GetBoardByIdReqParamsSchema,
+  DeleteBoardByIdReqParamsSchema,
+} from './dto';
+import type {
+  GetBoardByIdReqParamsDto,
+  DeleteBoardByIdReqParamsDto,
+} from './types';
 
 export const GetBoardById = async (
   request: NextRequest,
   { params }: { params: Promise<GetBoardByIdReqParamsDto> },
 ) => {
   try {
-    const { boardId } = await params;
-    const accessToken = getAccessTokenFromReq(request);
-    const { userId } = await authService.verifyJwt(accessToken);
+    const { userId } = await authService.verifyJwt(
+      getAccessTokenFromReq(request),
+    );
+
+    const { boardId } = GetBoardByIdReqParamsSchema.parse(await params);
 
     const board = await boardService.getBoardById({
       id: boardId,
@@ -25,35 +34,12 @@ export const GetBoardById = async (
   }
 };
 
-export const RenameBoard = async (
+export const DeleteBoardById = async (
   request: NextRequest,
-  { params }: { params: Promise<GetBoardByIdReqParamsDto> },
+  { params }: { params: Promise<DeleteBoardByIdReqParamsDto> },
 ) => {
   try {
-    const { boardId } = await params;
-    const accessToken = getAccessTokenFromReq(request);
-    const { userId } = await authService.verifyJwt(accessToken);
-
-    const body = (await request.json()) as RenameBoardReqBodyDto;
-
-    const renamedBoard = await boardService.renameBoard({
-      id: boardId,
-      name: body.name,
-      initiatorId: userId,
-    });
-
-    return NextResponse.json(renamedBoard);
-  } catch (error) {
-    return ErrorResponse(error);
-  }
-};
-
-export const DeleteBoard = async (
-  request: NextRequest,
-  { params }: { params: Promise<GetBoardByIdReqParamsDto> },
-) => {
-  try {
-    const { boardId } = await params;
+    const { boardId } = DeleteBoardByIdReqParamsSchema.parse(await params);
     const accessToken = getAccessTokenFromReq(request);
     const { userId } = await authService.verifyJwt(accessToken);
 

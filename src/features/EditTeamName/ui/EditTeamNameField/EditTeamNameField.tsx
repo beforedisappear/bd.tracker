@@ -3,14 +3,16 @@ import { PencilIcon } from 'lucide-react';
 import { Button, Form, Input } from '@/shared/ui/c';
 
 import { useMutation } from '@tanstack/react-query';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-
-import { RenameTeamSchema, teamQueries } from '@/entities/Team';
+import { useTenant } from '@/shared/lib/navigation';
+import { useDeviceType } from '@/shared/lib/deviceType/c';
+import { useTeamAccess, RenameTeamSchema, teamQueries } from '@/entities/Team';
 
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { cn } from '@/shared/lib/css';
 import { toast } from 'sonner';
 import { getTeamRoutePath } from '@/shared/config/routes';
 import { getErrorMessage } from '@/shared/lib/error';
@@ -21,9 +23,12 @@ interface Props {
 
 export function EditTeamNameField({ name }: Props) {
   const { push } = useRouter();
-  const { tenant } = useParams<{ tenant: string }>()!;
+  const tenant = useTenant();
+  const { isMobile } = useDeviceType();
+
   const [isEditing, setIsEditing] = useState(false);
   const { mutateAsync: renameTeam } = useMutation(teamQueries.renameTeam());
+  const { isEnoughAccess } = useTeamAccess();
 
   const form = useForm<z.infer<typeof RenameTeamSchema>>({
     resolver: zodResolver(RenameTeamSchema),
@@ -37,7 +42,7 @@ export function EditTeamNameField({ name }: Props) {
     }, 100);
   };
 
-  const onStopEditing = () => {
+  const onEndEditing = () => {
     setIsEditing(false);
     onSubmit();
   };
@@ -62,8 +67,9 @@ export function EditTeamNameField({ name }: Props) {
   return (
     <Form {...form}>
       <form
-        className='flex items-center gap-2
-        md:flex-col md:items-start'
+        className={cn('flex items-center gap-2', {
+          'flex-col items-start': isMobile,
+        })}
         onSubmit={onSubmit}
       >
         <h3
@@ -80,18 +86,21 @@ export function EditTeamNameField({ name }: Props) {
             inputClassName='text-xl font-bold h-7 p-0 border-none rounded-none bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 shadow-none
             md:text-base'
             disabled={!isEditing}
-            onBlur={onStopEditing}
+            onBlur={onEndEditing}
             hideErrorMessage={true}
           />
-          <Button
-            type='button'
-            size='icon'
-            variant='ghost'
-            className='w-6 h-6 ml-auto'
-            onClick={onStartEditing}
-          >
-            <PencilIcon className='w-4 h-4' />
-          </Button>
+
+          {isEnoughAccess && (
+            <Button
+              type='button'
+              size='icon'
+              variant='ghost'
+              className='w-6 h-6 ml-auto'
+              onClick={onStartEditing}
+            >
+              <PencilIcon className='w-4 h-4' />
+            </Button>
+          )}
         </div>
       </form>
     </Form>

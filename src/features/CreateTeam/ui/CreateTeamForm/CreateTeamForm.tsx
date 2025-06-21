@@ -16,8 +16,8 @@ import { getErrorMessage } from '@/shared/lib/error';
 import { CREATE_TEAM_DESCRIPTION } from '../../constants';
 import { SUCCESSFUL_SENDING_MESSAGE } from '@/shared/constants';
 
+import { z } from 'zod';
 import { CreateTeamSchema } from '../../model/schemes';
-import type { CreateTeamDtoReq } from '../../model/types';
 
 interface Props {
   className?: string;
@@ -28,7 +28,7 @@ export function CreateTeamForm(props: Props) {
 
   const { push } = useRouter();
 
-  const form = useForm<CreateTeamDtoReq>({
+  const form = useForm<z.infer<typeof CreateTeamSchema>>({
     resolver: zodResolver(CreateTeamSchema),
     defaultValues: { name: '' },
   });
