@@ -1,7 +1,7 @@
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 
-import { SelectBoardItem } from '../SelectBoardItem/SelectBoardItem';
-import { SelectBoardLoading } from './SelectBoard.loading';
+import { ManageBoardsItem } from '../ManageBoardsItem/ManageBoardsItem';
+import { ManageBoardsLoading } from './ManageBoards.loading';
 import { ScrollArea, Button } from '@/shared/ui/c';
 
 import { useProject, useTenant } from '@/shared/lib/navigation';
@@ -12,7 +12,7 @@ import { boardQueries } from '@/entities/Board';
 
 //TODO: mb add resize observer
 //TODO: add shadow for edges
-export function SelectBoard() {
+export function ManageBoards() {
   const tenant = useTenant();
   const { projectId, boardId } = useProject();
   const [showScrollButtons, setShowScrollButtons] = useState(false);
@@ -34,7 +34,7 @@ export function SelectBoard() {
     setShowScrollButtons(isScrollable);
   }, [boards]);
 
-  if (isLoading) return <SelectBoardLoading />;
+  if (isLoading) return <ManageBoardsLoading />;
   else if (isError || !boards) return <></>;
 
   const handleScroll = (dir: 'left' | 'right') => {
@@ -68,7 +68,7 @@ export function SelectBoard() {
             const isActive = board.id === boardId;
 
             return (
-              <SelectBoardItem
+              <ManageBoardsItem
                 key={board.id}
                 board={board}
                 isActive={isActive}

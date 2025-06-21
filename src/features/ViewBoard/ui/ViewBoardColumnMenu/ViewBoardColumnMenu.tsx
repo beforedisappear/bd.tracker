@@ -7,18 +7,15 @@ import { useBoardStore, getDeleteColumnModal } from '@/entities/Board';
 
 interface Props {
   columnId: string;
+  onRenameColumn: () => void;
 }
 
 export function ViewBoardColumnMenu(props: Props) {
-  const { columnId } = props;
+  const { columnId, onRenameColumn } = props;
 
   const { setShowDeleteColumnModal, setCurrentColumnId } = useBoardStore(
     getDeleteColumnModal(),
   );
-
-  const onRename = () => {
-    console.log('rename');
-  };
 
   const onDelete = () => {
     setShowDeleteColumnModal(true);
@@ -29,7 +26,7 @@ export function ViewBoardColumnMenu(props: Props) {
     {
       type: 'item',
       label: { text: 'Переименовать', icon: <Pencil /> },
-      onSelect: onRename,
+      onSelect: onRenameColumn,
     },
     {
       type: 'item',
@@ -39,6 +36,10 @@ export function ViewBoardColumnMenu(props: Props) {
   ];
 
   return (
-    <DropdownMenu trigger={<ViewBoardColumnMenuTrigger />} options={options} />
+    <DropdownMenu
+      trigger={<ViewBoardColumnMenuTrigger />}
+      options={options}
+      contentProps={{ loop: false, onCloseAutoFocus: e => e.preventDefault() }}
+    />
   );
 }

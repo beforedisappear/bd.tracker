@@ -13,5 +13,8 @@ export {
   RenameTeamSchema,
   InviteToTeamSchema,
   TeamMembersFieldSchema,
+  RenameColumnSchema,
+  RenameBoardSchema,
+  RenameTaskSchema,
 } from './models/schemes';
 export { TeamMembersField } from './ui/TeamMembersField/TeamMembersField';

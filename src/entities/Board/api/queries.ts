@@ -3,8 +3,9 @@ import { queryOptions } from '@tanstack/react-query';
 import { mutationOptions } from '@/shared/lib/tanstack-query';
 
 import { getAllBoards } from './board/getAllBoards';
-import { createBoard } from './board/createBoard';
 import { getBoardById } from './board/getBoardById';
+import { createBoard } from './board/createBoard';
+import { renameBoard } from './board/renameBoard';
 import { deleteBoard } from './board/deleteBoard';
 
 import { createColumn } from './column/createColumn';
@@ -12,11 +13,11 @@ import { deleteColumn } from './column/deleteColumn';
 import { moveColumn } from './column/moveColumn';
 import { renameColumn } from './column/renameColumn';
 
+import { getTaskById } from './task/getTaskById';
 import { createTask } from './task/createTask';
 import { moveTask } from './task/moveTask';
-import { deleteTask } from './task/deleteTask';
 import { updateTask } from './task/updateTask';
-import { getTaskById } from './task/getTaskById';
+import { deleteTask } from './task/deleteTask';
 
 import { getAllBoardStickers } from './sticker/getAllBoardStickers';
 import { createBoardSticker } from './sticker/createBoardSticker';
@@ -44,6 +45,7 @@ import type {
   CreateBoardStickerDtoReq,
   UpdateBoardStickerDtoReq,
   DeleteBoardStickerDtoReq,
+  RenameBoardDtoReq,
 } from '../model/types';
 
 export const boardQueries = {
@@ -90,6 +92,15 @@ export const boardQueries = {
           queryKey: [...boardQueries.boardById(boardId)],
         });
       },
+    }),
+
+  renameBoard: () =>
+    mutationOptions({
+      mutationFn: (dto: RenameBoardDtoReq) => renameBoard(dto),
+      onSuccess: (_, { projectId }) =>
+        queryClient.invalidateQueries({
+          queryKey: [...boardQueries.allBoards(projectId)],
+        }),
     }),
 };
 

@@ -2,7 +2,7 @@
 
 import { SwitchTheme } from '@/features/SwitchTheme';
 import { SidebarTrigger } from '@/shared/ui/c';
-import { SelectBoard } from '@/features/SelectBoard';
+import { ManageBoards } from '@/features/ManageBoards';
 import { CreateBoard } from '@/features/CreateBoard';
 import { SetupProject } from '@/features/SetupProject';
 
@@ -51,7 +51,7 @@ export function PrivateHeader({}: Props) {
           md:max-w-xl
           sm:max-w-full'
         >
-          <SelectBoard />
+          <ManageBoards />
           <CreateBoard />
         </div>
       )}

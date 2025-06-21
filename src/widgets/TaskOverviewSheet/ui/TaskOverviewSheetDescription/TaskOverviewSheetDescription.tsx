@@ -59,7 +59,7 @@ export function TaskOverviewSheetDescription(props: Props) {
               variant={null}
               size='sm'
               onClick={handleEdit}
-              className='text-xs text-muted-foreground hover:text-foreground h-auto'
+              className='text-xs h-auto'
             >
               Редактировать
             </Button>

@@ -4,7 +4,7 @@ import { Button, type ButtonProps } from '@/shared/ui/c';
 
 interface Props extends ButtonProps {}
 
-export function SelectBoardItemMenuTrigger(props: Props) {
+export function ManageBoardsItemMenuTrigger(props: Props) {
   return (
     <Button
       variant={null}

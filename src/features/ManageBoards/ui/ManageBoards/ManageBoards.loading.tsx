@@ -1,6 +1,6 @@
 import { Skeleton } from '@/shared/ui/s';
 
-export function SelectBoardLoading() {
+export function ManageBoardsLoading() {
   return (
     <>
       {Array.from({ length: 5 }).map((_, idx) => (

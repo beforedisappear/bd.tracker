@@ -1,7 +1,11 @@
-import { PureCheckbox } from '@/shared/ui/c';
+import {
+  PureCheckbox,
+  RenameInput,
+  type RenameInputMethods,
+} from '@/shared/ui/c';
 import { BoardTaskHeaderMenu } from '../BoardTaskHeaderMenu/BoardTaskHeaderMenu';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useProject } from '@/shared/lib/navigation';
 
@@ -9,6 +13,9 @@ import { cn } from '@/shared/lib/css';
 import { taskQueries } from '@/entities/Board/api/queries';
 import { getErrorMessage } from '@/shared/lib/error';
 import { toast } from 'sonner';
+
+import { RenameTaskSchema } from '@/entities/Team';
+
 import type { Color } from '@/entities/Board';
 
 interface Props {
@@ -35,11 +42,18 @@ export function BoardTaskHeader(props: Props) {
   const { boardId } = useProject();
   const [isChecked, setIsChecked] = useState(isDone);
   const { mutateAsync: updateTask } = useMutation(taskQueries.updateTask());
+  const methodsRef = useRef<RenameInputMethods>(null);
 
   const onSetTaskCompletion = (value: boolean) => {
     setIsChecked(value);
     updateTask({ taskId, boardId, isDone: value }).catch(e => {
       setIsChecked(isDone);
+      toast.error(getErrorMessage(e));
+    });
+  };
+
+  const onRename = (name: string) => {
+    updateTask({ taskId, boardId, title: name }).catch(e => {
       toast.error(getErrorMessage(e));
     });
   };
@@ -52,7 +66,7 @@ export function BoardTaskHeader(props: Props) {
         onClick={e => e.stopPropagation()}
       />
 
-      <span
+      <RenameInput
         className={cn(
           'font-normal text-sm line-clamp-1 cursor-pointer select-none flex-1',
           titleClassName,
@@ -61,15 +75,18 @@ export function BoardTaskHeader(props: Props) {
               isChecked && !offCheckTitleStyle,
           },
         )}
-      >
-        {title}
-      </span>
+        initialName={title}
+        schema={RenameTaskSchema}
+        methodsRef={methodsRef}
+        onRename={onRename}
+      />
 
       <BoardTaskHeaderMenu
         taskId={taskId}
         isChecked={isChecked}
         currentColor={color}
         onSetTaskCompletion={onSetTaskCompletion}
+        onRenameTask={() => methodsRef.current?.onStartEditing?.()}
         onClose={onClose}
       />
     </div>

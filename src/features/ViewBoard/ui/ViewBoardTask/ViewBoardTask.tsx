@@ -34,7 +34,7 @@ export function ViewBoardTask(props: Props) {
   return (
     <ViewBoardTaskWrapper id={id} color={color} isFiltered={isFiltered}>
       <BoardTaskHeader
-        key={`${id}-${isDone}`}
+        key={`${id}-${isDone}-${title}`}
         taskId={id}
         title={title}
         isDone={isDone}

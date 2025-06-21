@@ -71,3 +71,5 @@ export interface GetTaskByIdDtoReq {
 }
 
 export type GetTaskByIdDtoRes = Task;
+
+export type AssigneesPopoverTriggerDirection = 'leftToRight' | 'rightToLeft';

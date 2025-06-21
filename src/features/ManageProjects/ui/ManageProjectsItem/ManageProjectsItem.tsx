@@ -1,17 +1,23 @@
 import { ManageProjectsItemMembers } from '../ManageProjectsItemMembers/ManageProjectsItemMembers';
 import { ManageProjectsItemMenu } from '../ManageProjectsItemMenu';
-import { RenameInput } from '@/shared/ui/c';
+import { RenameInput, type RenameInputMethods } from '@/shared/ui/c';
 
 import { useRouter } from 'next/navigation';
-import { useProjectNameEditing } from '../../lib';
 import { useTeamAccess } from '@/entities/Team';
+import { useMutation } from '@tanstack/react-query';
 import { useRef, type MouseEvent } from 'react';
 
-import { cn } from '@/shared/lib/css';
-import { getProjectByIdRoutePath } from '@/shared/config/routes';
-import { getManageProjectsItemClassName } from '../../constants';
+import {
+  projectQueries,
+  RenameProjectSchema,
+  type ProjectWithFirstBoardId,
+} from '@/entities/Project';
 
-import type { ProjectWithFirstBoardId } from '@/entities/Project';
+import { cn } from '@/shared/lib/css';
+import { toast } from 'sonner';
+import { getProjectByIdRoutePath } from '@/shared/config/routes';
+import { getErrorMessage } from '@/shared/lib/error';
+import { getManageProjectsItemClassName } from '../../constants';
 
 interface Props {
   tenant: string;
@@ -20,24 +26,29 @@ interface Props {
 
 export function ManageProjectsItem({ project, tenant }: Props) {
   const router = useRouter();
-  const inputRef = useRef<HTMLInputElement>(null);
-
   const { isEnoughAccess } = useTeamAccess();
+  const methodsRef = useRef<RenameInputMethods>(null);
 
-  const {
-    isEditing,
-    projectName,
-    setProjectName,
-    onStartEditing,
-    onEndEditing,
-  } = useProjectNameEditing({ project, tenant, inputRef });
+  const { mutateAsync: renameProject } = useMutation(
+    projectQueries.renameProject(),
+  );
+
+  const onRenameProject = (name: string) => {
+    renameProject({ teamIdOrSlug: tenant, projectId: project.id, name })
+      .then(() => {})
+      .catch(e => toast.error(getErrorMessage(e)));
+  };
 
   const onRedirectToProjectPage = (e: MouseEvent<HTMLDivElement>) => {
     if (!e.currentTarget.contains(e.target as Node)) return;
 
-    router.push(
-      getProjectByIdRoutePath(tenant, project.id, project.firstBoardId),
+    const path = getProjectByIdRoutePath(
+      tenant,
+      project.id,
+      project.firstBoardId,
     );
+
+    router.push(path);
   };
 
   return (
@@ -50,18 +61,17 @@ export function ManageProjectsItem({ project, tenant }: Props) {
     >
       <div className='flex justify-between w-full h-6 gap-1'>
         <RenameInput
-          ref={inputRef}
-          isEditing={isEditing}
-          value={projectName}
-          onChange={e => setProjectName(e.target.value)}
-          onBlur={onEndEditing}
+          methodsRef={methodsRef}
+          initialName={project.name}
+          schema={RenameProjectSchema}
           className='text-muted-foreground'
+          onRename={onRenameProject}
         />
 
         {isEnoughAccess && (
           <ManageProjectsItemMenu
             projectId={project.id}
-            onRenameProject={onStartEditing}
+            onRenameProject={() => methodsRef.current?.onStartEditing?.()}
           />
         )}
       </div>

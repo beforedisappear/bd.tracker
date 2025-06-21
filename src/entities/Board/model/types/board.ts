@@ -36,3 +36,11 @@ export type DeleteBoardDtoReq = {
 };
 
 export type DeleteBoardDtoRes = never;
+
+export type RenameBoardDtoReq = {
+  projectId: string; // for invalidation
+  boardId: string;
+  name: string;
+};
+
+export type RenameBoardDtoRes = never;

@@ -20,11 +20,18 @@ interface Props {
   currentColor: Color;
   onSetTaskCompletion: (value: boolean) => void;
   onClose: () => void;
+  onRenameTask: () => void;
 }
 
 export function BoardTaskHeaderMenu(props: Props) {
-  const { taskId, isChecked, currentColor, onSetTaskCompletion, onClose } =
-    props;
+  const {
+    taskId,
+    isChecked,
+    currentColor,
+    onSetTaskCompletion,
+    onClose,
+    onRenameTask,
+  } = props;
 
   const { boardId } = useProject();
   const [isOpen, setIsOpen] = useState(false);
@@ -67,6 +74,7 @@ export function BoardTaskHeaderMenu(props: Props) {
       },
       onSelect: e => {
         e.stopPropagation();
+        onRenameTask();
       },
     },
     {

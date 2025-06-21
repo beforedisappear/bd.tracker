@@ -17,17 +17,23 @@ export function TaskOverviewSheetAssignees(props: Props) {
         <div className='flex items-center gap-2 text-sm'>
           <span>Автор:</span>
           <Avatar
-            key={assignees[0].id}
+            key={assignees[0]?.id}
             src=''
-            alt={assignees[0].name}
-            initials={assignees[0].name}
+            alt={assignees[0]?.name}
+            initials={assignees[0]?.name}
             className='flex justify-center items-center h-5 w-5'
           />
         </div>
 
         <div className='flex items-center gap-2 text-sm'>
           <span>Ответственные:</span>
-          <BoardAssigneesPopover taskId={taskId} assignees={assignees} />
+          <BoardAssigneesPopover
+            taskId={taskId}
+            assignees={assignees}
+            direction='leftToRight'
+            avatarLimit={10}
+            align='start'
+          />
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import { PencilIcon, Tag, TrashIcon } from 'lucide-react';
 
 import { DropdownMenu, type DropDownMenuOptions } from '@/shared/ui/c';
-import { SelectBoardItemMenuTrigger } from '../SelectBoardItemMenuTrigger/SelectBoardItemMenuTrigger';
+import { ManageBoardsItemMenuTrigger } from '../ManageBoardsItemMenuTrigger/ManageBoardsItemMenuTrigger';
 
 import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
 
@@ -13,10 +13,11 @@ import { LAST_BOARD_ERROR_MESSAGE } from '../../constants';
 interface Props {
   boardId: string;
   countOfBoards: number;
+  onRenameBoard: () => void;
 }
 
-export function SelectBoardItemMenu(props: Props) {
-  const { boardId, countOfBoards } = props;
+export function ManageBoardsItemMenu(props: Props) {
+  const { boardId, countOfBoards, onRenameBoard } = props;
 
   const { setShowDeleteBoardModal, setCurrentBoardId } = usePrivateGlobalStore(
     getDeleteBoardModalActions(),
@@ -45,7 +46,7 @@ export function SelectBoardItemMenu(props: Props) {
     {
       type: 'item',
       label: { text: 'Переименовать', icon: <PencilIcon /> },
-      onSelect: () => {}, // TODO: add state handling
+      onSelect: onRenameBoard,
     },
     {
       type: 'item',
@@ -60,6 +61,10 @@ export function SelectBoardItemMenu(props: Props) {
   ];
 
   return (
-    <DropdownMenu trigger={<SelectBoardItemMenuTrigger />} options={options} />
+    <DropdownMenu
+      trigger={<ManageBoardsItemMenuTrigger />}
+      options={options}
+      contentProps={{ loop: false, onCloseAutoFocus: e => e.preventDefault() }}
+    />
   );
 }

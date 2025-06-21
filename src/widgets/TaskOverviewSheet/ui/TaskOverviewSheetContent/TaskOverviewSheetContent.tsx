@@ -17,7 +17,7 @@ export function TaskOverviewSheetContent(props: Props) {
   return (
     <div className='flex flex-col gap-4'>
       <BoardTaskHeader
-        key={`${task.id}-${task.isDone}`}
+        key={`${task.id}-${task.isDone}-${task.title}`}
         taskId={task.id}
         title={task.title}
         isDone={task.isDone}
