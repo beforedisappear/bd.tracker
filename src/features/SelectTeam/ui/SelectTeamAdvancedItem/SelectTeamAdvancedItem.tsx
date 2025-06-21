@@ -1,23 +1,17 @@
 import { LayoutGrid, Pencil, Trash } from 'lucide-react';
 
-import { Button, RenameInput } from '@/shared/ui/c';
+import { Button, RenameInput, type RenameInputMethods } from '@/shared/ui/c';
 
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
 import { toast } from 'sonner';
 import { teamQueries, RenameTeamSchema } from '@/entities/Team';
 import { getProfileRoutePath, getTeamRoutePath } from '@/shared/config/routes';
-import {
-  errorMessagesMap,
-  getErrorMessage,
-  getZodErrorMessage,
-} from '@/shared/lib/error';
+import { errorMessagesMap, getErrorMessage } from '@/shared/lib/error';
 
-import { ZodError } from 'zod';
 import type { UserTeam } from '@/entities/Team';
-import type { FocusEvent } from 'react';
 
 interface Props {
   team: UserTeam;
@@ -29,36 +23,14 @@ export function SelectTeamAdvancedItem(props: Props) {
   const { team, isCurrentTeam, onDeleteTeam } = props;
 
   const { push } = useRouter();
+  const methodsRef = useRef<RenameInputMethods>(null);
 
   const isAdmin = team.admin;
   const isOwner = team.owned;
 
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [isEditing, setIsEditing] = useState(false);
-  const [teamName, setTeamName] = useState(team.name);
-
   const { mutateAsync: renameTeam } = useMutation(teamQueries.renameTeam());
 
-  const onStartEditing = () => {
-    setIsEditing(true);
-    setTimeout(() => inputRef.current?.focus(), 0);
-  };
-
-  const onEndEditing = (e: FocusEvent<HTMLInputElement>) => {
-    setIsEditing(false);
-
-    const name = e.target.value;
-
-    if (name === team.name) return;
-
-    try {
-      RenameTeamSchema.parse({ name });
-    } catch (error) {
-      if (error instanceof ZodError) toast.error(getZodErrorMessage(error));
-      setTeamName(team.name);
-      return;
-    }
-
+  const onRename = (name: string) => {
     renameTeam({ idOrSlug: team.id, name })
       .then(({ data: { slug } }) => {
         //if the team is the current team, then update slug in the url
@@ -66,7 +38,6 @@ export function SelectTeamAdvancedItem(props: Props) {
       })
       .catch(e => {
         toast.error(getErrorMessage(e));
-        setTeamName(team.name);
       });
   };
 
@@ -83,16 +54,15 @@ export function SelectTeamAdvancedItem(props: Props) {
     <div
       key={team.id}
       className='flex items-center gap-2 px-1 h-6'
-      onClick={isEditing ? undefined : onRedirectToTeam}
+      onClick={onRedirectToTeam}
     >
       <LayoutGrid className='w-4 h-4' />
 
       <RenameInput
-        ref={inputRef}
-        value={teamName}
-        onChange={e => setTeamName(e.target.value)}
-        onBlur={onEndEditing}
-        isEditing={isEditing}
+        methodsRef={methodsRef}
+        initialName={team.name}
+        schema={RenameTeamSchema}
+        onRename={onRename}
       />
 
       <div data-ignore='true' className='flex items-center gap-2 ml-auto'>
@@ -102,7 +72,7 @@ export function SelectTeamAdvancedItem(props: Props) {
           className='w-6 h-6 group'
           onClick={() =>
             isAdmin || isOwner
-              ? onStartEditing()
+              ? methodsRef.current?.onStartEditing?.()
               : toast.error(errorMessagesMap['1024'])
           }
         >
