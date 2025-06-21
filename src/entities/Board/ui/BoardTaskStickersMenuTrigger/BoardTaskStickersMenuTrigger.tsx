@@ -1,38 +1,46 @@
 import { Tag } from 'lucide-react';
+import { BoardSticker } from '../BoardSticker/BoardSticker';
 import { Button, type ButtonProps } from '@/shared/ui/c';
+import { Badge, type BadgeProps } from '@/shared/ui/s';
 import { type MouseEvent } from 'react';
-import { BoardSticker, type Sticker } from '@/entities/Board';
+import { type Sticker, type StickerMenuTriggerType } from '../../model/types';
 
-interface Props extends ButtonProps {
+type Props = {
   stickers: Sticker[];
-}
+  triggerType?: StickerMenuTriggerType;
+  onClick?: (e: MouseEvent<HTMLButtonElement | HTMLDivElement>) => void;
+} & (
+  | ({ triggerType?: 'button' } & ButtonProps)
+  | ({ triggerType: 'badge' } & BadgeProps)
+);
 
 export function BoardTaskStickersMenuTrigger(props: Props) {
-  const { onClick, stickers, ...rest } = props;
+  const { onClick, stickers, triggerType = 'button', ...rest } = props;
 
-  const handleBtnClick = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (e: MouseEvent<HTMLButtonElement | HTMLDivElement>) => {
     e.stopPropagation();
-    onClick?.(e);
-  };
-
-  const handeBadgeClick = (e: MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-    onClick?.(e as unknown as MouseEvent<HTMLButtonElement>);
+    onClick?.(e as MouseEvent<HTMLButtonElement | HTMLDivElement>);
   };
 
   const noStickers = stickers.length === 0;
 
-  if (noStickers) {
+  if (noStickers && triggerType === 'button') {
     return (
       <Button
         variant={null}
         size='sm'
         className='p-1 size-6 gap-1 border border-dashed border-primary/60 text-primary/60'
-        onClick={handleBtnClick}
-        {...rest}
+        onClick={handleClick}
+        {...(rest as ButtonProps)}
       >
         <Tag className='!size-3.5' />
       </Button>
+    );
+  } else if (noStickers && triggerType === 'badge') {
+    return (
+      <Badge variant='outline' onClick={handleClick} {...(rest as BadgeProps)}>
+        Нет меток
+      </Badge>
     );
   }
 
@@ -42,8 +50,8 @@ export function BoardTaskStickersMenuTrigger(props: Props) {
         <BoardSticker
           key={el.id}
           data={el}
-          onClick={handeBadgeClick}
-          {...(i === 0 ? rest : {})}
+          onClick={handleClick}
+          {...(i === 0 ? (rest as BadgeProps) : {})}
         />
       ))}
     </>

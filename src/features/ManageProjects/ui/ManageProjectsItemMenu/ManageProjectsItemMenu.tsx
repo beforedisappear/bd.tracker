@@ -2,11 +2,13 @@ import { SquarePen, Users, Trash } from 'lucide-react';
 
 import { DropdownMenu, type DropDownMenuOptions } from '@/shared/ui/c';
 import { ManageProjectsItemMenuTrigger } from '../ManageProjectsItemMenuTrigger/ManageProjectsItemMenuTrigger';
+
+import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
+
 import {
   getProjectMembersModalActions,
   getDeleteProjectModalActions,
 } from '@/entities/Project';
-import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
 
 interface Props {
   projectId: string;
@@ -39,7 +41,10 @@ export function ManageProjectsItemMenu(props: Props) {
         icon: <SquarePen className='h-4 w-4' />,
         text: 'Переименовать',
       },
-      onSelect: onRenameProject,
+      onSelect: e => {
+        e.stopPropagation();
+        onRenameProject();
+      },
     },
     {
       type: 'item',
@@ -62,8 +67,12 @@ export function ManageProjectsItemMenu(props: Props) {
   return (
     <DropdownMenu
       trigger={<ManageProjectsItemMenuTrigger />}
-      contentProps={{ align: 'start' }}
-      // modal={false}
+      contentProps={{
+        align: 'start',
+        loop: false,
+        onCloseAutoFocus: e => e.preventDefault(),
+      }}
+      modal={false}
       options={options}
       className='w-56'
     />

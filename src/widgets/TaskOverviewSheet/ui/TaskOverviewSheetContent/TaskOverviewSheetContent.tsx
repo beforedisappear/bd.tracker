@@ -1,174 +1,51 @@
-import { Task, BoardSticker, BoardTaskHeader } from '@/entities/Board';
-import { format } from 'date-fns';
-import { ru } from 'date-fns/locale';
-import { Avatar } from '@/shared/ui/Avatar/Avatar';
-import { Checkbox } from '@/shared/ui/Checkbox/Checkbox';
-import { Form } from '@/shared/ui/Form';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { Button } from '@/shared/ui/Button/Button';
-import { Badge } from '@/shared/ui/Badge/Badge';
-import { MoreVerticalIcon } from 'lucide-react';
+import { Task, BoardTaskHeader } from '@/entities/Board';
+
+import { TaskOverviewSheetAssignees } from '../TaskOverviewSheetAssignees/TaskOverviewSheetAssignees';
+import { TaskOverviewSheetDetails } from '../TaskOverviewSheetDetails/TaskOverviewSheetDetails';
+import { TaskOverviewSheetStickers } from '../TaskOverviewSheetStickers/TaskOverviewSheetStickers';
+import { TaskOverviewSheetDateRange } from '../TaskOverviewSheetDateRange/TaskOverviewSheetDateRange';
+import { TaskOverviewSheetDescription } from '../TaskOverviewSheetDescription/TaskOverviewSheetDescription';
 
 interface Props {
   task: Task;
   onClose: () => void;
 }
 
-interface TaskFormFields {
-  description: string;
-  isDone: boolean;
-}
-
 export function TaskOverviewSheetContent(props: Props) {
   const { task, onClose } = props;
 
-  const form = useForm<TaskFormFields>({
-    defaultValues: {
-      description: task.description ?? '',
-      isDone: task.isDone,
-    },
-  });
-
-  const { register, handleSubmit } = form;
-
-  const onSubmit: SubmitHandler<TaskFormFields> = data => {
-    // TODO: handle save
-    console.log('Save:', data);
-  };
-
   return (
-    <Form {...form}>
-      {/* <form onSubmit={handleSubmit(onSubmit)}>
-        <div className='space-y-6 pt-4'>
-          <div className='flex items-center w-full gap-3 mb-6'>
-            <Checkbox
-              name='isDone'
-              label={task.title}
-              labelClassName='text-xl font-semibold w-full'
-              defaultChecked={task.isDone}
-              className='flex-1 items-center'
-            />
+    <div className='flex flex-col gap-4'>
+      <BoardTaskHeader
+        key={`${task.id}-${task.isDone}`}
+        taskId={task.id}
+        title={task.title}
+        isDone={task.isDone}
+        color={task.color}
+        titleClassName='text-xl font-semibold'
+        offCheckTitleStyle
+        onClose={onClose}
+      />
 
-            <MoreVerticalIcon className='size-4' />
-          </div>
+      <TaskOverviewSheetAssignees taskId={task.id} assignees={task.assignees} />
 
-          <div className='mb-4'>
-            <div className='text-xs text-muted-foreground mb-2'>
-              Автор и ответственные
-            </div>
+      <TaskOverviewSheetDetails
+        createdAt={task.createdAt}
+        updatedAt={task.updatedAt}
+      />
 
-            <div className='space-y-2'>
-              <div className='flex items-center gap-2 text-sm'>
-                <span>Автор:</span>
-                <Avatar
-                  key={task.assignees[0].id}
-                  src=''
-                  alt={task.assignees[0].name}
-                  initials={task.assignees[0].name}
-                  className='flex justify-center items-center h-5 w-5'
-                />
-              </div>
+      <TaskOverviewSheetStickers taskId={task.id} stickers={task.stickers} />
 
-              <div className='flex items-center gap-2 text-sm'>
-                <span>Ответственные:</span>
-                {task.assignees?.map(assignee => (
-                  <Avatar
-                    key={assignee.id}
-                    src=''
-                    alt={assignee.name}
-                    initials={assignee.name}
-                    className='flex justify-center items-center h-5 w-5'
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
+      <TaskOverviewSheetDateRange
+        taskId={task.id}
+        startDate={task.startDate}
+        endDate={task.endDate}
+      />
 
-          <div className='mb-4'>
-            <div className='text-xs text-muted-foreground mb-2'>
-              Дополнительная информация
-            </div>
-
-            <div className='space-y-2'>
-              <div className='flex items-center gap-2 text-sm'>
-                <span>Создано:</span>
-                <Badge variant='outline'>
-                  {format(new Date(task.createdAt), 'd MMM HH:mm', {
-                    locale: ru,
-                  })}
-                </Badge>
-              </div>
-
-              <div className='flex items-center gap-2 text-sm'>
-                <span>Обновлено:</span>
-                <Badge variant='outline'>
-                  {format(new Date(task.updatedAt), 'd MMM HH:mm', {
-                    locale: ru,
-                  })}
-                </Badge>
-              </div>
-            </div>
-          </div>
-
-          <div className='mb-4'>
-            <div className='text-xs text-muted-foreground mb-2'>Метки</div>
-            <div className='flex flex-wrap gap-2'>
-              {task.stickers?.map(sticker => (
-                <BoardSticker key={sticker.id} data={sticker} />
-              ))}
-            </div>
-          </div>
-
-          <div className='mb-4'>
-            <div className='text-xs text-muted-foreground mb-2'>
-              Срок исполнения
-            </div>
-            <div className='text-sm'>
-              {task.startDate && task.endDate ? (
-                <div className='flex items-center gap-2'>
-                  <Badge variant='outline'>
-                    {format(new Date(task.startDate), 'd MMM yyyy', {
-                      locale: ru,
-                    })}{' '}
-                    -{' '}
-                    {format(new Date(task.endDate), 'd MMM yyyy', {
-                      locale: ru,
-                    })}
-                  </Badge>
-                </div>
-              ) : (
-                <Badge variant='outline'>Не указано</Badge>
-              )}
-            </div>
-          </div>
-
-          <div className='mb-4'>
-            <div className='text-xs text-muted-foreground mb-2'>Описание</div>
-            <textarea
-              {...register('description')}
-              rows={6}
-              className=' resize-none w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-sm transition-colors 
-              focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 min-h-[150px]'
-              placeholder='Введите описание...'
-            />
-          </div>
-
-          <div className='flex justify-end'>
-            <Button type='submit'>Сохранить</Button>
-          </div>
-        </div>
-      </form> */}
-      <div>
-        <BoardTaskHeader
-          taskId={task.id}
-          title={task.title}
-          isDone={task.isDone}
-          color={task.color}
-          titleClassName='text-xl font-semibold'
-          offCheckTitleStyle
-          onClose={onClose}
-        />
-      </div>
-    </Form>
+      <TaskOverviewSheetDescription
+        description={task.description}
+        taskId={task.id}
+      />
+    </div>
   );
 }

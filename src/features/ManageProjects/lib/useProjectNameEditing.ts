@@ -26,8 +26,10 @@ export function useProjectNameEditing(args: Args) {
   );
 
   const onStartEditing = () => {
-    setIsEditing(true);
-    inputRef.current?.focus();
+    setTimeout(() => {
+      setIsEditing(true);
+      inputRef.current?.focus();
+    }, 100);
   };
 
   const onEndEditing = (e: FocusEvent<HTMLInputElement>) => {

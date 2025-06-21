@@ -4,13 +4,18 @@ import { BoardTaskDateRangeMenuContent } from '../BoardTaskDateRangeMenuContent/
 
 import { useCallback, useState } from 'react';
 
+import type { DateRangeTriggerType, Task } from '../../model/types';
+
 interface Props {
-  taskId: string;
-  startDate: string | null;
-  endDate: string | null;
+  taskId: Task['id'];
+  startDate: Task['startDate'];
+  endDate: Task['endDate'];
+  triggerType?: DateRangeTriggerType;
 }
 
 export function BoardTaskDateRangeMenu(props: Props) {
+  const { startDate, endDate, triggerType = 'button' } = props;
+
   const [isOpen, setIsOpen] = useState(false);
 
   const onClose = useCallback(() => {
@@ -21,8 +26,9 @@ export function BoardTaskDateRangeMenu(props: Props) {
     <Popover
       trigger={
         <BoardTaskDateRangeMenuTrigger
-          startDate={props.startDate}
-          endDate={props.endDate}
+          startDate={startDate}
+          endDate={endDate}
+          triggerType={triggerType}
         />
       }
       open={isOpen}

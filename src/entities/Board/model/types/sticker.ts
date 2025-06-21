@@ -1,5 +1,7 @@
 import { Color } from './color';
 
+export type StickerMenuTriggerType = 'badge' | 'button';
+
 export interface Sticker {
   id: string;
   name: string;

@@ -1,19 +1,36 @@
 import { Calendar } from 'lucide-react';
 import { Button, type ButtonProps } from '@/shared/ui/c';
-import type { MouseEvent } from 'react';
-import { format } from 'date-fns';
+import { Badge, type BadgeProps } from '@/shared/ui/s';
 
-interface Props extends ButtonProps {
+import { format } from 'date-fns';
+import { cn } from '@/shared/lib/css';
+
+import type { MouseEvent } from 'react';
+import type { DateRangeTriggerType } from '../../model/types';
+
+type Props = {
   startDate: string | null;
   endDate: string | null;
-}
+  triggerType?: DateRangeTriggerType;
+  onClick?: (e: MouseEvent<HTMLButtonElement | HTMLDivElement>) => void;
+} & (
+  | ({ triggerType?: 'button' } & ButtonProps)
+  | ({ triggerType: 'badge' } & BadgeProps)
+);
 
 export function BoardTaskDateRangeMenuTrigger(props: Props) {
-  const { onClick, startDate, endDate, ...rest } = props;
+  const {
+    onClick,
+    startDate,
+    endDate,
+    triggerType = 'button',
+    className,
+    ...rest
+  } = props;
 
-  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (e: MouseEvent<HTMLDivElement | HTMLButtonElement>) => {
     e.stopPropagation();
-    onClick?.(e);
+    onClick?.(e as MouseEvent<HTMLButtonElement | HTMLDivElement>);
   };
 
   const formattedDate =
@@ -21,18 +38,35 @@ export function BoardTaskDateRangeMenuTrigger(props: Props) {
       ? `${format(new Date(startDate), 'dd.MM.yy')} - ${format(new Date(endDate), 'dd.MM.yy')}`
       : null;
 
+  if (triggerType === 'badge') {
+    return (
+      <Badge
+        variant='outline'
+        className={cn('cursor-pointer w-fit', className)}
+        onClick={handleClick}
+        {...(rest as BadgeProps)}
+      >
+        {formattedDate || 'Не указано'}
+      </Badge>
+    );
+  }
+
   return (
     <div className='flex gap-2'>
       <Button
         variant={null}
         size='sm'
-        className='p-1 h-6 min-w-6 w-auto gap-1 border border-dashed border-primary/60 text-primary/60'
+        className={cn(
+          'p-1 h-6 min-w-6 w-auto gap-1 border border-dashed border-primary/60 text-primary/60',
+          className,
+        )}
         onClick={handleClick}
-        {...rest}
+        {...(rest as ButtonProps)}
       >
-        {!formattedDate && <Calendar className='!size-3.5' />}
-        {formattedDate && (
+        {formattedDate ? (
           <span className='text-xs font-normal'>{formattedDate}</span>
+        ) : (
+          <Calendar className='!size-3.5' />
         )}
       </Button>
     </div>

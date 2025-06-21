@@ -269,6 +269,8 @@ model Task {
   columnId String
   column   Column @relation(fields: [columnId], references: [id])
 
+  //TODO: add author
+
   //many users to many tasks
   assignees User[] @relation("TaskAssignees")
 
@@ -282,22 +284,8 @@ model Task {
 
   //for Multi-tenant 
   projectId String
-
-  // TODO: add subtask management
-  // //one task to many tasks (subtasks) by self-referencing relationship
-  // parentTaskId   String?
-  // parentTask     Task?     @relation("TaskHierarchy", fields: [parentTaskId], references: [id])
-
-  // subtasks       Task[]    @relation("TaskHierarchy")
-
-  // //to place subtask on board
-  // isStandalone   Boolean   @default(false)
-
-  // //to keep the max nesting = 1
-  // isSubtask      Boolean   @default(false)
 }
 
-//TODO: add sticker group
 model Sticker {
   id        String      @id @default(uuid())
   name      String
