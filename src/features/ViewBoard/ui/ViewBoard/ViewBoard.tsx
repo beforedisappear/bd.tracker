@@ -54,13 +54,13 @@ export function ViewBoard(props: Props) {
     handleDragOver,
     handleDragMove,
     handleDragEnd,
-  } = useDragAndDropBoardItems({ board, isFiltered });
+  } = useDragAndDropBoardItems({ board });
 
   const { setNodeRef } = useDroppable({ id: board.id });
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: { distance: 5 }, //to support clicks
-      disabled: isMovingColumn || isMovingTask || isFiltered,
+      disabled: isMovingColumn || isMovingTask,
     }),
   );
 

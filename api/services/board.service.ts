@@ -122,10 +122,8 @@ class BoardService extends BaseService {
               include: {
                 assignees: true,
                 stickers: true,
-                previousTask: { select: { id: true } },
               },
             },
-            previousColumn: { select: { id: true } },
           },
         },
       },

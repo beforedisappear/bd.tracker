@@ -1,8 +1,7 @@
 import { z } from 'zod';
 
 export const MoveColumnReqBodySchema = z.object({
-  nextColumnId: z.string().nullable(),
-  previousColumnId: z.string().nullable(),
+  order: z.number(),
 });
 
 export const MoveColumnReqParamsSchema = z.object({

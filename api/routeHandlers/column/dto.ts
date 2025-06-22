@@ -3,6 +3,7 @@ import { z } from 'zod';
 export const CreateColumnReqBodySchema = z.object({
   boardId: z.string(),
   name: z.string(),
+  order: z.number(),
 });
 
 export const CreateColumnResSchema = z.object({
@@ -11,6 +12,6 @@ export const CreateColumnResSchema = z.object({
   boardId: z.string(),
   createdAt: z.string(),
   updatedAt: z.string(),
-  nextColumnId: z.string().nullable(),
+  order: z.number(),
   projectId: z.string(),
 });

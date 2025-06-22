@@ -11,19 +11,15 @@ export const PatchMoveColumnRoute = async (
   { params }: { params: Promise<MoveColumnReqParamsDto> },
 ) => {
   try {
-    const accessToken = getAccessTokenFromReq(req);
-    const { userId } = await authService.verifyJwt(accessToken);
+    const { userId } = await authService.verifyJwt(getAccessTokenFromReq(req));
 
     const { columnId } = MoveColumnReqParamsSchema.parse(await params);
 
-    const { nextColumnId, previousColumnId } = MoveColumnReqBodySchema.parse(
-      await req.json(),
-    );
+    const { order } = MoveColumnReqBodySchema.parse(await req.json());
 
     const movedColumn = await columnService.moveColumn({
       id: columnId,
-      nextColumnId: nextColumnId,
-      previousColumnId: previousColumnId,
+      order,
       initiatorId: userId,
     });
 

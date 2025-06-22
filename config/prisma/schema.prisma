@@ -115,6 +115,7 @@ model User {
   projects            Project[]        @relation("ProjectMembers")
   //one user to one email change request
   emailChangeRequest  UserEmailChange? @relation("UserEmailChange")
+  Task                Task[]
 
   @@map("users")
 }
@@ -222,6 +223,8 @@ model Board {
   id        String    @id @default(uuid())
   name      String
   createdAt DateTime  @default(now())
+  columnMoveCount Int    @default(0)
+
   //many boards to one project
   projectId String
   project   Project   @relation(fields: [projectId], references: [id])
@@ -236,6 +239,8 @@ model Column {
   name      String
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+  order     Int      @default(0)
+  taskMoveCount Int    @default(0)
 
   //many columns to one board
   boardId String
@@ -244,32 +249,30 @@ model Column {
   //many tasks to one column
   tasks Task[]
 
-  //one column to one (next) column | for dual-linked list
-  nextColumnId   String? @unique
-  nextColumn     Column? @relation("ColumnOrder", fields: [nextColumnId], references: [id])
-  previousColumn Column? @relation("ColumnOrder")
-
   //for Multi-tenant 
   projectId String
 }
 
 model Task {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   title       String
   description String?
-  color       Color    @default(GRAY)
-  isDone      Boolean  @default(false)
-  isArchived  Boolean  @default(false)
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  startDate DateTime? // начало интервала дат
-  endDate   DateTime? // конец интервала дат
+  color       Color     @default(GRAY)
+  isDone      Boolean   @default(false)
+  isArchived  Boolean   @default(false)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  startDate   DateTime? // начало интервала дат
+  endDate     DateTime? // конец интервала дат
+  order       Int       @default(0)
 
   //many tasks to one column
   columnId String
   column   Column @relation(fields: [columnId], references: [id])
 
-  //TODO: add author
+  //one task to one user (author)
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
 
   //many users to many tasks
   assignees User[] @relation("TaskAssignees")
@@ -277,21 +280,16 @@ model Task {
   //many stickers to many tasks
   stickers Sticker[] @relation("TaskStickers")
 
-  //one task to one (next) task | for dual-linked list
-  nextTaskId   String? @unique
-  nextTask     Task?   @relation("TaskOrder", fields: [nextTaskId], references: [id])
-  previousTask Task?   @relation("TaskOrder")
-
   //for Multi-tenant 
   projectId String
 }
 
 model Sticker {
-  id        String      @id @default(uuid())
+  id        String   @id @default(uuid())
   name      String
-  color     Color       @default(GRAY)
-  createdAt DateTime    @default(now()) @map("created_at")
-  updatedAt DateTime    @updatedAt @map("updated_at")
+  color     Color    @default(GRAY)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   //many stickers to one board
   boardId String

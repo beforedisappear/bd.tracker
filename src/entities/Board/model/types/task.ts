@@ -14,11 +14,10 @@ export interface Task {
   startDate: string | null;
   endDate: string | null;
   columnId: string;
-  nextTaskId: string | null;
+  order: number;
   projectId: string;
   assignees: User[];
   stickers: Sticker[];
-  previousTask: { id: string } | null;
 }
 
 export interface CreateTaskDtoReq {

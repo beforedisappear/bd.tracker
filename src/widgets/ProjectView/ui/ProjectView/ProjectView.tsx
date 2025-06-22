@@ -17,8 +17,7 @@ import {
 } from '@/entities/Board';
 
 import { getContentMargin } from '../../lib/getContentMargin';
-import { restoreTasksOrder } from '../../lib/restoreTasksOrder/restoreTasksOrder';
-import { restoreColumnsOrder } from '../../lib/restoreColumnsOrder/restoreColumnsOrder';
+import { restoreOrder } from '../../lib/restoreOrder/restoreOrder';
 
 //TODO: add choose project view
 export function ProjectView() {
@@ -45,9 +44,9 @@ export function ProjectView() {
     enabled: !!boardId,
     select: res => ({
       ...res,
-      columns: restoreColumnsOrder(res.columns).map(column => ({
+      columns: restoreOrder(res.columns).map(column => ({
         ...column,
-        tasks: restoreTasksOrder(column.tasks),
+        tasks: restoreOrder(column.tasks),
       })),
     }),
   });
