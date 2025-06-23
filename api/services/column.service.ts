@@ -3,7 +3,7 @@ import { prismaService } from 'config/prisma';
 import { BaseService } from './base.service';
 
 const COLUMN_ORDER_STEP = 1_000_000;
-const NORMALIZATION_THRESHOLD = 30;
+const NORMALIZATION_THRESHOLD = 15;
 
 class ColumnService extends BaseService {
   async createColumn(args: {
@@ -108,10 +108,9 @@ class ColumnService extends BaseService {
       throw ApiError.forbidden('You are not member of this project');
 
     const moveCount = movedColumn.board.columnMoveCount;
+    const shouldNormalize = moveCount >= NORMALIZATION_THRESHOLD;
 
-    if (moveCount >= NORMALIZATION_THRESHOLD) {
-      await this.normalizeOrder();
-    }
+    console.log('moveCount', moveCount);
 
     await prismaService.column.update({
       where: { id },
@@ -121,22 +120,38 @@ class ColumnService extends BaseService {
       },
     });
 
-    return null;
+    if (shouldNormalize) {
+      await this.normalizeOrder(movedColumn.boardId);
+    }
+
+    return { isNormalized: shouldNormalize, id: movedColumn.id };
   }
 
-  private async normalizeOrder() {
-    await prismaService.$transaction(async tx => {
-      const columns = await tx.column.findMany({
-        orderBy: { order: 'asc' },
-      });
-
-      for (let i = 0; i < columns.length; i++) {
-        await tx.column.update({
-          where: { id: columns[i].id },
-          data: { order: i * COLUMN_ORDER_STEP },
+  private async normalizeOrder(boardId: string) {
+    try {
+      await prismaService.$transaction(async tx => {
+        const columns = await tx.column.findMany({
+          where: { boardId },
+          orderBy: { order: 'asc' },
         });
-      }
-    });
+
+        for (let i = 0; i < columns.length; i++) {
+          await tx.column.update({
+            where: { id: columns[i].id },
+            data: { order: i * COLUMN_ORDER_STEP },
+          });
+        }
+
+        await tx.board.update({
+          where: { id: boardId },
+          data: { columnMoveCount: 0 },
+        });
+      });
+    } catch (error) {
+      console.error(error);
+
+      throw ApiError.internal('Failed to normalize column order');
+    }
   }
 }
 

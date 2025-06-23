@@ -37,9 +37,7 @@ class ApiClient {
   private async refreshTokens(refreshToken: RefreshTokensRes['refreshToken']) {
     const response = await this.noAuth.post<RefreshTokensRes>(
       `/refresh-tokens`,
-      {
-        refreshToken,
-      },
+      { refreshToken },
     );
 
     if (response.data) {
@@ -80,9 +78,11 @@ class ApiClient {
             }
 
             await this.refreshPromise;
+
             return this.withAuth(originalReq);
           } catch {
             removeJwt();
+            window.location.reload();
           }
         }
         return Promise.reject(error);

@@ -36,10 +36,12 @@ export interface RenameColumnDtoRes {
 }
 
 export type MoveColumnDtoReq = {
+  boardId: string;
   columnId: string;
   order: number;
 };
 
 export interface MoveColumnDtoRes {
   id: string;
+  isNormalized: boolean;
 }

@@ -1,7 +1,6 @@
 import { arrayMove } from '@dnd-kit/sortable';
 import { useState, useRef, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { useShowNotAllowedToMoveItemsToast } from './useShowNotAllowedToMoveToast';
 
 import { toast } from 'sonner';
 import { isTypeActive } from './isTypeActive';
@@ -10,6 +9,7 @@ import { getErrorMessage } from '@/shared/lib/error';
 import {
   columnQueries,
   taskQueries,
+  computeOrder,
   type Column,
   type Task,
   type Board,
@@ -22,7 +22,6 @@ import type {
   DragOverEvent,
   DragStartEvent,
 } from '@dnd-kit/core';
-import { computeOrder } from './computeOrder/computeOrder';
 
 type Args = { board: Board };
 
@@ -207,15 +206,9 @@ export function useDragAndDropBoardItems(args: Args) {
       const newActiveColumnIdx = newColumns.indexOf(activeColumn);
 
       if (newActiveColumnIdx === 0) {
-        newOrder = computeOrder({
-          type: 'column',
-          next: overColumn.order,
-        });
+        newOrder = computeOrder({ type: 'column', next: overColumn.order });
       } else if (newActiveColumnIdx === columns.length - 1) {
-        newOrder = computeOrder({
-          type: 'column',
-          prev: overColumn.order,
-        });
+        newOrder = computeOrder({ type: 'column', prev: overColumn.order });
       } else {
         const prevColumn = newColumns[newActiveColumnIdx - 1];
         const nextColumn = newColumns[newActiveColumnIdx + 1];
