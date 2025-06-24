@@ -1,8 +1,16 @@
 import { TaskSchema } from 'api/schemes/task';
+import { Color } from 'config/prisma/generated/client';
 import { z } from 'zod';
 
 export const GetBoardByIdReqParamsSchema = z.object({
   boardId: z.string(),
+});
+
+export const GetBoardByIdQuerySchema = z.object({
+  colors: z.array(z.nativeEnum(Color)).optional(),
+  assigneeIds: z.array(z.string()).optional(),
+  dateRange: z.tuple([z.string(), z.string()]).optional(),
+  stickerIds: z.array(z.string()).optional(),
 });
 
 export const GetBoardByIdResSchema = z.object({

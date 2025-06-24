@@ -4,7 +4,13 @@ import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useProject } from '@/shared/lib/navigation';
 
-import { columnQueries } from '@/entities/Board';
+import {
+  boardQueries,
+  columnQueries,
+  DEFAULT_COLUMN_ORDER_GAP,
+  getItemWithHighestOrder,
+  type Board,
+} from '@/entities/Board';
 
 import { z } from 'zod';
 import { toast } from 'sonner';
@@ -14,6 +20,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { SUCCESSFUL_SENDING_MESSAGE } from '@/shared/constants';
 
 import { CreateColumnSchema } from '../../model/schemes';
+import { queryClient } from '@/shared/config/query';
 
 interface Props {
   onClose: () => void;
@@ -35,7 +42,19 @@ export function CreateColumnForm(props: Props) {
   const onSubmit = form.handleSubmit(data => {
     if (!boardId) return;
 
-    createColumn({ ...data, boardId: boardId })
+    const board = queryClient.getQueryData<Board>(
+      boardQueries.boardById(boardId),
+    );
+
+    if (!board) throw new Error('Board not found');
+
+    const columnWithHighestOrder = getItemWithHighestOrder(board.columns);
+
+    const order = columnWithHighestOrder
+      ? columnWithHighestOrder.order + DEFAULT_COLUMN_ORDER_GAP
+      : DEFAULT_COLUMN_ORDER_GAP;
+
+    createColumn({ ...data, boardId, order })
       .then(() => toast.success(SUCCESSFUL_SENDING_MESSAGE))
       .then(() => onClose())
       .catch(e => form.setError('name', { message: getErrorMessage(e) }));

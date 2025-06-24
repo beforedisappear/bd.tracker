@@ -17,8 +17,7 @@ import {
 } from '@/entities/Board';
 
 import { getContentMargin } from '../../lib/getContentMargin';
-import { restoreTasksOrder } from '../../lib/restoreTasksOrder/restoreTasksOrder';
-import { restoreColumnsOrder } from '../../lib/restoreColumnsOrder/restoreColumnsOrder';
+import { restoreOrder } from '../../lib/restoreOrder/restoreOrder';
 
 //TODO: add choose project view
 export function ProjectView() {
@@ -34,6 +33,11 @@ export function ProjectView() {
   const dateRange = dateRangeMap[boardId];
   const stickers = stickersMap[boardId];
 
+  const withColorFilter = colors && colors.length > 0;
+  const withAssigneeFilter = assignees && assignees.length > 0;
+  const withDateRangeFilter = dateRange && dateRange.from && dateRange.to;
+  const withStickerFilter = stickers && stickers.length > 0;
+
   const {
     data: board,
     isLoading,
@@ -41,13 +45,21 @@ export function ProjectView() {
     error,
     refetch,
   } = useQuery({
-    ...boardQueries.getBoardById({ boardId: boardId! }),
+    ...boardQueries.getBoardById({
+      boardId: boardId!,
+      colors: withColorFilter ? colors : undefined,
+      assigneeIds: withAssigneeFilter ? assignees : undefined,
+      dateRange: withDateRangeFilter ? dateRange : undefined,
+      stickerIds: withStickerFilter ? stickers : undefined,
+    }),
     enabled: !!boardId,
+    gcTime: 0,
+    staleTime: 0,
     select: res => ({
       ...res,
-      columns: restoreColumnsOrder(res.columns).map(column => ({
+      columns: restoreOrder(res.columns).map(column => ({
         ...column,
-        tasks: restoreTasksOrder(column.tasks),
+        tasks: restoreOrder(column.tasks),
       })),
     }),
   });
@@ -56,25 +68,13 @@ export function ProjectView() {
   else if (isError || !board)
     return <ErrorBoundary className='m-auto' error={error} reset={refetch} />;
 
-  const isFiltered =
-    (colors && colors.length > 0) || (assignees && assignees.length > 0)
-      ? true
-      : false;
-
   return (
     <ProjectViewWrapper>
       <div
         className='flex gap-4'
         style={{ marginInline: getContentMargin(isMobile) }}
       >
-        <ViewBoard
-          board={board}
-          colors={colors}
-          assignees={assignees}
-          dateRange={dateRange}
-          stickers={stickers}
-          isFiltered={isFiltered}
-        />
+        <ViewBoard board={board} />
         <CreateColumn />
       </div>
 

@@ -24,6 +24,9 @@ export { getDeleteBoardModalActions } from './model/selectors/getDeleteBoardModa
 // export { mapColumnsById } from './lib/mapColumnsById';
 // export { mapTasksById } from './lib/mapTasksById';
 
+export { computeOrder } from './lib/computeOrder/computeOrder';
+export { getItemWithHighestOrder } from './lib/getItemWithHighestOrder';
+
 export { BoardColorInput } from './ui/BoardColorInput/BoardColorInput';
 export { BoardSticker } from './ui/BoardSticker/BoardSticker';
 export { BoardStickerInput } from './ui/BoardStickerField/BoardStickerField';
@@ -34,7 +37,11 @@ export { BoardAssigneesPopover } from './ui/BoardAssigneesPopover/BoardAssignees
 
 export { mapColorToClassName } from './config';
 
-export { SELECTED_COLOR_BY_DEFAULT } from './constants';
+export {
+  SELECTED_COLOR_BY_DEFAULT,
+  DEFAULT_TASK_ORDER_GAP,
+  DEFAULT_COLUMN_ORDER_GAP,
+} from './constants';
 
 export type {
   SummaryBoard,

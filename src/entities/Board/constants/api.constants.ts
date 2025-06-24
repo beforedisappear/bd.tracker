@@ -1,0 +1,2 @@
+export const DEFAULT_TASK_ORDER_GAP = 1_000_000;
+export const DEFAULT_COLUMN_ORDER_GAP = 1_000_000;

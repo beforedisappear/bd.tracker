@@ -6,8 +6,7 @@ export const MoveTaskDtoReqParamsSchema = z.object({
 
 export const MoveTaskDtoReqBodySchema = z.object({
   columnId: z.string().uuid(),
-  nextTaskId: z.string().uuid().nullable(),
-  previousTaskId: z.string().uuid().nullable(),
+  order: z.number(),
 });
 
 export const MoveTaskDtoResSchema = z.object({

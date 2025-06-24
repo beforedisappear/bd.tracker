@@ -7,14 +7,16 @@ import { ErrorResponse } from 'api/errors/errorResponse';
 
 export const PostCreateColumn = async (req: NextRequest) => {
   try {
-    const { boardId, name } = CreateColumnReqBodySchema.parse(await req.json());
-    const accessToken = getAccessTokenFromReq(req);
-    const { userId } = await authService.verifyJwt(accessToken);
+    const { boardId, name, order } = CreateColumnReqBodySchema.parse(
+      await req.json(),
+    );
+    const { userId } = await authService.verifyJwt(getAccessTokenFromReq(req));
 
     const column = await columnService.createColumn({
       name,
       boardId,
       initiatorId: userId,
+      order,
     });
 
     return NextResponse.json(column);

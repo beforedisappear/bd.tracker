@@ -20,7 +20,7 @@ export const createQueryString = (
     }
 
     if (Array.isArray(value)) {
-      const serializedArray = `[${value.join(',')}]`;
+      const serializedArray = JSON.stringify(value);
       queryParts.push(`${key}=${serializedArray}`);
       return;
     }

@@ -14,7 +14,10 @@ export function FilterTasksByDateRangeTrigger(props: Props) {
   const { boardId } = useProject();
 
   const selector = (state: BoardStore) =>
-    state.mapDateRangeTaskFilterByBoardId[boardId] ? true : false;
+    state.mapDateRangeTaskFilterByBoardId[boardId]?.from &&
+    state.mapDateRangeTaskFilterByBoardId[boardId]?.to
+      ? true
+      : false;
 
   const dateRangeTaskFilterUsed = useBoardStore(selector);
 

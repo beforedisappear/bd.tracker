@@ -14,33 +14,31 @@ export interface Task {
   startDate: string | null;
   endDate: string | null;
   columnId: string;
-  nextTaskId: string | null;
+  order: number;
   projectId: string;
   assignees: User[];
   stickers: Sticker[];
-  previousTask: { id: string } | null;
 }
 
 export interface CreateTaskDtoReq {
   title: string;
   columnId: string;
   boardId: string; //for invalidation
+  order: number;
 }
 
 export type CreateTaskDtoRes = Task;
 
 export type MoveTaskDtoReq = {
   taskId: string;
-  columnId: string;
+  order: number;
+  columnId?: string;
   boardId: string; // for invalidation
-} & (
-  | { nextTaskId: string; previousTaskId: null }
-  | { nextTaskId: null; previousTaskId: string }
-  | { nextTaskId: null; previousTaskId: null }
-);
+};
 
 export interface MoveTaskDtoRes {
   id: string;
+  isNormalized: boolean;
 }
 
 export interface DeleteTaskDtoReq {

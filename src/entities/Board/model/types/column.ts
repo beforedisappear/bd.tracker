@@ -6,10 +6,7 @@ export interface Column {
   createdAt: string;
   updatedAt: string;
   boardId: string;
-  nextColumnId: string | null;
-  previousColumn: {
-    id: string;
-  } | null;
+  order: number;
   tasks: Task[];
   projectId: string;
 }
@@ -17,6 +14,7 @@ export interface Column {
 export interface CreateColumnDtoReq {
   name: string;
   boardId: string;
+  order: number;
 }
 
 export type CreateColumnDtoRes = Column;
@@ -37,20 +35,13 @@ export interface RenameColumnDtoRes {
   id: string;
 }
 
-export type MoveColumnDtoReq =
-  | {
-      nextColumnId: string;
-      previousColumnId: null;
-      columnId: string;
-      boardId: string;
-    }
-  | {
-      nextColumnId: null;
-      previousColumnId: string;
-      columnId: string;
-      boardId: string;
-    };
+export type MoveColumnDtoReq = {
+  boardId: string;
+  columnId: string;
+  order: number;
+};
 
 export interface MoveColumnDtoRes {
   id: string;
+  isNormalized: boolean;
 }

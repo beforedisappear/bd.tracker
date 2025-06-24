@@ -8,8 +8,10 @@ import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import { useProject } from '@/shared/lib/navigation';
 
+import { toast } from 'sonner';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { getErrorMessage } from '@/shared/lib/error';
 
 import { Task, taskQueries } from '@/entities/Board';
 import type { CheckedState } from '@radix-ui/react-checkbox';
@@ -43,7 +45,7 @@ export function BoardAssigneesPopoverContent(props: Props) {
       taskId,
       boardId,
       assigneeIds: newAssigneeIds,
-    });
+    }).catch(e => toast.error(getErrorMessage(e)));
   };
 
   return (

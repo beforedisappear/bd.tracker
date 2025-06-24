@@ -11,8 +11,7 @@ export const DeleteColumnById = async (
   { params }: { params: Promise<DeleteColumnByIdReqParamsDto> },
 ) => {
   try {
-    const accessToken = getAccessTokenFromReq(req);
-    const { userId } = await authService.verifyJwt(accessToken);
+    const { userId } = await authService.verifyJwt(getAccessTokenFromReq(req));
 
     const { columnId } = DeleteColumnByIdReqParamsSchema.parse(await params);
 

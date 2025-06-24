@@ -13,8 +13,8 @@ export const TaskSchema = z.object({
   createdAt: z.string(),
   updatedAt: z.string(),
   columnId: z.string().uuid(),
-  nextTaskId: z.string().uuid().nullable(),
   projectId: z.string().uuid(),
+  order: z.number(),
   assignees: z.array(
     z.object({
       id: z.string().uuid(),
@@ -25,5 +25,4 @@ export const TaskSchema = z.object({
     }),
   ),
   stickers: z.array(z.object({})),
-  previousTask: z.object({ id: z.string().uuid() }).nullable(),
 });

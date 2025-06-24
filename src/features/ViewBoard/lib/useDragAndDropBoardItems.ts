@@ -1,7 +1,6 @@
 import { arrayMove } from '@dnd-kit/sortable';
 import { useState, useRef, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { useShowNotAllowedToMoveItemsToast } from './useShowNotAllowedToMoveToast';
 
 import { toast } from 'sonner';
 import { isTypeActive } from './isTypeActive';
@@ -10,9 +9,11 @@ import { getErrorMessage } from '@/shared/lib/error';
 import {
   columnQueries,
   taskQueries,
+  computeOrder,
   type Column,
   type Task,
   type Board,
+  DEFAULT_TASK_ORDER_GAP,
 } from '@/entities/Board';
 import { type DraggableItemObj, IsDraggableItem } from '../model/types';
 import type {
@@ -23,13 +24,10 @@ import type {
   DragStartEvent,
 } from '@dnd-kit/core';
 
-type Args = {
-  board: Board;
-  isFiltered: boolean;
-};
+type Args = { board: Board };
 
 export function useDragAndDropBoardItems(args: Args) {
-  const { board, isFiltered } = args;
+  const { board } = args;
 
   const [columns, setColumns] = useState(board.columns);
   const [activeDraggableItem, setActiveDraggableItem] =
@@ -50,18 +48,8 @@ export function useDragAndDropBoardItems(args: Args) {
     taskQueries.moveTask(),
   );
 
-  const { showNotAllowedToMoveItemsToast } =
-    useShowNotAllowedToMoveItemsToast();
-
   const handleDragStart = (event: DragStartEvent) => {
     if (isMovingColumn || isMovingTask) return;
-
-    if (isFiltered) {
-      event.activatorEvent.preventDefault();
-      event.activatorEvent.stopPropagation();
-      showNotAllowedToMoveItemsToast();
-      return;
-    }
 
     if (!IsDraggableItem(event.active.data.current?.type)) return;
 
@@ -73,8 +61,6 @@ export function useDragAndDropBoardItems(args: Args) {
 
   const handleDragOver = (event: DragOverEvent) => {
     if (isMovingColumn || isMovingTask) return;
-
-    if (isFiltered) return;
 
     const { active, over } = event;
 
@@ -93,8 +79,6 @@ export function useDragAndDropBoardItems(args: Args) {
 
     if (isMovingColumn || isMovingTask || !over || over.id === active.id)
       return;
-
-    if (isFiltered) return;
 
     const isTaskActive = isTypeActive(active, 'Task'); // перетаскиваемый элемент - задача
     const isTaskOver = isTypeOver(over, 'Task'); // принимающий элемент - задача
@@ -193,8 +177,6 @@ export function useDragAndDropBoardItems(args: Args) {
   const handleDragEnd = (event: DragEndEvent) => {
     if (isMovingColumn || isMovingTask) return;
 
-    if (isFiltered) return;
-
     const { active, over } = event;
 
     if (!over) return;
@@ -209,28 +191,41 @@ export function useDragAndDropBoardItems(args: Args) {
     const isColumnOver = isTypeOver(over, 'Column'); // принимающий элемент - колонка
 
     if (isColumnActive && isColumnOver) {
-      const oldColumnIdx = columns.findIndex(column => column.id === active.id);
-      const newColumnIdx = columns.findIndex(column => column.id === over.id);
+      const activeColumn = columns.find(column => column.id === active.id);
+      const overColumn = columns.find(column => column.id === over.id);
 
-      const isBefore = newColumnIdx < oldColumnIdx;
+      if (!activeColumn || !overColumn) return;
 
-      const newColumns = arrayMove(columns, oldColumnIdx, newColumnIdx);
+      const activeColumnIdx = columns.indexOf(activeColumn);
+      const overColumnIdx = columns.indexOf(overColumn);
+
+      const newColumns = arrayMove(columns, activeColumnIdx, overColumnIdx);
 
       setColumns(newColumns);
 
-      const dto = isBefore
-        ? {
-            boardId: board.id,
-            columnId: active.id as string,
-            nextColumnId: over.id as string,
-            previousColumnId: null,
-          }
-        : {
-            boardId: board.id,
-            columnId: active.id as string,
-            nextColumnId: null,
-            previousColumnId: over.id as string,
-          };
+      let newOrder = 0;
+      const newActiveColumnIdx = newColumns.indexOf(activeColumn);
+
+      if (newActiveColumnIdx === 0) {
+        newOrder = computeOrder({ type: 'column', next: overColumn.order });
+      } else if (newActiveColumnIdx === columns.length - 1) {
+        newOrder = computeOrder({ type: 'column', prev: overColumn.order });
+      } else {
+        const prevColumn = newColumns[newActiveColumnIdx - 1];
+        const nextColumn = newColumns[newActiveColumnIdx + 1];
+
+        newOrder = computeOrder({
+          type: 'column',
+          prev: prevColumn.order,
+          next: nextColumn.order,
+        });
+      }
+
+      const dto = {
+        boardId: board.id,
+        columnId: active.id as string,
+        order: newOrder,
+      };
 
       moveColumn(dto)
         .catch(e => {
@@ -251,31 +246,29 @@ export function useDragAndDropBoardItems(args: Args) {
 
       if (!overColumn) return;
 
-      //последняя задача в колонке, не перетаскиваемая
+      //последняя задача в колонке (не перетаскиваемая)
       const lastTaskInOverColumn: Task | null =
         overColumn.tasks.filter(task => task.id !== active.id).at(-1) ?? null;
 
       const activeTask = overColumn.tasks.find(task => task.id === active.id);
 
       //перетаскиваемый элемент - задача, принимающий элемент - колонка
-      //если в колонке есть задачи, находим последнюю и передаем ее id в качестве previousTaskId
-      //иначе колонка пустая и оба параметра null
+      //если в колонке есть задачи, находим последнюю и передаем ее order + DEFAULT_TASK_ORDER_GAP
+      //иначе колонка пустая и передаем DEFAULT_TASK_ORDER_GAP
       const dto = {
         taskId: active.id as string,
         columnId: overColumnId,
         boardId: board.id,
-        nextTaskId: null,
-        previousTaskId: lastTaskInOverColumn
-          ? (lastTaskInOverColumn.id as string)
-          : null,
+        order: lastTaskInOverColumn
+          ? lastTaskInOverColumn.order + DEFAULT_TASK_ORDER_GAP
+          : DEFAULT_TASK_ORDER_GAP,
       };
 
-      // если задача перемещается в той же колонке
+      // если задача перемещается на месте
       if (
         activeTask &&
-        activeTask.columnId === dto.columnId &&
-        !dto.nextTaskId &&
-        !dto.previousTaskId
+        activeTask.order === dto.order &&
+        activeTask.columnId === dto.columnId
       ) {
         setActiveDraggableItem(null);
         return;
@@ -300,28 +293,42 @@ export function useDragAndDropBoardItems(args: Args) {
 
       if (!targetColumn) return;
 
-      const newActiveTaskIdx = targetColumn.tasks.findIndex(
+      const newActiveTask = targetColumn.tasks.find(
         task => task.id === active.id,
       );
 
-      const newOverTaskIdx = targetColumn.tasks.findIndex(
-        task => task.id === overTaskId,
-      );
+      if (!newActiveTask) return;
+
+      const newActiveTaskIdx = targetColumn.tasks.indexOf(newActiveTask);
+
+      const beforeTask = targetColumn.tasks[newActiveTaskIdx - 1] as
+        | Task
+        | undefined;
+      const afterTask = targetColumn.tasks[newActiveTaskIdx + 1] as
+        | Task
+        | undefined;
+
+      const computedOrder = computeOrder({
+        type: 'task',
+        prev: beforeTask?.order,
+        next: afterTask?.order,
+      });
 
       const dto = {
         taskId: active.id as string,
         columnId: targetColumn.id,
         boardId: board.id,
-        ...(newActiveTaskIdx <= newOverTaskIdx
-          ? {
-              nextTaskId: overTaskId as string,
-              previousTaskId: null,
-            }
-          : {
-              nextTaskId: null,
-              previousTaskId: overTaskId as string,
-            }),
+        order: computedOrder,
       };
+
+      // если задача перемещается на месте
+      if (
+        newActiveTask.order === dto.order &&
+        newActiveTask.columnId === dto.columnId
+      ) {
+        setActiveDraggableItem(null);
+        return;
+      }
 
       moveTask(dto)
         .catch(e => {

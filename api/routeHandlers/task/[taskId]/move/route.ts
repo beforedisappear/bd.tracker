@@ -16,14 +16,14 @@ export const PatchMoveTask = async (
 
     const { taskId } = MoveTaskDtoReqParamsSchema.parse(await params);
 
-    const { columnId, nextTaskId, previousTaskId } =
-      MoveTaskDtoReqBodySchema.parse(await req.json());
+    const { columnId, order } = MoveTaskDtoReqBodySchema.parse(
+      await req.json(),
+    );
 
     const res = await taskService.moveTask({
       id: taskId,
       columnId,
-      nextTaskId,
-      previousTaskId,
+      order,
       initiatorId: userId,
     });
 
