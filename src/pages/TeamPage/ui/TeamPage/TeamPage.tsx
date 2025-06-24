@@ -5,8 +5,8 @@ import { TeamProjects } from '@/widgets/TeamProjects';
 import { TeamMembers } from '@/widgets/TeamMembers';
 import { TeamMemberProfileModal } from '@/widgets/TeamMemberProfileModal';
 
-import { ManageProjectMembers } from '@/features/ManageProjectMembers';
-import { DeleteProject } from '@/features/DeleteProject';
+import { ManageProjectMembers } from '@/features/Project/ManageProjectMembers';
+import { DeleteProject } from '@/features/Project/DeleteProject';
 
 import { TeamStoreProvider } from '@/entities/Team';
 

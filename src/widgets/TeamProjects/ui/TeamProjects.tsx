@@ -1,6 +1,6 @@
 import { Card } from '@/shared/ui/s';
-import { CreateProject } from '@/features/CreateProject';
-import { ManageProjects } from '@/features/ManageProjects';
+import { CreateProject } from '@/features/Project/CreateProject';
+import { ManageProjects } from '@/features/Project/ManageProjects';
 
 interface Props {
   className?: string;

@@ -1,6 +1,6 @@
 'use client';
 
-import { ViewBoard, ViewBoardLoading } from '@/features/ViewBoard';
+import { ViewBoard, ViewBoardLoading } from '@/features/Board/ViewBoard';
 import { CreateColumn } from '@/features/CreateColumn';
 import { DeleteColumn } from '@/features/DeleteColumn';
 import { CreateTask } from '@/features/CreateTask';

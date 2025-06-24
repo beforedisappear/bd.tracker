@@ -2,9 +2,9 @@
 
 import { SwitchTheme } from '@/features/SwitchTheme';
 import { SidebarTrigger } from '@/shared/ui/c';
-import { ManageBoards } from '@/features/ManageBoards';
-import { CreateBoard } from '@/features/CreateBoard';
-import { SetupProject } from '@/features/SetupProject';
+import { ManageBoards } from '@/features/Board/ManageBoards';
+import { CreateBoard } from '@/features/Board/CreateBoard';
+import { SetupProject } from '@/features/Project/SetupProject';
 
 import { usePathname } from 'next/navigation';
 import { useDeviceType } from '@/shared/lib/deviceType/c';
