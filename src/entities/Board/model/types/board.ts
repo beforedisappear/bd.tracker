@@ -1,3 +1,5 @@
+import type { DateRange } from 'react-day-picker';
+import type { Color } from './color';
 import type { Column } from './column';
 
 export interface SummaryBoard {
@@ -26,9 +28,15 @@ export type CreateBoardDtoRes = SummaryBoard;
 
 export type GetBoardByIdDtoReq = {
   boardId: string;
+  colors?: Color[];
+  assigneeIds?: string[];
+  dateRange?: DateRange;
+  stickerIds?: string[];
 };
 
 export type GetBoardByIdDtoRes = Board;
+
+export type BoardByIdParams = Record<string, string>;
 
 export type DeleteBoardDtoReq = {
   boardId: string;

@@ -2,6 +2,7 @@ import { z } from 'zod';
 import {
   GetBoardByIdReqParamsSchema,
   DeleteBoardByIdReqParamsSchema,
+  GetBoardByIdQuerySchema,
 } from './dto';
 
 export type GetBoardByIdReqParamsDto = z.infer<
@@ -11,3 +12,5 @@ export type GetBoardByIdReqParamsDto = z.infer<
 export type DeleteBoardByIdReqParamsDto = z.infer<
   typeof DeleteBoardByIdReqParamsSchema
 >;
+
+export type GetBoardByIdQueryDto = z.infer<typeof GetBoardByIdQuerySchema>;

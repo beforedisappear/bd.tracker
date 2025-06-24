@@ -13,6 +13,7 @@ import {
   type Column,
   type Task,
   type Board,
+  DEFAULT_TASK_ORDER_GAP,
 } from '@/entities/Board';
 import { type DraggableItemObj, IsDraggableItem } from '../model/types';
 import type {
@@ -245,31 +246,29 @@ export function useDragAndDropBoardItems(args: Args) {
 
       if (!overColumn) return;
 
-      //последняя задача в колонке, не перетаскиваемая
+      //последняя задача в колонке (не перетаскиваемая)
       const lastTaskInOverColumn: Task | null =
         overColumn.tasks.filter(task => task.id !== active.id).at(-1) ?? null;
 
       const activeTask = overColumn.tasks.find(task => task.id === active.id);
 
       //перетаскиваемый элемент - задача, принимающий элемент - колонка
-      //если в колонке есть задачи, находим последнюю и передаем ее id в качестве previousTaskId
-      //иначе колонка пустая и оба параметра null
+      //если в колонке есть задачи, находим последнюю и передаем ее order + DEFAULT_TASK_ORDER_GAP
+      //иначе колонка пустая и передаем DEFAULT_TASK_ORDER_GAP
       const dto = {
         taskId: active.id as string,
         columnId: overColumnId,
         boardId: board.id,
-        nextTaskId: null,
-        previousTaskId: lastTaskInOverColumn
-          ? (lastTaskInOverColumn.id as string)
-          : null,
+        order: lastTaskInOverColumn
+          ? lastTaskInOverColumn.order + DEFAULT_TASK_ORDER_GAP
+          : DEFAULT_TASK_ORDER_GAP,
       };
 
-      // если задача перемещается в той же колонке
+      // если задача перемещается на месте
       if (
         activeTask &&
-        activeTask.columnId === dto.columnId &&
-        !dto.nextTaskId &&
-        !dto.previousTaskId
+        activeTask.order === dto.order &&
+        activeTask.columnId === dto.columnId
       ) {
         setActiveDraggableItem(null);
         return;
@@ -294,28 +293,42 @@ export function useDragAndDropBoardItems(args: Args) {
 
       if (!targetColumn) return;
 
-      const newActiveTaskIdx = targetColumn.tasks.findIndex(
+      const newActiveTask = targetColumn.tasks.find(
         task => task.id === active.id,
       );
 
-      const newOverTaskIdx = targetColumn.tasks.findIndex(
-        task => task.id === overTaskId,
-      );
+      if (!newActiveTask) return;
+
+      const newActiveTaskIdx = targetColumn.tasks.indexOf(newActiveTask);
+
+      const beforeTask = targetColumn.tasks[newActiveTaskIdx - 1] as
+        | Task
+        | undefined;
+      const afterTask = targetColumn.tasks[newActiveTaskIdx + 1] as
+        | Task
+        | undefined;
+
+      const computedOrder = computeOrder({
+        type: 'task',
+        prev: beforeTask?.order,
+        next: afterTask?.order,
+      });
 
       const dto = {
         taskId: active.id as string,
         columnId: targetColumn.id,
         boardId: board.id,
-        ...(newActiveTaskIdx <= newOverTaskIdx
-          ? {
-              nextTaskId: overTaskId as string,
-              previousTaskId: null,
-            }
-          : {
-              nextTaskId: null,
-              previousTaskId: overTaskId as string,
-            }),
+        order: computedOrder,
       };
+
+      // если задача перемещается на месте
+      if (
+        newActiveTask.order === dto.order &&
+        newActiveTask.columnId === dto.columnId
+      ) {
+        setActiveDraggableItem(null);
+        return;
+      }
 
       moveTask(dto)
         .catch(e => {

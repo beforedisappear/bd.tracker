@@ -18,8 +18,7 @@ import {
   useSensors,
 } from '@dnd-kit/core';
 
-import type { Board, Column, Task, Color } from '@/entities/Board';
-import type { DateRange } from 'react-day-picker';
+import type { Board, Column, Task } from '@/entities/Board';
 
 interface MapColumnsAndTasksById {
   columns: Record<string, Column>;
@@ -28,22 +27,10 @@ interface MapColumnsAndTasksById {
 
 interface Props {
   board: Board;
-  colors: Color[] | undefined;
-  assignees: string[] | undefined;
-  dateRange: DateRange | undefined;
-  stickers: string[] | undefined;
-  isFiltered?: boolean;
 }
 
 export function ViewBoard(props: Props) {
-  const {
-    board,
-    colors,
-    assignees,
-    dateRange,
-    stickers,
-    isFiltered = false,
-  } = props;
+  const { board } = props;
 
   const {
     columns,
@@ -105,11 +92,6 @@ export function ViewBoard(props: Props) {
               key={column.id}
               data={column}
               sortableTaskIds={sortableTaskIds}
-              colors={colors}
-              assignees={assignees}
-              dateRange={dateRange}
-              stickers={stickers}
-              isFiltered={isFiltered}
             />
           ))}
         </div>

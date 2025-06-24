@@ -33,6 +33,11 @@ export function ProjectView() {
   const dateRange = dateRangeMap[boardId];
   const stickers = stickersMap[boardId];
 
+  const withColorFilter = colors && colors.length > 0;
+  const withAssigneeFilter = assignees && assignees.length > 0;
+  const withDateRangeFilter = dateRange && dateRange.from && dateRange.to;
+  const withStickerFilter = stickers && stickers.length > 0;
+
   const {
     data: board,
     isLoading,
@@ -40,8 +45,16 @@ export function ProjectView() {
     error,
     refetch,
   } = useQuery({
-    ...boardQueries.getBoardById({ boardId: boardId! }),
+    ...boardQueries.getBoardById({
+      boardId: boardId!,
+      colors: withColorFilter ? colors : undefined,
+      assigneeIds: withAssigneeFilter ? assignees : undefined,
+      dateRange: withDateRangeFilter ? dateRange : undefined,
+      stickerIds: withStickerFilter ? stickers : undefined,
+    }),
     enabled: !!boardId,
+    gcTime: 0,
+    staleTime: 0,
     select: res => ({
       ...res,
       columns: restoreOrder(res.columns).map(column => ({
@@ -55,25 +68,13 @@ export function ProjectView() {
   else if (isError || !board)
     return <ErrorBoundary className='m-auto' error={error} reset={refetch} />;
 
-  const isFiltered =
-    (colors && colors.length > 0) || (assignees && assignees.length > 0)
-      ? true
-      : false;
-
   return (
     <ProjectViewWrapper>
       <div
         className='flex gap-4'
         style={{ marginInline: getContentMargin(isMobile) }}
       >
-        <ViewBoard
-          board={board}
-          colors={colors}
-          assignees={assignees}
-          dateRange={dateRange}
-          stickers={stickers}
-          isFiltered={isFiltered}
-        />
+        <ViewBoard board={board} />
         <CreateColumn />
       </div>
 

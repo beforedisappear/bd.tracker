@@ -3,7 +3,7 @@ import { prismaService } from 'config/prisma';
 import { BaseService } from './base.service';
 
 const COLUMN_ORDER_STEP = 1_000_000;
-const NORMALIZATION_THRESHOLD = 15;
+const NORMALIZATION_COLUMN_THRESHOLD = 15;
 
 class ColumnService extends BaseService {
   async createColumn(args: {
@@ -108,9 +108,7 @@ class ColumnService extends BaseService {
       throw ApiError.forbidden('You are not member of this project');
 
     const moveCount = movedColumn.board.columnMoveCount;
-    const shouldNormalize = moveCount >= NORMALIZATION_THRESHOLD;
-
-    console.log('moveCount', moveCount);
+    const shouldNormalize = moveCount >= NORMALIZATION_COLUMN_THRESHOLD;
 
     await prismaService.column.update({
       where: { id },
@@ -150,7 +148,7 @@ class ColumnService extends BaseService {
     } catch (error) {
       console.error(error);
 
-      throw ApiError.internal('Failed to normalize column order');
+      throw ApiError.internal('Failed to normalize columns order');
     }
   }
 }

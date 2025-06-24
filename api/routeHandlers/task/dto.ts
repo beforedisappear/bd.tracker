@@ -1,17 +1,10 @@
-// import type { Color } from 'config/prisma/generated/client';
-
 import { z } from 'zod';
+import { TaskSchema } from 'api/schemes/task';
 
 export const CreateTaskReqBodySchema = z.object({
   columnId: z.string(),
   title: z.string(),
+  order: z.number(),
 });
 
-export const CreateTaskResSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  columnId: z.string(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
-  // TODO: add
-});
+export const CreateTaskResSchema = TaskSchema;

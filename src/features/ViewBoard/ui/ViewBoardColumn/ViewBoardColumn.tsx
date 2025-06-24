@@ -7,19 +7,12 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { isWithinInterval, parseISO } from 'date-fns';
 
-import type { Column, Color } from '@/entities/Board';
-import type { DateRange } from 'react-day-picker';
+import type { Column } from '@/entities/Board';
 
 interface Props {
   data: Column;
   sortableTaskIds: string[];
-  colors?: Color[];
-  assignees?: string[];
-  dateRange?: DateRange;
-  stickers?: string[];
-  isFiltered?: boolean;
 }
 
 // TODO: add SCROLL AREA
@@ -27,10 +20,6 @@ export function ViewBoardColumn(props: Props) {
   const {
     data: { id, name, tasks },
     sortableTaskIds,
-    colors,
-    assignees,
-    stickers,
-    dateRange,
   } = props;
 
   return (
@@ -46,54 +35,9 @@ export function ViewBoardColumn(props: Props) {
           items={sortableTaskIds}
           strategy={verticalListSortingStrategy}
         >
-          {tasks
-            .filter(task => !colors?.length || colors.includes(task.color))
-            .filter(
-              task =>
-                !assignees?.length ||
-                task.assignees.some(assignee =>
-                  assignees.includes(assignee.id),
-                ),
-            )
-            .filter(
-              task =>
-                !stickers?.length ||
-                task.stickers.some(sticker => stickers.includes(sticker.id)),
-            )
-            .filter(task => {
-              if (!dateRange?.from || !dateRange?.to) return true;
-
-              const taskStartDate = task.startDate
-                ? parseISO(task.startDate)
-                : null;
-              const taskEndDate = task.endDate ? parseISO(task.endDate) : null;
-
-              if (!taskStartDate && !taskEndDate) return true;
-
-              const range = { start: dateRange.from, end: dateRange.to };
-
-              if (taskStartDate && !taskEndDate) {
-                return isWithinInterval(taskStartDate, range);
-              }
-
-              if (!taskStartDate && taskEndDate) {
-                return isWithinInterval(taskEndDate, range);
-              }
-
-              if (taskStartDate && taskEndDate) {
-                return (
-                  isWithinInterval(taskStartDate, range) ||
-                  isWithinInterval(taskEndDate, range) ||
-                  (taskStartDate <= dateRange.from &&
-                    taskEndDate >= dateRange.to)
-                );
-              }
-
-              return true;
-            })
-            .map(task => (
-              <ViewBoardTask key={task.id} data={task} />
-            ))}
+          {tasks.map(task => (
+            <ViewBoardTask key={task.id} data={task} />
+          ))}
         </SortableContext>
 
         <ViewBoardColumnCreateTaskBtn columnId={id} />

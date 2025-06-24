@@ -46,15 +46,15 @@ export function CreateColumnForm(props: Props) {
       boardQueries.boardById(boardId),
     );
 
-    if (!board?.columns) return;
+    if (!board) throw new Error('Board not found');
 
     const columnWithHighestOrder = getItemWithHighestOrder(board.columns);
 
-    createColumn({
-      ...data,
-      boardId: boardId,
-      order: columnWithHighestOrder.order + DEFAULT_COLUMN_ORDER_GAP,
-    })
+    const order = columnWithHighestOrder
+      ? columnWithHighestOrder.order + DEFAULT_COLUMN_ORDER_GAP
+      : DEFAULT_COLUMN_ORDER_GAP;
+
+    createColumn({ ...data, boardId, order })
       .then(() => toast.success(SUCCESSFUL_SENDING_MESSAGE))
       .then(() => onClose())
       .catch(e => form.setError('name', { message: getErrorMessage(e) }));

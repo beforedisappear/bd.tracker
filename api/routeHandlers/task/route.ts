@@ -7,13 +7,16 @@ import { ErrorResponse } from 'api/errors/errorResponse';
 
 export const PostCreateTask = async (req: NextRequest) => {
   try {
-    const { columnId, title } = CreateTaskReqBodySchema.parse(await req.json());
+    const { columnId, title, order } = CreateTaskReqBodySchema.parse(
+      await req.json(),
+    );
 
     const { userId } = await authService.verifyJwt(getAccessTokenFromReq(req));
 
     const task = await taskService.createTask({
       columnId,
       title,
+      order,
       initiatorId: userId,
     });
 

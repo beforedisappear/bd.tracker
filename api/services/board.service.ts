@@ -96,8 +96,41 @@ class BoardService extends BaseService {
     return { id: renamedBoard.id };
   }
 
-  async getBoardById(args: { id: string; initiatorId: string }) {
-    const { id, initiatorId } = args;
+  async getBoardById(args: {
+    id: string;
+    initiatorId: string;
+    colors?: Color[];
+    assigneeIds?: string[];
+    dateRange?: [string, string];
+    stickerIds?: string[];
+  }) {
+    const { id, initiatorId, colors, assigneeIds, dateRange, stickerIds } =
+      args;
+
+    const taskFilters: Record<string, unknown> = {};
+
+    if (assigneeIds) {
+      taskFilters.assignees = { some: { id: { in: assigneeIds } } };
+    }
+
+    if (stickerIds) {
+      taskFilters.stickers = { some: { id: { in: stickerIds } } };
+    }
+
+    if (colors) {
+      taskFilters.color = { in: colors };
+    }
+
+    if (dateRange) {
+      const [startDate, endDate] = dateRange;
+
+      if (startDate && endDate) {
+        taskFilters.createdAt = {
+          gte: new Date(startDate),
+          lte: new Date(endDate),
+        };
+      }
+    }
 
     const board = await prismaService.board.findUnique({
       where: { id },
@@ -110,6 +143,8 @@ class BoardService extends BaseService {
                 assignees: true,
                 stickers: true,
               },
+              where:
+                Object.keys(taskFilters).length > 0 ? taskFilters : undefined,
             },
           },
         },
