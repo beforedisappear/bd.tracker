@@ -3,5 +3,5 @@ import { SetupProjectMenuTrigger } from '../SetupProjectMenuTrigger/SetupProject
 
 export const LazySetupProjectMenu = dynamic(
   () => import('./SetupProjectMenu').then(mod => mod.SetupProjectMenu),
-  { ssr: false, loading: () => <SetupProjectMenuTrigger /> },
+  { ssr: false, loading: () => <SetupProjectMenuTrigger disabled /> },
 );

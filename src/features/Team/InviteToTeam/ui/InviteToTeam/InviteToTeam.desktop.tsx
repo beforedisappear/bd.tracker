@@ -1,6 +1,6 @@
 import { type ButtonProps, Dialog } from '@/shared/ui/c';
 import { InviteToTeamTrigger } from '../InviteToTeamTrigger/InviteToTeamTrigger';
-import { InviteToTeamContent } from '../InviteToTeamContent/InviteToTeamContent';
+import { InviteToTeamContent } from '../InviteToTeamContent';
 
 import { useCallback, useState } from 'react';
 

@@ -1,10 +1,9 @@
 import { RenameInput, type RenameInputMethods } from '@/shared/ui/c';
-import { ViewBoardColumnMenu } from '../ViewBoardColumnMenu/ViewBoardColumnMenu';
+import { BoardColumnMenu, columnQueries } from '@/entities/Board';
 
 import { useRef } from 'react';
 import { useMutation } from '@tanstack/react-query';
 
-import { columnQueries } from '@/entities/Board';
 import { getErrorMessage } from '@/shared/lib/error';
 import { toast } from 'sonner';
 
@@ -44,7 +43,7 @@ export function ViewBoardColumnHeader(props: Props) {
       />
 
       <div className='flex items-center gap-2'>
-        <ViewBoardColumnMenu
+        <BoardColumnMenu
           columnId={columnId}
           onRenameColumn={() => methodsRef.current?.onStartEditing?.()}
         />

@@ -1,6 +1,6 @@
 import { Popover } from '@/shared/ui/c';
 import { FilterTasksByStickerTrigger } from '../FilterTasksByStickerTrigger/FilterTasksByStickerTrigger';
-import { FilterTasksByStickerContent } from '../FilterTasksByStickerContent/FilterTasksByStickerContent';
+import { FilterTasksByStickerContent } from '../FilterTasksByStickerContent';
 
 export function FilterTasksBySticker() {
   return (

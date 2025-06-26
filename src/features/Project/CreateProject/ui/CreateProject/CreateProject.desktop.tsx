@@ -2,7 +2,7 @@
 
 import { Dialog } from '@/shared/ui/c';
 import { CreateProjectTrigger } from '../CreateProjectTrigger/CreateProjectTrigger';
-import { CreateProjectForm } from '../CreateProjectForm/CreateProjectForm';
+import { CreateProjectForm } from '../CreateProjectForm';
 
 import { useCallback, useState } from 'react';
 

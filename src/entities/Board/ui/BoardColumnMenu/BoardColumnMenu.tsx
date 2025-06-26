@@ -1,7 +1,7 @@
 import { Pencil, Trash2 } from 'lucide-react';
 
 import { DropdownMenu, type DropDownMenuOptions } from '@/shared/ui/c';
-import { ViewBoardColumnMenuTrigger } from '../ViewBoardColumnMenuTrigger/ViewBoardColumnMenuTrigger';
+import { BoardColumnMenuTrigger } from '../BoardColumnMenuTrigger/BoardColumnMenuTrigger';
 
 import { useBoardStore, getDeleteColumnModal } from '@/entities/Board';
 
@@ -10,7 +10,7 @@ interface Props {
   onRenameColumn: () => void;
 }
 
-export function ViewBoardColumnMenu(props: Props) {
+export function BoardColumnMenu(props: Props) {
   const { columnId, onRenameColumn } = props;
 
   const { setShowDeleteColumnModal, setCurrentColumnId } = useBoardStore(
@@ -37,7 +37,7 @@ export function ViewBoardColumnMenu(props: Props) {
 
   return (
     <DropdownMenu
-      trigger={<ViewBoardColumnMenuTrigger />}
+      trigger={<BoardColumnMenuTrigger />}
       options={options}
       contentProps={{ loop: false, onCloseAutoFocus: e => e.preventDefault() }}
     />

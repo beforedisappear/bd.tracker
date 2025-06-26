@@ -4,7 +4,7 @@ import { Button, ButtonProps } from '@/shared/ui/c';
 
 interface Props extends ButtonProps {}
 
-export function ViewBoardColumnMenuTrigger(props: Props) {
+export function BoardColumnMenuTrigger(props: Props) {
   const { ...rest } = props;
 
   return (

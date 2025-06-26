@@ -1,5 +1,5 @@
 import { Dialog } from '@/shared/ui/c';
-import { CreateColumnForm } from '../CreateColumnForm/CreateColumnForm';
+import { CreateColumnForm } from '../CreateColumnForm';
 import { CreateColumnTrigger } from '../CreateColumnTrigger/CreateColumnTrigger';
 
 import { useState, useCallback } from 'react';

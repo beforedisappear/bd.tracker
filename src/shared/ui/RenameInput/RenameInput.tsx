@@ -32,7 +32,7 @@ export function RenameInput(props: Props) {
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === 'Enter' && inputRef.current) inputRef.current.blur();
+      if (e.key === 'Enter' || e.key === 'Escape') inputRef.current?.blur();
     },
     [inputRef],
   );

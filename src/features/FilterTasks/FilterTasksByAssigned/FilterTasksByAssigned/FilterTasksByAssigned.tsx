@@ -1,6 +1,6 @@
 import { Popover } from '@/shared/ui/c';
 import { FilterTasksByAssignedTrigger } from '../FilterTasksByAssignedTrigger/FilterTasksByAssignedTrigger';
-import { FilterTasksByAssignedContent } from '../FilterTasksByAssignedContent/FilterTasksByAssignedContent';
+import { FilterTasksByAssignedContent } from '../FilterTasksByAssignedContent';
 
 export function FilterTasksByAssigned() {
   return (

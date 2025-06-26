@@ -1,5 +1,5 @@
 import { RenameInput, type RenameInputMethods } from '@/shared/ui/c';
-import { ManageBoardsItemMenu } from '../ManageBoardsItemMenu/ManageBoardsItemMenu';
+import { ManageBoardsItemMenu } from '../ManageBoardsItemMenu';
 
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
@@ -34,6 +34,8 @@ export function ManageBoardsItem(props: Props) {
     const currentTarget = e.currentTarget as HTMLElement;
 
     if (!currentTarget.contains(target)) return;
+
+    target.scrollIntoView({ behavior: 'smooth' });
 
     push(getProjectByIdRoutePath(tenant, projectId, board.id));
   };

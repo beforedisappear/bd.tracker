@@ -5,5 +5,5 @@ import { CreateBoardTrigger } from '../CreateBoardTrigger/CreateBoardTrigger';
 
 export const LazyCreateBoardDesktop = dynamic(
   () => import('./CreateBoard.desktop').then(mod => mod.CreateBoardDesktop),
-  { ssr: false, loading: () => <CreateBoardTrigger /> },
+  { ssr: false, loading: () => <CreateBoardTrigger disabled /> },
 );
