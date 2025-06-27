@@ -1,1 +1,0 @@
-export { teamQueries } from './queries';

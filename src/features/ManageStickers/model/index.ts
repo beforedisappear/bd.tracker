@@ -1,1 +1,0 @@
-export { CreateOrUpdateStickerSchema } from './CreateOrUpdateStickerSchema';

@@ -1,1 +1,0 @@
-export { projectQueries } from './queries';
