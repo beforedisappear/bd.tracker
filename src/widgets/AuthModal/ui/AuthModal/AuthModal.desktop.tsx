@@ -1,11 +1,8 @@
 'use client';
 
-import {
-  AUTH_FORM_DESC,
-  AUTH_FORM_TITLE,
-  AuthByEmail,
-} from '@/features/AuthByEmail';
+import { AUTH_FORM_DESC, AUTH_FORM_TITLE } from '@/features/AuthByEmail';
 import { Dialog } from '@/shared/ui/c';
+import { AuthModalContent } from '../AuthModalContent';
 
 import { useRouter } from 'next/navigation';
 
@@ -25,12 +22,12 @@ export function AuthModalDesktop({ trigger }: Props) {
       description={AUTH_FORM_DESC}
       onOpenChange={open => (open ? null : back())}
       defaultOpen
-      className='h-auto w-full max-w-[25rem]
+      className='min-h-[325px] h-auto w-full max-w-[25rem]
         md:max-w-[22rem]'
       titleClassName='text-center'
       descClassName='text-center whitespace-pre-line'
     >
-      <AuthByEmail />
+      <AuthModalContent />
     </Dialog>
   );
 }

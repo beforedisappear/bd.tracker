@@ -1,11 +1,8 @@
 'use client';
 
-import {
-  AUTH_FORM_DESC,
-  AUTH_FORM_TITLE,
-  AuthByEmail,
-} from '@/features/AuthByEmail';
+import { AUTH_FORM_DESC, AUTH_FORM_TITLE } from '@/features/AuthByEmail';
 import { Drawer } from '@/shared/ui/c';
+import { AuthModalContent } from '../AuthModalContent';
 
 import { useRouter } from 'next/navigation';
 import { useState, type ReactNode } from 'react';
@@ -30,7 +27,7 @@ export function AuthModalMobile({}: Props) {
       titleClassName='text-center'
       descClassName='text-center whitespace-pre-line'
     >
-      <AuthByEmail />
+      <AuthModalContent />
     </Drawer>
   );
 }
