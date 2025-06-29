@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 
 import { Logout } from '@/features/Logout';
-import { SelectTeamQuick } from '@/features/SelectTeam';
+import { SelectTeamQuick } from '@/features/Team/SelectTeam';
 import {
   SidebarTrigger,
   type SidebarGroupEl,

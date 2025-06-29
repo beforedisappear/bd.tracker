@@ -1,9 +1,9 @@
 'use client';
 
 import { Card } from '@/shared/ui/s';
-import { SelectTeamAdvanced } from '@/features/SelectTeam';
-import { CreateTeam } from '@/features/CreateTeam';
-import { DeleteTeam } from '@/features/DeleteTeam';
+import { SelectTeamAdvanced } from '@/features/Team/SelectTeam';
+import { CreateTeam } from '@/features/Team/CreateTeam';
+import { DeleteTeam } from '@/features/Team/DeleteTeam';
 
 export function MyTeams() {
   return (

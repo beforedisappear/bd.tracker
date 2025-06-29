@@ -2,7 +2,7 @@ import { Mail, Crown, Signature, UserCog, Clock } from 'lucide-react';
 
 import { Avatar } from '@/shared/ui/s';
 import { SetAdmin } from '@/features/SetAdmin';
-import { DeleteTeamMember } from '@/features/DeleteTeamMember';
+import { DeleteTeamMember } from '@/features/Team/DeleteTeamMember';
 import { TeamMemberProfileModalContentLoading } from './TeamMemberProfileModalContent.loading';
 
 import { useQuery } from '@tanstack/react-query';

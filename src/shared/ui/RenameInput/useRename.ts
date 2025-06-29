@@ -36,7 +36,7 @@ export function useRename(args: Args) {
   }, [isEditing]);
 
   const onStartEditing = () => {
-    setIsEditing(true);
+    setTimeout(() => setIsEditing(true), 200);
   };
 
   const onEndEditing = (e: FocusEvent<HTMLInputElement>) => {

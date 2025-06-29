@@ -1,6 +1,6 @@
 import { Card } from '@/shared/ui/s';
-import { InviteToTeam2 } from '@/features/InviteToTeam';
-import { ViewTeamMembers } from '@/features/ViewTeamMembers';
+import { InviteToTeam2 } from '@/features/Team/InviteToTeam';
+import { ViewTeamMembers } from '@/features/Team/ViewTeamMembers';
 
 interface Props {}
 

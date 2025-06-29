@@ -1,9 +1,7 @@
-import {
-  FilterTasksByAssigned,
-  FilterTasksByColor,
-  FilterTasksByDateRange,
-  FilterTasksBySticker,
-} from '@/features/FilterTasks';
+import { FilterTasksByAssigned } from '@/features/FilterTasks/FilterTasksByAssigned';
+import { FilterTasksByColor } from '@/features/FilterTasks/FilterTasksByColor';
+import { FilterTasksByDateRange } from '@/features/FilterTasks/FilterTasksByDateRange';
+import { FilterTasksBySticker } from '@/features/FilterTasks/FilterTasksBySticker';
 
 //TODO: mb add resize observer
 export function TaskFilters() {

@@ -6,9 +6,9 @@ import { useProject } from '@/shared/lib/navigation';
 
 import {
   boardQueries,
+  taskQueries,
   DEFAULT_TASK_ORDER_GAP,
   getItemWithHighestOrder,
-  taskQueries,
   type Board,
 } from '@/entities/Board';
 import { zodResolver } from '@hookform/resolvers/zod';
