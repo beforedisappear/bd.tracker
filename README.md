@@ -6,11 +6,11 @@ BD.tracker – Fullstack приложение, с упором на Frontend с�
 
 ## App Stack
 
-🍎 Next.js 15 - 🌈 React 19 - 🌊 Tailwind CSS - 🍞 shadcn/ui - 🐻 zustand - 📝 - react-hook-form - 🎲 dnd-kit - 🍕 jest - ❓ Cypress - 🥯 Prisma (PostgreSQL) - 💯 Redis - ✉️ nodemailer - 💬 socket.io? - ...
+🍎 [Next.js 15](./docs/nextjs.md) - 🌈 React 19 - 🌊 [Tailwind CSS]('./docs/tailwind.md') - 🍞 shadcn/ui - 🐻 zustand - 📝 react-hook-form - 🎲 dnd-kit - 🍕 jest - ❓ Cypress - 🥯 Prisma (PostgreSQL) - 💯 Redis - ✉️ nodemailer - 💬 socket.io? - ...
 
 ## App Features
 
-📦 [FSD](./docs/fsd.md) - 🍌 Light & Dark mode - 🥕 Storybook UI Doc - ⭐️ [Full Test coverage](./docs/testing.md) - 🕊️ Swagger API doc - 🌴 [Device type view](./docs/device.md) - 🔫 WS chat? - 💧 PWA? - ...
+📦 [FSD](./docs/fsd.md) - 🍌 [JWT](./docs/auth.md) - 🥕 Storybook UI Doc - ⭐️ [Full Test coverage](./docs/testing.md) - 🕊️ Swagger API doc - 🌴 [Device type view](./docs/device.md) - 🔫 WS chat? - 💧 PWA? - ...
 
 ## Running the app
 
