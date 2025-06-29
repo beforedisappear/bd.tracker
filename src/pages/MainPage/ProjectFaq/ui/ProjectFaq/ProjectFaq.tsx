@@ -17,7 +17,7 @@ export function ProjectFaq({}: Props) {
         className='text-3xl font-bold mb-4
         md:text-2xl'
       >
-        Frequently Asked{' '}
+        {`Frequently Asked `}
         <span className='bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text'>
           Questions
         </span>
@@ -26,7 +26,7 @@ export function ProjectFaq({}: Props) {
       <ProjectFaqAccordion />
 
       <h3 className='font-medium mt-4'>
-        Still have questions?{' '}
+        {`Still have questions? `}
         <Link
           rel='noreferrer noopener'
           href={TELEGRAM_CONTACT_URL}
