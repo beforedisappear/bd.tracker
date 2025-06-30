@@ -29,6 +29,7 @@ class BoardService extends BaseService {
       data: {
         name,
         projectId,
+        tenantId: project.team.id,
       },
     });
 
@@ -239,6 +240,7 @@ class BoardService extends BaseService {
         color,
         boardId,
         projectId: board.projectId,
+        tenantId: board.tenantId,
       },
     });
 

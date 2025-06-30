@@ -31,8 +31,9 @@ class ColumnService extends BaseService {
       data: {
         name,
         boardId,
-        projectId: board.projectId,
         order,
+        projectId: board.projectId,
+        tenantId: board.tenantId,
       },
     });
 

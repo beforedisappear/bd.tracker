@@ -1,3 +1,5 @@
+'use client';
+
 import { useRename } from './useRename';
 
 import { cn } from '@/shared/lib/css';

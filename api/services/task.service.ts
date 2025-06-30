@@ -65,6 +65,7 @@ class TaskService extends BaseService {
         order,
         columnId,
         projectId: column.projectId,
+        tenantId: column.tenantId,
         authorId: initiatorId,
         assignees: assigneeIds
           ? { connect: assigneeIds.map(id => ({ id })) }
