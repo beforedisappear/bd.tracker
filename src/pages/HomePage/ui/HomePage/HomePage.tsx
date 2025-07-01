@@ -1,6 +1,6 @@
 import { Logout } from '@/features/Logout';
-import { SelectTeam } from '@/features/SelectTeam';
-import { CreateTeam } from '@/features/CreateTeam';
+import { SelectTeam } from '@/features/Team/SelectTeam';
+import { CreateTeam } from '@/features/Team/CreateTeam';
 
 import { HomePageContainer } from '../HomePageContainer/HomePageContainer';
 import { Card } from '@/shared/ui/s';

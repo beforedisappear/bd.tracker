@@ -4,9 +4,9 @@ import { ProjectView } from '@/widgets/ProjectView';
 import { TaskFilters } from '@/widgets/TaskFilters';
 import { TaskOverviewSheet } from '@/widgets/TaskOverviewSheet';
 
-import { DeleteBoard } from '@/features/DeleteBoard';
-import { SelectProjectView } from '@/features/SelectProjectView';
-import { ManageProjectMembers } from '@/features/ManageProjectMembers';
+import { DeleteBoard } from '@/features/Board/DeleteBoard';
+import { SelectProjectView } from '@/features/Project/SelectProjectView';
+import { ManageProjectMembers } from '@/features/Project/ManageProjectMembers';
 
 import { ProjectStoreProvider } from '@/entities/Project';
 import { BoardStoreProvider } from '@/entities/Board';

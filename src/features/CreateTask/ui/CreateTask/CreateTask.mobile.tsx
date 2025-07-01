@@ -1,5 +1,5 @@
 import { Drawer } from '@/shared/ui/c';
-import { CreateTaskForm } from '../CreateTaskForm/CreateTaskForm';
+import { CreateTaskForm } from '../CreateTaskForm';
 
 import { useCallback } from 'react';
 import { useBoardStore, getCreateTaskModal } from '@/entities/Board';

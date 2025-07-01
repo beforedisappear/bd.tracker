@@ -1,9 +1,9 @@
-import { AboutProject } from '@/widgets/AboutProject';
-import { NewsLetter } from '@/widgets/NewsLetter';
-import { ProjectFaq } from '@/widgets/ProjectFaq';
-import { ProjectFeatures } from '@/widgets/ProjectFeatures';
-import { ProjectHero } from '@/widgets/ProjectHero';
-import { ProjectTestimonials } from '@/widgets/ProjectTestimonials';
+import { AboutProject } from '../../AboutProject';
+import { NewsLetter } from '../../NewsLetter';
+import { ProjectFaq } from '../../ProjectFaq';
+import { ProjectFeatures } from '../../ProjectFeatures';
+import { ProjectHero } from '../../ProjectHero';
+import { ProjectTestimonials } from '../../ProjectTestimonials';
 
 export async function MainPage() {
   return (

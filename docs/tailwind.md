@@ -1,7 +1,12 @@
-# Tailwind Rules
+## Tailwind Rules
 
-tailwind classes
+**Порядок указания Tailinwd классов**
 
-1st line: default styles
-2nd line: hover
-3nd line ...
+Утилитарные Tailinwd классы указываются в следующем порядке. Увеличение порядка означает перенос на следующую строку. Если классов мало, то можно все оставить в 1 строку.
+
+1. Позиционирование - `absolute top-0 left-0`
+2. Тип отображения + блочная модель - `flex flex-col w-full h-full gap-1 p-4 m-6 border border-primary bg-primary`
+3. Типографика - `text-4xl font-medium text-left`
+4. Псевдоклассы - `:hover`, `:active` и т.д. (каждое с новой строки)
+5. Псевдоэлементы - `before:content-['*'] before:text-red-500`
+6. Медиа запросы - `sm:flex-row sm:flex-wrap` (Если меняюшихся стилей много и они не помещаются в одну строчку, то разделение происходит в том же порядке 1-5)

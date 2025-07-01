@@ -34,6 +34,7 @@ export { BoardTaskHeader } from './ui/BoardTaskHeader/BoardTaskHeader';
 export { BoardTaskStickersMenu } from './ui/BoardTaskStickersMenu/BoardTaskStickersMenu';
 export { BoardTaskDateRangeMenu } from './ui/BoardTaskDateRangeMenu/BoardTaskDateRangeMenu';
 export { BoardAssigneesPopover } from './ui/BoardAssigneesPopover/BoardAssigneesPopover';
+export { BoardColumnMenu } from './ui/BoardColumnMenu/BoardColumnMenu';
 
 export { mapColorToClassName } from './config';
 
