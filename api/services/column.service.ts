@@ -63,7 +63,7 @@ class ColumnService extends BaseService {
       return tx.column.delete({ where: { id } });
     });
 
-    return { id: deletedColumn.id };
+    return { id: deletedColumn.id, tenantId: deletedColumn.tenantId };
   }
 
   async renameColumn(args: { id: string; name: string; initiatorId: string }) {
@@ -87,7 +87,7 @@ class ColumnService extends BaseService {
       data: { name },
     });
 
-    return { id: renamedColumn.id };
+    return { id: renamedColumn.id, tenantId: renamedColumn.tenantId };
   }
 
   async moveColumn(args: { id: string; order: number; initiatorId: string }) {
@@ -123,7 +123,11 @@ class ColumnService extends BaseService {
       await this.normalizeOrder(movedColumn.boardId);
     }
 
-    return { isNormalized: shouldNormalize, id: movedColumn.id };
+    return {
+      isNormalized: shouldNormalize,
+      id: movedColumn.id,
+      tenantId: movedColumn.tenantId,
+    };
   }
 
   private async normalizeOrder(boardId: string) {

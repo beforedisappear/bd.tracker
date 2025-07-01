@@ -1,4 +1,3 @@
-// lib/ws.ts
 import http from 'http';
 import { WebSocketServer } from 'ws';
 import { wsManager } from './wsManager.ts';
@@ -11,8 +10,8 @@ export function initWebSocketServer(server: http.Server) {
   wss = new WebSocketServer({ server });
 
   wss.on('connection', ws => {
-    ws.on('message', msg => wsManager.handleMessage(ws, msg));
-    ws.on('close', () => wsManager.cleanupClient(ws));
+    ws.on('message', msg => wsManager.handleClientMessage(ws, msg));
+    ws.on('close', () => wsManager.handleClientClose(ws));
   });
 
   return wss;

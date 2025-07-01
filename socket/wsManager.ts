@@ -1,24 +1,29 @@
-import type { RawData } from 'ws';
-import { MessageSchema } from './schemes.ts';
+import type { RawData, WebSocket } from 'ws';
+import { ClientMessageSchema, ServerMessageSchema } from './schemes.ts';
 
 export class WsManager {
-  private tenantClients: Map<string, Set<WebSocket>> = new Map();
-  private clientTenants: Map<WebSocket, Set<string>> = new Map();
+  private clientWs: Map<string, WebSocket> = new Map();
+  private tenantClients: Map<string, Set<string>> = new Map();
+  private clientTenants: Map<string, Set<string>> = new Map();
 
-  handleMessage(ws: WebSocket, msg: RawData) {
+  handleClientMessage(ws: WebSocket, msg: RawData) {
     try {
-      const message = MessageSchema.parse(JSON.parse(msg.toString()));
+      const { type, tenantId, initiatorId } = ClientMessageSchema.parse(
+        JSON.parse(msg.toString()),
+      );
 
-      if (message.type === 'subscribe') {
-        this.subscribe(ws, { tenantId: message.tenantId });
+      if (type === 'subscribe') {
+        return this.subscribe(ws, { tenantId, id: initiatorId });
       }
 
-      if (message.type === 'unsubscribe') {
-        this.unsubscribe(ws, { tenantId: message.tenantId });
+      if (type === 'unsubscribe') {
+        return this.unsubscribe({ tenantId, id: initiatorId });
       }
 
-      console.log('this.tenantClients', this.tenantClients);
-    } catch {
+      return null;
+    } catch (e) {
+      console.error(e);
+
       const baseMessage = {
         type: 'error',
         message: 'Invalid message',
@@ -28,80 +33,113 @@ export class WsManager {
     }
   }
 
-  subscribe(ws: WebSocket, args: { tenantId: string }) {
-    const { tenantId } = args;
+  handleServerMessage(msg: string) {
+    try {
+      const { tenantId, initiatorId } = ServerMessageSchema.parse(
+        JSON.parse(msg),
+      );
+
+      this.broadcastToTenant(tenantId, initiatorId, msg);
+    } catch (e) {
+      console.error('Invalid message', e);
+    }
+  }
+
+  handleClientClose(ws: WebSocket) {
+    const id = Array.from(this.clientWs.keys()).find(
+      key => this.clientWs.get(key) === ws,
+    );
+
+    if (!id) return;
+
+    this.cleanupClient(id);
+  }
+
+  private subscribe(ws: WebSocket, args: { tenantId: string; id: string }) {
+    const { tenantId, id } = args;
+
+    this.clientWs.set(id, ws);
 
     if (!this.tenantClients.has(tenantId)) {
       this.tenantClients.set(tenantId, new Set());
     }
+    this.tenantClients.get(tenantId)!.add(id);
 
-    console.log(this.tenantClients);
-
-    this.tenantClients.get(tenantId)!.add(ws);
-
-    if (!this.clientTenants.has(ws)) {
-      this.clientTenants.set(ws, new Set());
+    if (!this.clientTenants.has(id)) {
+      this.clientTenants.set(id, new Set());
     }
-    this.clientTenants.get(ws)!.add(tenantId);
+    this.clientTenants.get(id)!.add(tenantId);
   }
 
-  unsubscribe(ws: WebSocket, args: { tenantId: string }) {
-    const { tenantId } = args;
+  private unsubscribe(args: { tenantId: string; id: string }) {
+    const { tenantId, id } = args;
 
-    this.tenantClients.get(tenantId)?.delete(ws);
-
+    this.tenantClients.get(tenantId)?.delete(id);
     if (this.tenantClients.get(tenantId)?.size === 0) {
       this.tenantClients.delete(tenantId);
     }
 
-    this.clientTenants.get(ws)?.delete(tenantId);
+    this.clientTenants.get(id)?.delete(tenantId);
 
-    if (this.clientTenants.get(ws)?.size === 0) {
-      this.clientTenants.delete(ws);
+    if (this.clientTenants.get(id)?.size === 0) {
+      this.clientTenants.delete(id);
+      this.clientWs.delete(id);
     }
   }
 
-  broadcastToTenant(tenantId: string, message: string) {
+  private broadcastToTenant(tenantId: string, id: string, message: string) {
     const clients = this.tenantClients.get(tenantId);
-
-    console.log(this.tenantClients, clients);
-
     if (!clients) return;
 
-    const payload = JSON.stringify(message);
+    for (const clientId of clients) {
+      if (clientId === id) continue;
 
-    for (const client of clients) {
-      if (client.readyState === client.OPEN) {
-        client.send(payload);
+      try {
+        this.sendToClient(clientId, message);
+      } catch (e) {
+        console.error('Failed to send message to client', e);
+        this.cleanupClient(clientId);
       }
     }
   }
 
-  cleanupClient(ws: WebSocket) {
-    const tenants = this.clientTenants.get(ws);
+  private cleanupClient(id: string) {
+    const tenants = this.clientTenants.get(id);
     if (!tenants) return;
 
     for (const tenantId of tenants) {
-      this.tenantClients.get(tenantId)?.delete(ws);
+      this.tenantClients.get(tenantId)?.delete(id);
+
       if (this.tenantClients.get(tenantId)?.size === 0) {
         this.tenantClients.delete(tenantId);
       }
     }
 
-    this.clientTenants.delete(ws);
+    this.clientTenants.delete(id);
+    this.clientWs.delete(id);
   }
 
-  getTenantsOfClient(ws: WebSocket): readonly string[] {
-    return Array.from(this.clientTenants.get(ws) ?? []);
+  private sendToClient(clientId: string, message: string) {
+    const ws = this.clientWs.get(clientId);
+
+    if (!ws) throw new Error('Client not found');
+
+    if (ws.readyState !== ws.OPEN) throw new Error('Client is not open');
+
+    ws.send(message);
   }
 
-  getClientsOfTenant(tenantId: string): WebSocket[] {
-    return Array.from(this.tenantClients.get(tenantId) ?? []);
-  }
+  // getTenantsOfClient(_ws: WebSocket, id: string): readonly string[] {
+  //   return Array.from(this.clientTenants.get(id) ?? []);
+  // }
 
-  hasClients(tenantId: string): boolean {
-    return (this.tenantClients.get(tenantId)?.size ?? 0) > 0;
-  }
+  // getClientsOfTenant(tenantId: string): string[] {
+  //   return Array.from(this.tenantClients.get(tenantId) ?? []);
+  // }
+
+  // hasClients(tenantId: string): boolean {
+  //   return (this.tenantClients.get(tenantId)?.size ?? 0) > 0;
+  // }
 }
 
 export const wsManager = new WsManager();

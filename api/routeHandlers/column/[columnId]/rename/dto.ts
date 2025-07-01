@@ -10,4 +10,5 @@ export const RenameColumnReqParamsSchema = z.object({
 
 export const RenameColumnResSchema = z.object({
   id: z.string(),
+  tenantId: z.string(),
 });

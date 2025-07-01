@@ -1,9 +1,25 @@
 import { z } from 'zod';
 
-const action = ['Board', 'Column', 'Task', 'Sticker', 'Chat'] as const;
+const action = [
+  'BOARD_CREATED',
+  'BOARD_DELETED',
+  'BOARD_UPDATED',
+  'COLUMN_CREATED',
+  'COLUMN_DELETED',
+  'COLUMN_UPDATED',
+  'COLUMN_MOVED',
+  'TASK_CREATED',
+  'TASK_DELETED',
+  'TASK_UPDATED',
+  'TASK_MOVED',
+  'STICKER_CREATED',
+  'STICKER_DELETED',
+  'STICKER_UPDATED',
+] as const;
 
 const BaseSchema = z.object({
-  tenantId: z.string(),
+  tenantId: z.string().uuid(),
+  initiatorId: z.string().uuid(),
 });
 
 export const SubscribeMessageSchema = z
@@ -12,12 +28,11 @@ export const SubscribeMessageSchema = z
   })
   .merge(BaseSchema);
 
-export const SimpleMessageSchema = z
+export const MessageFromServerSchema = z
   .object({
     type: z.literal('message'),
-    data: z.object({
-      action: z.enum(action),
-    }),
+    action: z.enum(action),
+    data: z.any(),
   })
   .merge(BaseSchema);
 
@@ -32,9 +47,11 @@ export const ErrorMessageSchema = z.object({
   message: z.string(),
 });
 
-export const MessageSchema = z.discriminatedUnion('type', [
+export const ClientMessageSchema = z.discriminatedUnion('type', [
   SubscribeMessageSchema,
-  SimpleMessageSchema,
   UnsubscribeMessageSchema,
-  ErrorMessageSchema,
+]);
+
+export const ServerMessageSchema = z.discriminatedUnion('type', [
+  MessageFromServerSchema,
 ]);

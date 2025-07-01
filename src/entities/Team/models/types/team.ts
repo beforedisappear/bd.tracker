@@ -38,6 +38,8 @@ export type GetHaveAccessToTeamDtoRes = {
   inTeam: boolean;
   isAdmin: boolean;
   isOwner: boolean;
+  userId: string;
+  tenantId: string;
 };
 
 export type GetTeamByIdDtoReq = {

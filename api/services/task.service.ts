@@ -170,7 +170,7 @@ class TaskService extends BaseService {
       where: { id },
     });
 
-    return { id: deletedTask.id };
+    return { id: deletedTask.id, tenantId: deletedTask.tenantId };
   }
 
   async moveTask(args: {
@@ -235,7 +235,11 @@ class TaskService extends BaseService {
       await this.normalizeOrder(targetColumnId);
     }
 
-    return { isNormalized: shouldNormalize, id: movedTask.id };
+    return {
+      isNormalized: shouldNormalize,
+      id: movedTask.id,
+      tenantId: movedTask.tenantId,
+    };
   }
 
   private async normalizeOrder(columnId: string) {

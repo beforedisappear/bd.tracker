@@ -15,6 +15,7 @@ export const WebpackConfig: NextJsWebpackConfig = function (config) {
     api: path.join(process.cwd(), 'api'),
     app: path.join(process.cwd(), 'app'),
     config: path.join(process.cwd(), 'config'),
+    socket: path.join(process.cwd(), 'socket'),
   };
 
   return config;
