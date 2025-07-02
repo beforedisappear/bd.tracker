@@ -70,7 +70,7 @@ class BoardService extends BaseService {
       return tx.board.delete({ where: { id } });
     });
 
-    return { id: deletedBoard.id };
+    return { id: deletedBoard.id, tenantId: deletedBoard.tenantId };
   }
 
   async renameBoard(args: { id: string; name: string; initiatorId: string }) {
@@ -94,7 +94,7 @@ class BoardService extends BaseService {
       data: { name },
     });
 
-    return { id: renamedBoard.id };
+    return { id: renamedBoard.id, tenantId: renamedBoard.tenantId };
   }
 
   async getBoardById(args: {
@@ -294,7 +294,7 @@ class BoardService extends BaseService {
       where: { id },
     });
 
-    return { id: deletedSticker.id };
+    return { id: deletedSticker.id, tenantId: deletedSticker.tenantId };
   }
 }
 

@@ -38,3 +38,8 @@ export const GetBoardByIdResSchema = z.object({
 export const DeleteBoardByIdReqParamsSchema = z.object({
   boardId: z.string(),
 });
+
+export const DeleteBoardByIdResSchema = z.object({
+  id: z.string(),
+  tenantId: z.string(),
+});

@@ -5,6 +5,8 @@ import { getAccessTokenFromReq } from 'api/utils/getAccessTokenFromReq';
 import { boardService } from 'api/services/board.service';
 import type { RenameBoardDtoReqParamsDto } from './types';
 import { ErrorResponse } from 'api/errors/errorResponse';
+import { publish } from 'config/redis';
+import type { ServerMessage } from 'socket/types';
 
 export const PatchRenameBoard = async (
   req: NextRequest,
@@ -22,6 +24,18 @@ export const PatchRenameBoard = async (
       name,
       initiatorId: userId,
     });
+
+    const message: ServerMessage<typeof renamedBoard> = {
+      type: 'message',
+      tenantId: renamedBoard.tenantId,
+      initiatorId: userId,
+      action: 'BOARD_UPDATED',
+      data: renamedBoard,
+    };
+
+    publish(process.env.WS_REDIS_CHANNEL_NAME!, JSON.stringify(message))
+      .then(() => {})
+      .catch(e => console.error('Failed to publish message', e));
 
     return NextResponse.json(renamedBoard);
   } catch (error) {
