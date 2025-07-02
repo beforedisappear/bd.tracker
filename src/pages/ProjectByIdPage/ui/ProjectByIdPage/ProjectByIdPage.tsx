@@ -13,40 +13,9 @@ import { BoardStoreProvider } from '@/entities/Board';
 
 import { useScrollLock } from '@/shared/lib/ui';
 import { ManageStickers } from '@/features/ManageStickers';
-import { useSocket } from '@/shared/api/useSocket';
-import { useTenant } from '@/shared/lib/navigation';
-import { useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { teamQueries } from '@/entities/Team';
 
 export function ProjectByIdPage() {
   useScrollLock({ enabled: true, type: 'x' });
-
-  const tenant = useTenant();
-
-  const { data: team, isSuccess } = useQuery(
-    teamQueries.getHaveAccessToTeam({
-      idOrSlug: tenant,
-    }),
-  );
-
-  const { sendMessage, isConnected } = useSocket({
-    onMessage: message => {
-      console.log(message);
-    },
-  });
-
-  useEffect(() => {
-    if (isConnected && isSuccess) {
-      const message = JSON.stringify({
-        type: 'subscribe',
-        tenantId: team.tenantId,
-        initiatorId: team.userId,
-      });
-
-      sendMessage(message);
-    }
-  }, [tenant, sendMessage, isConnected, isSuccess, team]);
 
   return (
     <ProjectStoreProvider>
