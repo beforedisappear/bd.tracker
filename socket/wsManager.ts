@@ -92,7 +92,7 @@ export class WsManager {
     if (!clients) return;
 
     for (const clientId of clients) {
-      if (clientId === id) continue;
+      // if (clientId === id) continue;
 
       try {
         this.sendToClient(clientId, message);
