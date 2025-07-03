@@ -5,10 +5,10 @@ export const RenameColumnReqBodySchema = z.object({
 });
 
 export const RenameColumnReqParamsSchema = z.object({
-  columnId: z.string(),
+  columnId: z.string().uuid(),
 });
 
 export const RenameColumnResSchema = z.object({
-  id: z.string(),
-  tenantId: z.string(),
+  id: z.string().uuid(),
+  tenantId: z.string().uuid(),
 });

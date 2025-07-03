@@ -37,7 +37,7 @@ class ColumnService extends BaseService {
       },
     });
 
-    return column;
+    return { ...column, tasks: [] };
   }
 
   async deleteColumn(args: { id: string; initiatorId: string }) {

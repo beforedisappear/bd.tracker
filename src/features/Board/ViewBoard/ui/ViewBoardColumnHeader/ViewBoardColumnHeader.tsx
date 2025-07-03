@@ -8,6 +8,7 @@ import { getErrorMessage } from '@/shared/lib/error';
 import { toast } from 'sonner';
 
 import { RenameColumnSchema } from '@/entities/Team';
+import { useProject } from '@/shared/lib/navigation';
 
 interface Props {
   columnId: string;
@@ -18,6 +19,8 @@ interface Props {
 export function ViewBoardColumnHeader(props: Props) {
   const { columnId, name, length } = props;
 
+  const { boardId } = useProject();
+
   const methodsRef = useRef<RenameInputMethods>(null);
   const { mutateAsync: renameColumn } = useMutation(
     columnQueries.renameColumn(),
@@ -27,6 +30,7 @@ export function ViewBoardColumnHeader(props: Props) {
     renameColumn({
       columnId,
       name,
+      boardId,
     })
       .then(() => {})
       .catch(e => toast.error(getErrorMessage(e)));

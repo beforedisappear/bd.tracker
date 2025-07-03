@@ -40,6 +40,6 @@ export const DeleteBoardByIdReqParamsSchema = z.object({
 });
 
 export const DeleteBoardByIdResSchema = z.object({
-  id: z.string(),
-  tenantId: z.string(),
+  id: z.string().uuid(),
+  tenantId: z.string().uuid(),
 });
