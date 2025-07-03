@@ -1,7 +1,7 @@
 'use client';
 
 import { useSocket } from '../websocket';
-import { useQueryClient, QueryKey } from '@tanstack/react-query';
+import { useQueryClient, type QueryKey } from '@tanstack/react-query';
 
 export function useSubscription<T = unknown, M = unknown>(
   queryKey: QueryKey,

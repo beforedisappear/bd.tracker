@@ -69,5 +69,5 @@ export function useSocket(args: Args = {}) {
     socket.send(message);
   };
 
-  return { sendMessage, isConnected };
+  return { sendMessage, isConnected, socket };
 }

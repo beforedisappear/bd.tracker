@@ -17,4 +17,7 @@ export {
   RenameBoardSchema,
   RenameTaskSchema,
 } from './models/schemes';
+
 export { TeamMembersField } from './ui/TeamMembersField/TeamMembersField';
+
+export { TeamSocketHandler } from './lib/TeamSocketHandler';

@@ -3,6 +3,7 @@ export {
   columnQueries,
   taskQueries,
   stickerQueries,
+  useBoardSubscription,
 } from './api';
 
 export {
@@ -20,9 +21,6 @@ export { getMapStickerTaskFilterByBoardId } from './model/selectors/getMapSticke
 export { getAllMapTaskFilters } from './model/selectors/getAllMapTaskFilters';
 export { getManageStickersModal } from './model/selectors/getManageStickersModal';
 export { getDeleteBoardModalActions } from './model/selectors/getDeleteBoardModalActions';
-
-// export { mapColumnsById } from './lib/mapColumnsById';
-// export { mapTasksById } from './lib/mapTasksById';
 
 export { computeOrder } from './lib/computeOrder/computeOrder';
 export { getItemWithHighestOrder } from './lib/getItemWithHighestOrder';
@@ -53,3 +51,22 @@ export type {
   Color,
   Sticker,
 } from './model/types';
+
+export {
+  BoardCreatedActionSchema,
+  BoardDeletedActionSchema,
+  BoardUpdatedActionSchema,
+} from './model/schemes/boardActionSchemes';
+
+export {
+  ColumnCreatedActionSchema,
+  ColumnDeletedActionSchema,
+  ColumnUpdatedActionSchema,
+} from './model/schemes/columnActionSchemes';
+
+export {
+  TaskCreatedActionSchema,
+  TaskDeletedActionSchema,
+  TaskUpdatedActionSchema,
+  TaskMovedActionSchema,
+} from './model/schemes/taskActionSchemes';
