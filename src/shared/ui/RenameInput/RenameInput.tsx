@@ -53,7 +53,7 @@ export function RenameInput(props: Props) {
         {...rest}
         className={cn(
           '!hidden text-sm font-medium text-left border-none outline-none bg-transparent w-full cursor-pointer text-ellipsis overflow-hidden whitespace-nowrap',
-          { '!flex items-center cursor-text': isEditing },
+          { '!flex items-center cursor-text min-w-24': isEditing },
           className,
         )}
         value={name}

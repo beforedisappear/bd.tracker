@@ -24,6 +24,12 @@ import { createBoardSticker } from './sticker/createBoardSticker';
 import { updateBoardSticker } from './sticker/updateBoardSticker';
 import { deleteBoardSticker } from './sticker/deleteBoardSticker';
 
+import {
+  createBoardQueryUpdater,
+  renameBoardQueryUpdater,
+  deleteBoardQueryUpdater,
+} from '../model/queryUpdaters';
+
 import type {
   GetAllBoardsDtoReq,
   CreateBoardDtoReq,
@@ -91,20 +97,22 @@ export const boardQueries = {
   createBoard: () =>
     mutationOptions({
       mutationFn: (dto: CreateBoardDtoReq) => createBoard(dto),
-      onSuccess: (_, { projectId }) => {
-        queryClient.invalidateQueries({
-          queryKey: [...boardQueries.allBoards(projectId)],
-        });
+      onSuccess: (res, args) => {
+        const { projectId } = args;
+
+        const queryKey = [...boardQueries.allBoards(projectId)];
+
+        queryClient.setQueryData(queryKey, createBoardQueryUpdater(res));
       },
     }),
 
   deleteBoard: () =>
     mutationOptions({
       mutationFn: (dto: DeleteBoardDtoReq) => deleteBoard(dto),
-      onSuccess: (_, { projectId, boardId }) => {
-        queryClient.invalidateQueries({
-          queryKey: [...boardQueries.allBoards(projectId)],
-        });
+      onSuccess: (res, { projectId, boardId }) => {
+        const queryKey = [...boardQueries.allBoards(projectId)];
+
+        queryClient.setQueryData(queryKey, deleteBoardQueryUpdater(res));
 
         queryClient.removeQueries({
           queryKey: [...boardQueries.boardById(boardId)],
@@ -116,10 +124,13 @@ export const boardQueries = {
   renameBoard: () =>
     mutationOptions({
       mutationFn: (dto: RenameBoardDtoReq) => renameBoard(dto),
-      onSuccess: (_, { projectId }) =>
-        queryClient.invalidateQueries({
-          queryKey: [...boardQueries.allBoards(projectId)],
-        }),
+      onSuccess: (_, args) => {
+        const { projectId } = args;
+
+        const queryKey = [...boardQueries.allBoards(projectId)];
+
+        queryClient.setQueryData(queryKey, renameBoardQueryUpdater(args));
+      },
     }),
 };
 
