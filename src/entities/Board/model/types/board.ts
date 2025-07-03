@@ -43,7 +43,10 @@ export type DeleteBoardDtoReq = {
   projectId: string; // for invalidation
 };
 
-export type DeleteBoardDtoRes = never;
+export type DeleteBoardDtoRes = {
+  id: string;
+  tenantId: string;
+};
 
 export type RenameBoardDtoReq = {
   projectId: string; // for invalidation
@@ -51,4 +54,7 @@ export type RenameBoardDtoReq = {
   name: string;
 };
 
-export type RenameBoardDtoRes = never;
+export type RenameBoardDtoRes = {
+  id: string;
+  tenantId: string;
+};

@@ -3,6 +3,7 @@ import { PrivateHeader } from '@/widgets/PrivateHeader';
 import { SidebarProvider } from '@/shared/ui/c';
 import { PrivateGlobalStoreProvider } from '../../providers/PrivateGlobalStoreProvider';
 import { ProtectionProvider } from '../../providers/ProtectionProvider';
+import { MainSocketProvider } from '../../providers/MainSocketProvider';
 
 import type { PropsWithChildren } from 'react';
 
@@ -12,19 +13,21 @@ export async function PrivateRootLayout({ children }: IProps) {
   return (
     <ProtectionProvider>
       <PrivateGlobalStoreProvider>
-        <SidebarProvider>
-          <MainSidebar />
+        <MainSocketProvider>
+          <SidebarProvider>
+            <MainSidebar />
 
-          <div className='flex flex-col flex-grow'>
-            <PrivateHeader />
-            <main
-              className='flex flex-col flex-grow px-8 py-6
+            <div className='flex flex-col flex-grow'>
+              <PrivateHeader />
+              <main
+                className='flex flex-col flex-grow px-8 py-6
               md:p-4'
-            >
-              {children}
-            </main>
-          </div>
-        </SidebarProvider>
+              >
+                {children}
+              </main>
+            </div>
+          </SidebarProvider>
+        </MainSocketProvider>
       </PrivateGlobalStoreProvider>
     </ProtectionProvider>
   );

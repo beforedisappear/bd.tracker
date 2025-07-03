@@ -68,6 +68,7 @@ class ProjectService extends BaseService {
         data: {
           name: 'Новая доска',
           projectId: newProject.id,
+          tenantId: team.id,
         },
       });
 

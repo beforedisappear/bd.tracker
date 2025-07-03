@@ -232,6 +232,9 @@ model Board {
   columns   Column[]
   //many stickers to one board
   stickers  Sticker[]
+
+  //for Multi-tenant 
+  tenantId String
 }
 
 model Column {
@@ -251,6 +254,7 @@ model Column {
 
   //for Multi-tenant 
   projectId String
+  tenantId String
 }
 
 model Task {
@@ -282,6 +286,7 @@ model Task {
 
   //for Multi-tenant 
   projectId String
+  tenantId String
 }
 
 model Sticker {
@@ -299,4 +304,5 @@ model Sticker {
 
   //for Multi-tenant 
   projectId String
+  tenantId String
 }

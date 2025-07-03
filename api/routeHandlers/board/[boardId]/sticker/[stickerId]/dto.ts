@@ -31,4 +31,5 @@ export const DeleteStickerReqParamsSchema = z.object({
 
 export const DeleteStickerResSchema = z.object({
   id: z.string().uuid(),
+  tenantId: z.string(),
 });

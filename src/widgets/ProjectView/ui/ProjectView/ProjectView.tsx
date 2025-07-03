@@ -46,7 +46,7 @@ export function ProjectView() {
     refetch,
   } = useQuery({
     ...boardQueries.getBoardById({
-      boardId: boardId!,
+      boardId,
       colors: withColorFilter ? colors : undefined,
       assigneeIds: withAssigneeFilter ? assignees : undefined,
       dateRange: withDateRangeFilter ? dateRange : undefined,

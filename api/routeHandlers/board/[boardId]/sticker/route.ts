@@ -3,6 +3,7 @@ import { authService } from 'api/services/auth.service';
 import { boardService } from 'api/services/board.service';
 import { getAccessTokenFromReq } from 'api/utils/getAccessTokenFromReq';
 import { NextRequest, NextResponse } from 'next/server';
+import { publish } from 'config/redis';
 
 import {
   GetStickersReqParamsSchema,
@@ -10,6 +11,7 @@ import {
   CreateStickerReqBodySchema,
 } from './dto';
 import type { GetStickersReqParams, CreateStickerReqParams } from './types';
+import type { ServerMessage } from 'socket/types';
 
 export async function GetBoardStickers(
   request: NextRequest,
@@ -53,6 +55,18 @@ export async function PostCreateSticker(
       color,
       initiatorId: userId,
     });
+
+    const message: ServerMessage<typeof sticker> = {
+      type: 'message',
+      tenantId: sticker.tenantId,
+      initiatorId: userId,
+      action: 'STICKER_CREATED',
+      data: sticker,
+    };
+
+    publish(process.env.WS_REDIS_CHANNEL_NAME!, JSON.stringify(message))
+      .then(() => {})
+      .catch(e => console.error('Failed to publish message', e));
 
     return NextResponse.json(sticker, { status: 200 });
   } catch (e) {

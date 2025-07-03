@@ -8,4 +8,6 @@ export const GetHaveAccessToTeamResSchema = z.object({
   inTeam: z.boolean(),
   isAdmin: z.boolean(),
   isOwner: z.boolean(),
+  userId: z.string().uuid(),
+  tenantId: z.string().uuid(),
 });

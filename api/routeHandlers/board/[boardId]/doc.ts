@@ -1,6 +1,7 @@
 import { type RouteConfig } from '@asteasolutions/zod-to-openapi';
 import {
   DeleteBoardByIdReqParamsSchema,
+  DeleteBoardByIdResSchema,
   GetBoardByIdReqParamsSchema,
   GetBoardByIdResSchema,
 } from './dto';
@@ -30,7 +31,8 @@ export const DeleteBoardByIdDoc = (bearerName: string): RouteConfig => ({
     params: DeleteBoardByIdReqParamsSchema,
   },
   responses: {
-    204: {
+    200: {
+      content: { 'application/json': { schema: DeleteBoardByIdResSchema } },
       description: '',
     },
   },

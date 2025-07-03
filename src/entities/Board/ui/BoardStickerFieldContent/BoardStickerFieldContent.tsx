@@ -1,5 +1,6 @@
 import { Checkbox } from '@/shared/ui/c';
 import { BoardSticker } from '../BoardSticker/BoardSticker';
+import { BoardStickerFieldContentPlaceholder } from './BoardStickerFieldContent.placeholder';
 
 import type { Sticker } from '../../model/types';
 import type { CheckedState } from '@radix-ui/react-checkbox';
@@ -26,6 +27,8 @@ export function BoardStickerFieldContent(props: Props) {
           withRightLabel
         />
       ))}
+
+      {data.length === 0 && <BoardStickerFieldContentPlaceholder />}
     </div>
   );
 }

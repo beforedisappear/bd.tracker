@@ -1,18 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { ErrorResponse } from 'api/errors/errorResponse';
 
 import { getAccessTokenFromReq } from 'api/utils/getAccessTokenFromReq';
+
+import { authService } from 'api/services/auth.service';
+import { taskService } from 'api/services/task.service';
+import { publish } from 'config/redis';
 
 import {
   DeleteTaskByIdReqParamsSchema,
   GetTaskByIdDtoReqParamsSchema,
 } from './dto';
-import { authService } from 'api/services/auth.service';
-import { taskService } from 'api/services/task.service';
-import { ErrorResponse } from 'api/errors/errorResponse';
 import type {
   DeleteTaskByIdReqParamsDto,
   GetTaskByIdDtoReqParamsDto,
 } from './types';
+import type { ServerMessage } from 'socket/types';
 
 export const DeleteTaskById = async (
   req: NextRequest,
@@ -27,6 +30,18 @@ export const DeleteTaskById = async (
       id: taskId,
       initiatorId: userId,
     });
+
+    const message: ServerMessage<typeof deletedTask> = {
+      type: 'message',
+      tenantId: deletedTask.tenantId,
+      initiatorId: userId,
+      action: 'TASK_DELETED',
+      data: deletedTask,
+    };
+
+    publish(process.env.WS_REDIS_CHANNEL_NAME!, JSON.stringify(message))
+      .then(() => {})
+      .catch(e => console.error('Failed to publish message', e));
 
     return NextResponse.json(deletedTask);
   } catch (error) {

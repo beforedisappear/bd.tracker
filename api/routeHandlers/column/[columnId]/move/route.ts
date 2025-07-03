@@ -5,6 +5,8 @@ import { authService } from 'api/services/auth.service';
 import { getAccessTokenFromReq } from 'api/utils/getAccessTokenFromReq';
 import { MoveColumnReqParamsSchema, MoveColumnReqBodySchema } from './dto';
 import { columnService } from 'api/services/column.service';
+import { publish } from 'config/redis';
+import type { ServerMessage } from 'socket/types';
 
 export const PatchMoveColumnRoute = async (
   req: NextRequest,
@@ -22,6 +24,18 @@ export const PatchMoveColumnRoute = async (
       order,
       initiatorId: userId,
     });
+
+    const message: ServerMessage<typeof movedColumn> = {
+      type: 'message',
+      tenantId: movedColumn.tenantId,
+      initiatorId: userId,
+      action: 'COLUMN_MOVED',
+      data: movedColumn,
+    };
+
+    publish(process.env.WS_REDIS_CHANNEL_NAME!, JSON.stringify(message))
+      .then(() => {})
+      .catch(e => console.error('Failed to publish message', e));
 
     return NextResponse.json(movedColumn);
   } catch (error) {

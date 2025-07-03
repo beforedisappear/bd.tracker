@@ -11,4 +11,6 @@ export const MoveTaskDtoReqBodySchema = z.object({
 
 export const MoveTaskDtoResSchema = z.object({
   id: z.string().uuid(),
+  tenantId: z.string().uuid(),
+  isNormalized: z.boolean(),
 });

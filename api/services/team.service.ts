@@ -18,12 +18,12 @@ class TeamService extends BaseService {
   async haveAccess(args: { idOrSlug: string; userId: string }) {
     const { idOrSlug, userId } = args;
 
-    const { inTeam, isAdmin, isOwner } = await this.checkIsUserInTeam(
+    const { inTeam, isAdmin, isOwner, team } = await this.checkIsUserInTeam(
       idOrSlug,
       { userId },
     );
 
-    return { inTeam, isAdmin, isOwner };
+    return { inTeam, isAdmin, isOwner, userId, tenantId: team.id };
   }
 
   async getTeamByIdOrSlug(args: { idOrSlug: string }) {

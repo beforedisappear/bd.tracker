@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { ErrorResponse } from 'api/errors/errorResponse';
 
 import { authService } from 'api/services/auth.service';
 import { getAccessTokenFromReq } from 'api/utils/getAccessTokenFromReq';
 import { taskService } from 'api/services/task.service';
-import { ErrorResponse } from 'api/errors/errorResponse';
 import { MoveTaskDtoReqBodySchema, MoveTaskDtoReqParamsSchema } from './dto';
+import { publish } from 'config/redis';
 import type { MoveTaskDtoReqParamsDto } from './types';
+import type { ServerMessage } from 'socket/types';
 
 export const PatchMoveTask = async (
   req: NextRequest,
@@ -26,6 +28,18 @@ export const PatchMoveTask = async (
       order,
       initiatorId: userId,
     });
+
+    const message: ServerMessage<typeof res> = {
+      type: 'message',
+      tenantId: res.tenantId,
+      initiatorId: userId,
+      action: 'TASK_MOVED',
+      data: res,
+    };
+
+    publish(process.env.WS_REDIS_CHANNEL_NAME!, JSON.stringify(message))
+      .then(() => {})
+      .catch(e => console.error('Failed to publish message', e));
 
     return NextResponse.json(res, { status: 200 });
   } catch (error) {

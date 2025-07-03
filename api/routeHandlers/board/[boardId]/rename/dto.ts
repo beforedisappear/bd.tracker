@@ -10,4 +10,5 @@ export const RenameBoardDtoBodyReq = z.object({
 
 export const RenameBoardDtoRes = z.object({
   id: z.string(),
+  tenantId: z.string(),
 });
