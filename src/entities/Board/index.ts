@@ -53,6 +53,12 @@ export type {
 } from './model/types';
 
 export {
+  RenameColumnSchema,
+  RenameBoardSchema,
+  RenameTaskSchema,
+} from './model/schemes';
+
+export {
   BoardCreatedActionSchema,
   BoardDeletedActionSchema,
   BoardUpdatedActionSchema,
@@ -62,6 +68,7 @@ export {
   ColumnCreatedActionSchema,
   ColumnDeletedActionSchema,
   ColumnUpdatedActionSchema,
+  ColumnMovedActionSchema,
 } from './model/schemes/columnActionSchemes';
 
 export {
@@ -70,3 +77,23 @@ export {
   TaskUpdatedActionSchema,
   TaskMovedActionSchema,
 } from './model/schemes/taskActionSchemes';
+
+export {
+  createBoardQueryUpdater,
+  renameBoardQueryUpdater,
+  deleteBoardQueryUpdater,
+} from './model/queryUpdaters/board';
+
+export {
+  createColumnQueryUpdater,
+  renameColumnQueryUpdater,
+  moveColumnQueryUpdater,
+  deleteColumnQueryUpdater,
+} from './model/queryUpdaters/column';
+
+export {
+  createTaskQueryUpdater,
+  deleteTaskQueryUpdater,
+  moveTaskQueryUpdater,
+  updateTaskQueryUpdater,
+} from './model/queryUpdaters/task';

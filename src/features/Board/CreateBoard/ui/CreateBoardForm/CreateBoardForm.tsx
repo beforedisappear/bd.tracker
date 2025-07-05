@@ -38,9 +38,7 @@ export function CreateBoardForm(props: Props) {
 
   const onSubmit = form.handleSubmit(data => {
     createBoard({ ...data, projectId })
-      .then(({ data: { id } }) =>
-        push(getProjectByIdRoutePath(tenant, projectId, id)),
-      )
+      .then(({ id }) => push(getProjectByIdRoutePath(tenant, projectId, id)))
       .then(() => onClose?.())
       .then(() => toast.success(SUCCESSFUL_SENDING_MESSAGE))
       .catch(e => form.setError('name', { message: getErrorMessage(e) }));

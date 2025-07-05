@@ -12,4 +12,5 @@ export const MoveColumnResSchema = z.object({
   id: z.string().uuid(),
   isNormalized: z.boolean(),
   tenantId: z.string().uuid(),
+  newOrder: z.number(),
 });

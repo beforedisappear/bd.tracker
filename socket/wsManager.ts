@@ -71,6 +71,7 @@ export class WsManager {
     this.clientTenants.get(id)!.add(tenantId);
   }
 
+  //to delete connection client & tenant
   private unsubscribe(args: { tenantId: string; id: string }) {
     const { tenantId, id } = args;
 
@@ -92,7 +93,7 @@ export class WsManager {
     if (!clients) return;
 
     for (const clientId of clients) {
-      // if (clientId === id) continue;
+      if (clientId === id) continue;
 
       try {
         this.sendToClient(clientId, message);
@@ -103,6 +104,7 @@ export class WsManager {
     }
   }
 
+  //to delete client completely
   private cleanupClient(id: string) {
     const tenants = this.clientTenants.get(id);
     if (!tenants) return;

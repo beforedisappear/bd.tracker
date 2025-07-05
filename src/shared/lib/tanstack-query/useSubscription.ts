@@ -1,21 +1,20 @@
 'use client';
 
+import { queryClient } from '@/shared/config/query';
 import { useSocket } from '../websocket';
-import { useQueryClient, type QueryKey } from '@tanstack/react-query';
+import type { QueryKey } from '@tanstack/react-query';
 
 export function useSubscription<T = unknown, M = unknown>(
   queryKey: QueryKey,
   updater: (oldData: T | undefined, socketMessage: M) => T,
 ) {
-  const queryClient = useQueryClient();
-
   const socket = useSocket({
     onMessage: (message: string) => {
       try {
         const data = JSON.parse(message) as M;
-        queryClient.setQueryData<T>(queryKey, oldData => {
-          return updater(oldData, data);
-        });
+        queryClient.setQueryData<T>(queryKey, oldData =>
+          updater(oldData, data),
+        );
       } catch (error) {
         console.error('Failed to parse message', error);
       }

@@ -14,7 +14,7 @@ import { taskQueries } from '@/entities/Board/api/queries';
 import { getErrorMessage } from '@/shared/lib/error';
 import { toast } from 'sonner';
 
-import { RenameTaskSchema } from '@/entities/Team';
+import { RenameTaskSchema } from '@/entities/Board';
 
 import type { Color } from '@/entities/Board';
 
@@ -67,6 +67,7 @@ export function BoardTaskHeader(props: Props) {
       />
 
       <RenameInput
+        key={`${taskId}-${title}`}
         className={cn(
           'font-normal text-sm line-clamp-1 cursor-pointer select-none flex-1',
           titleClassName,

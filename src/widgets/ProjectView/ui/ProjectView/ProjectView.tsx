@@ -10,6 +10,7 @@ import { ProjectViewWrapper } from '../ProjectViewWrapper/ProjectViewWrapper';
 import { useQuery } from '@tanstack/react-query';
 import { useProject } from '@/shared/lib/navigation';
 import { useDeviceType } from '@/shared/lib/deviceType/useDeviceType';
+import { useBoardRealTime } from '../../lib/useBoardRealTime';
 import {
   useBoardStore,
   boardQueries,
@@ -17,7 +18,7 @@ import {
 } from '@/entities/Board';
 
 import { getContentMargin } from '../../lib/getContentMargin';
-import { restoreOrder } from '../../lib/restoreOrder/restoreOrder';
+import { normalizeBoardData } from '../../lib/normalizeBoardData';
 
 //TODO: add choose project view
 export function ProjectView() {
@@ -55,14 +56,10 @@ export function ProjectView() {
     enabled: !!boardId,
     gcTime: 0,
     staleTime: 0,
-    select: res => ({
-      ...res,
-      columns: restoreOrder(res.columns).map(column => ({
-        ...column,
-        tasks: restoreOrder(column.tasks),
-      })),
-    }),
+    select: normalizeBoardData,
   });
+
+  useBoardRealTime(boardId);
 
   if (isLoading) return <ViewBoardLoading />;
   else if (isError || !board)

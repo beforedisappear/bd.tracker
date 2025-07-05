@@ -94,7 +94,7 @@ class BoardService extends BaseService {
       data: { name },
     });
 
-    return { id: renamedBoard.id, tenantId: renamedBoard.tenantId };
+    return renamedBoard;
   }
 
   async getBoardById(args: {

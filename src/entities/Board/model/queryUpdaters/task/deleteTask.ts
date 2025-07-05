@@ -1,18 +1,16 @@
-import type { GetBoardByIdDtoRes, DeleteTaskDtoReq } from '../types';
+import type { GetBoardByIdDtoRes, DeleteTaskDtoReq } from '../../types';
 
 type Arg = DeleteTaskDtoReq;
 type Cache = GetBoardByIdDtoRes;
 
 export const deleteTaskQueryUpdater =
-  ({ taskId }: Arg) =>
+  ({ id }: Arg) =>
   (oldData: Cache) => {
     const targetColumn = oldData.columns.find(column =>
-      column.tasks.some(task => task.id === taskId),
+      column.tasks.some(task => task.id === id),
     );
 
-    if (!targetColumn) {
-      return oldData;
-    }
+    if (!targetColumn) return oldData;
 
     return {
       ...oldData,
@@ -20,7 +18,7 @@ export const deleteTaskQueryUpdater =
         column.id === targetColumn.id
           ? {
               ...column,
-              tasks: column.tasks.filter(task => task.id !== taskId),
+              tasks: column.tasks.filter(task => task.id !== id),
             }
           : column,
       ),

@@ -1,13 +1,9 @@
 import { ViewBoardColumn } from '../ViewBoardColumn/ViewBoardColumn';
 import { ViewBoardTask } from '../ViewBoardTask/ViewBoardTask';
-
 import {
-  horizontalListSortingStrategy,
   SortableContext,
+  horizontalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { useDragAndDropBoardItems } from '../../lib/useDragAndDropBoardItems';
-import { useMemo } from 'react';
-import { useDebounce } from '@/shared/lib/ui';
 import {
   DndContext,
   DragOverlay,
@@ -17,6 +13,10 @@ import {
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
+
+import { useDragAndDropBoardItems } from '../../lib/useDragAndDropBoardItems';
+import { useMemo } from 'react';
+import { useDebounce } from '@/shared/lib/ui';
 
 import type { Board, Column, Task } from '@/entities/Board';
 

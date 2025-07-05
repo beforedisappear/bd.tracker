@@ -1,29 +1,31 @@
-import type { GetBoardByIdDtoRes, MoveTaskDtoReq } from '../types';
+import type { GetBoardByIdDtoRes, MoveTaskDtoRes } from '../../types';
 
-type Args = MoveTaskDtoReq;
+type Args = MoveTaskDtoRes;
 type Cache = GetBoardByIdDtoRes;
 
 export const moveTaskQueryUpdater = (args: Args) => (oldData: Cache) => {
-  const { taskId, columnId, order } = args;
+  const { id, columnId, newOrder } = args;
+
+  console.log(args);
 
   const sourceColumn = oldData.columns.find(column =>
-    column.tasks.some(task => task.id === taskId),
+    column.tasks.some(task => task.id === id),
   );
 
   if (!sourceColumn) return oldData;
 
-  const targetTask = sourceColumn.tasks.find(task => task.id === taskId);
+  const targetTask = sourceColumn.tasks.find(task => task.id === id);
 
   if (!targetTask) return oldData;
 
-  const updatedTask = { ...targetTask, columnId, order };
+  const updatedTask = { ...targetTask, columnId, order: newOrder };
 
   if (columnId === sourceColumn.id) {
     return {
       ...oldData,
       columns: oldData.columns.map(column => {
         if (column.id === sourceColumn.id) {
-          const taskIndex = column.tasks.findIndex(task => task.id === taskId);
+          const taskIndex = column.tasks.findIndex(task => task.id === id);
 
           return {
             ...column,
@@ -45,7 +47,7 @@ export const moveTaskQueryUpdater = (args: Args) => (oldData: Cache) => {
       if (column.id === sourceColumn.id) {
         return {
           ...column,
-          tasks: column.tasks.filter(task => task.id !== taskId),
+          tasks: column.tasks.filter(task => task.id !== id),
         };
       }
 

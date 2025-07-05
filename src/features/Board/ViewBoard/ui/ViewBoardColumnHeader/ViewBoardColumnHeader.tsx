@@ -1,5 +1,9 @@
 import { RenameInput, type RenameInputMethods } from '@/shared/ui/c';
-import { BoardColumnMenu, columnQueries } from '@/entities/Board';
+import {
+  BoardColumnMenu,
+  columnQueries,
+  RenameColumnSchema,
+} from '@/entities/Board';
 
 import { useRef } from 'react';
 import { useMutation } from '@tanstack/react-query';
@@ -7,7 +11,6 @@ import { useMutation } from '@tanstack/react-query';
 import { getErrorMessage } from '@/shared/lib/error';
 import { toast } from 'sonner';
 
-import { RenameColumnSchema } from '@/entities/Team';
 import { useProject } from '@/shared/lib/navigation';
 
 interface Props {
@@ -28,17 +31,16 @@ export function ViewBoardColumnHeader(props: Props) {
 
   const onRenameColumn = (name: string) => {
     renameColumn({
-      columnId,
+      id: columnId,
       name,
       boardId,
-    })
-      .then(() => {})
-      .catch(e => toast.error(getErrorMessage(e)));
+    }).catch(e => toast.error(getErrorMessage(e)));
   };
 
   return (
     <div className='flex justify-between items-center mb-4'>
       <RenameInput
+        key={`${columnId}-${name}`}
         methodsRef={methodsRef}
         initialName={name}
         schema={RenameColumnSchema}

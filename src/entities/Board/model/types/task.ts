@@ -30,7 +30,7 @@ export interface CreateTaskDtoReq {
 export type CreateTaskDtoRes = Task;
 
 export type MoveTaskDtoReq = {
-  taskId: string;
+  id: string;
   columnId: string;
   order: number;
   boardId: string; // for invalidation
@@ -38,11 +38,14 @@ export type MoveTaskDtoReq = {
 
 export interface MoveTaskDtoRes {
   id: string;
+  columnId: string;
+  newOrder: number;
   isNormalized: boolean;
+  tenantId: string;
 }
 
 export interface DeleteTaskDtoReq {
-  taskId: string;
+  id: string;
   boardId: string; // for invalidation
 }
 

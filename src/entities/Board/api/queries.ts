@@ -28,14 +28,20 @@ import {
   createBoardQueryUpdater,
   renameBoardQueryUpdater,
   deleteBoardQueryUpdater,
+} from '../model/queryUpdaters/board';
+
+import {
   createColumnQueryUpdater,
   deleteColumnQueryUpdater,
+  renameColumnQueryUpdater,
+} from '../model/queryUpdaters/column';
+
+import {
   createTaskQueryUpdater,
   deleteTaskQueryUpdater,
-  updateTaskQueryUpdater,
   moveTaskQueryUpdater,
-  renameColumnQueryUpdater,
-} from '../model/queryUpdaters';
+  updateTaskQueryUpdater,
+} from '../model/queryUpdaters/task';
 
 import type {
   GetAllBoardsDtoReq,
@@ -96,7 +102,6 @@ export const boardQueries = {
     queryOptions({
       queryKey: [...boardQueries.allBoards(dto.projectId)],
       queryFn: () => getAllBoards(dto),
-      select: res => res.data,
     }),
 
   getBoardById: (dto: GetBoardByIdDtoReq) => {
@@ -221,10 +226,10 @@ export const taskQueries = {
   moveTask: () =>
     mutationOptions({
       mutationFn: (dto: MoveTaskDtoReq) => moveTask(dto),
-      onSuccess: (_, args) => {
+      onSuccess: (res, args) => {
         queryClient.setQueriesData(
           findBoardQueryKey(args.boardId),
-          moveTaskQueryUpdater(args),
+          moveTaskQueryUpdater(res),
         );
       },
     }),

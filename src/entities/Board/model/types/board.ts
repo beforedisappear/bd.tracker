@@ -49,8 +49,8 @@ export type DeleteBoardDtoRes = {
 };
 
 export type RenameBoardDtoReq = {
+  id: string;
   projectId: string; // for invalidation
-  boardId: string;
   name: string;
 };
 
