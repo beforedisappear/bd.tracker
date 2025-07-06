@@ -65,14 +65,6 @@ import type {
   BoardByIdParams,
 } from '../model/types';
 
-const findBoardQueryKey = (boardId: string) => ({
-  predicate: ({ queryKey }: Query) => {
-    const boardQk = boardQueries.boardById(boardId);
-
-    return queryKey[0] === boardQk[0] && queryKey[1] === boardQk[1];
-  },
-});
-
 export const boardQueries = {
   allBoards: (projectId: string) => ['boards', projectId],
 
@@ -97,6 +89,14 @@ export const boardQueries = {
       ...(Object.keys(params).length > 0 ? [params] : []),
     ];
   },
+
+  findBoardQueryKey: (boardId: string) => ({
+    predicate: ({ queryKey }: Query) => {
+      const boardQk = boardQueries.boardById(boardId);
+
+      return queryKey[0] === boardQk[0] && queryKey[1] === boardQk[1];
+    },
+  }),
 
   getAllBoards: (dto: GetAllBoardsDtoReq) =>
     queryOptions({
@@ -160,7 +160,7 @@ export const columnQueries = {
       mutationFn: (dto: CreateColumnDtoReq) => createColumn(dto),
       onSuccess: (res, { boardId }) =>
         queryClient.setQueriesData(
-          findBoardQueryKey(boardId),
+          boardQueries.findBoardQueryKey(boardId),
           createColumnQueryUpdater(res),
         ),
     }),
@@ -170,7 +170,7 @@ export const columnQueries = {
       mutationFn: (dto: RenameColumnDtoReq) => renameColumn(dto),
       onSuccess: (_, args) => {
         queryClient.setQueriesData(
-          findBoardQueryKey(args.boardId),
+          boardQueries.findBoardQueryKey(args.boardId),
           renameColumnQueryUpdater(args),
         );
       },
@@ -181,7 +181,7 @@ export const columnQueries = {
       mutationFn: (dto: DeleteColumnDtoReq) => deleteColumn(dto),
       onSuccess: (res, { boardId }) =>
         queryClient.setQueriesData(
-          findBoardQueryKey(boardId),
+          boardQueries.findBoardQueryKey(boardId),
           deleteColumnQueryUpdater(res),
         ),
     }),
@@ -208,7 +208,7 @@ export const taskQueries = {
       mutationFn: (dto: CreateTaskDtoReq) => createTask(dto),
       onSuccess: (res, { boardId }) =>
         queryClient.setQueriesData(
-          findBoardQueryKey(boardId),
+          boardQueries.findBoardQueryKey(boardId),
           createTaskQueryUpdater(res),
         ),
     }),
@@ -218,7 +218,7 @@ export const taskQueries = {
       mutationFn: (dto: DeleteTaskDtoReq) => deleteTask(dto),
       onSuccess: (_, args) =>
         queryClient.setQueriesData(
-          findBoardQueryKey(args.boardId),
+          boardQueries.findBoardQueryKey(args.boardId),
           deleteTaskQueryUpdater(args),
         ),
     }),
@@ -228,7 +228,7 @@ export const taskQueries = {
       mutationFn: (dto: MoveTaskDtoReq) => moveTask(dto),
       onSuccess: (res, args) => {
         queryClient.setQueriesData(
-          findBoardQueryKey(args.boardId),
+          boardQueries.findBoardQueryKey(args.boardId),
           moveTaskQueryUpdater(res),
         );
       },
@@ -239,7 +239,7 @@ export const taskQueries = {
       mutationFn: (dto: UpdateTaskDtoReq) => updateTask(dto),
       onSuccess: (res, { boardId, taskId }) => {
         queryClient.setQueriesData(
-          findBoardQueryKey(boardId),
+          boardQueries.findBoardQueryKey(boardId),
           updateTaskQueryUpdater(res),
         );
 

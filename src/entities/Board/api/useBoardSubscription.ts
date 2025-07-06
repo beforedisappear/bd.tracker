@@ -2,21 +2,30 @@
 
 import { isObject } from '@/shared/lib/type-guards';
 import { useSubscription } from '@/shared/lib/tanstack-query';
-import { type QueryKey } from '@tanstack/react-query';
+import type { QueryFilters, QueryKey } from '@tanstack/react-query';
 
 import type { ZodSchema, z } from 'zod';
 
-interface Args<T extends ZodSchema, TData = unknown> {
+type KeyArgs<T extends ZodSchema, TData> = {
   schema: T;
+  queryKeyType: 'queryKey';
   queryKey: QueryKey;
   updater: (socketMessageData: z.infer<T>['data']) => (oldData: TData) => TData;
   onComplete?: (id: string) => void;
-}
+};
+
+type FilterArgs<T extends ZodSchema, TData> = {
+  schema: T;
+  queryKeyType: 'queryFilters';
+  queryKey: QueryFilters<unknown, Error, unknown, readonly unknown[]>;
+  updater: (socketMessageData: z.infer<T>['data']) => (oldData: TData) => TData;
+  onComplete?: (id: string) => void;
+};
 
 export const useBoardSubscription = <T extends ZodSchema, TData = unknown>(
-  args: Args<T, TData>,
+  args: KeyArgs<T, TData> | FilterArgs<T, TData>,
 ) => {
-  const { schema, queryKey, updater, onComplete } = args;
+  const { schema, queryKey, queryKeyType, updater, onComplete } = args;
 
   const handleUpdate = (oldData: unknown, socketMessage: unknown) => {
     const result = schema.safeParse(socketMessage);
@@ -33,7 +42,20 @@ export const useBoardSubscription = <T extends ZodSchema, TData = unknown>(
     return oldData;
   };
 
-  const socket = useSubscription(queryKey, handleUpdate);
+  const hookArgs =
+    queryKeyType === 'queryKey'
+      ? {
+          queryKeyType: 'queryKey' as const,
+          queryKey,
+          updater: handleUpdate,
+        }
+      : {
+          queryKeyType: 'queryFilters' as const,
+          queryKey,
+          updater: handleUpdate,
+        };
+
+  const socket = useSubscription(hookArgs);
 
   return socket;
 };

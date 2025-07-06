@@ -18,7 +18,7 @@ import {
 } from '@/entities/Board';
 
 import { getContentMargin } from '../../lib/getContentMargin';
-import { normalizeBoardData } from '../../lib/normalizeBoardData';
+import { normalizeAndSortBoardData } from '../../lib/normalizeAndSortBoardData';
 
 //TODO: add choose project view
 export function ProjectView() {
@@ -39,6 +39,13 @@ export function ProjectView() {
   const withDateRangeFilter = dateRange && dateRange.from && dateRange.to;
   const withStickerFilter = stickers && stickers.length > 0;
 
+  const filters = {
+    colors: withColorFilter ? colors : undefined,
+    assigneeIds: withAssigneeFilter ? assignees : undefined,
+    dateRange: withDateRangeFilter ? dateRange : undefined,
+    stickerIds: withStickerFilter ? stickers : undefined,
+  };
+
   const {
     data: board,
     isLoading,
@@ -48,15 +55,12 @@ export function ProjectView() {
   } = useQuery({
     ...boardQueries.getBoardById({
       boardId,
-      colors: withColorFilter ? colors : undefined,
-      assigneeIds: withAssigneeFilter ? assignees : undefined,
-      dateRange: withDateRangeFilter ? dateRange : undefined,
-      stickerIds: withStickerFilter ? stickers : undefined,
+      ...filters,
     }),
     enabled: !!boardId,
     gcTime: 0,
     staleTime: 0,
-    select: normalizeBoardData,
+    select: res => normalizeAndSortBoardData(res, filters),
   });
 
   useBoardRealTime(boardId);
