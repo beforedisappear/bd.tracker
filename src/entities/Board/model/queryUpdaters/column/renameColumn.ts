@@ -4,10 +4,14 @@ type Args = RenameColumnDtoReq;
 type Cache = GetBoardByIdDtoRes;
 
 export const renameColumnQueryUpdater =
-  ({ id, name }: Args) =>
-  (oldData: Cache) => ({
-    ...oldData,
-    columns: oldData.columns.map(column =>
-      column.id === id ? { ...column, name } : column,
-    ),
-  });
+  ({ id, name, boardId }: Args) =>
+  (oldData: Cache) => {
+    if (boardId !== oldData.id) return oldData;
+
+    return {
+      ...oldData,
+      columns: oldData.columns.map(column =>
+        column.id === id ? { ...column, name } : column,
+      ),
+    };
+  };

@@ -26,6 +26,7 @@ export interface DeleteColumnDtoReq {
 
 export type DeleteColumnDtoRes = {
   id: string;
+  boardId: string;
   tenantId: string;
 };
 

@@ -15,7 +15,7 @@ export const useManageBoardsRealTime = (projectId: string) => {
   useBoardSubscription({
     queryKey,
     schema: BoardCreatedActionSchema,
-    updater: createBoardQueryUpdater,
+    updater: res => createBoardQueryUpdater(res, projectId),
   });
 
   useBoardSubscription({

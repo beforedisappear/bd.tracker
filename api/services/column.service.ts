@@ -63,7 +63,11 @@ class ColumnService extends BaseService {
       return tx.column.delete({ where: { id } });
     });
 
-    return { id: deletedColumn.id, tenantId: deletedColumn.tenantId };
+    return {
+      id: deletedColumn.id,
+      boardId: deletedColumn.boardId,
+      tenantId: deletedColumn.tenantId,
+    };
   }
 
   async renameColumn(args: { id: string; name: string; initiatorId: string }) {

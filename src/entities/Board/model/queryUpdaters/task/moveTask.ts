@@ -6,8 +6,6 @@ type Cache = GetBoardByIdDtoRes;
 export const moveTaskQueryUpdater = (args: Args) => (oldData: Cache) => {
   const { id, columnId, newOrder } = args;
 
-  console.log(args);
-
   const sourceColumn = oldData.columns.find(column =>
     column.tasks.some(task => task.id === id),
   );
