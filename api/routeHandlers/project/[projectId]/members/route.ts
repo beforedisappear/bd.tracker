@@ -21,11 +21,11 @@ export const GetProjectMembers = async (
   try {
     const { projectId } = await params;
 
-    const accessToken = getAccessTokenFromReq(request);
-
     const { keyword } = getQueryParams(request, ['keyword']);
 
-    const { userId } = await authService.verifyJwt(accessToken);
+    const { userId } = await authService.verifyJwt(
+      getAccessTokenFromReq(request),
+    );
 
     const projectMembers = await projectService.getProjectMembers({
       projectId,

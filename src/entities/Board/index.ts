@@ -47,6 +47,7 @@ export type {
   Board,
   Column,
   Task,
+  TaskExtended,
   GetAllBoardsDtoRes,
   Color,
   Sticker,

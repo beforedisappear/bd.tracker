@@ -1,4 +1,4 @@
-import { Task, BoardTaskHeader } from '@/entities/Board';
+import { TaskExtended, BoardTaskHeader } from '@/entities/Board';
 
 import { TaskOverviewSheetAssignees } from '../TaskOverviewSheetAssignees/TaskOverviewSheetAssignees';
 import { TaskOverviewSheetDetails } from '../TaskOverviewSheetDetails/TaskOverviewSheetDetails';
@@ -7,7 +7,7 @@ import { TaskOverviewSheetDateRange } from '../TaskOverviewSheetDateRange/TaskOv
 import { TaskOverviewSheetDescription } from '../TaskOverviewSheetDescription/TaskOverviewSheetDescription';
 
 interface Props {
-  task: Task;
+  task: TaskExtended;
   onClose: () => void;
 }
 
@@ -27,7 +27,11 @@ export function TaskOverviewSheetContent(props: Props) {
         onClose={onClose}
       />
 
-      <TaskOverviewSheetAssignees taskId={task.id} assignees={task.assignees} />
+      <TaskOverviewSheetAssignees
+        taskId={task.id}
+        assignees={task.assignees}
+        author={task.author}
+      />
 
       <TaskOverviewSheetDetails
         createdAt={task.createdAt}

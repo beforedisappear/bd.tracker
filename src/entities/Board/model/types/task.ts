@@ -16,8 +16,13 @@ export interface Task {
   columnId: string;
   order: number;
   projectId: string;
+  authorId: string;
   assignees: User[];
   stickers: Sticker[];
+}
+
+export interface TaskExtended extends Task {
+  author: User;
 }
 
 export interface CreateTaskDtoReq {
@@ -74,6 +79,6 @@ export interface GetTaskByIdDtoReq {
   taskId: string;
 }
 
-export type GetTaskByIdDtoRes = Task;
+export type GetTaskByIdDtoRes = TaskExtended;
 
 export type AssigneesPopoverTriggerDirection = 'leftToRight' | 'rightToLeft';

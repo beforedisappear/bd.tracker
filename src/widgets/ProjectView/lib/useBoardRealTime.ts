@@ -71,11 +71,10 @@ export const useBoardRealTime = (boardId: string) => {
     queryKey,
     schema: TaskUpdatedActionSchema,
     updater: updateTaskQueryUpdater,
-    onComplete: (taskId: string) => {
+    onComplete: (taskId: string) =>
       queryClient.invalidateQueries({
         queryKey: taskQueries.taskById(taskId),
-      });
-    },
+      }),
   });
 
   return null;
