@@ -21,7 +21,7 @@ export function ProjectViewWrapper({ children }: Props) {
         orientation: 'horizontal',
         style: { marginInline: getContentMargin(isMobile) },
       }}
-      className='flex h-full'
+      className='flex h-full pb-5'
       style={{
         width: getLayoutWidth(isSidebarOpen, isMobile),
         marginInline: `-${getContentMargin(isMobile)}`,
