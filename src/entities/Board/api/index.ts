@@ -4,3 +4,4 @@ export {
   taskQueries,
   stickerQueries,
 } from './queries';
+export { useBoardSubscription } from './useBoardSubscription';

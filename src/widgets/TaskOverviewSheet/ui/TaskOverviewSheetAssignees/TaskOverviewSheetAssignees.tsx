@@ -1,13 +1,14 @@
 import { Avatar } from '@/shared/ui/s';
-import { BoardAssigneesPopover, Task } from '@/entities/Board';
+import { BoardAssigneesPopover, TaskExtended } from '@/entities/Board';
 
 interface Props {
-  taskId: Task['id'];
-  assignees: Task['assignees'];
+  taskId: TaskExtended['id'];
+  assignees: TaskExtended['assignees'];
+  author: TaskExtended['author'];
 }
 
 export function TaskOverviewSheetAssignees(props: Props) {
-  const { taskId, assignees } = props;
+  const { taskId, assignees, author } = props;
 
   return (
     <div className='flex flex-col gap-3'>
@@ -17,10 +18,10 @@ export function TaskOverviewSheetAssignees(props: Props) {
         <div className='flex items-center gap-2 text-sm'>
           <span>Автор:</span>
           <Avatar
-            key={assignees[0]?.id}
+            key={author?.id}
             src=''
-            alt={assignees[0]?.name}
-            initials={assignees[0]?.name}
+            alt={author?.name}
+            initials={author?.name}
             className='flex justify-center items-center h-5 w-5'
           />
         </div>

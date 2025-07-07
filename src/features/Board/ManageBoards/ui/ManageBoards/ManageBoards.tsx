@@ -7,8 +7,8 @@ import { ScrollArea, Button } from '@/shared/ui/c';
 import { useProject, useTenant } from '@/shared/lib/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { useRef, useState, useEffect } from 'react';
-
 import { boardQueries } from '@/entities/Board';
+import { useManageBoardsRealTime } from '../../lib';
 
 //TODO: mb add resize observer
 //TODO: add shadow for edges
@@ -33,6 +33,8 @@ export function ManageBoards() {
 
     setShowScrollButtons(isScrollable);
   }, [boards]);
+
+  useManageBoardsRealTime(projectId);
 
   if (isLoading) return <ManageBoardsLoading />;
   else if (isError || !boards) return <></>;

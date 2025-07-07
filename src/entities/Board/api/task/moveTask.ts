@@ -3,7 +3,9 @@ import { apiClient } from '@/shared/api/c';
 import type { MoveTaskDtoReq, MoveTaskDtoRes } from '../../model/types';
 
 export async function moveTask(dto: MoveTaskDtoReq) {
-  const { taskId, ...body } = dto;
+  const { id, ...body } = dto;
 
-  return apiClient.withAuth.patch<MoveTaskDtoRes>(`/task/${taskId}/move`, body);
+  return apiClient.withAuth
+    .patch<MoveTaskDtoRes>(`/task/${id}/move`, body)
+    .then(res => res.data);
 }

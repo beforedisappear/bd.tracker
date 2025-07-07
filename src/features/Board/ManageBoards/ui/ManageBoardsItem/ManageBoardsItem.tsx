@@ -4,15 +4,17 @@ import { ManageBoardsItemMenu } from '../ManageBoardsItemMenu';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { useRef, type MouseEvent } from 'react';
+import {
+  boardQueries,
+  RenameBoardSchema,
+  type SummaryBoard,
+} from '@/entities/Board';
 
 import { cn } from '@/shared/lib/css';
 import { buttonVariants } from '@/shared/ui/s';
 import { getProjectByIdRoutePath } from '@/shared/config/routes';
 import { getErrorMessage } from '@/shared/lib/error';
-import { boardQueries, type SummaryBoard } from '@/entities/Board';
 import { toast } from 'sonner';
-
-import { RenameBoardSchema } from '@/entities/Team';
 
 interface Props {
   board: SummaryBoard;
@@ -27,6 +29,7 @@ export function ManageBoardsItem(props: Props) {
 
   const { push } = useRouter();
   const methodsRef = useRef<RenameInputMethods>(null);
+
   const { mutateAsync: renameBoard } = useMutation(boardQueries.renameBoard());
 
   const onSelectBoard = (e: MouseEvent<HTMLDivElement>) => {
@@ -41,7 +44,7 @@ export function ManageBoardsItem(props: Props) {
   };
 
   const onRename = (name: string) => {
-    renameBoard({ boardId: board.id, name, projectId: board.projectId })
+    renameBoard({ id: board.id, name, projectId: board.projectId })
       .then(() => {})
       .catch(e => toast.error(getErrorMessage(e)));
   };
@@ -57,6 +60,7 @@ export function ManageBoardsItem(props: Props) {
       )}
     >
       <RenameInput
+        key={`${board.id}-${board.name}`}
         initialName={board.name}
         schema={RenameBoardSchema}
         methodsRef={methodsRef}

@@ -10,6 +10,7 @@ import { ProjectViewWrapper } from '../ProjectViewWrapper/ProjectViewWrapper';
 import { useQuery } from '@tanstack/react-query';
 import { useProject } from '@/shared/lib/navigation';
 import { useDeviceType } from '@/shared/lib/deviceType/useDeviceType';
+import { useBoardRealTime } from '../../lib/useBoardRealTime';
 import {
   useBoardStore,
   boardQueries,
@@ -17,7 +18,7 @@ import {
 } from '@/entities/Board';
 
 import { getContentMargin } from '../../lib/getContentMargin';
-import { restoreOrder } from '../../lib/restoreOrder/restoreOrder';
+import { normalizeAndSortBoardData } from '../../lib/normalizeAndSortBoardData';
 
 //TODO: add choose project view
 export function ProjectView() {
@@ -38,6 +39,13 @@ export function ProjectView() {
   const withDateRangeFilter = dateRange && dateRange.from && dateRange.to;
   const withStickerFilter = stickers && stickers.length > 0;
 
+  const filters = {
+    colors: withColorFilter ? colors : undefined,
+    assigneeIds: withAssigneeFilter ? assignees : undefined,
+    dateRange: withDateRangeFilter ? dateRange : undefined,
+    stickerIds: withStickerFilter ? stickers : undefined,
+  };
+
   const {
     data: board,
     isLoading,
@@ -46,23 +54,16 @@ export function ProjectView() {
     refetch,
   } = useQuery({
     ...boardQueries.getBoardById({
-      boardId: boardId!,
-      colors: withColorFilter ? colors : undefined,
-      assigneeIds: withAssigneeFilter ? assignees : undefined,
-      dateRange: withDateRangeFilter ? dateRange : undefined,
-      stickerIds: withStickerFilter ? stickers : undefined,
+      boardId,
+      ...filters,
     }),
     enabled: !!boardId,
     gcTime: 0,
     staleTime: 0,
-    select: res => ({
-      ...res,
-      columns: restoreOrder(res.columns).map(column => ({
-        ...column,
-        tasks: restoreOrder(column.tasks),
-      })),
-    }),
+    select: res => normalizeAndSortBoardData(res, filters),
   });
+
+  useBoardRealTime(boardId);
 
   if (isLoading) return <ViewBoardLoading />;
   else if (isError || !board)

@@ -19,7 +19,6 @@ import { toast } from 'sonner';
 
 import { SUCCESSFUL_SENDING_MESSAGE } from '@/shared/constants';
 
-import type { AxiosResponse } from 'axios';
 import type { GetAllBoardsDtoRes } from '@/entities/Board';
 
 interface Props {
@@ -42,13 +41,11 @@ export function DeleteBoardForm(props: Props) {
   const onDelete = () => {
     if (!boardId) return;
 
-    const allBoards = queryClient.getQueryData<
-      AxiosResponse<GetAllBoardsDtoRes>
-    >(boardQueries.allBoards(projectId));
+    const allBoards = queryClient.getQueryData<GetAllBoardsDtoRes>(
+      boardQueries.allBoards(projectId),
+    );
 
-    const anotherBoardId = allBoards?.data.find(
-      board => board.id !== boardId,
-    )?.id;
+    const anotherBoardId = allBoards?.find(board => board.id !== boardId)?.id;
 
     deleteBoard({ projectId, boardId })
       .then(() => toast.success(SUCCESSFUL_SENDING_MESSAGE))

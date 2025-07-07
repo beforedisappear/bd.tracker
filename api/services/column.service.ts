@@ -31,12 +31,13 @@ class ColumnService extends BaseService {
       data: {
         name,
         boardId,
-        projectId: board.projectId,
         order,
+        projectId: board.projectId,
+        tenantId: board.tenantId,
       },
     });
 
-    return column;
+    return { ...column, tasks: [] };
   }
 
   async deleteColumn(args: { id: string; initiatorId: string }) {
@@ -62,7 +63,11 @@ class ColumnService extends BaseService {
       return tx.column.delete({ where: { id } });
     });
 
-    return { id: deletedColumn.id };
+    return {
+      id: deletedColumn.id,
+      boardId: deletedColumn.boardId,
+      tenantId: deletedColumn.tenantId,
+    };
   }
 
   async renameColumn(args: { id: string; name: string; initiatorId: string }) {
@@ -86,7 +91,7 @@ class ColumnService extends BaseService {
       data: { name },
     });
 
-    return { id: renamedColumn.id };
+    return renamedColumn;
   }
 
   async moveColumn(args: { id: string; order: number; initiatorId: string }) {
@@ -110,7 +115,9 @@ class ColumnService extends BaseService {
     const moveCount = movedColumn.board.columnMoveCount;
     const shouldNormalize = moveCount >= NORMALIZATION_COLUMN_THRESHOLD;
 
-    await prismaService.column.update({
+    let newOrder = 0;
+
+    const updatedColumn = await prismaService.column.update({
       where: { id },
       data: {
         order,
@@ -118,14 +125,28 @@ class ColumnService extends BaseService {
       },
     });
 
+    newOrder = updatedColumn.order;
+
     if (shouldNormalize) {
-      await this.normalizeOrder(movedColumn.boardId);
+      const normalizedOrder = await this.normalizeOrder(
+        movedColumn.boardId,
+        id,
+      );
+
+      newOrder = normalizedOrder;
     }
 
-    return { isNormalized: shouldNormalize, id: movedColumn.id };
+    return {
+      id: movedColumn.id,
+      newOrder,
+      tenantId: movedColumn.tenantId,
+      isNormalized: shouldNormalize,
+    };
   }
 
-  private async normalizeOrder(boardId: string) {
+  private async normalizeOrder(boardId: string, columnId: string) {
+    let newOrder = 0;
+
     try {
       await prismaService.$transaction(async tx => {
         const columns = await tx.column.findMany({
@@ -134,10 +155,12 @@ class ColumnService extends BaseService {
         });
 
         for (let i = 0; i < columns.length; i++) {
-          await tx.column.update({
+          const column = await tx.column.update({
             where: { id: columns[i].id },
             data: { order: i * COLUMN_ORDER_STEP },
           });
+
+          if (column.id === columnId) newOrder = column.order;
         }
 
         await tx.board.update({
@@ -145,6 +168,8 @@ class ColumnService extends BaseService {
           data: { columnMoveCount: 0 },
         });
       });
+
+      return newOrder;
     } catch (error) {
       console.error(error);
 

@@ -256,7 +256,7 @@ export function useDragAndDropBoardItems(args: Args) {
       //если в колонке есть задачи, находим последнюю и передаем ее order + DEFAULT_TASK_ORDER_GAP
       //иначе колонка пустая и передаем DEFAULT_TASK_ORDER_GAP
       const dto = {
-        taskId: active.id as string,
+        id: active.id as string,
         columnId: overColumnId,
         boardId: board.id,
         order: lastTaskInOverColumn
@@ -315,7 +315,7 @@ export function useDragAndDropBoardItems(args: Args) {
       });
 
       const dto = {
-        taskId: active.id as string,
+        id: active.id as string,
         columnId: targetColumn.id,
         boardId: board.id,
         order: computedOrder,

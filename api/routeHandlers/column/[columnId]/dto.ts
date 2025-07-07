@@ -6,4 +6,6 @@ export const DeleteColumnByIdReqParamsSchema = z.object({
 
 export const DeleteColumnByIdResSchema = z.object({
   id: z.string().uuid(),
+  tenantId: z.string().uuid(),
+  boardId: z.string().uuid(),
 });

@@ -12,7 +12,7 @@ class TaskService extends BaseService {
 
     const task = await prismaService.task.findUnique({
       where: { id },
-      include: { stickers: true, assignees: true },
+      include: { stickers: true, assignees: true, author: true },
     });
 
     if (!task) throw ApiError.notFound('Task not found');
@@ -65,6 +65,7 @@ class TaskService extends BaseService {
         order,
         columnId,
         projectId: column.projectId,
+        tenantId: column.tenantId,
         authorId: initiatorId,
         assignees: assigneeIds
           ? { connect: assigneeIds.map(id => ({ id })) }
@@ -169,7 +170,7 @@ class TaskService extends BaseService {
       where: { id },
     });
 
-    return { id: deletedTask.id };
+    return { id: deletedTask.id, tenantId: deletedTask.tenantId };
   }
 
   async moveTask(args: {
@@ -217,8 +218,10 @@ class TaskService extends BaseService {
     const shouldNormalize =
       targetColumnMoveCount >= NORMALIZATION_TASK_THRESHOLD;
 
-    await prismaService.$transaction(async tx => {
-      await Promise.all([
+    let newOrder = 0;
+
+    const [updatedTask] = await prismaService.$transaction(async tx => {
+      return Promise.all([
         tx.task.update({
           where: { id },
           data: { order, columnId: targetColumnId },
@@ -230,14 +233,25 @@ class TaskService extends BaseService {
       ]);
     });
 
+    newOrder = updatedTask.order;
+
     if (shouldNormalize) {
-      await this.normalizeOrder(targetColumnId);
+      const normalizedOrder = await this.normalizeOrder(targetColumnId, id);
+      newOrder = normalizedOrder;
     }
 
-    return { isNormalized: shouldNormalize, id: movedTask.id };
+    return {
+      id: movedTask.id,
+      columnId: targetColumnId,
+      newOrder,
+      isNormalized: shouldNormalize,
+      tenantId: movedTask.tenantId,
+    };
   }
 
-  private async normalizeOrder(columnId: string) {
+  private async normalizeOrder(columnId: string, taskId: string) {
+    let newOrder = 0;
+
     try {
       await prismaService.$transaction(async tx => {
         const tasks = await tx.task.findMany({
@@ -246,10 +260,12 @@ class TaskService extends BaseService {
         });
 
         for (let i = 0; i < tasks.length; i++) {
-          await tx.task.update({
+          const updatedTask = await tx.task.update({
             where: { id: tasks[i].id },
             data: { order: i * TASK_ORDER_STEP },
           });
+
+          if (updatedTask.id === taskId) newOrder = updatedTask.order;
         }
 
         await tx.column.update({
@@ -262,6 +278,8 @@ class TaskService extends BaseService {
 
       throw ApiError.internal('Failed to normalize tasks order');
     }
+
+    return newOrder;
   }
 }
 

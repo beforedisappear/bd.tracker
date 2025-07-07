@@ -102,7 +102,7 @@ export function BoardTaskHeaderMenu(props: Props) {
         e.stopPropagation();
         setIsOpen(false);
 
-        deleteTask({ taskId, boardId })
+        deleteTask({ id: taskId, boardId })
           .then(() => onClose?.())
           .catch(e => toast.error(getErrorMessage(e)));
       },

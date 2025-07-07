@@ -1,5 +1,5 @@
 import { queryClient } from '@/shared/config/query';
-import { queryOptions } from '@tanstack/react-query';
+import { queryOptions, type Query } from '@tanstack/react-query';
 import { mutationOptions } from '@/shared/lib/tanstack-query';
 
 import { getAllBoards } from './board/getAllBoards';
@@ -23,6 +23,25 @@ import { getAllBoardStickers } from './sticker/getAllBoardStickers';
 import { createBoardSticker } from './sticker/createBoardSticker';
 import { updateBoardSticker } from './sticker/updateBoardSticker';
 import { deleteBoardSticker } from './sticker/deleteBoardSticker';
+
+import {
+  createBoardQueryUpdater,
+  renameBoardQueryUpdater,
+  deleteBoardQueryUpdater,
+} from '../model/queryUpdaters/board';
+
+import {
+  createColumnQueryUpdater,
+  deleteColumnQueryUpdater,
+  renameColumnQueryUpdater,
+} from '../model/queryUpdaters/column';
+
+import {
+  createTaskQueryUpdater,
+  deleteTaskQueryUpdater,
+  moveTaskQueryUpdater,
+  updateTaskQueryUpdater,
+} from '../model/queryUpdaters/task';
 
 import type {
   GetAllBoardsDtoReq,
@@ -71,11 +90,18 @@ export const boardQueries = {
     ];
   },
 
+  findBoardQueryKey: (boardId: string) => ({
+    predicate: ({ queryKey }: Query) => {
+      const boardQk = boardQueries.boardById(boardId);
+
+      return queryKey[0] === boardQk[0] && queryKey[1] === boardQk[1];
+    },
+  }),
+
   getAllBoards: (dto: GetAllBoardsDtoReq) =>
     queryOptions({
       queryKey: [...boardQueries.allBoards(dto.projectId)],
       queryFn: () => getAllBoards(dto),
-      select: res => res.data,
     }),
 
   getBoardById: (dto: GetBoardByIdDtoReq) => {
@@ -91,20 +117,22 @@ export const boardQueries = {
   createBoard: () =>
     mutationOptions({
       mutationFn: (dto: CreateBoardDtoReq) => createBoard(dto),
-      onSuccess: (_, { projectId }) => {
-        queryClient.invalidateQueries({
-          queryKey: [...boardQueries.allBoards(projectId)],
-        });
+      onSuccess: (res, args) => {
+        const { projectId } = args;
+
+        const queryKey = [...boardQueries.allBoards(projectId)];
+
+        queryClient.setQueryData(queryKey, createBoardQueryUpdater(res));
       },
     }),
 
   deleteBoard: () =>
     mutationOptions({
       mutationFn: (dto: DeleteBoardDtoReq) => deleteBoard(dto),
-      onSuccess: (_, { projectId, boardId }) => {
-        queryClient.invalidateQueries({
-          queryKey: [...boardQueries.allBoards(projectId)],
-        });
+      onSuccess: (res, { projectId, boardId }) => {
+        const queryKey = [...boardQueries.allBoards(projectId)];
+
+        queryClient.setQueryData(queryKey, deleteBoardQueryUpdater(res));
 
         queryClient.removeQueries({
           queryKey: [...boardQueries.boardById(boardId)],
@@ -116,10 +144,13 @@ export const boardQueries = {
   renameBoard: () =>
     mutationOptions({
       mutationFn: (dto: RenameBoardDtoReq) => renameBoard(dto),
-      onSuccess: (_, { projectId }) =>
-        queryClient.invalidateQueries({
-          queryKey: [...boardQueries.allBoards(projectId)],
-        }),
+      onSuccess: (_, args) => {
+        const { projectId } = args;
+
+        const queryKey = [...boardQueries.allBoards(projectId)];
+
+        queryClient.setQueryData(queryKey, renameBoardQueryUpdater(args));
+      },
     }),
 };
 
@@ -127,36 +158,37 @@ export const columnQueries = {
   createColumn: () =>
     mutationOptions({
       mutationFn: (dto: CreateColumnDtoReq) => createColumn(dto),
-      onSuccess: (_, { boardId }) =>
-        queryClient.invalidateQueries({
-          queryKey: [...boardQueries.boardById(boardId)],
-          exact: false,
-        }),
+      onSuccess: (res, { boardId }) =>
+        queryClient.setQueriesData(
+          boardQueries.findBoardQueryKey(boardId),
+          createColumnQueryUpdater(res),
+        ),
     }),
 
   renameColumn: () =>
     mutationOptions({
       mutationFn: (dto: RenameColumnDtoReq) => renameColumn(dto),
+      onSuccess: (_, args) => {
+        queryClient.setQueriesData(
+          boardQueries.findBoardQueryKey(args.boardId),
+          renameColumnQueryUpdater(args),
+        );
+      },
     }),
 
   deleteColumn: () =>
     mutationOptions({
       mutationFn: (dto: DeleteColumnDtoReq) => deleteColumn(dto),
-      onSuccess: (_, { boardId }) =>
-        queryClient.invalidateQueries({
-          queryKey: [...boardQueries.boardById(boardId)],
-          exact: false,
-        }),
+      onSuccess: (res, { boardId }) =>
+        queryClient.setQueriesData(
+          boardQueries.findBoardQueryKey(boardId),
+          deleteColumnQueryUpdater(res),
+        ),
     }),
 
   moveColumn: () =>
     mutationOptions({
       mutationFn: (dto: MoveColumnDtoReq) => moveColumn(dto),
-      onSuccess: (_, { boardId }) =>
-        queryClient.invalidateQueries({
-          queryKey: [...boardQueries.boardById(boardId)],
-          exact: false,
-        }),
     }),
 };
 
@@ -174,41 +206,42 @@ export const taskQueries = {
   createTask: () =>
     mutationOptions({
       mutationFn: (dto: CreateTaskDtoReq) => createTask(dto),
-      onSuccess: (_, { boardId }) =>
-        queryClient.invalidateQueries({
-          queryKey: [...boardQueries.boardById(boardId)],
-          exact: false,
-        }),
+      onSuccess: (res, { boardId }) =>
+        queryClient.setQueriesData(
+          boardQueries.findBoardQueryKey(boardId),
+          createTaskQueryUpdater(res),
+        ),
     }),
 
   deleteTask: () =>
     mutationOptions({
       mutationFn: (dto: DeleteTaskDtoReq) => deleteTask(dto),
-      onSuccess: (_, { boardId }) =>
-        queryClient.invalidateQueries({
-          queryKey: [...boardQueries.boardById(boardId)],
-          exact: false,
-        }),
+      onSuccess: (_, args) =>
+        queryClient.setQueriesData(
+          boardQueries.findBoardQueryKey(args.boardId),
+          deleteTaskQueryUpdater(args),
+        ),
     }),
 
   moveTask: () =>
     mutationOptions({
       mutationFn: (dto: MoveTaskDtoReq) => moveTask(dto),
-      onSuccess: (_, { boardId }) =>
-        queryClient.invalidateQueries({
-          queryKey: [...boardQueries.boardById(boardId)],
-          exact: false,
-        }),
+      onSuccess: (res, args) => {
+        queryClient.setQueriesData(
+          boardQueries.findBoardQueryKey(args.boardId),
+          moveTaskQueryUpdater(res),
+        );
+      },
     }),
 
   updateTask: () =>
     mutationOptions({
       mutationFn: (dto: UpdateTaskDtoReq) => updateTask(dto),
-      onSuccess: (_, { boardId, taskId }) => {
-        queryClient.invalidateQueries({
-          queryKey: [...boardQueries.boardById(boardId)],
-          exact: false,
-        });
+      onSuccess: (res, { boardId, taskId }) => {
+        queryClient.setQueriesData(
+          boardQueries.findBoardQueryKey(boardId),
+          updateTaskQueryUpdater(res),
+        );
 
         queryClient.invalidateQueries({
           queryKey: taskQueries.taskById(taskId),

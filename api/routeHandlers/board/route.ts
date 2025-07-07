@@ -5,6 +5,8 @@ import { boardService } from 'api/services/board.service';
 import { getAccessTokenFromReq } from 'api/utils/getAccessTokenFromReq';
 import { CreateBoardReqBodySchema } from './dto';
 import { getQueryParams } from 'api/utils/getQueryParams';
+import { publish } from 'config/redis';
+import type { ServerMessage } from 'socket/types';
 
 export const PostCreateBoard = async (request: NextRequest) => {
   try {
@@ -18,6 +20,18 @@ export const PostCreateBoard = async (request: NextRequest) => {
       name: body.name,
       initiatorId: userId,
     });
+
+    const message: ServerMessage<typeof board> = {
+      type: 'message',
+      tenantId: board.tenantId,
+      initiatorId: userId,
+      action: 'BOARD_CREATED',
+      data: board,
+    };
+
+    publish(process.env.WS_REDIS_CHANNEL_NAME!, JSON.stringify(message))
+      .then(() => {})
+      .catch(e => console.error('Failed to publish message', e));
 
     return NextResponse.json(board);
   } catch (error) {

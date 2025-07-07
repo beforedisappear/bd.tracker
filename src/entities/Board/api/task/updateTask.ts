@@ -6,8 +6,7 @@ export async function updateTask(dto: UpdateTaskDtoReq) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { taskId, boardId, ...body } = dto;
 
-  return apiClient.withAuth.patch<UpdateTaskDtoRes>(
-    `/task/${taskId}/update`,
-    body,
-  );
+  return apiClient.withAuth
+    .patch<UpdateTaskDtoRes>(`/task/${taskId}/update`, body)
+    .then(res => res.data);
 }

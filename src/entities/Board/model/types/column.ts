@@ -24,15 +24,21 @@ export interface DeleteColumnDtoReq {
   boardId: string; // for invalidation
 }
 
-export type DeleteColumnDtoRes = never;
+export type DeleteColumnDtoRes = {
+  id: string;
+  boardId: string;
+  tenantId: string;
+};
 
 export interface RenameColumnDtoReq {
-  columnId: string;
+  id: string;
   name: string;
+  boardId: string; // for invalidation
 }
 
 export interface RenameColumnDtoRes {
   id: string;
+  tenantId: string;
 }
 
 export type MoveColumnDtoReq = {
@@ -43,5 +49,7 @@ export type MoveColumnDtoReq = {
 
 export interface MoveColumnDtoRes {
   id: string;
+  tenantId: string;
+  newOrder: number;
   isNormalized: boolean;
 }

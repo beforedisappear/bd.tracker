@@ -8,6 +8,7 @@ export const DeleteTaskByIdReqParamsSchema = z.object({
 
 export const DeleteTaskByIdResSchema = z.object({
   id: z.string().uuid(),
+  tenantId: z.string().uuid(),
 });
 
 export const GetTaskByIdDtoReqParamsSchema = z.object({
