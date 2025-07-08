@@ -1,6 +1,11 @@
-import { createStore as createZustandStore } from 'zustand/vanilla';
+import {
+  createStore as createZustandStore,
+  StateCreator,
+} from 'zustand/vanilla';
 
-import type { DateRange } from 'react-day-picker';
+import { persistBoardMiddlware } from './middlaware';
+
+import type { DateRange } from '../types/dateRange';
 import type { BoardStore, BoardStoreState } from './types';
 import type { Color } from '../types';
 
@@ -19,7 +24,7 @@ const defaultInitState: BoardStoreState = {
 export const createBoardStore = (
   initState: BoardStoreState = defaultInitState,
 ) => {
-  return createZustandStore<BoardStore>()(set => ({
+  const state: StateCreator<BoardStore, [], []> = set => ({
     ...initState,
     setShowDeleteColumnModal: (show: boolean) =>
       set({ showDeleteColumnModal: show }),
@@ -71,5 +76,7 @@ export const createBoardStore = (
         mapDateRangeTaskFilterByBoardId: {},
         mapStickerTaskFilterByBoardId: {},
       })),
-  }));
+  });
+
+  return createZustandStore<BoardStore>()(persistBoardMiddlware(state));
 };

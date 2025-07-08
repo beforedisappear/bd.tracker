@@ -126,10 +126,8 @@ class BoardService extends BaseService {
       const [startDate, endDate] = dateRange;
 
       if (startDate && endDate) {
-        taskFilters.createdAt = {
-          gte: new Date(startDate),
-          lte: new Date(endDate),
-        };
+        taskFilters.startDate = { gte: new Date(startDate) };
+        taskFilters.endDate = { lte: new Date(endDate) };
       }
     }
 

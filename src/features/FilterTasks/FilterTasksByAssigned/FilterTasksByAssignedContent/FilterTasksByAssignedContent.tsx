@@ -5,8 +5,8 @@ import {
 import { Form } from '@/shared/ui/Form';
 
 import {
-  getMapAssigneesTaskFilterByBoardId,
   useBoardStore,
+  getMapAssigneesTaskFilterByBoardId,
 } from '@/entities/Board';
 import { useProject } from '@/shared/lib/navigation';
 import { useForm } from 'react-hook-form';

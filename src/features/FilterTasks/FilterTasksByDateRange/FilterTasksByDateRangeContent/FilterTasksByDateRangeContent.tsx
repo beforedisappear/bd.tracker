@@ -18,14 +18,22 @@ export function FilterTasksByDateRangeContent() {
 
   const dateRange = mapDateRangeTaskFilterByBoardId[boardId];
 
-  const [selected, setSelected] = useState<DateRange | undefined>(dateRange);
+  const [selected, setSelected] = useState<DateRange | undefined>({
+    from: dateRange?.from ? new Date(dateRange.from) : undefined,
+    to: dateRange?.to ? new Date(dateRange.to) : undefined,
+  });
 
   const handleSelect = (newSelected: DateRange | undefined) => {
     setSelected(newSelected);
 
     if (!newSelected?.from || !newSelected?.to) return;
 
-    setMapDateRangeTaskFilterByBoardId(boardId, newSelected);
+    const dateRange = {
+      from: newSelected.from.toISOString(),
+      to: newSelected.to.toISOString(),
+    };
+
+    setMapDateRangeTaskFilterByBoardId(boardId, dateRange);
   };
 
   const onResetFilter = () => {

@@ -79,7 +79,7 @@ export const boardQueries = {
       ...(assigneeIds && { assigneeIds: JSON.stringify(assigneeIds) }),
       ...(stickerIds && { stickerIds: JSON.stringify(stickerIds) }),
       ...(dateRange && {
-        dateRange: `${dateRange.from?.toISOString()}-${dateRange.to?.toISOString()}`,
+        dateRange: `${dateRange.from}-${dateRange.to}`,
       }),
     };
 
