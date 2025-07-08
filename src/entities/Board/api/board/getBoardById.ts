@@ -1,13 +1,13 @@
 import { apiClient } from '@/shared/api/apiClient';
-import type { GetBoardByIdDtoReq, GetBoardByIdDtoRes } from '../../model/types';
 import { createQueryString } from '@/shared/lib/url/createQueryString/createQueryString';
+import type { GetBoardByIdDtoReq, GetBoardByIdDtoRes } from '../../model/types';
 
 export const getBoardById = async (dto: GetBoardByIdDtoReq) => {
   const { boardId, colors, assigneeIds, dateRange, stickerIds } = dto;
 
   const dateRangeParam =
     dateRange && dateRange.from && dateRange.to
-      ? [dateRange.from.toISOString(), dateRange.to.toISOString()]
+      ? [dateRange.from, dateRange.to]
       : undefined;
 
   const queryString = createQueryString({

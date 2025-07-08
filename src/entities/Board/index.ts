@@ -51,6 +51,7 @@ export type {
   GetAllBoardsDtoRes,
   Color,
   Sticker,
+  DateRange,
 } from './model/types';
 
 export {

@@ -1,4 +1,4 @@
-import type { DateRange } from 'react-day-picker';
+import type { DateRange } from './dateRange';
 import type { Color } from './color';
 import type { Column } from './column';
 

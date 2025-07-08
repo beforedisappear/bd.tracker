@@ -1,7 +1,6 @@
 import { restoreOrder } from './restoreOrder';
 import { isWithinInterval } from 'date-fns';
-import type { Board, Task } from '@/entities/Board';
-import type { DateRange } from 'react-day-picker';
+import type { Board, Task, DateRange } from '@/entities/Board';
 
 type Filters = {
   colors?: string[];

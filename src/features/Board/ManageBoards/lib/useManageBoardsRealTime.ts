@@ -10,22 +10,25 @@ import {
 } from '@/entities/Board';
 
 export const useManageBoardsRealTime = (projectId: string) => {
-  const queryKey = boardQueries.allBoards(projectId);
+  const queryKey = {
+    queryKey: boardQueries.allBoards(projectId),
+    queryKeyType: 'queryKey' as const,
+  };
 
   useBoardSubscription({
-    queryKey,
+    ...queryKey,
     schema: BoardCreatedActionSchema,
     updater: res => createBoardQueryUpdater(res, projectId),
   });
 
   useBoardSubscription({
-    queryKey,
+    ...queryKey,
     schema: BoardUpdatedActionSchema,
     updater: renameBoardQueryUpdater,
   });
 
   useBoardSubscription({
-    queryKey,
+    ...queryKey,
     schema: BoardDeletedActionSchema,
     updater: deleteBoardQueryUpdater,
   });

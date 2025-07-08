@@ -1,5 +1,6 @@
-import type { DateRange } from 'react-day-picker';
+import type { DateRange } from '../types/dateRange';
 import type { Color } from '../types';
+import { StateCreator } from 'zustand';
 
 export interface BoardStoreState {
   showDeleteColumnModal: boolean;
@@ -32,3 +33,5 @@ export interface BoardStoreActions {
 }
 
 export type BoardStore = BoardStoreState & BoardStoreActions;
+
+export type CreateBoardStoreArgs = Parameters<StateCreator<BoardStore, [], []>>;
