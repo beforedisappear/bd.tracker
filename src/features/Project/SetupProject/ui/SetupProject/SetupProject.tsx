@@ -1,22 +1,19 @@
-import type { PropsWithChildren } from 'react';
+import { SetupProjectDesktop } from './SetupProject.desktop';
+import { SetupProjectMobile } from './SetupProject.mobile';
 
 import { useDeviceType } from '@/shared/lib/deviceType/c';
-import { SetupProjectMenu } from '../SetupProjectMenu';
-import { SetupProjectTitle } from '../SetupProjectTitle/SetupProjectTitle';
+
+import type { PropsWithChildren } from 'react';
 
 interface Props extends PropsWithChildren {}
 
-// TODO: add mobile version
-// TODO: mb it's better to use another way
 export function SetupProject({ children }: Props) {
-  const { isDesktop } = useDeviceType();
+  const { isDesktop, isMobile } = useDeviceType();
 
   return (
-    <div className='flex items-center gap-2'>
-      {isDesktop && children}
-
-      <SetupProjectTitle />
-      <SetupProjectMenu />
-    </div>
+    <>
+      {isDesktop && <SetupProjectDesktop>{children}</SetupProjectDesktop>}
+      {isMobile && <SetupProjectMobile />}
+    </>
   );
 }

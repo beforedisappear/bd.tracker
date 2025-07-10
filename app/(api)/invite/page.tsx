@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation';
+import { apiServer } from '@/shared/api/s';
 
 import {
   getLoginRoutePath,
@@ -14,11 +15,7 @@ export default async function InvitePage({ searchParams }: IProps) {
 
   let redirectPath = getLoginRoutePath();
 
-  //TODO:add custom server fetch
-  await fetch(`${process.env.NEXT_PUBLIC_URL}/api/team/accept-invitation`, {
-    method: 'POST',
-    body: JSON.stringify(query),
-  }).catch(e => {
+  await apiServer.post('/team/accept-invitation', query).catch(e => {
     console.error(e);
     redirectPath = getMainRoutePath();
   });
