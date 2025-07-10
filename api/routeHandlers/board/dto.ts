@@ -17,13 +17,13 @@ export const GetProjectBoardsReqQuerySchema = z.object({
   projectId: z.string(),
 });
 
-//TODO: add fields
 export const GetProjectBoardsResSchema = z.array(
   z.object({
     id: z.string(),
     name: z.string(),
     projectId: z.string(),
+    tenantId: z.string(),
+    columnMoveCount: z.number(),
     createdAt: z.string(),
-    updatedAt: z.string(),
   }),
 );

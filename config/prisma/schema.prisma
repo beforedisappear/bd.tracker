@@ -190,7 +190,7 @@ model TeamInvitation {
   token        String
   createdAt    DateTime         @default(now())
   expiresAt    DateTime
-  inviteeEmail String           @unique
+  inviteeEmail String
 
   //many teamInvitations to one team
   teamId String
@@ -202,6 +202,8 @@ model TeamInvitation {
 
   //many teamInvitations to many projects 
   projectIds String[]
+
+  @@unique([teamId, inviteeEmail])
 }
 
 model Project {
@@ -220,10 +222,10 @@ model Project {
 }
 
 model Board {
-  id        String    @id @default(uuid())
-  name      String
-  createdAt DateTime  @default(now())
-  columnMoveCount Int    @default(0)
+  id              String   @id @default(uuid())
+  name            String
+  createdAt       DateTime @default(now())
+  columnMoveCount Int      @default(0)
 
   //many boards to one project
   projectId String
@@ -238,12 +240,12 @@ model Board {
 }
 
 model Column {
-  id        String   @id @default(uuid())
-  name      String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  order     Int      @default(0)
-  taskMoveCount Int    @default(0)
+  id            String   @id @default(uuid())
+  name          String
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+  order         Int      @default(0)
+  taskMoveCount Int      @default(0)
 
   //many columns to one board
   boardId String
@@ -254,7 +256,7 @@ model Column {
 
   //for Multi-tenant 
   projectId String
-  tenantId String
+  tenantId  String
 }
 
 model Task {
@@ -286,7 +288,7 @@ model Task {
 
   //for Multi-tenant 
   projectId String
-  tenantId String
+  tenantId  String
 }
 
 model Sticker {
@@ -304,5 +306,5 @@ model Sticker {
 
   //for Multi-tenant 
   projectId String
-  tenantId String
+  tenantId  String
 }

@@ -16,7 +16,7 @@ export function PrivateHeaderLayout({ children, bottomContent }: Props) {
   return (
     <header
       className={cn(
-        'sticky top-0 z-50 flex flex-col gap-2 min-h-14 h-auto px-4 py-3 bg-sidebar-background lg:max-w-[100vw] md:static md:min-h-12',
+        'sticky top-0 z-50 flex flex-col gap-2 min-h-14 h-auto px-4 py-3 bg-sidebar-background md:static md:min-h-12',
         { 'pb-0': !!bottomContent },
       )}
     >

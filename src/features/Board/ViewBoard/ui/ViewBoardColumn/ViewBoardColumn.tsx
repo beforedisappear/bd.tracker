@@ -1,3 +1,4 @@
+import { ScrollArea } from '@/shared/ui/c';
 import { ViewBoardTask } from '../ViewBoardTask/ViewBoardTask';
 import { ViewBoardColumnWrapper } from '../ViewBoardColumnWrapper/ViewBoardColumnWrapper';
 import { ViewBoardColumnHeader } from '../ViewBoardColumnHeader/ViewBoardColumnHeader';
@@ -15,7 +16,6 @@ interface Props {
   sortableTaskIds: string[];
 }
 
-// TODO: add SCROLL AREA
 export function ViewBoardColumn(props: Props) {
   const {
     data: { id, name, tasks },
@@ -24,7 +24,7 @@ export function ViewBoardColumn(props: Props) {
 
   return (
     <ViewBoardColumnWrapper id={id}>
-      <div className={`flex flex-col h-auto gap-2 p-4 bg-muted rounded-lg`}>
+      <div className='flex flex-col h-auto gap-2 p-4 bg-muted rounded-lg'>
         <ViewBoardColumnHeader
           columnId={id}
           name={name}
@@ -35,9 +35,21 @@ export function ViewBoardColumn(props: Props) {
           items={sortableTaskIds}
           strategy={verticalListSortingStrategy}
         >
-          {tasks.map(task => (
-            <ViewBoardTask key={task.id} data={task} />
-          ))}
+          <ScrollArea
+            type='always'
+            className='mr-[-0.75rem]'
+            scrollBar={{
+              thumbClassName: 'bg-zinc-300 dark:bg-zinc-700',
+              ['data-drag']: false,
+            }}
+          >
+            {/* FIXME: высчитывать 350px из констант */}
+            <div className='flex flex-col gap-2 h-full pr-3 max-h-[calc(100vh-350px)]'>
+              {tasks.map(task => (
+                <ViewBoardTask key={task.id} data={task} />
+              ))}
+            </div>
+          </ScrollArea>
         </SortableContext>
 
         <ViewBoardColumnCreateTaskBtn columnId={id} />

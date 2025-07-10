@@ -23,55 +23,56 @@ import {
 
 export const useBoardRealTime = (boardId: string) => {
   const queryClient = useQueryClient();
-  const queryKey = {
+
+  const queryOptions = {
     queryKeyType: 'queryFilters' as const,
     queryKey: boardQueries.findBoardQueryKey(boardId),
   };
 
   useBoardSubscription({
-    ...queryKey,
+    ...queryOptions,
     schema: ColumnCreatedActionSchema,
     updater: createColumnQueryUpdater,
   });
 
   useBoardSubscription({
-    ...queryKey,
+    ...queryOptions,
     schema: ColumnDeletedActionSchema,
     updater: deleteColumnQueryUpdater,
   });
 
   useBoardSubscription({
-    ...queryKey,
+    ...queryOptions,
     schema: ColumnUpdatedActionSchema,
     updater: renameColumnQueryUpdater,
   });
 
   useBoardSubscription({
-    ...queryKey,
+    ...queryOptions,
     schema: ColumnMovedActionSchema,
     updater: moveColumnQueryUpdater,
   });
 
   useBoardSubscription({
-    ...queryKey,
+    ...queryOptions,
     schema: TaskCreatedActionSchema,
     updater: createTaskQueryUpdater,
   });
 
   useBoardSubscription({
-    ...queryKey,
+    ...queryOptions,
     schema: TaskDeletedActionSchema,
     updater: deleteTaskQueryUpdater,
   });
 
   useBoardSubscription({
-    ...queryKey,
+    ...queryOptions,
     schema: TaskMovedActionSchema,
     updater: moveTaskQueryUpdater,
   });
 
   useBoardSubscription({
-    ...queryKey,
+    ...queryOptions,
     schema: TaskUpdatedActionSchema,
     updater: updateTaskQueryUpdater,
     onComplete: (taskId: string) =>

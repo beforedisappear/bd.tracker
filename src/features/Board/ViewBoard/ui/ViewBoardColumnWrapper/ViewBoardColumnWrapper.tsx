@@ -12,27 +12,36 @@ interface Props {
 export function ViewBoardColumnWrapper(props: Props) {
   const { id, children } = props;
 
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id, data: { type: 'Column', id } });
+  const { attributes, listeners, setNodeRef, transform, isDragging } =
+    useSortable({ id, data: { type: 'Column', id } });
+
+  const dragListeners = listeners;
+
+  if (dragListeners && dragListeners.onPointerDown) {
+    const { onPointerDown } = dragListeners;
+
+    dragListeners.onPointerDown = (event: PointerEvent) => {
+      const { target } = event;
+
+      if (
+        target &&
+        target instanceof HTMLElement &&
+        target.dataset.drag === 'false'
+      ) {
+        return;
+      }
+
+      onPointerDown(event);
+    };
+  }
 
   return (
     <div
-      className={cn(getColumnClassName(), {
-        'opacity-45': isDragging,
-      })}
+      className={cn(getColumnClassName(), { 'opacity-45': isDragging })}
       ref={setNodeRef}
-      style={{
-        transform: CSS.Translate.toString(transform),
-        transition,
-      }}
+      style={{ transform: CSS.Translate.toString(transform) }}
       {...attributes}
-      {...listeners}
+      {...dragListeners}
     >
       {children}
     </div>

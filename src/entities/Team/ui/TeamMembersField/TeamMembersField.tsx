@@ -23,6 +23,8 @@ export function TeamMembersField(props: Props) {
 
   const debouncedKeyword = useDebouncedValue(value, 800);
 
+  const cacheTime = debouncedKeyword.length > 0 ? 0 : 1000 * 60;
+
   const {
     data: teamMembers,
     isSuccess,
@@ -30,9 +32,14 @@ export function TeamMembersField(props: Props) {
     isError,
     error,
     refetch,
-  } = useQuery(
-    teamQueries.getTeamMembers({ idOrSlug: tenant, keyword: debouncedKeyword }),
-  );
+  } = useQuery({
+    ...teamQueries.getTeamMembers({
+      idOrSlug: tenant,
+      keyword: debouncedKeyword,
+    }),
+    staleTime: cacheTime,
+    gcTime: cacheTime,
+  });
 
   return (
     <div className='flex flex-col gap-2 flex-1'>

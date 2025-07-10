@@ -1,10 +1,9 @@
 import { redirect } from 'next/navigation';
-
-import {
-  getHomeRoutePath,
-  getMainRoutePath,
-} from '@/shared/config/routes/routesPath';
+import { apiServer } from '@/shared/api/s';
 import { cookies } from 'next/headers';
+
+import { getHomeRoutePath, getMainRoutePath } from '@/shared/config/routes';
+
 import { REFRESH_TOKEN_COOKIE_NAME } from '@/shared/constants/cookie.constants';
 
 interface IProps {
@@ -18,16 +17,9 @@ export default async function EmailChangePage({ searchParams }: IProps) {
 
   const redirectPath = refreshToken ? getHomeRoutePath() : getMainRoutePath();
 
-  //TODO: add custom server fetch
-  await fetch(
-    `${process.env.NEXT_PUBLIC_URL}/api/profile/email/accept-change-request`,
-    {
-      method: 'POST',
-      body: JSON.stringify(query),
-    },
-  ).catch(e => {
-    console.error(e);
-  });
+  await apiServer
+    .post('/profile/email/accept-change-request', query)
+    .catch(e => console.error(e));
 
   return redirect(redirectPath);
 }

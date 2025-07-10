@@ -18,20 +18,17 @@ export function ViewTeamMembersItem(props: Props) {
     hover:bg-zinc-200 dark:hover:bg-zinc-800'
       onClick={() => onOpenProfile(member.id)}
     >
-      {/* TODO: create UserAvatar ui component */}
       <Avatar
         src={''}
         alt={member.name}
         initials={member.name}
         className='grid place-items-center w-6 h-6 text-xs'
       />
-
       <div className='flex items-center gap-2 w-64'>
         <span className='line-clamp-1 text-sm'>{member.name}</span>
         {member.isOwner && <Crown className='w-4 h-4 text-yellow-500' />}
         {member.isAdmin && <UserRoundCog className='w-4 h-4 text-blue-500' />}
       </div>
-
       <span className='line-clamp-1 w-64 text-sm'>{member.email}</span>
     </div>
   );

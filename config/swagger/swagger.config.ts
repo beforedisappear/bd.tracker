@@ -6,6 +6,8 @@ import {
   OpenAPIRegistry,
 } from '@asteasolutions/zod-to-openapi';
 
+import { registerPathWithBearer } from './swagger.utils';
+
 import { PostAuthDoc } from 'api/routeHandlers/auth/doc';
 import { PostLoginDoc } from 'api/routeHandlers/login/doc';
 import { PostRefreshTokensDoc } from 'api/routeHandlers/refreshTokens/doc';
@@ -91,7 +93,11 @@ export const bearerAuth = openAPIRegistry.registerComponent(
   },
 );
 
-// TODO: add decorators for swagger
+const register = registerPathWithBearer.bind(
+  null,
+  openAPIRegistry,
+  bearerAuth.name,
+);
 
 // auth
 openAPIRegistry.registerPath(PostAuthDoc);
@@ -100,71 +106,70 @@ openAPIRegistry.registerPath(PostRefreshTokensDoc);
 openAPIRegistry.registerPath(PostLogoutDoc);
 
 //profile
-openAPIRegistry.registerPath(GetProfileDoc(bearerAuth.name));
-openAPIRegistry.registerPath(UpdateProfileDoc(bearerAuth.name));
 openAPIRegistry.registerPath(PostAcceptChangeEmailDoc);
-openAPIRegistry.registerPath(PostSendChangeEmailDoc(bearerAuth.name));
+register(GetProfileDoc);
+register(UpdateProfileDoc);
+register(PostSendChangeEmailDoc);
 
 //team main
-openAPIRegistry.registerPath(PostCreateTeamDoc(bearerAuth.name));
-openAPIRegistry.registerPath(GetTeamListDoc(bearerAuth.name));
-openAPIRegistry.registerPath(GetTeamByIdOrSlugDoc(bearerAuth.name));
-openAPIRegistry.registerPath(DeleteTeamByIdOrSlugDoc(bearerAuth.name));
-openAPIRegistry.registerPath(PatchTeamRenameByIdOrSlugDoc(bearerAuth.name));
-openAPIRegistry.registerPath(GetHaveAccessToTeamDoc(bearerAuth.name));
+register(PostCreateTeamDoc);
+register(GetTeamListDoc);
+register(GetTeamByIdOrSlugDoc);
+register(DeleteTeamByIdOrSlugDoc);
+register(PatchTeamRenameByIdOrSlugDoc);
+register(GetHaveAccessToTeamDoc);
 
 //team member
-openAPIRegistry.registerPath(GetTeamMembersDoc(bearerAuth.name));
-openAPIRegistry.registerPath(GetTeamMemberByIdDoc(bearerAuth.name));
-openAPIRegistry.registerPath(RemoveTeamMemberByIdDoc(bearerAuth.name));
+register(GetTeamMembersDoc);
+register(GetTeamMemberByIdDoc);
+register(RemoveTeamMemberByIdDoc);
 
 //team admin
-openAPIRegistry.registerPath(PatchSetTeamAdminDoc(bearerAuth.name));
-openAPIRegistry.registerPath(DeleteRemoveTeamAdminDoc(bearerAuth.name));
+register(PatchSetTeamAdminDoc);
+register(DeleteRemoveTeamAdminDoc);
 
 //team invitation
-openAPIRegistry.registerPath(GetCheckInvitationExistsDoc(bearerAuth.name));
-openAPIRegistry.registerPath(PostInviteUserToTeamDoc(bearerAuth.name));
-openAPIRegistry.registerPath(PostAcceptInvitationToTeamDoc(bearerAuth.name));
+register(GetCheckInvitationExistsDoc);
+register(PostInviteUserToTeamDoc);
+register(PostAcceptInvitationToTeamDoc);
 
 //project main
-openAPIRegistry.registerPath(PostCreateProjectDoc(bearerAuth.name));
-openAPIRegistry.registerPath(GetAllTeamProjectsDoc(bearerAuth.name));
-openAPIRegistry.registerPath(DeleteProjectDoc(bearerAuth.name));
-openAPIRegistry.registerPath(PatchProjectRenameDoc(bearerAuth.name));
-// openAPIRegistry.registerPath(GetProjectByIdDoc(bearerAuth.name));
+register(PostCreateProjectDoc);
+register(GetAllTeamProjectsDoc);
+register(DeleteProjectDoc);
+register(PatchProjectRenameDoc);
 
 //project members
-openAPIRegistry.registerPath(GetProjectMembersDoc(bearerAuth.name));
-openAPIRegistry.registerPath(PostAddProjectMemberDoc(bearerAuth.name));
-openAPIRegistry.registerPath(DeleteProjectMemberDoc(bearerAuth.name));
-openAPIRegistry.registerPath(PostUpdateProjectMembersDoc(bearerAuth.name));
+register(GetProjectMembersDoc);
+register(PostAddProjectMemberDoc);
+register(DeleteProjectMemberDoc);
+register(PostUpdateProjectMembersDoc);
 
 //board main
-openAPIRegistry.registerPath(PostCreateBoardDoc(bearerAuth.name));
-openAPIRegistry.registerPath(GetProjectBoardsDoc(bearerAuth.name));
-openAPIRegistry.registerPath(GetBoardByIdDoc(bearerAuth.name));
-openAPIRegistry.registerPath(DeleteBoardByIdDoc(bearerAuth.name));
-openAPIRegistry.registerPath(PatchRenameBoardDoc(bearerAuth.name));
+register(PostCreateBoardDoc);
+register(GetProjectBoardsDoc);
+register(GetBoardByIdDoc);
+register(DeleteBoardByIdDoc);
+register(PatchRenameBoardDoc);
 
 //board strickers
-openAPIRegistry.registerPath(GetBoardStickersDoc(bearerAuth.name));
-openAPIRegistry.registerPath(PostCreateStickerDoc(bearerAuth.name));
-openAPIRegistry.registerPath(PatchUpdateStickerDoc(bearerAuth.name));
-openAPIRegistry.registerPath(DeleteStickerDoc(bearerAuth.name));
+register(GetBoardStickersDoc);
+register(PostCreateStickerDoc);
+register(PatchUpdateStickerDoc);
+register(DeleteStickerDoc);
 
 //column main
-openAPIRegistry.registerPath(PostCreateColumnDoc(bearerAuth.name));
-openAPIRegistry.registerPath(DeleteColumnByIdDoc(bearerAuth.name));
-openAPIRegistry.registerPath(PatchRenameColumnDoc(bearerAuth.name));
-openAPIRegistry.registerPath(PatchMoveColumnDoc(bearerAuth.name));
+register(PostCreateColumnDoc);
+register(DeleteColumnByIdDoc);
+register(PatchRenameColumnDoc);
+register(PatchMoveColumnDoc);
 
 //task main
-openAPIRegistry.registerPath(PostCreateTaskDoc(bearerAuth.name));
-openAPIRegistry.registerPath(GetTaskByIdDoc(bearerAuth.name));
-openAPIRegistry.registerPath(DeleteTaskByIdDoc(bearerAuth.name));
-openAPIRegistry.registerPath(PatchMoveTaskDoc(bearerAuth.name));
-openAPIRegistry.registerPath(PatchUpdateTaskDoc(bearerAuth.name));
+register(PostCreateTaskDoc);
+register(GetTaskByIdDoc);
+register(DeleteTaskByIdDoc);
+register(PatchMoveTaskDoc);
+register(PatchUpdateTaskDoc);
 
 // doc setup
 function getOpenApiDocumentation() {

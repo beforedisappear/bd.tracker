@@ -1,7 +1,11 @@
 import { ScrollArea, Checkbox } from '@/shared/ui/c';
+
 import { memo } from 'react';
-import type { CheckedState } from '@radix-ui/react-checkbox';
+import { useFormContext } from 'react-hook-form';
+
 import { cn } from '@/shared/lib/css';
+
+import type { CheckedState } from '@radix-ui/react-checkbox';
 
 type Member = {
   id: string;
@@ -25,14 +29,34 @@ export const MembersField = memo((props: Props) => {
     onCheckedChange,
   } = props;
 
-  // TODO: add "all" checkbox
+  const { setValue } = useFormContext();
+
+  if (members.length === 0) return null;
+
+  const onSetAll = (checked: CheckedState) => {
+    const values = Object.fromEntries(
+      members.map(member => [member.id, checked]),
+    );
+    setValue(inputName, values);
+  };
+
   return (
     <ScrollArea
       type='always'
       style={{ height: customHeight }}
-      className={cn('h-40 pr-4', { ['h-52']: isExpanded })}
-      scrollBar={{ className: '!right-[3px]' }}
+      className={cn('h-40 pr-4 mr-[-1rem]', { ['h-52']: isExpanded })}
     >
+      <Checkbox
+        name='all'
+        label='Все участники'
+        className='h-6 items-center'
+        withRightLabel
+        labelClassName='font-normal text-base truncate max-w-64'
+        onCheckedChange={onSetAll}
+      />
+
+      <div className='border-t border-y-accent-foreground/70 my-1 rounded-full' />
+
       {members.map(member => (
         <Checkbox
           key={member.id}

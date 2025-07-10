@@ -1,7 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
-import { projectQueries } from '@/entities/Project';
-import { useProject, useTenant } from '@/shared/lib/navigation';
 import { Skeleton } from '@/shared/ui/s';
+
+import { useQuery } from '@tanstack/react-query';
+import { useProject, useTenant } from '@/shared/lib/navigation';
+
+import { projectQueries } from '@/entities/Project';
 
 export function SetupProjectTitle() {
   const tenant = useTenant();

@@ -21,7 +21,6 @@ class ProjectService extends BaseService {
     return existingProjects.length === ids.length;
   }
 
-  //TODO: add permisson
   async createProject(args: {
     teamIdOrSlug: string;
     initiatorId: string;

@@ -307,22 +307,38 @@ class TeamService extends BaseService {
     const expSeconds = Number(process.env.TEAM_INVITATION_EXPIRATION);
     const expiresAt = new Date(Date.now() + expSeconds);
 
-    const invitation = await prismaService.teamInvitation.upsert({
-      where: { inviteeEmail },
-      update: {
-        token,
-        projectIds: projectIds.length > 0 ? projectIds : undefined,
-        expiresAt,
-      },
-      create: {
-        teamId: team.id,
-        inviterId: inviterId,
+    // Check if invitation already exists
+    const existingInvitation = await prismaService.teamInvitation.findFirst({
+      where: {
         inviteeEmail,
-        token,
-        projectIds: projectIds.length > 0 ? projectIds : undefined,
-        expiresAt,
+        teamId: team.id,
       },
     });
+
+    let invitation;
+    if (existingInvitation) {
+      // Update existing invitation
+      invitation = await prismaService.teamInvitation.update({
+        where: { id: existingInvitation.id },
+        data: {
+          token,
+          projectIds: projectIds.length > 0 ? projectIds : undefined,
+          expiresAt,
+        },
+      });
+    } else {
+      // Create new invitation
+      invitation = await prismaService.teamInvitation.create({
+        data: {
+          teamId: team.id,
+          inviterId: inviterId,
+          inviteeEmail,
+          token,
+          projectIds: projectIds.length > 0 ? projectIds : undefined,
+          expiresAt,
+        },
+      });
+    }
 
     await mailService.sendProposalOfInvitationMail({
       email: inviteeEmail,
@@ -361,17 +377,21 @@ class TeamService extends BaseService {
         });
     }
 
-    //TODO: add default project
-    prismaService.$transaction(async tx => {
-      const [user] = await Promise.all([
-        userService.createWithTx(tx, {
+    await prismaService.$transaction(async tx => {
+      let user = await tx.user.findUnique({
+        where: { email: invitation.inviteeEmail },
+      });
+
+      if (!user) {
+        user = await userService.createWithTx(tx, {
           email: invitation.inviteeEmail,
-        }),
-        tx.teamInvitation.update({
-          where: { id: invitationId },
-          data: { status: 'ACCEPTED' },
-        }),
-      ]);
+        });
+      }
+
+      await tx.teamInvitation.update({
+        where: { id: invitationId },
+        data: { status: 'ACCEPTED' },
+      });
 
       await tx.team.update({
         where: { id: invitation.teamId },
