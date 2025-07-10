@@ -15,7 +15,8 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 
-import { type Project } from '@/entities/Project';
+import type { Project } from '@/entities/Project';
+
 interface Props {
   projects: Project[];
   onClose?: () => void;
@@ -53,32 +54,54 @@ export function InviteToTeamForm(props: Props) {
       );
   });
 
+  const onSetAll = (checked: boolean) => {
+    const values = Object.fromEntries(
+      projects.map(project => [project.id, checked]),
+    );
+
+    form.setValue('projectIds', values);
+  };
+
   return (
     <Form {...form}>
       <form className='flex flex-col gap-6 h-full' onSubmit={onSubmit}>
         <Input name='inviteeEmail' label='E-mail адрес' />
 
-        <div className='flex flex-col gap-2'>
-          <span className='font-medium mb-1'>Также пригласить в проекты:</span>
+        {projects.length > 0 && (
+          <div className='flex flex-col gap-2'>
+            <span className='font-medium mb-1'>
+              Также пригласить в проекты:
+            </span>
 
-          <ScrollArea
-            type='always'
-            className={cn('flex flex-col gap-1 pl-2', {
-              'h-36': isDesktop,
-              'h-full max-h-[400px]': isMobile,
-            })}
-          >
-            {projects.map(project => (
+            <ScrollArea
+              type='always'
+              className={cn('flex flex-col gap-1 pr-4 mr-[-1rem]', {
+                'h-36': isDesktop,
+                'h-full max-h-[400px]': isMobile,
+              })}
+            >
               <Checkbox
-                key={project.id}
-                name={`projectIds.${project.id}`}
+                name='all'
+                label='Все проекты'
                 className='h-6 items-center'
                 labelClassName='font-normal text-base'
-                label={project.name}
+                onCheckedChange={onSetAll}
               />
-            ))}
-          </ScrollArea>
-        </div>
+
+              <div className='border-t border-y-accent-foreground/70 my-1 rounded-full' />
+
+              {projects.map(project => (
+                <Checkbox
+                  key={project.id}
+                  name={`projectIds.${project.id}`}
+                  className='h-6 items-center'
+                  labelClassName='font-normal text-base'
+                  label={project.name}
+                />
+              ))}
+            </ScrollArea>
+          </div>
+        )}
 
         <div className='flex justify-end gap-2 mt-auto'>
           {onClose && (
@@ -89,9 +112,7 @@ export function InviteToTeamForm(props: Props) {
 
           <Button
             type='submit'
-            className={cn('min-w-48', {
-              'w-full': isMobile,
-            })}
+            className={cn('min-w-48', { 'w-full': isMobile })}
             disabled={isPending}
           >
             {isPending ? (
