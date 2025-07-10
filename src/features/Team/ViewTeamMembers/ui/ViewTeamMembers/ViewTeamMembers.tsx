@@ -13,8 +13,6 @@ import {
   useTeamStore,
 } from '@/entities/Team';
 
-// TODO: add mobile view
-
 export function ViewTeamMembers() {
   const tenant = useTenant();
   const { setShowTeamMemberProfileModal } = useTeamStore(
@@ -47,6 +45,7 @@ export function ViewTeamMembers() {
       scrollBar={{ orientation: 'horizontal' }}
     >
       <ViewTeamMembersHeader />
+
       {teamMembers.map(member => (
         <ViewTeamMembersItem
           key={member.id}
