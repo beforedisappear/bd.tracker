@@ -13,10 +13,11 @@ import { teamQueries } from '../../api';
 interface Props {
   label?: string;
   withSearch?: boolean;
+  disabled?: boolean;
 }
 
 export function TeamMembersField(props: Props) {
-  const { label, withSearch = true } = props;
+  const { label, withSearch = true, disabled = false } = props;
 
   const tenant = useTenant();
   const [value, setValue] = useState('');
@@ -61,7 +62,11 @@ export function TeamMembersField(props: Props) {
         )}
 
         {isSuccess && (
-          <MembersField members={teamMembers} inputName='membersIds' />
+          <MembersField
+            members={teamMembers}
+            inputName='membersIds'
+            disabled={disabled}
+          />
         )}
       </div>
     </div>

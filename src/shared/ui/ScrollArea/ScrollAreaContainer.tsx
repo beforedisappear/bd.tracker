@@ -16,13 +16,21 @@ export type ScrollAreaContainerProps = ComponentPropsWithoutRef<
 > & {
   scrollBar?: ScrollBarProps;
   viewportRef?: RefObject<HTMLDivElement | null>;
+  viewportClassName?: string;
 };
 
 export const ScrollAreaContainer = forwardRef<
   ComponentRef<typeof ScrollAreaPrimitive.Root>,
   ScrollAreaContainerProps
 >((props, ref) => {
-  const { className, children, scrollBar, viewportRef, ...restProps } = props;
+  const {
+    className,
+    children,
+    scrollBar,
+    viewportRef,
+    viewportClassName,
+    ...restProps
+  } = props;
 
   return (
     <ScrollAreaPrimitive.Root
@@ -33,7 +41,7 @@ export const ScrollAreaContainer = forwardRef<
       <ScrollAreaPrimitive.Viewport
         ref={viewportRef}
         data-testid='scroll-area-viewport'
-        className={cn('h-full w-full rounded-[inherit]')}
+        className={cn('h-full w-full rounded-[inherit]', viewportClassName)}
       >
         {children}
       </ScrollAreaPrimitive.Viewport>

@@ -7,3 +7,12 @@ export interface InviteToTeamDtoReq {
   inviteeEmail: string;
   projectIds: string[];
 }
+
+export interface CheckTeamInvitationDtoReq {
+  idOrSlug: string;
+  inviteeEmail: string;
+}
+
+export interface CheckTeamInvitationDtoRes {
+  exists: boolean;
+}

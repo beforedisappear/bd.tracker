@@ -1,18 +1,19 @@
 'use client';
 
-import { SIDEBAR_WIDTH, SIDEBAR_WIDTH_ICON, useSidebar } from '@/shared/ui/c';
+import { PrivateHeaderLayout } from '../PrivateHeaderLayout/PrivateHeaderLayout';
+
 import { ManageBoards } from '@/features/Board/ManageBoards';
 import { CreateBoard } from '@/features/Board/CreateBoard';
 import { SetupProject } from '@/features/Project/SetupProject';
 
+import { useSidebar } from '@/shared/ui/c';
 import { usePathname } from 'next/navigation';
 import { useDeviceType } from '@/shared/lib/deviceType/c';
 
-import { cn } from '@/shared/lib/css';
-
+import { getHeaderWidth } from '../../lib/getHeaderWidth';
 import { getRouteByPath } from '@/shared/lib/routes';
+
 import { AppRoutes, routesMetadata } from '@/shared/config/routes';
-import { PrivateHeaderLayout } from '../PrivateHeaderLayout/PrivateHeaderLayout';
 
 type MapRouteToNode = Partial<Record<AppRoutes, React.ReactNode>>;
 
@@ -28,19 +29,11 @@ export function PrivateHeader({}: Props) {
     <span className='text-base font-medium'>{routesMetadata[route].title}</span>
   );
 
-  const getSidebarWidth = () => {
-    if (isMobile) return 'calc(100vw - 2rem)';
-
-    const sidebarWidth = isSidebarOpen ? SIDEBAR_WIDTH : SIDEBAR_WIDTH_ICON;
-
-    return `calc(100vw - ${sidebarWidth} - 2rem)`;
-  };
-
   const bottomContent: MapRouteToNode = {
     [AppRoutes.PROJECT_BY_ID]: (
       <div
-        className={cn('flex gap-2 items-center')}
-        style={{ width: getSidebarWidth() }}
+        className='flex gap-2 items-center'
+        style={{ width: getHeaderWidth({ isMobile, isSidebarOpen }) }}
       >
         <ManageBoards />
         <CreateBoard />

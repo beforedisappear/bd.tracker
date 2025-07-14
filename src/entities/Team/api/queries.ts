@@ -14,6 +14,7 @@ import { inviteToTeam } from './inviteToTeam';
 import { addAdmin } from './addAdmin';
 import { deleteAdmin } from './deleteAdmin';
 import { deleteTeamMember } from './deleteTeamMember';
+import { checkTeamInvitation } from './checkTeamInvitation';
 import type {
   Team,
   CreateTeamDtoReq,
@@ -27,6 +28,7 @@ import type {
   AddTeamMemberAdminDtoReq,
   DeleteTeamMemberAdminDtoReq,
   DeleteTeamMemberDtoReq,
+  CheckTeamInvitationDtoReq,
 } from '../models/types';
 import type { AxiosResponse } from 'axios';
 
@@ -145,6 +147,12 @@ export const teamQueries = {
     mutationOptions({
       mutationKey: ['inviteToTeam'],
       mutationFn: (dto: InviteToTeamDtoReq) => inviteToTeam(dto),
+    }),
+
+  checkTeamInvitation: () =>
+    mutationOptions({
+      mutationKey: ['checkTeamInvitation'],
+      mutationFn: (dto: CheckTeamInvitationDtoReq) => checkTeamInvitation(dto),
     }),
 
   deleteTeamMember: () =>

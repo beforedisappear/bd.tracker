@@ -246,7 +246,10 @@ class TeamService extends BaseService {
     if (!invitation || invitation.status === 'DECLINED') return false;
 
     if (invitation.status === 'ACCEPTED')
-      throw ApiError.conflict('User has already accepted the invitation');
+      throw ApiError.conflict(
+        'User has already accepted the invitation',
+        CodeError.TEAM_INVITATION_ALREADY_ACCEPTED,
+      );
 
     return true;
   }
@@ -269,7 +272,17 @@ class TeamService extends BaseService {
         'The invitation cannot be sent by a non-owner or non-admin',
       );
 
-    const existingUser = await userService.findOne({ idOrEmail: inviteeEmail });
+    const existingUser = await userService.findOne({
+      idOrEmail: inviteeEmail,
+      teamIdOrSlug: idOrSlug,
+    });
+
+    if (existingUser && existingUser.teams.some(t => t.id === team.id)) {
+      throw ApiError.badRequest(
+        'User is already in this team',
+        CodeError.TEAM_MEMBER_ALREADY_EXISTS,
+      );
+    }
 
     if (projectIds.length > 0) {
       //проверка на существование проекта + запрет на добавление в чужой проект

@@ -29,7 +29,11 @@ export function MainSidebar({}: Props) {
   }, [isMobile, pathname]);
 
   const headerItems = getMainSidebarHeaderItems();
-  const groupItems = getMainSidebarGroupItems(tenant, pathname, { projects });
+  const groupItems = getMainSidebarGroupItems({
+    tenant,
+    pathname,
+    projects,
+  });
   const footerItems = getSideBarFooterItems();
 
   return (

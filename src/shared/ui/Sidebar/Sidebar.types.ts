@@ -13,6 +13,7 @@ type MenuLink = {
   url: string;
   icon?: React.ReactNode;
   isActive?: boolean;
+  isDisabled?: boolean;
 };
 
 export type MenuSubItem =
@@ -29,7 +30,7 @@ type MenuItemLink = {
 
 type MenuItemWithSubItems = {
   type: 'item-sub';
-  trigger: { label: string; icon?: React.ReactNode };
+  trigger: { label: string; icon?: React.ReactNode; isDisabled?: boolean };
   subItems: MenuSubItem[];
   isDefaultOpen?: boolean;
 };

@@ -19,11 +19,15 @@ export const getMainSidebarHeaderItems = (): React.ReactNode[] => {
   return [<SidebarTrigger key='sb-trigger' className='w-fit ml-auto' />];
 };
 
-export const getMainSidebarGroupItems = (
-  tenant: string,
-  pathname: string,
-  other: { projects: MenuSubItem[] },
-): SidebarGroupEl[] => {
+type Args = {
+  tenant: string;
+  pathname: string;
+  projects: MenuSubItem[];
+};
+
+export const getMainSidebarGroupItems = (args: Args): SidebarGroupEl[] => {
+  const { tenant, pathname, projects } = args;
+
   const profileRoute = getProfileRoutePath(tenant);
   const teamRoute = getTeamRoutePath(tenant);
 
@@ -56,7 +60,7 @@ export const getMainSidebarGroupItems = (
             icon: <Folder />,
           },
           isDefaultOpen: true,
-          subItems: other.projects,
+          subItems: projects,
         },
         {
           type: 'item-sub' as const,

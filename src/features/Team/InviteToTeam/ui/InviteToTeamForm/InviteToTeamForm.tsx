@@ -16,13 +16,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 
 import type { Project } from '@/entities/Project';
+import { useDebounce } from '@/shared/lib/ui';
 
 interface Props {
   projects: Project[];
   onClose?: () => void;
 }
 
-//TODO: Добавить проверку на существование приглашения и уведомить об этом
 export function InviteToTeamForm(props: Props) {
   const { projects, onClose } = props;
 
@@ -37,6 +37,27 @@ export function InviteToTeamForm(props: Props) {
     teamQueries.inviteToTeam(),
   );
 
+  const { mutateAsync: checkTeamInvitation } = useMutation(
+    teamQueries.checkTeamInvitation(),
+  );
+
+  const unwrappedCheckTeamInvitation = async (
+    dto: Parameters<typeof checkTeamInvitation>[0],
+  ) => {
+    return checkTeamInvitation(dto)
+      .then(res => {
+        if (!res.exists) return;
+
+        toast.warning('Пользователь уже приглашен в команду');
+      })
+      .catch(e => toast.error(getErrorMessage(e)));
+  };
+
+  const debouncedCheckTeamInvitation = useDebounce(
+    unwrappedCheckTeamInvitation,
+    500,
+  );
+
   const onSubmit = form.handleSubmit(data => {
     const dto = {
       ...data,
@@ -47,8 +68,15 @@ export function InviteToTeamForm(props: Props) {
     };
 
     inviteToTeam(dto)
+      .then(({ data }) => {
+        const message =
+          data.result === 'notification'
+            ? 'Пользователь успешно приглашён в команду'
+            : 'Приглашение отправлено на указанный email';
+
+        toast.success(message);
+      })
       .then(() => form.reset())
-      .then(() => toast.success('Пользователь успешно приглашён'))
       .catch(e =>
         form.setError('inviteeEmail', { message: getErrorMessage(e) }),
       );
@@ -62,10 +90,27 @@ export function InviteToTeamForm(props: Props) {
     form.setValue('projectIds', values);
   };
 
+  const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = InviteToTeamSchema.safeParse({
+      inviteeEmail: e.target.value,
+    });
+
+    if (!value.success) return;
+
+    debouncedCheckTeamInvitation({
+      idOrSlug: tenant,
+      inviteeEmail: e.target.value,
+    });
+  };
+
   return (
     <Form {...form}>
       <form className='flex flex-col gap-6 h-full' onSubmit={onSubmit}>
-        <Input name='inviteeEmail' label='E-mail адрес' />
+        <Input
+          name='inviteeEmail'
+          label='E-mail адрес'
+          onChange={handleChangeEmail}
+        />
 
         {projects.length > 0 && (
           <div className='flex flex-col gap-2'>
@@ -113,7 +158,7 @@ export function InviteToTeamForm(props: Props) {
           <Button
             type='submit'
             className={cn('min-w-48', { 'w-full': isMobile })}
-            disabled={isPending}
+            disabled={isPending || !form.formState.isValid}
           >
             {isPending ? (
               <Loader2 className='w-4 h-4 animate-spin' />

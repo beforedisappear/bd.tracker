@@ -51,7 +51,6 @@ export function BoardTaskDateRangeMenuContent(props: Props) {
   };
 
   return (
-    //TODO: create input and reduce Calendar input
     <div className='flex flex-col p-2' onClick={e => e.stopPropagation()}>
       <Calendar
         mode='range'

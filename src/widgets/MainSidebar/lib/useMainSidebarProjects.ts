@@ -1,15 +1,19 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+import { useTeamAccess } from '@/entities/Team';
+
 import { projectQueries } from '@/entities/Project';
 import { getProjectByIdRoutePath } from '@/shared/config/routes';
 
 export const useMainSidebarProjects = (tenant: string) => {
-  const { data: projects, isLoading } = useQuery(
+  const { userId, isLoading: isTeamAccessLoading } = useTeamAccess();
+
+  const { data: projects, isLoading: isProjectsLoading } = useQuery(
     projectQueries.getProjectsByTeam({ teamIdOrSlug: tenant }),
   );
 
-  if (isLoading) {
+  if (isProjectsLoading || isTeamAccessLoading) {
     return new Array(5).fill('_').map(() => ({
       type: 'skeleton' as const,
     }));
@@ -20,6 +24,7 @@ export const useMainSidebarProjects = (tenant: string) => {
     link: {
       title: project.name,
       url: getProjectByIdRoutePath(tenant, project.id, project.firstBoardId),
+      isDisabled: !project.members.some(member => member.id === userId),
     },
   }));
 

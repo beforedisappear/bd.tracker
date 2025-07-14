@@ -1,7 +1,11 @@
 import { Loader2 } from 'lucide-react';
 
 import { Button, Form } from '@/shared/ui/c';
-import { TeamMembersField, type TeamMember } from '@/entities/Team';
+import {
+  TeamMembersField,
+  useTeamAccess,
+  type TeamMember,
+} from '@/entities/Team';
 
 import { projectQueries, getProjectMembersModal } from '@/entities/Project';
 
@@ -25,7 +29,7 @@ export function ManageProjectMembersForm(props: Props) {
   const { isDesktop, isMobile } = useDeviceType();
 
   const tenant = useTenant();
-
+  const { isEnoughAccess } = useTeamAccess();
   const { setShowProjectMembersModal, setCurrentProjectId } =
     usePrivateGlobalStore(getProjectMembersModal());
 
@@ -60,7 +64,7 @@ export function ManageProjectMembersForm(props: Props) {
   return (
     <Form {...form}>
       <form onSubmit={onSubmit} className='flex flex-col gap-4 flex-1'>
-        <TeamMembersField />
+        <TeamMembersField disabled={!isEnoughAccess} />
 
         <div className='flex justify-end gap-2'>
           {isDesktop && (
@@ -79,7 +83,7 @@ export function ManageProjectMembersForm(props: Props) {
               'w-36': isDesktop,
               'w-full': isMobile,
             })}
-            disabled={!form.formState.isDirty || isPending}
+            disabled={!form.formState.isDirty || isPending || !isEnoughAccess}
           >
             {isPending ? (
               <Loader2 className='w-4 h-4 animate-spin' />

@@ -18,6 +18,7 @@ interface Props {
   inputName?: string;
   onCheckedChange?: (checked: CheckedState, memberId: string) => void;
   customHeight?: number;
+  disabled?: boolean;
 }
 
 export const MembersField = memo((props: Props) => {
@@ -27,6 +28,7 @@ export const MembersField = memo((props: Props) => {
     customHeight,
     inputName = 'membersIds',
     onCheckedChange,
+    disabled = false,
   } = props;
 
   const { setValue } = useFormContext();
@@ -53,6 +55,7 @@ export const MembersField = memo((props: Props) => {
         withRightLabel
         labelClassName='font-normal text-base truncate max-w-64'
         onCheckedChange={onSetAll}
+        disabled={disabled}
       />
 
       <div className='border-t border-y-accent-foreground/70 my-1 rounded-full' />
@@ -68,6 +71,7 @@ export const MembersField = memo((props: Props) => {
           onCheckedChange={checked => {
             onCheckedChange?.(checked, member.id);
           }}
+          disabled={disabled}
         />
       ))}
     </ScrollArea>

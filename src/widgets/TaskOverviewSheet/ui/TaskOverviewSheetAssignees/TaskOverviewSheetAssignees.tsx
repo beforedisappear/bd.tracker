@@ -22,7 +22,7 @@ export function TaskOverviewSheetAssignees(props: Props) {
             src=''
             alt={author?.name}
             initials={author?.name}
-            className='flex justify-center items-center h-5 w-5'
+            className='flex justify-center items-center h-6 w-6 text-xs border-2 border-muted'
           />
         </div>
 

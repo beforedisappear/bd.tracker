@@ -7,8 +7,9 @@ import { ScrollArea, Button } from '@/shared/ui/c';
 import { useProject, useTenant } from '@/shared/lib/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { useRef, useState, useEffect } from 'react';
-import { boardQueries } from '@/entities/Board';
 import { useManageBoardsRealTime } from '../../lib';
+
+import { boardQueries } from '@/entities/Board';
 
 //TODO: mb add resize observer
 //TODO: add shadow for edges
