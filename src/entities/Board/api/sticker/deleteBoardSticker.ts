@@ -4,10 +4,10 @@ import {
   DeleteBoardStickerDtoRes,
 } from '../../model/types';
 
-export const deleteBoardSticker = (dto: DeleteBoardStickerDtoReq) => {
+export const deleteBoardSticker = async (dto: DeleteBoardStickerDtoReq) => {
   const { boardId, stickerId } = dto;
 
-  return apiClient.withAuth.delete<DeleteBoardStickerDtoRes>(
-    `/board/${boardId}/sticker/${stickerId}`,
-  );
+  return apiClient.withAuth
+    .delete<DeleteBoardStickerDtoRes>(`/board/${boardId}/sticker/${stickerId}`)
+    .then(res => res.data);
 };

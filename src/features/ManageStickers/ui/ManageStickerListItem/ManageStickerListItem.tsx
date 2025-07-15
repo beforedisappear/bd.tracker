@@ -22,10 +22,9 @@ export function ManageStickerListItem(props: Props) {
   );
 
   const onDeleteSticker = (id: string) => {
-    // TODO: add optimistic update
-    deleteSticker({ boardId, stickerId: id }).catch(e =>
-      toast.error(getErrorMessage(e)),
-    );
+    deleteSticker({ boardId, stickerId: id })
+      .then(() => {})
+      .catch(e => toast.error(getErrorMessage(e)));
   };
 
   if (isEditing)

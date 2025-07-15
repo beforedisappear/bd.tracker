@@ -4,11 +4,13 @@ import {
   UpdateBoardStickerDtoRes,
 } from '../../model/types';
 
-export const updateBoardSticker = (dto: UpdateBoardStickerDtoReq) => {
+export const updateBoardSticker = async (dto: UpdateBoardStickerDtoReq) => {
   const { boardId, stickerId, ...body } = dto;
 
-  return apiClient.withAuth.patch<UpdateBoardStickerDtoRes>(
-    `/board/${boardId}/sticker/${stickerId}`,
-    body,
-  );
+  return apiClient.withAuth
+    .patch<UpdateBoardStickerDtoRes>(
+      `/board/${boardId}/sticker/${stickerId}`,
+      body,
+    )
+    .then(res => res.data);
 };

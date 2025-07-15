@@ -43,6 +43,12 @@ import {
   updateTaskQueryUpdater,
 } from '../model/queryUpdaters/task';
 
+import {
+  deleteStickerOnBoardQueryUpdater,
+  updateStickerOnBoardQueryUpdater,
+  updateStickerQueryUpdater,
+} from '../model/queryUpdaters/sticker';
+
 import type {
   GetAllBoardsDtoReq,
   CreateBoardDtoReq,
@@ -63,6 +69,7 @@ import type {
   DeleteBoardStickerDtoReq,
   RenameBoardDtoReq,
   BoardByIdParams,
+  Sticker,
 } from '../model/types';
 
 export const boardQueries = {
@@ -257,7 +264,6 @@ export const stickerQueries = {
     queryOptions({
       queryKey: [...stickerQueries.allStickers(dto.boardId)],
       queryFn: () => getAllBoardStickers(dto),
-      select: res => res.data,
     }),
 
   createSticker: () =>
@@ -272,18 +278,49 @@ export const stickerQueries = {
   updateSticker: () =>
     mutationOptions({
       mutationFn: (dto: UpdateBoardStickerDtoReq) => updateBoardSticker(dto),
-      onSuccess: (_, { boardId }) =>
-        queryClient.invalidateQueries({
-          queryKey: [...stickerQueries.allStickers(boardId)],
-        }),
+      onSuccess: (res, { boardId }) => {
+        queryClient.setQueriesData(
+          { queryKey: [...stickerQueries.allStickers(boardId)] },
+          updateStickerQueryUpdater(res),
+        );
+
+        queryClient.setQueriesData(
+          boardQueries.findBoardQueryKey(boardId),
+          updateStickerOnBoardQueryUpdater(res),
+        );
+      },
     }),
 
   deleteSticker: () =>
     mutationOptions({
       mutationFn: (dto: DeleteBoardStickerDtoReq) => deleteBoardSticker(dto),
-      onSuccess: (_, { boardId }) =>
-        queryClient.invalidateQueries({
-          queryKey: [...stickerQueries.allStickers(boardId)],
-        }),
+      onMutate: async ({ boardId, stickerId }) => {
+        const queryKey = [...stickerQueries.allStickers(boardId)];
+
+        await queryClient.cancelQueries({
+          queryKey,
+        });
+
+        const previousStickers = queryClient.getQueryData(queryKey);
+
+        queryClient.setQueryData(queryKey, (old: Sticker[]) => {
+          return old.filter(sticker => sticker.id !== stickerId);
+        });
+
+        return { previousStickers };
+      },
+      onError: (_err, { boardId }, context) => {
+        if (!context?.previousStickers) return;
+
+        const queryKey = [...stickerQueries.allStickers(boardId)];
+
+        queryClient.setQueryData(queryKey, context.previousStickers);
+      },
+      onSuccess: (_, args) => {
+        queryClient.setQueriesData(
+          boardQueries.findBoardQueryKey(args.boardId),
+          deleteStickerOnBoardQueryUpdater(args),
+        );
+      },
     }),
 };

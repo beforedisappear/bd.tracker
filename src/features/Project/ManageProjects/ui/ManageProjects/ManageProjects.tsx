@@ -19,7 +19,6 @@ export function ManageProjects() {
     isLoading: isTeamAccessLoading,
   } = useTeamAccess();
 
-  // TODO: add pagination
   const {
     data,
     isLoading: isProjectsLoading,
