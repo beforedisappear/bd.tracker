@@ -115,17 +115,15 @@ class ColumnService extends BaseService {
     const moveCount = movedColumn.board.columnMoveCount;
     const shouldNormalize = moveCount >= NORMALIZATION_COLUMN_THRESHOLD;
 
-    let newOrder = 0;
+    let newOrder = order;
 
-    const updatedColumn = await prismaService.column.update({
+    await prismaService.column.update({
       where: { id },
       data: {
         order,
         board: { update: { columnMoveCount: moveCount + 1 } },
       },
     });
-
-    newOrder = updatedColumn.order;
 
     if (shouldNormalize) {
       const normalizedOrder = await this.normalizeOrder(

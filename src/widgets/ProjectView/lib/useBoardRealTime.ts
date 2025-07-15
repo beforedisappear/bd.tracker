@@ -21,6 +21,15 @@ import {
   TaskUpdatedActionSchema,
 } from '@/entities/Board';
 
+const isNormalizedTypeGuard = (
+  res: unknown,
+): res is { isNormalized: boolean } =>
+  typeof res === 'object' &&
+  res !== null &&
+  'isNormalized' in res &&
+  typeof (res as { isNormalized: boolean }).isNormalized === 'boolean' &&
+  (res as { isNormalized: boolean }).isNormalized;
+
 export const useBoardRealTime = (boardId: string) => {
   const queryClient = useQueryClient();
 
@@ -50,7 +59,18 @@ export const useBoardRealTime = (boardId: string) => {
   useBoardSubscription({
     ...queryOptions,
     schema: ColumnMovedActionSchema,
-    updater: moveColumnQueryUpdater,
+    updater: res => {
+      if (isNormalizedTypeGuard(res)) {
+        // обнуляем кеш после нормализации веса в БД
+        queryClient.invalidateQueries({
+          queryKey: [...boardQueries.boardById(boardId)],
+          exact: false,
+        });
+        return null;
+      }
+
+      return moveColumnQueryUpdater(res);
+    },
   });
 
   useBoardSubscription({
@@ -68,7 +88,18 @@ export const useBoardRealTime = (boardId: string) => {
   useBoardSubscription({
     ...queryOptions,
     schema: TaskMovedActionSchema,
-    updater: moveTaskQueryUpdater,
+    updater: res => {
+      if (isNormalizedTypeGuard(res)) {
+        // обнуляем кеш после нормализации веса в БД
+        queryClient.invalidateQueries({
+          queryKey: [...boardQueries.boardById(boardId)],
+          exact: false,
+        });
+        return null;
+      }
+
+      return moveTaskQueryUpdater(res);
+    },
   });
 
   useBoardSubscription({

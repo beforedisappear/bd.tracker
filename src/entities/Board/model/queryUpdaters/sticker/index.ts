@@ -1,3 +1,3 @@
-export { updateStickerQueryUpdater } from './updateStickerQueryUpdater';
-export { updateStickerOnBoardQueryUpdater } from './updateStickerOnBoardQueryUpdater';
-export { deleteStickerOnBoardQueryUpdater } from './deleteStickerOnBoardQueryUpdater';
+export { updateStickerQueryUpdater } from './updateStickerQuery';
+export { updateStickerOnBoardQueryUpdater } from './updateStickerOnBoard';
+export { deleteStickerOnBoardQueryUpdater } from './deleteStickerOnBoard';

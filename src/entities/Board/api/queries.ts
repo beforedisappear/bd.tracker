@@ -33,6 +33,7 @@ import {
 import {
   createColumnQueryUpdater,
   deleteColumnQueryUpdater,
+  moveColumnQueryUpdater,
   renameColumnQueryUpdater,
 } from '../model/queryUpdaters/column';
 
@@ -51,23 +52,9 @@ import {
 
 import type {
   GetAllBoardsDtoReq,
-  CreateBoardDtoReq,
-  DeleteBoardDtoReq,
   GetBoardByIdDtoReq,
-  CreateColumnDtoReq,
-  DeleteColumnDtoReq,
-  CreateTaskDtoReq,
-  MoveColumnDtoReq,
-  MoveTaskDtoReq,
-  DeleteTaskDtoReq,
-  RenameColumnDtoReq,
-  UpdateTaskDtoReq,
   GetTaskByIdDtoReq,
   GetAllBoardStickersDtoReq,
-  CreateBoardStickerDtoReq,
-  UpdateBoardStickerDtoReq,
-  DeleteBoardStickerDtoReq,
-  RenameBoardDtoReq,
   BoardByIdParams,
   Sticker,
 } from '../model/types';
@@ -123,7 +110,7 @@ export const boardQueries = {
 
   createBoard: () =>
     mutationOptions({
-      mutationFn: (dto: CreateBoardDtoReq) => createBoard(dto),
+      mutationFn: createBoard,
       onSuccess: (res, args) => {
         const { projectId } = args;
 
@@ -135,7 +122,7 @@ export const boardQueries = {
 
   deleteBoard: () =>
     mutationOptions({
-      mutationFn: (dto: DeleteBoardDtoReq) => deleteBoard(dto),
+      mutationFn: deleteBoard,
       onSuccess: (res, { projectId, boardId }) => {
         const queryKey = [...boardQueries.allBoards(projectId)];
 
@@ -150,7 +137,7 @@ export const boardQueries = {
 
   renameBoard: () =>
     mutationOptions({
-      mutationFn: (dto: RenameBoardDtoReq) => renameBoard(dto),
+      mutationFn: renameBoard,
       onSuccess: (_, args) => {
         const { projectId } = args;
 
@@ -164,7 +151,7 @@ export const boardQueries = {
 export const columnQueries = {
   createColumn: () =>
     mutationOptions({
-      mutationFn: (dto: CreateColumnDtoReq) => createColumn(dto),
+      mutationFn: createColumn,
       onSuccess: (res, { boardId }) =>
         queryClient.setQueriesData(
           boardQueries.findBoardQueryKey(boardId),
@@ -174,7 +161,7 @@ export const columnQueries = {
 
   renameColumn: () =>
     mutationOptions({
-      mutationFn: (dto: RenameColumnDtoReq) => renameColumn(dto),
+      mutationFn: renameColumn,
       onSuccess: (_, args) => {
         queryClient.setQueriesData(
           boardQueries.findBoardQueryKey(args.boardId),
@@ -185,7 +172,7 @@ export const columnQueries = {
 
   deleteColumn: () =>
     mutationOptions({
-      mutationFn: (dto: DeleteColumnDtoReq) => deleteColumn(dto),
+      mutationFn: deleteColumn,
       onSuccess: (res, { boardId }) =>
         queryClient.setQueriesData(
           boardQueries.findBoardQueryKey(boardId),
@@ -195,7 +182,23 @@ export const columnQueries = {
 
   moveColumn: () =>
     mutationOptions({
-      mutationFn: (dto: MoveColumnDtoReq) => moveColumn(dto),
+      mutationFn: moveColumn,
+      onSuccess: (res, { boardId }) => {
+        if (res.isNormalized) {
+          // обнуляем кеш после нормализации веса в БД
+          queryClient.invalidateQueries({
+            queryKey: [...boardQueries.boardById(boardId)],
+            exact: false,
+          });
+
+          return;
+        }
+
+        queryClient.setQueriesData(
+          boardQueries.findBoardQueryKey(boardId),
+          moveColumnQueryUpdater(res),
+        );
+      },
     }),
 };
 
@@ -212,7 +215,7 @@ export const taskQueries = {
 
   createTask: () =>
     mutationOptions({
-      mutationFn: (dto: CreateTaskDtoReq) => createTask(dto),
+      mutationFn: createTask,
       onSuccess: (res, { boardId }) =>
         queryClient.setQueriesData(
           boardQueries.findBoardQueryKey(boardId),
@@ -222,7 +225,7 @@ export const taskQueries = {
 
   deleteTask: () =>
     mutationOptions({
-      mutationFn: (dto: DeleteTaskDtoReq) => deleteTask(dto),
+      mutationFn: deleteTask,
       onSuccess: (_, args) =>
         queryClient.setQueriesData(
           boardQueries.findBoardQueryKey(args.boardId),
@@ -232,8 +235,18 @@ export const taskQueries = {
 
   moveTask: () =>
     mutationOptions({
-      mutationFn: (dto: MoveTaskDtoReq) => moveTask(dto),
+      mutationFn: moveTask,
       onSuccess: (res, args) => {
+        if (res.isNormalized) {
+          // обнуляем кеш после нормализации веса в БД
+          queryClient.invalidateQueries({
+            queryKey: [...boardQueries.boardById(args.boardId)],
+            exact: false,
+          });
+
+          return;
+        }
+
         queryClient.setQueriesData(
           boardQueries.findBoardQueryKey(args.boardId),
           moveTaskQueryUpdater(res),
@@ -243,7 +256,7 @@ export const taskQueries = {
 
   updateTask: () =>
     mutationOptions({
-      mutationFn: (dto: UpdateTaskDtoReq) => updateTask(dto),
+      mutationFn: updateTask,
       onSuccess: (res, { boardId, taskId }) => {
         queryClient.setQueriesData(
           boardQueries.findBoardQueryKey(boardId),
@@ -268,7 +281,7 @@ export const stickerQueries = {
 
   createSticker: () =>
     mutationOptions({
-      mutationFn: (dto: CreateBoardStickerDtoReq) => createBoardSticker(dto),
+      mutationFn: createBoardSticker,
       onSuccess: (_, { boardId }) =>
         queryClient.invalidateQueries({
           queryKey: [...stickerQueries.allStickers(boardId)],
@@ -277,7 +290,7 @@ export const stickerQueries = {
 
   updateSticker: () =>
     mutationOptions({
-      mutationFn: (dto: UpdateBoardStickerDtoReq) => updateBoardSticker(dto),
+      mutationFn: updateBoardSticker,
       onSuccess: (res, { boardId }) => {
         queryClient.setQueriesData(
           { queryKey: [...stickerQueries.allStickers(boardId)] },
@@ -293,7 +306,7 @@ export const stickerQueries = {
 
   deleteSticker: () =>
     mutationOptions({
-      mutationFn: (dto: DeleteBoardStickerDtoReq) => deleteBoardSticker(dto),
+      mutationFn: deleteBoardSticker,
       onMutate: async ({ boardId, stickerId }) => {
         const queryKey = [...stickerQueries.allStickers(boardId)];
 
