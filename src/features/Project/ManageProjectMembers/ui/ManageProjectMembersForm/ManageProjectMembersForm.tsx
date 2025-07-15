@@ -15,10 +15,11 @@ import { useTenant } from '@/shared/lib/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 
+import { cn } from '@/shared/lib/css';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ManageProjectMembersSchema } from '../../model/schemes';
-import { cn } from '@/shared/lib/css';
+
 interface Props {
   projectId: string;
   data: (TeamMember & { isProjectMember: boolean })[];
@@ -26,20 +27,21 @@ interface Props {
 
 export function ManageProjectMembersForm(props: Props) {
   const { data, projectId } = props;
-  const { isDesktop, isMobile } = useDeviceType();
 
   const tenant = useTenant();
+  const { isDesktop, isMobile } = useDeviceType();
   const { isEnoughAccess } = useTeamAccess();
   const { setShowProjectMembersModal, setCurrentProjectId } =
     usePrivateGlobalStore(getProjectMembersModal());
 
+  const memberValues = data.map(member => [member.id, member.isProjectMember]);
+
   const form = useForm<z.infer<typeof ManageProjectMembersSchema>>({
     resolver: zodResolver(ManageProjectMembersSchema),
     defaultValues: {
+      all: memberValues.every(member => member[1]),
       keyword: '',
-      membersIds: Object.fromEntries(
-        data.map(member => [member.id, member.isProjectMember]),
-      ),
+      membersIds: Object.fromEntries(memberValues),
     },
   });
 
@@ -52,11 +54,7 @@ export function ManageProjectMembersForm(props: Props) {
       key => data.membersIds?.[key],
     );
 
-    updateProjectMembers({
-      projectId,
-      teamIdOrSlug: tenant,
-      membersIds,
-    })
+    updateProjectMembers({ projectId, teamIdOrSlug: tenant, membersIds })
       .then(() => setShowProjectMembersModal(false))
       .then(() => setCurrentProjectId(null));
   });

@@ -27,8 +27,8 @@ export const MembersField = memo((props: Props) => {
     isExpanded,
     customHeight,
     inputName = 'membersIds',
-    onCheckedChange,
     disabled = false,
+    onCheckedChange,
   } = props;
 
   const { setValue } = useFormContext();
@@ -46,9 +46,10 @@ export const MembersField = memo((props: Props) => {
     <ScrollArea
       type='always'
       style={{ height: customHeight }}
-      className={cn('h-40 pr-4 mr-[-1rem]', { ['h-52']: isExpanded })}
+      className={cn('h-40 pr-4 -mr-4', { ['h-52']: isExpanded })}
     >
       <Checkbox
+        key='all'
         name='all'
         label='Все участники'
         className='h-6 items-center'
@@ -58,7 +59,7 @@ export const MembersField = memo((props: Props) => {
         disabled={disabled}
       />
 
-      <div className='border-t border-y-accent-foreground/70 my-1 rounded-full' />
+      <div className='border-b-2 border-y-primary/50 my-1 rounded-full' />
 
       {members.map(member => (
         <Checkbox
@@ -68,9 +69,7 @@ export const MembersField = memo((props: Props) => {
           className='h-6 items-center'
           labelClassName='font-normal text-base truncate max-w-64'
           withRightLabel
-          onCheckedChange={checked => {
-            onCheckedChange?.(checked, member.id);
-          }}
+          onCheckedChange={checked => onCheckedChange?.(checked, member.id)}
           disabled={disabled}
         />
       ))}

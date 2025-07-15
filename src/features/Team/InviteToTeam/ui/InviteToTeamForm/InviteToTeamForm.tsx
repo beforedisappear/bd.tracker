@@ -48,7 +48,7 @@ export function InviteToTeamForm(props: Props) {
       .then(res => {
         if (!res.exists) return;
 
-        toast.warning('Пользователь уже приглашен в команду');
+        toast.warning('Пользователь уже имеет действующее приглашение');
       })
       .catch(e => toast.error(getErrorMessage(e)));
   };
@@ -133,7 +133,7 @@ export function InviteToTeamForm(props: Props) {
                 onCheckedChange={onSetAll}
               />
 
-              <div className='border-t border-y-accent-foreground/70 my-1 rounded-full' />
+              <div className='border-b-2 border-y-primary/50 my-1 rounded-full' />
 
               {projects.map(project => (
                 <Checkbox

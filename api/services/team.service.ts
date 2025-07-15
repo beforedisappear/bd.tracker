@@ -245,11 +245,22 @@ class TeamService extends BaseService {
 
     if (!invitation || invitation.status === 'DECLINED') return false;
 
-    if (invitation.status === 'ACCEPTED')
+    const existingMember = await prismaService.team.findFirst({
+      where: {
+        OR: [{ id: idOrSlug }, { slug: idOrSlug }],
+        members: {
+          some: { email: inviteeEmail },
+        },
+      },
+    });
+
+    if (invitation.status === 'ACCEPTED' && existingMember)
       throw ApiError.conflict(
         'User has already accepted the invitation',
-        CodeError.TEAM_INVITATION_ALREADY_ACCEPTED,
+        CodeError.TEAM_MEMBER_ALREADY_EXISTS,
       );
+
+    if (invitation.expiresAt < new Date()) return false;
 
     return true;
   }

@@ -1,6 +1,6 @@
+import { ErrorBoundary } from '@/shared/ui/c';
 import { ManageProjectMembersContentLoading } from './ManageProjectMembersContent.loading';
 import { ManageProjectMembersForm } from '../ManageProjectMembersForm/ManageProjectMembersForm';
-import { ErrorBoundary } from '@/shared/ui/c';
 
 import { useTenant } from '@/shared/lib/navigation/useTenant';
 import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
