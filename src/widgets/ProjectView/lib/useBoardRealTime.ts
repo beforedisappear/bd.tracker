@@ -3,6 +3,7 @@ import {
   useBoardSubscription,
   boardQueries,
   taskQueries,
+  stickerQueries,
   createColumnQueryUpdater,
   ColumnCreatedActionSchema,
   deleteColumnQueryUpdater,
@@ -25,7 +26,6 @@ import {
   createStickerQueryUpdater,
   deleteStickerOnBoardQueryUpdater,
   updateStickerOnBoardQueryUpdater,
-  stickerQueries,
   deleteStickerQueryUpdater,
   updateStickerQueryUpdater,
 } from '@/entities/Board';

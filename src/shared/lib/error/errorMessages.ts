@@ -8,7 +8,7 @@ type CodeError =
   | '1024'
   | '1025';
 
-export const errorMessagesMap: { [Key in CodeError]: string } = {
+export const errorMessagesMap: Record<string, string> = {
   '1004': 'Неправильный или истекший код',
   '1010': 'E-mail уже занят',
   '1020': 'Команда с таким именем уже существует',
@@ -17,4 +17,4 @@ export const errorMessagesMap: { [Key in CodeError]: string } = {
   '1023': 'Команда может быть удалена только владельцем',
   '1024': 'Вы не администратор в этой компании',
   '1025': 'Пользователь уже в команде',
-};
+} satisfies { [Key in CodeError]: string };

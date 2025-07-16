@@ -3,12 +3,16 @@
 import { PrivateHeaderLayout } from '../PrivateHeaderLayout/PrivateHeaderLayout';
 
 import { ManageBoards } from '@/features/Board/ManageBoards';
-import { CreateBoard } from '@/features/Board/CreateBoard';
+import {
+  CreateBoard,
+  CREATE_BOARD_BTN_WIDTH,
+} from '@/features/Board/CreateBoard';
 import { SetupProject } from '@/features/Project/SetupProject';
 
 import { useSidebar } from '@/shared/ui/c';
 import { usePathname } from 'next/navigation';
 import { useDeviceType } from '@/shared/lib/deviceType/c';
+import { useRef } from 'react';
 
 import { getHeaderWidth } from '../../lib/getHeaderWidth';
 import { getRouteByPath } from '@/shared/lib/routes';
@@ -24,6 +28,7 @@ export function PrivateHeader({}: Props) {
   const { isSidebarOpen } = useSidebar();
   const pathname = usePathname()!;
   const route = getRouteByPath(pathname);
+  const bottomContentRef = useRef<HTMLDivElement>(null);
 
   const title = (
     <span className='text-base font-medium'>{routesMetadata[route].title}</span>
@@ -32,10 +37,14 @@ export function PrivateHeader({}: Props) {
   const bottomContent: MapRouteToNode = {
     [AppRoutes.PROJECT_BY_ID]: (
       <div
-        className='flex gap-2 items-center'
+        ref={bottomContentRef}
+        className='flex items-center gap-2'
         style={{ width: getHeaderWidth({ isMobile, isSidebarOpen }) }}
       >
-        <ManageBoards />
+        <ManageBoards
+          containerRef={bottomContentRef}
+          occupiedWidth={CREATE_BOARD_BTN_WIDTH}
+        />
         <CreateBoard />
       </div>
     ),
