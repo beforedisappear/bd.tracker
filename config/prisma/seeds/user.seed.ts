@@ -1,15 +1,12 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../generated/client/index.js';
 
 const prisma = new PrismaClient();
 
-export const createUsers = async () => {
-  const user1 = await prisma.user.create({
-    data: { email: `${Math.random()}@gmail.com` },
+export const createUser = async (email: string) => {
+  console.log('USER', email);
+  const user = await prisma.user.create({
+    data: { email: email, name: `User ${email.split('@')[0]}` },
   });
 
-  const testUser = await prisma.user.create({
-    data: { email: process.env.TEST_USER_EMAIL },
-  });
-
-  return { user1, testUser };
+  return user;
 };

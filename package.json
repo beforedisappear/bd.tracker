@@ -42,7 +42,7 @@
     "docker:down:local": "docker-compose -f ./config/docker/docker-compose-local.yml down"
   },
   "prisma": {
-    "seed": "tsx ./config/prisma/seeds/seed.ts"
+    "seed": "ts-node ./config/prisma/seeds/seed.ts"
   },
   "lint-staged": {
     "*.{js,ts,tsx,jsx,json,css,scss,md}": [
