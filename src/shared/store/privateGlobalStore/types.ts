@@ -1,21 +1,19 @@
-export interface IPrivateGlobalStoreState {
+import type {
+  IProjectSliceActions,
+  IProjectSliceState,
+} from './slices/projectSlice';
+import type { IBoardSliceActions, IBoardSliceState } from './slices/boardSlice';
+
+export interface IPrivateGlobalStoreState
+  extends IProjectSliceState,
+    IBoardSliceState {
   teamIdBySlugMap: Record<string, string>;
-  showProjectMembersModal: boolean;
-  showDeleteProjectModal: boolean;
-  showDeleteBoardModal: boolean;
-  showManageStickersModal: boolean;
-  currentProjectId: string | null;
-  currentBoardId: string | null;
 }
 
-export interface IPrivateGlobalStoreActions {
+export interface IPrivateGlobalStoreActions
+  extends IProjectSliceActions,
+    IBoardSliceActions {
   setTeamIdBySlugMap: (map: Record<string, string>) => void;
-  setShowProjectMembersModal: (show: boolean) => void;
-  setShowDeleteProjectModal: (show: boolean) => void;
-  setShowDeleteBoardModal: (show: boolean) => void;
-  setShowManageStickersModal: (show: boolean) => void;
-  setCurrentProjectId: (id: string | null) => void;
-  setCurrentBoardId: (id: string | null) => void;
 }
 
 export type PrivateGlobalStore = IPrivateGlobalStoreState &

@@ -25,6 +25,7 @@ interface Props {
   color: Color;
   titleClassName?: string;
   offCheckTitleStyle?: boolean;
+  fullTitle?: boolean;
   onClose: () => void;
 }
 
@@ -36,6 +37,7 @@ export function BoardTaskHeader(props: Props) {
     color,
     titleClassName,
     offCheckTitleStyle = false,
+    fullTitle = false,
     onClose,
   } = props;
 
@@ -74,6 +76,7 @@ export function BoardTaskHeader(props: Props) {
           {
             'line-through text-muted-foreground opacity-50':
               isChecked && !offCheckTitleStyle,
+            'line-clamp-none text-wrap break-all': fullTitle,
           },
         )}
         initialName={title}

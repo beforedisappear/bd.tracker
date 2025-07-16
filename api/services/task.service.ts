@@ -218,9 +218,9 @@ class TaskService extends BaseService {
     const shouldNormalize =
       targetColumnMoveCount >= NORMALIZATION_TASK_THRESHOLD;
 
-    let newOrder = 0;
+    let newOrder = order;
 
-    const [updatedTask] = await prismaService.$transaction(async tx => {
+    await prismaService.$transaction(async tx => {
       return Promise.all([
         tx.task.update({
           where: { id },
@@ -232,8 +232,6 @@ class TaskService extends BaseService {
         }),
       ]);
     });
-
-    newOrder = updatedTask.order;
 
     if (shouldNormalize) {
       const normalizedOrder = await this.normalizeOrder(targetColumnId, id);

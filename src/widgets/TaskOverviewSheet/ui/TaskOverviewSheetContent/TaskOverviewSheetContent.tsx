@@ -24,6 +24,7 @@ export function TaskOverviewSheetContent(props: Props) {
         color={task.color}
         titleClassName='text-xl font-semibold'
         offCheckTitleStyle
+        fullTitle
         onClose={onClose}
       />
 

@@ -1,7 +1,11 @@
 import { Loader2 } from 'lucide-react';
 
 import { Button, Form } from '@/shared/ui/c';
-import { TeamMembersField, type TeamMember } from '@/entities/Team';
+import {
+  TeamMembersField,
+  useTeamAccess,
+  type TeamMember,
+} from '@/entities/Team';
 
 import { projectQueries, getProjectMembersModal } from '@/entities/Project';
 
@@ -11,10 +15,11 @@ import { useTenant } from '@/shared/lib/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 
+import { cn } from '@/shared/lib/css';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ManageProjectMembersSchema } from '../../model/schemes';
-import { cn } from '@/shared/lib/css';
+
 interface Props {
   projectId: string;
   data: (TeamMember & { isProjectMember: boolean })[];
@@ -22,20 +27,21 @@ interface Props {
 
 export function ManageProjectMembersForm(props: Props) {
   const { data, projectId } = props;
-  const { isDesktop, isMobile } = useDeviceType();
 
   const tenant = useTenant();
-
+  const { isDesktop, isMobile } = useDeviceType();
+  const { isEnoughAccess } = useTeamAccess();
   const { setShowProjectMembersModal, setCurrentProjectId } =
     usePrivateGlobalStore(getProjectMembersModal());
+
+  const memberValues = data.map(member => [member.id, member.isProjectMember]);
 
   const form = useForm<z.infer<typeof ManageProjectMembersSchema>>({
     resolver: zodResolver(ManageProjectMembersSchema),
     defaultValues: {
+      all: memberValues.every(member => member[1]),
       keyword: '',
-      membersIds: Object.fromEntries(
-        data.map(member => [member.id, member.isProjectMember]),
-      ),
+      membersIds: Object.fromEntries(memberValues),
     },
   });
 
@@ -48,11 +54,7 @@ export function ManageProjectMembersForm(props: Props) {
       key => data.membersIds?.[key],
     );
 
-    updateProjectMembers({
-      projectId,
-      teamIdOrSlug: tenant,
-      membersIds,
-    })
+    updateProjectMembers({ projectId, teamIdOrSlug: tenant, membersIds })
       .then(() => setShowProjectMembersModal(false))
       .then(() => setCurrentProjectId(null));
   });
@@ -60,7 +62,7 @@ export function ManageProjectMembersForm(props: Props) {
   return (
     <Form {...form}>
       <form onSubmit={onSubmit} className='flex flex-col gap-4 flex-1'>
-        <TeamMembersField />
+        <TeamMembersField disabled={!isEnoughAccess} />
 
         <div className='flex justify-end gap-2'>
           {isDesktop && (
@@ -79,7 +81,7 @@ export function ManageProjectMembersForm(props: Props) {
               'w-36': isDesktop,
               'w-full': isMobile,
             })}
-            disabled={!form.formState.isDirty || isPending}
+            disabled={!form.formState.isDirty || isPending || !isEnoughAccess}
           >
             {isPending ? (
               <Loader2 className='w-4 h-4 animate-spin' />

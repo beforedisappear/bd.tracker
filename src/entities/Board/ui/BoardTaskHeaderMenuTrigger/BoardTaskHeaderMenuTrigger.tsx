@@ -17,7 +17,7 @@ export function BoardTaskHeaderMenuTrigger(props: Props) {
   return (
     <Button
       variant='ghost'
-      className='h-6 w-6 p-0'
+      className='h-6 w-6 p-0 flex-shrink-0'
       onClick={handleClick}
       {...restProps}
     >

@@ -1,5 +1,5 @@
 import { apiClient } from '@/shared/api/apiClient';
-import { createQueryString } from '@/shared/lib/url/createQueryString/createQueryString';
+import { createQueryString } from '@/shared/lib/url';
 import type { GetBoardByIdDtoReq, GetBoardByIdDtoRes } from '../../model/types';
 
 export const getBoardById = async (dto: GetBoardByIdDtoReq) => {

@@ -1,6 +1,6 @@
+import { ErrorBoundary } from '@/shared/ui/c';
 import { ManageProjectMembersContentLoading } from './ManageProjectMembersContent.loading';
 import { ManageProjectMembersForm } from '../ManageProjectMembersForm/ManageProjectMembersForm';
-import { ErrorBoundary } from '@/shared/ui/c';
 
 import { useTenant } from '@/shared/lib/navigation/useTenant';
 import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
@@ -40,20 +40,12 @@ export function ManageProjectMembersContent() {
 
   if (isProjectMembersFetching || isTeamMembersFetching)
     return <ManageProjectMembersContentLoading />;
-  else if (isTeamMembersError)
+  else if (isTeamMembersError || isProjectMembersError)
     return (
       <ErrorBoundary
-        error={teamMembersError}
+        error={isTeamMembersError ? teamMembersError : projectMembersError}
         className='m-auto'
-        reset={refetchTeamMembers}
-      />
-    );
-  else if (isProjectMembersError)
-    return (
-      <ErrorBoundary
-        error={projectMembersError}
-        className='m-auto'
-        reset={refetchProjectMembers}
+        reset={isTeamMembersError ? refetchTeamMembers : refetchProjectMembers}
       />
     );
 

@@ -3,10 +3,9 @@ import { apiClient } from '@/shared/api/c';
 import type { MoveColumnDtoReq, MoveColumnDtoRes } from '../../model/types';
 
 export const moveColumn = async (dto: MoveColumnDtoReq) => {
-  const { columnId, ...rest } = dto;
+  const { columnId, ...body } = dto;
 
-  return apiClient.withAuth.patch<MoveColumnDtoRes>(
-    `/column/${columnId}/move`,
-    rest,
-  );
+  return apiClient.withAuth
+    .patch<MoveColumnDtoRes>(`/column/${columnId}/move`, body)
+    .then(res => res.data);
 };

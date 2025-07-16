@@ -20,7 +20,6 @@ import {
 import { getContentMargin } from '../../lib/getContentMargin';
 import { normalizeAndSortBoardData } from '../../lib/normalizeAndSortBoardData';
 
-//TODO: add choose project view
 export function ProjectView() {
   const { boardId } = useProject();
   const { isMobile } = useDeviceType();

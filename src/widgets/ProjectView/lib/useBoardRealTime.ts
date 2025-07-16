@@ -3,6 +3,7 @@ import {
   useBoardSubscription,
   boardQueries,
   taskQueries,
+  stickerQueries,
   createColumnQueryUpdater,
   ColumnCreatedActionSchema,
   deleteColumnQueryUpdater,
@@ -19,65 +20,140 @@ import {
   TaskMovedActionSchema,
   updateTaskQueryUpdater,
   TaskUpdatedActionSchema,
+  StickerDeletedActionSchema,
+  StickerUpdatedActionSchema,
+  StickerCreatedActionSchema,
+  createStickerQueryUpdater,
+  deleteStickerOnBoardQueryUpdater,
+  updateStickerOnBoardQueryUpdater,
+  deleteStickerQueryUpdater,
+  updateStickerQueryUpdater,
 } from '@/entities/Board';
+
+const isNormalizedTypeGuard = (
+  res: unknown,
+): res is { isNormalized: boolean } =>
+  typeof res === 'object' &&
+  res !== null &&
+  'isNormalized' in res &&
+  typeof (res as { isNormalized: boolean }).isNormalized === 'boolean' &&
+  (res as { isNormalized: boolean }).isNormalized;
 
 export const useBoardRealTime = (boardId: string) => {
   const queryClient = useQueryClient();
-  const queryKey = {
+
+  const boardQueryOptions = {
     queryKeyType: 'queryFilters' as const,
     queryKey: boardQueries.findBoardQueryKey(boardId),
   };
 
   useBoardSubscription({
-    ...queryKey,
+    ...boardQueryOptions,
     schema: ColumnCreatedActionSchema,
     updater: createColumnQueryUpdater,
   });
 
   useBoardSubscription({
-    ...queryKey,
+    ...boardQueryOptions,
     schema: ColumnDeletedActionSchema,
     updater: deleteColumnQueryUpdater,
   });
 
   useBoardSubscription({
-    ...queryKey,
+    ...boardQueryOptions,
     schema: ColumnUpdatedActionSchema,
     updater: renameColumnQueryUpdater,
   });
 
   useBoardSubscription({
-    ...queryKey,
+    ...boardQueryOptions,
     schema: ColumnMovedActionSchema,
-    updater: moveColumnQueryUpdater,
+    updater: res => {
+      if (isNormalizedTypeGuard(res)) {
+        // обнуляем кеш после нормализации веса в БД
+        queryClient.invalidateQueries({
+          queryKey: [...boardQueries.boardById(boardId)],
+          exact: false,
+        });
+        return null;
+      }
+
+      return moveColumnQueryUpdater(res);
+    },
   });
 
   useBoardSubscription({
-    ...queryKey,
+    ...boardQueryOptions,
     schema: TaskCreatedActionSchema,
     updater: createTaskQueryUpdater,
   });
 
   useBoardSubscription({
-    ...queryKey,
+    ...boardQueryOptions,
     schema: TaskDeletedActionSchema,
     updater: deleteTaskQueryUpdater,
   });
 
   useBoardSubscription({
-    ...queryKey,
+    ...boardQueryOptions,
     schema: TaskMovedActionSchema,
-    updater: moveTaskQueryUpdater,
+    updater: res => {
+      if (isNormalizedTypeGuard(res)) {
+        // обнуляем кеш после нормализации веса в БД
+        queryClient.invalidateQueries({
+          queryKey: [...boardQueries.boardById(boardId)],
+          exact: false,
+        });
+        return null;
+      }
+
+      return moveTaskQueryUpdater(res);
+    },
   });
 
   useBoardSubscription({
-    ...queryKey,
+    ...boardQueryOptions,
     schema: TaskUpdatedActionSchema,
     updater: updateTaskQueryUpdater,
     onComplete: (taskId: string) =>
       queryClient.invalidateQueries({
         queryKey: taskQueries.taskById(taskId),
       }),
+  });
+
+  useBoardSubscription({
+    ...boardQueryOptions,
+    schema: StickerDeletedActionSchema,
+    updater: deleteStickerOnBoardQueryUpdater,
+  });
+
+  useBoardSubscription({
+    ...boardQueryOptions,
+    schema: StickerUpdatedActionSchema,
+    updater: updateStickerOnBoardQueryUpdater,
+  });
+
+  const stickerQueryOptions = {
+    queryKeyType: 'queryKey' as const,
+    queryKey: stickerQueries.allStickers(boardId),
+  };
+
+  useBoardSubscription({
+    ...stickerQueryOptions,
+    schema: StickerCreatedActionSchema,
+    updater: createStickerQueryUpdater,
+  });
+
+  useBoardSubscription({
+    ...stickerQueryOptions,
+    schema: StickerDeletedActionSchema,
+    updater: deleteStickerQueryUpdater,
+  });
+
+  useBoardSubscription({
+    ...stickerQueryOptions,
+    schema: StickerUpdatedActionSchema,
+    updater: updateStickerQueryUpdater,
   });
 
   return null;

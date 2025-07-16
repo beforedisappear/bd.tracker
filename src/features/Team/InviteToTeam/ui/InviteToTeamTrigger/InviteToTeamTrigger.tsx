@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 
 import { Button, type ButtonProps } from '@/shared/ui/c';
 
-import { RESTRICTED_MESSAGE } from '@/shared/constants';
+import { RESTRICTED_ACTION_MESSAGE } from '@/shared/constants';
 
 interface Props extends ButtonProps {
   text: string;
@@ -18,7 +18,7 @@ export function InviteToTeamTrigger(props: Props) {
   const { isEnoughAccess, isLoading } = useTeamAccess();
 
   const onHandleClick = () => {
-    toast.error(RESTRICTED_MESSAGE);
+    toast.error(RESTRICTED_ACTION_MESSAGE);
   };
 
   return (

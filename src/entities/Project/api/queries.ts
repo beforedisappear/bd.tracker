@@ -60,7 +60,6 @@ export const projectQueries = {
       },
     }),
 
-  //TODO: add optimistic update
   deleteProject: () =>
     mutationOptions({
       mutationFn: (dto: DeleteProjectDtoReq) => deleteProject(dto),

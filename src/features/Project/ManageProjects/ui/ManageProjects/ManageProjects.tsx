@@ -5,6 +5,7 @@ import { ManageProjectsPlaceholder } from './ManageProjects.placeholder';
 
 import { useTenant } from '@/shared/lib/navigation';
 import { useQuery } from '@tanstack/react-query';
+import { useTeamAccess } from '@/entities/Team';
 
 import { cn } from '@/shared/lib/css';
 import { projectQueries } from '@/entities/Project';
@@ -12,14 +13,23 @@ import { getManageProjectsContainerClassName } from '../../constants';
 
 export function ManageProjects() {
   const tenant = useTenant();
+  const {
+    userId,
+    isEnoughAccess,
+    isLoading: isTeamAccessLoading,
+  } = useTeamAccess();
 
-  // TODO: add pagination
-  const { data, isLoading, isError, error, refetch } = useQuery(
-    projectQueries.getProjectsByTeam({ teamIdOrSlug: tenant }),
-  );
+  const {
+    data,
+    isLoading: isProjectsLoading,
+    isError,
+    error,
+    refetch,
+  } = useQuery(projectQueries.getProjectsByTeam({ teamIdOrSlug: tenant }));
 
-  if (isLoading) return <ManageProjectsLoading />;
-  else if (isError || !data)
+  if (isProjectsLoading || isTeamAccessLoading)
+    return <ManageProjectsLoading />;
+  else if (isError || !data || !userId)
     return <ErrorBoundary error={error} className='m-auto' reset={refetch} />;
 
   return (
@@ -29,6 +39,8 @@ export function ManageProjects() {
           key={project.id}
           project={project}
           tenant={tenant}
+          userId={userId}
+          isEnoughAccess={isEnoughAccess}
         />
       ))}
 

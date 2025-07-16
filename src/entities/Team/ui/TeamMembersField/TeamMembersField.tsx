@@ -13,15 +13,18 @@ import { teamQueries } from '../../api';
 interface Props {
   label?: string;
   withSearch?: boolean;
+  disabled?: boolean;
 }
 
 export function TeamMembersField(props: Props) {
-  const { label, withSearch = true } = props;
+  const { label, withSearch = true, disabled = false } = props;
 
   const tenant = useTenant();
   const [value, setValue] = useState('');
 
   const debouncedKeyword = useDebouncedValue(value, 800);
+
+  const cacheTime = debouncedKeyword.length > 0 ? 0 : 1000 * 60;
 
   const {
     data: teamMembers,
@@ -30,9 +33,14 @@ export function TeamMembersField(props: Props) {
     isError,
     error,
     refetch,
-  } = useQuery(
-    teamQueries.getTeamMembers({ idOrSlug: tenant, keyword: debouncedKeyword }),
-  );
+  } = useQuery({
+    ...teamQueries.getTeamMembers({
+      idOrSlug: tenant,
+      keyword: debouncedKeyword,
+    }),
+    staleTime: cacheTime,
+    gcTime: cacheTime,
+  });
 
   return (
     <div className='flex flex-col gap-2 flex-1'>
@@ -54,7 +62,11 @@ export function TeamMembersField(props: Props) {
         )}
 
         {isSuccess && (
-          <MembersField members={teamMembers} inputName='membersIds' />
+          <MembersField
+            members={teamMembers}
+            inputName='membersIds'
+            disabled={disabled}
+          />
         )}
       </div>
     </div>

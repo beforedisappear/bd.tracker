@@ -18,7 +18,9 @@ type FilterArgs<T extends ZodSchema, TData> = {
   schema: T;
   queryKeyType: 'queryFilters';
   queryKey: QueryFilters<unknown, Error, unknown, readonly unknown[]>;
-  updater: (socketMessageData: z.infer<T>['data']) => (oldData: TData) => TData;
+  updater: (
+    socketMessageData: z.infer<T>['data'],
+  ) => ((oldData: TData) => TData) | null;
   onComplete?: (id: string) => void;
 };
 
@@ -32,7 +34,7 @@ export const useBoardSubscription = <T extends ZodSchema, TData = unknown>(
 
     //FIXME: для большей надежности следует добавить схемы для данных в socketMessage
     if (result.success && isObject(result.data?.data)) {
-      const newData = updater(result.data.data)(oldData as TData);
+      const newData = updater(result.data.data)?.(oldData as TData);
 
       if (onComplete) onComplete(result.data.data.id);
 

@@ -1,5 +1,6 @@
 import { Mail, Crown, Signature, UserCog, Clock } from 'lucide-react';
 
+import { ErrorBoundary } from '@/shared/ui/c';
 import { Avatar } from '@/shared/ui/s';
 import { SetAdmin } from '@/features/SetAdmin';
 import { DeleteTeamMember } from '@/features/Team/DeleteTeamMember';
@@ -24,11 +25,12 @@ export function TeamMemberProfileModalContent() {
 
   const { isEnoughAccess } = useTeamAccess();
 
-  //TODO: add placeholder from setQueryData null
   const {
     data: teamMember,
+    isSuccess,
     isLoading,
     isError,
+    refetch,
   } = useQuery({
     ...teamQueries.getTeamMemberById({
       teamIdOrSlug: tenant,
@@ -41,8 +43,9 @@ export function TeamMemberProfileModalContent() {
     setShowTeamMemberProfileModal(false);
   };
 
-  if (isLoading) return <TeamMemberProfileModalContentLoading />;
-  else if (isError || !teamMember) return <div>Error</div>;
+  if (isLoading || !teamMember) return <TeamMemberProfileModalContentLoading />;
+  else if (isError || !isSuccess)
+    return <ErrorBoundary className='m-auto' reset={refetch} />;
 
   return (
     <div className='flex gap-4 items-start'>

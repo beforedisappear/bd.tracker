@@ -245,8 +245,22 @@ class TeamService extends BaseService {
 
     if (!invitation || invitation.status === 'DECLINED') return false;
 
-    if (invitation.status === 'ACCEPTED')
-      throw ApiError.conflict('User has already accepted the invitation');
+    const existingMember = await prismaService.team.findFirst({
+      where: {
+        OR: [{ id: idOrSlug }, { slug: idOrSlug }],
+        members: {
+          some: { email: inviteeEmail },
+        },
+      },
+    });
+
+    if (invitation.status === 'ACCEPTED' && existingMember)
+      throw ApiError.conflict(
+        'User has already accepted the invitation',
+        CodeError.TEAM_MEMBER_ALREADY_EXISTS,
+      );
+
+    if (invitation.expiresAt < new Date()) return false;
 
     return true;
   }
@@ -269,7 +283,17 @@ class TeamService extends BaseService {
         'The invitation cannot be sent by a non-owner or non-admin',
       );
 
-    const existingUser = await userService.findOne({ idOrEmail: inviteeEmail });
+    const existingUser = await userService.findOne({
+      idOrEmail: inviteeEmail,
+      teamIdOrSlug: idOrSlug,
+    });
+
+    if (existingUser && existingUser.teams.some(t => t.id === team.id)) {
+      throw ApiError.badRequest(
+        'User is already in this team',
+        CodeError.TEAM_MEMBER_ALREADY_EXISTS,
+      );
+    }
 
     if (projectIds.length > 0) {
       //проверка на существование проекта + запрет на добавление в чужой проект
@@ -307,22 +331,38 @@ class TeamService extends BaseService {
     const expSeconds = Number(process.env.TEAM_INVITATION_EXPIRATION);
     const expiresAt = new Date(Date.now() + expSeconds);
 
-    const invitation = await prismaService.teamInvitation.upsert({
-      where: { inviteeEmail },
-      update: {
-        token,
-        projectIds: projectIds.length > 0 ? projectIds : undefined,
-        expiresAt,
-      },
-      create: {
-        teamId: team.id,
-        inviterId: inviterId,
+    // Check if invitation already exists
+    const existingInvitation = await prismaService.teamInvitation.findFirst({
+      where: {
         inviteeEmail,
-        token,
-        projectIds: projectIds.length > 0 ? projectIds : undefined,
-        expiresAt,
+        teamId: team.id,
       },
     });
+
+    let invitation;
+    if (existingInvitation) {
+      // Update existing invitation
+      invitation = await prismaService.teamInvitation.update({
+        where: { id: existingInvitation.id },
+        data: {
+          token,
+          projectIds: projectIds.length > 0 ? projectIds : undefined,
+          expiresAt,
+        },
+      });
+    } else {
+      // Create new invitation
+      invitation = await prismaService.teamInvitation.create({
+        data: {
+          teamId: team.id,
+          inviterId: inviterId,
+          inviteeEmail,
+          token,
+          projectIds: projectIds.length > 0 ? projectIds : undefined,
+          expiresAt,
+        },
+      });
+    }
 
     await mailService.sendProposalOfInvitationMail({
       email: inviteeEmail,
@@ -361,17 +401,21 @@ class TeamService extends BaseService {
         });
     }
 
-    //TODO: add default project
-    prismaService.$transaction(async tx => {
-      const [user] = await Promise.all([
-        userService.createWithTx(tx, {
+    await prismaService.$transaction(async tx => {
+      let user = await tx.user.findUnique({
+        where: { email: invitation.inviteeEmail },
+      });
+
+      if (!user) {
+        user = await userService.createWithTx(tx, {
           email: invitation.inviteeEmail,
-        }),
-        tx.teamInvitation.update({
-          where: { id: invitationId },
-          data: { status: 'ACCEPTED' },
-        }),
-      ]);
+        });
+      }
+
+      await tx.teamInvitation.update({
+        where: { id: invitationId },
+        data: { status: 'ACCEPTED' },
+      });
 
       await tx.team.update({
         where: { id: invitation.teamId },

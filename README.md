@@ -8,6 +8,8 @@ BD.tracker – Fullstack приложение, с упором на Frontend с�
 
 Для лучшего понимания структуры и специфики проекта сначала рекомендуется ознакомиться с [документацией](./docs/). Также ссылки указаны ниже.
 
+[Демонстрация работы](./docs/demo.md)
+
 ## App Stack
 
 🍎 [Next.js 15](./docs/nextjs.md) - 🌈 React 19 - 🌊 [Tailwind CSS]('./docs/tailwind.md') - 🍞 shadcn/ui - ☀️ [Tanstack Query](./docs/tanstackquery.md) - 🐻 zustand - 📝 react-hook-form - 🎲 dnd-kit - 🍕 jest - 🍋 Cypress - 🥯 Prisma (PostgreSQL) - 💯 Redis - ✉️ nodemailer - 💬 WebSocket

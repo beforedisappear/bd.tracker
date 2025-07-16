@@ -3,7 +3,6 @@ import { ManageProjectsItemMenu } from '../ManageProjectsItemMenu';
 import { RenameInput, type RenameInputMethods } from '@/shared/ui/c';
 
 import { useRouter } from 'next/navigation';
-import { useTeamAccess } from '@/entities/Team';
 import { useMutation } from '@tanstack/react-query';
 import { useRef, type MouseEvent } from 'react';
 
@@ -19,14 +18,19 @@ import { getProjectByIdRoutePath } from '@/shared/config/routes';
 import { getErrorMessage } from '@/shared/lib/error';
 import { getManageProjectsItemClassName } from '../../constants';
 
+import { RESTRICTED_VIEW_MESSAGE } from '@/shared/constants/toast.constants';
+
 interface Props {
   tenant: string;
   project: ProjectWithFirstBoardId;
+  userId: string;
+  isEnoughAccess: boolean;
 }
 
-export function ManageProjectsItem({ project, tenant }: Props) {
+export function ManageProjectsItem(props: Props) {
+  const { tenant, project, userId, isEnoughAccess } = props;
+
   const router = useRouter();
-  const { isEnoughAccess } = useTeamAccess();
   const methodsRef = useRef<RenameInputMethods>(null);
 
   const { mutateAsync: renameProject } = useMutation(
@@ -41,6 +45,12 @@ export function ManageProjectsItem({ project, tenant }: Props) {
 
   const onRedirectToProjectPage = (e: MouseEvent<HTMLDivElement>) => {
     if (!e.currentTarget.contains(e.target as Node)) return;
+
+    const isUserProjectMember = project.members.some(
+      member => member.id === userId,
+    );
+
+    if (!isUserProjectMember) return toast.error(RESTRICTED_VIEW_MESSAGE);
 
     const path = getProjectByIdRoutePath(
       tenant,

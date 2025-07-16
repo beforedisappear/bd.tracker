@@ -14,6 +14,7 @@ import { inviteToTeam } from './inviteToTeam';
 import { addAdmin } from './addAdmin';
 import { deleteAdmin } from './deleteAdmin';
 import { deleteTeamMember } from './deleteTeamMember';
+import { checkTeamInvitation } from './checkTeamInvitation';
 import type {
   Team,
   CreateTeamDtoReq,
@@ -27,6 +28,7 @@ import type {
   AddTeamMemberAdminDtoReq,
   DeleteTeamMemberAdminDtoReq,
   DeleteTeamMemberDtoReq,
+  CheckTeamInvitationDtoReq,
 } from '../models/types';
 import type { AxiosResponse } from 'axios';
 
@@ -37,7 +39,11 @@ export const teamQueries = {
 
   userTeamById: (idOrSlug: string) => ['userTeamById', idOrSlug],
 
-  teamMembers: (idOrSlug: string) => ['teamMembers', idOrSlug],
+  teamMembers: (idOrSlug: string, keyword?: string) => [
+    'teamMembers',
+    idOrSlug,
+    ...(keyword ? ['keyword', keyword] : []),
+  ],
 
   teamMemberById: (idOrSlug: string, memberId: string) => [
     'teamMemberById',
@@ -54,20 +60,17 @@ export const teamQueries = {
 
   getTeamMembers: (dto: GetTeamMembersDtoReq) =>
     queryOptions({
-      queryKey: [
-        ...teamQueries.teamMembers(dto.idOrSlug),
-        ...(dto.keyword ? ['keyword', dto.keyword] : []),
-      ],
+      queryKey: [...teamQueries.teamMembers(dto.idOrSlug, dto.keyword)],
       queryFn: () => getTeamMembers(dto),
       select: res => res.data,
     }),
 
-  // TODO: add cache time
   getHaveAccessToTeam: (dto: GetHaveAccessToTeamDto) =>
     queryOptions({
       queryKey: ['teamAccess', dto.idOrSlug],
       queryFn: () => getHaveAccessToTeam(dto),
       select: res => res.data,
+      staleTime: 60 * 1000 * 10,
     }),
 
   getTeamById: (dto: GetTeamByIdDtoReq) =>
@@ -129,10 +132,10 @@ export const teamQueries = {
         return { previousTeams };
       },
       onError: (_err, _variables, context) => {
-        if (context?.previousTeams) {
-          const queryKey = teamQueries.userTeamList();
-          queryClient.setQueryData(queryKey, context.previousTeams);
-        }
+        if (!context?.previousTeams) return;
+
+        const queryKey = teamQueries.userTeamList();
+        queryClient.setQueryData(queryKey, context.previousTeams);
       },
       onSettled: () =>
         queryClient.invalidateQueries({
@@ -140,11 +143,24 @@ export const teamQueries = {
         }),
     }),
 
-  //TODO: if success is notifications, then invalidate data
   inviteToTeam: () =>
     mutationOptions({
       mutationKey: ['inviteToTeam'],
       mutationFn: (dto: InviteToTeamDtoReq) => inviteToTeam(dto),
+      onSuccess: ({ data }, { teamIdOrSlug }) => {
+        if (data.result === 'proposal') return;
+
+        queryClient.invalidateQueries({
+          queryKey: [...teamQueries.teamMembers(teamIdOrSlug)],
+          refetchType: 'active',
+        });
+      },
+    }),
+
+  checkTeamInvitation: () =>
+    mutationOptions({
+      mutationKey: ['checkTeamInvitation'],
+      mutationFn: (dto: CheckTeamInvitationDtoReq) => checkTeamInvitation(dto),
     }),
 
   deleteTeamMember: () =>

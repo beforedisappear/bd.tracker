@@ -4,8 +4,10 @@ import {
   GetAllBoardStickersDotRes,
 } from '../../model/types';
 
-export const getAllBoardStickers = ({ boardId }: GetAllBoardStickersDtoReq) => {
-  return apiClient.withAuth.get<GetAllBoardStickersDotRes>(
-    `/board/${boardId}/sticker`,
-  );
+export const getAllBoardStickers = async (dto: GetAllBoardStickersDtoReq) => {
+  const { boardId } = dto;
+
+  return apiClient.withAuth
+    .get<GetAllBoardStickersDotRes>(`/board/${boardId}/sticker`)
+    .then(res => res.data);
 };

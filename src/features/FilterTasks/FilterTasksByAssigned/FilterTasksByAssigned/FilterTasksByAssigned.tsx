@@ -6,7 +6,7 @@ export function FilterTasksByAssigned() {
   return (
     <Popover
       trigger={<FilterTasksByAssignedTrigger />}
-      className='flex flex-col w-80 h-[180px] gap-2 pr-0'
+      className='flex flex-col w-80 h-[180px] gap-2 px-5'
       content={{ align: 'start' }}
     >
       <FilterTasksByAssignedContent />

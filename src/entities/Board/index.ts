@@ -81,6 +81,12 @@ export {
 } from './model/schemes/taskActionSchemes';
 
 export {
+  StickerCreatedActionSchema,
+  StickerUpdatedActionSchema,
+  StickerDeletedActionSchema,
+} from './model/schemes/stickerActionsSchemes';
+
+export {
   createBoardQueryUpdater,
   renameBoardQueryUpdater,
   deleteBoardQueryUpdater,
@@ -99,3 +105,11 @@ export {
   moveTaskQueryUpdater,
   updateTaskQueryUpdater,
 } from './model/queryUpdaters/task';
+
+export {
+  createStickerQueryUpdater,
+  updateStickerQueryUpdater,
+  deleteStickerQueryUpdater,
+  deleteStickerOnBoardQueryUpdater,
+  updateStickerOnBoardQueryUpdater,
+} from './model/queryUpdaters/sticker';

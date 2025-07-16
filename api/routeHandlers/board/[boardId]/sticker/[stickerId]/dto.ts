@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 import { Color } from 'config/prisma/generated/client';
+import { StickerSchema } from 'api/schemes/sticker';
 
 extendZodWithOpenApi(z);
 
@@ -14,22 +15,11 @@ export const UpdateStickerReqBodySchema = z.object({
   color: z.nativeEnum(Color).optional(),
 });
 
-export const UpdateStickerResSchema = z.object({
-  id: z.string().uuid(),
-  name: z.string(),
-  color: z.nativeEnum(Color),
-  boardId: z.string().uuid(),
-  projectId: z.string().uuid(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
-});
+export const UpdateStickerResSchema = StickerSchema;
 
 export const DeleteStickerReqParamsSchema = z.object({
   boardId: z.string().uuid(),
   stickerId: z.string().uuid(),
 });
 
-export const DeleteStickerResSchema = z.object({
-  id: z.string().uuid(),
-  tenantId: z.string(),
-});
+export const DeleteStickerResSchema = StickerSchema;

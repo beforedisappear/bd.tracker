@@ -17,6 +17,7 @@ export function useTeamAccess() {
     isEnoughAccess,
     isOwner: data?.isOwner,
     isAdmin: data?.isAdmin,
+    userId: data?.userId,
     isLoading,
   };
 }

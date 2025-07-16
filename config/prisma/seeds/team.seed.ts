@@ -1,15 +1,19 @@
-import { PrismaClient } from '@prisma/client';
+import slugify from 'slugify';
+import { PrismaClient } from '../generated/client/index.js';
 
 const prisma = new PrismaClient();
 
-type Args = { ownerId: string; userIds?: string[] };
+type Args = { ownerId: string; name: string; membersIds?: string[] };
 
 export const createTeam = async (args: Args) => {
-  const team1 = await prisma.team.create({
-    data: { name: 'Company', ownerId: args.ownerId },
+  const team = await prisma.team.create({
+    data: {
+      name: args.name,
+      ownerId: args.ownerId,
+      slug: slugify(args.name, { lower: true }),
+      members: { connect: args.membersIds?.map(id => ({ id })) || [] },
+    },
   });
 
-  console.log('TEAM_CREATED', team1);
-
-  return { team1 };
+  return team;
 };

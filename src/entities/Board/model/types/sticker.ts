@@ -27,18 +27,16 @@ export interface CreateBoardStickerDtoReq {
 export type CreateBoardStickerDtoRes = Sticker;
 
 export interface UpdateBoardStickerDtoReq {
+  id: string;
   boardId: string;
-  stickerId: string;
   name?: string;
   color?: Color;
 }
 
 export type UpdateBoardStickerDtoRes = Sticker;
 
-export interface DeleteBoardStickerDtoReq {
-  boardId: string;
-  stickerId: string;
-}
+export interface DeleteBoardStickerDtoReq
+  extends Pick<Sticker, 'id' | 'boardId'> {}
 
 export interface DeleteBoardStickerDtoRes {
   id: string;

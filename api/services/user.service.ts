@@ -30,13 +30,12 @@ class UserService {
     });
   }
 
-  findOne(args: { idOrEmail: string }) {
-    const { idOrEmail } = args;
+  findOne(args: { idOrEmail: string; teamIdOrSlug?: string }) {
+    const { idOrEmail, teamIdOrSlug } = args;
 
     return prismaService.user.findFirst({
-      where: {
-        OR: [{ id: idOrEmail }, { email: idOrEmail }],
-      },
+      where: { OR: [{ id: idOrEmail }, { email: idOrEmail }] },
+      include: { teams: !!teamIdOrSlug },
     });
   }
 

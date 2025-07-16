@@ -1,6 +1,14 @@
-import type { CodeError } from 'api/errors/apiError';
+type CodeError =
+  | '1004'
+  | '1010'
+  | '1020'
+  | '1021'
+  | '1022'
+  | '1023'
+  | '1024'
+  | '1025';
 
-export const errorMessagesMap: { [key: string]: string } = {
+export const errorMessagesMap: Record<string, string> = {
   '1004': 'Неправильный или истекший код',
   '1010': 'E-mail уже занят',
   '1020': 'Команда с таким именем уже существует',
@@ -8,4 +16,5 @@ export const errorMessagesMap: { [key: string]: string } = {
   '1022': 'Количество команд не может быть меньше 1',
   '1023': 'Команда может быть удалена только владельцем',
   '1024': 'Вы не администратор в этой компании',
-} satisfies Partial<{ [Key in CodeError]: string }>;
+  '1025': 'Пользователь уже в команде',
+} satisfies { [Key in CodeError]: string };

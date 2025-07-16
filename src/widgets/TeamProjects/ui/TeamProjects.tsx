@@ -17,9 +17,6 @@ export function TeamProjects({}: Props) {
     >
       <CreateProject />
       <ManageProjects />
-      {/* TODO add */}
-      {/* DeleteProject */}
-      {/* ManageProjectMembers */}
     </Card>
   );
 }

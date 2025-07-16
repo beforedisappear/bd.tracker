@@ -15,6 +15,7 @@ import { LoginDto } from 'api/routeHandlers/login/types';
 import { RefreshTokensDto } from 'api/routeHandlers/refreshTokens/types';
 import { LogoutDto } from 'api/routeHandlers/logout/types';
 import type { IJwtPayload } from '../types';
+import type { User } from 'config/prisma/generated/client';
 
 const secretKey = process.env.JWT_SECRET;
 
@@ -22,7 +23,9 @@ const key = new TextEncoder().encode(secretKey);
 
 class AuthService {
   async auth(data: { email: string }) {
-    let user = await userService.findOne({ idOrEmail: data.email });
+    let user: User | null = null;
+
+    user = await userService.findOne({ idOrEmail: data.email });
 
     if (!user) {
       user = await userService.create(data);
