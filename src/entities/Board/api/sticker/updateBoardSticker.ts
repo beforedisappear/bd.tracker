@@ -5,12 +5,9 @@ import {
 } from '../../model/types';
 
 export const updateBoardSticker = async (dto: UpdateBoardStickerDtoReq) => {
-  const { boardId, stickerId, ...body } = dto;
+  const { boardId, id, ...body } = dto;
 
   return apiClient.withAuth
-    .patch<UpdateBoardStickerDtoRes>(
-      `/board/${boardId}/sticker/${stickerId}`,
-      body,
-    )
+    .patch<UpdateBoardStickerDtoRes>(`/board/${boardId}/sticker/${id}`, body)
     .then(res => res.data);
 };

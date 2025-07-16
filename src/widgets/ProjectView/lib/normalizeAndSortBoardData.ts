@@ -40,7 +40,7 @@ const sortByDate = (task: Task, filters: Filters) => {
 };
 
 // дополнительно сортируем данные в соответствии с фильтрами,
-// чтобы не отобразить задачи внесенные в кэш из Realtime обновления
+// чтобы не отобразить задачи внесенные в кэш через Real Time обновление
 export const normalizeAndSortBoardData = (res: Board, filters: Filters) => ({
   ...res,
   columns: restoreOrder(res.columns).map(column => ({

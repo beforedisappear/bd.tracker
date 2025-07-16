@@ -13,9 +13,7 @@ export const deleteStickerOnBoardQueryUpdater =
         ...column,
         tasks: column.tasks.map(task => ({
           ...task,
-          stickers: task.stickers.filter(
-            sticker => sticker.id !== args.stickerId,
-          ),
+          stickers: task.stickers.filter(sticker => sticker.id !== args.id),
         })),
       })),
     };

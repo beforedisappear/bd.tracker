@@ -40,7 +40,7 @@ export function ManageStickerUpdateForm(props: Props) {
 
     updateSticker({
       boardId,
-      stickerId: sticker.id,
+      id: sticker.id,
       ...data,
       color: selectedColor,
     })

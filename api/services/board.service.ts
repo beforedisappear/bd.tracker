@@ -292,7 +292,7 @@ class BoardService extends BaseService {
       where: { id },
     });
 
-    return { id: deletedSticker.id, tenantId: deletedSticker.tenantId };
+    return deletedSticker;
   }
 }
 

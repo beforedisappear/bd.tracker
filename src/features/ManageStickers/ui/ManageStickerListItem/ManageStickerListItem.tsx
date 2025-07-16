@@ -1,11 +1,14 @@
-import { BoardSticker, stickerQueries, type Sticker } from '@/entities/Board';
-import { getErrorMessage } from '@/shared/lib/error';
-import { Button } from '@/shared/ui/c';
-import { useMutation } from '@tanstack/react-query';
 import { Pencil, Trash } from 'lucide-react';
-import { useState } from 'react';
-import { toast } from 'sonner';
+
+import { BoardSticker, stickerQueries, type Sticker } from '@/entities/Board';
 import { ManageStickerUpdateForm } from '../ManageStickerUpdateForm/ManageStickerUpdateForm';
+import { Button } from '@/shared/ui/c';
+
+import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
+
+import { toast } from 'sonner';
+import { getErrorMessage } from '@/shared/lib/error';
 
 interface Props {
   boardId: string;
@@ -22,7 +25,7 @@ export function ManageStickerListItem(props: Props) {
   );
 
   const onDeleteSticker = (id: string) => {
-    deleteSticker({ boardId, stickerId: id })
+    deleteSticker({ id, boardId })
       .then(() => {})
       .catch(e => toast.error(getErrorMessage(e)));
   };

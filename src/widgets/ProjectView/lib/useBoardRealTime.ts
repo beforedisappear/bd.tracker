@@ -19,6 +19,15 @@ import {
   TaskMovedActionSchema,
   updateTaskQueryUpdater,
   TaskUpdatedActionSchema,
+  StickerDeletedActionSchema,
+  StickerUpdatedActionSchema,
+  StickerCreatedActionSchema,
+  createStickerQueryUpdater,
+  deleteStickerOnBoardQueryUpdater,
+  updateStickerOnBoardQueryUpdater,
+  stickerQueries,
+  deleteStickerQueryUpdater,
+  updateStickerQueryUpdater,
 } from '@/entities/Board';
 
 const isNormalizedTypeGuard = (
@@ -33,31 +42,31 @@ const isNormalizedTypeGuard = (
 export const useBoardRealTime = (boardId: string) => {
   const queryClient = useQueryClient();
 
-  const queryOptions = {
+  const boardQueryOptions = {
     queryKeyType: 'queryFilters' as const,
     queryKey: boardQueries.findBoardQueryKey(boardId),
   };
 
   useBoardSubscription({
-    ...queryOptions,
+    ...boardQueryOptions,
     schema: ColumnCreatedActionSchema,
     updater: createColumnQueryUpdater,
   });
 
   useBoardSubscription({
-    ...queryOptions,
+    ...boardQueryOptions,
     schema: ColumnDeletedActionSchema,
     updater: deleteColumnQueryUpdater,
   });
 
   useBoardSubscription({
-    ...queryOptions,
+    ...boardQueryOptions,
     schema: ColumnUpdatedActionSchema,
     updater: renameColumnQueryUpdater,
   });
 
   useBoardSubscription({
-    ...queryOptions,
+    ...boardQueryOptions,
     schema: ColumnMovedActionSchema,
     updater: res => {
       if (isNormalizedTypeGuard(res)) {
@@ -74,19 +83,19 @@ export const useBoardRealTime = (boardId: string) => {
   });
 
   useBoardSubscription({
-    ...queryOptions,
+    ...boardQueryOptions,
     schema: TaskCreatedActionSchema,
     updater: createTaskQueryUpdater,
   });
 
   useBoardSubscription({
-    ...queryOptions,
+    ...boardQueryOptions,
     schema: TaskDeletedActionSchema,
     updater: deleteTaskQueryUpdater,
   });
 
   useBoardSubscription({
-    ...queryOptions,
+    ...boardQueryOptions,
     schema: TaskMovedActionSchema,
     updater: res => {
       if (isNormalizedTypeGuard(res)) {
@@ -103,13 +112,48 @@ export const useBoardRealTime = (boardId: string) => {
   });
 
   useBoardSubscription({
-    ...queryOptions,
+    ...boardQueryOptions,
     schema: TaskUpdatedActionSchema,
     updater: updateTaskQueryUpdater,
     onComplete: (taskId: string) =>
       queryClient.invalidateQueries({
         queryKey: taskQueries.taskById(taskId),
       }),
+  });
+
+  useBoardSubscription({
+    ...boardQueryOptions,
+    schema: StickerDeletedActionSchema,
+    updater: deleteStickerOnBoardQueryUpdater,
+  });
+
+  useBoardSubscription({
+    ...boardQueryOptions,
+    schema: StickerUpdatedActionSchema,
+    updater: updateStickerOnBoardQueryUpdater,
+  });
+
+  const stickerQueryOptions = {
+    queryKeyType: 'queryKey' as const,
+    queryKey: stickerQueries.allStickers(boardId),
+  };
+
+  useBoardSubscription({
+    ...stickerQueryOptions,
+    schema: StickerCreatedActionSchema,
+    updater: createStickerQueryUpdater,
+  });
+
+  useBoardSubscription({
+    ...stickerQueryOptions,
+    schema: StickerDeletedActionSchema,
+    updater: deleteStickerQueryUpdater,
+  });
+
+  useBoardSubscription({
+    ...stickerQueryOptions,
+    schema: StickerUpdatedActionSchema,
+    updater: updateStickerQueryUpdater,
   });
 
   return null;

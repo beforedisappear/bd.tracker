@@ -45,6 +45,7 @@ import {
 } from '../model/queryUpdaters/task';
 
 import {
+  createStickerQueryUpdater,
   deleteStickerOnBoardQueryUpdater,
   updateStickerOnBoardQueryUpdater,
   updateStickerQueryUpdater,
@@ -282,10 +283,11 @@ export const stickerQueries = {
   createSticker: () =>
     mutationOptions({
       mutationFn: createBoardSticker,
-      onSuccess: (_, { boardId }) =>
-        queryClient.invalidateQueries({
-          queryKey: [...stickerQueries.allStickers(boardId)],
-        }),
+      onSuccess: (res, { boardId }) =>
+        queryClient.setQueriesData(
+          { queryKey: [...stickerQueries.allStickers(boardId)] },
+          createStickerQueryUpdater(res),
+        ),
     }),
 
   updateSticker: () =>
@@ -307,7 +309,7 @@ export const stickerQueries = {
   deleteSticker: () =>
     mutationOptions({
       mutationFn: deleteBoardSticker,
-      onMutate: async ({ boardId, stickerId }) => {
+      onMutate: async ({ boardId, id }) => {
         const queryKey = [...stickerQueries.allStickers(boardId)];
 
         await queryClient.cancelQueries({
@@ -317,7 +319,7 @@ export const stickerQueries = {
         const previousStickers = queryClient.getQueryData(queryKey);
 
         queryClient.setQueryData(queryKey, (old: Sticker[]) => {
-          return old.filter(sticker => sticker.id !== stickerId);
+          return old.filter(sticker => sticker.id !== id);
         });
 
         return { previousStickers };
