@@ -1,6 +1,7 @@
 import { PencilIcon } from 'lucide-react';
 
 import { Button, Form, Input } from '@/shared/ui/c';
+import { EditTeamNameLabel } from '../EditTeamNameLabel/EditTeamNameLabel';
 
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
@@ -72,12 +73,8 @@ export function EditTeamNameField({ name }: Props) {
         })}
         onSubmit={onSubmit}
       >
-        <h3
-          className='text-xl font-bold
-          md:text-base'
-        >
-          Команда
-        </h3>
+        <EditTeamNameLabel as='h3' label={'Команда'} />
+
         <div className='flex items-center gap-2 w-full'>
           <Input
             name='name'

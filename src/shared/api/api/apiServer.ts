@@ -136,6 +136,4 @@ class ApiServer {
   }
 }
 
-export const apiServer = new ApiServer();
-
 export default ApiServer;

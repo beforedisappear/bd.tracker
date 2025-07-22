@@ -1,6 +1,6 @@
 import { UpdateUserDtoReq } from '../model/types';
 
-import { apiClient } from '@/shared/api/apiClient';
+import { apiClient } from '@/shared/api/c';
 
 import type { User } from '../model/types';
 

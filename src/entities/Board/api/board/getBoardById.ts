@@ -1,4 +1,4 @@
-import { apiClient } from '@/shared/api/apiClient';
+import { apiClient } from '@/shared/api/c';
 import { createQueryString } from '@/shared/lib/url';
 import type { GetBoardByIdDtoReq, GetBoardByIdDtoRes } from '../../model/types';
 
