@@ -1,11 +1,12 @@
 import ApiClient from './api/apiClient';
-import { AuthInterceptor } from './interceptors/authInterceptor';
+// import AuthInterceptor from './interceptors/authInterceptor';
+import AuthInterceptorWithQueue from './interceptors/authInterceptorWithQueue';
 
 export type { RefreshTokensRes } from './types/types';
 
 export const apiClient = new ApiClient();
 
-const authInterceptor = new AuthInterceptor(apiClient.withAuth);
+const authInterceptor = new AuthInterceptorWithQueue(apiClient.withAuth);
 
 apiClient.withAuth.interceptors.request.use(authInterceptor.handleRequest);
 apiClient.withAuth.interceptors.response.use(

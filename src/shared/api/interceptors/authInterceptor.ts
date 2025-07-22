@@ -12,14 +12,16 @@ import {
   removeJwt,
 } from '../../lib/cookies';
 
-import type { RefreshTokensRes } from '../types';
+import type { AxiosReqConfigWithRetry, RefreshTokensRes } from '../types';
 
-export class AuthInterceptor {
-  private refreshPromise: Promise<RefreshTokensRes> | null = null;
+export default class AuthInterceptor {
+  protected refreshPromise: Promise<RefreshTokensRes> | null = null;
 
-  constructor(private axiosInstance: AxiosInstance) {}
+  constructor(protected axiosInstance: AxiosInstance) {}
 
-  public handleRequest = (config: InternalAxiosRequestConfig) => {
+  public handleRequest = (
+    config: InternalAxiosRequestConfig,
+  ): InternalAxiosRequestConfig => {
     const token = getAccessToken();
 
     if (token && config.headers) {
@@ -32,9 +34,7 @@ export class AuthInterceptor {
   public handleResponseSuccess = (response: AxiosResponse) => response;
 
   public handleResponseError = async (error: AxiosError) => {
-    const originalRequest = error.config as InternalAxiosRequestConfig & {
-      _isRetry?: boolean;
-    };
+    const originalRequest = error.config as AxiosReqConfigWithRetry;
 
     if (error.response?.status !== 401 || originalRequest._isRetry) {
       return Promise.reject(error);
@@ -65,9 +65,9 @@ export class AuthInterceptor {
     }
   };
 
-  private async refreshTokens(refreshToken: RefreshTokensRes['refreshToken']) {
+  protected async refreshTokens(token: RefreshTokensRes['refreshToken']) {
     const response = await this.axiosInstance
-      .post<RefreshTokensRes>(`/refresh-tokens`, { refreshToken })
+      .post<RefreshTokensRes>(`/refresh-tokens`, { refreshToken: token })
       .then(res => res.data);
 
     if (response) {
@@ -77,11 +77,11 @@ export class AuthInterceptor {
     return response;
   }
 
-  private clearPromise() {
+  protected clearPromise() {
     this.refreshPromise = null;
   }
 
-  private onAuthFail() {
+  protected onAuthFail() {
     removeJwt();
     window.location.reload();
   }
