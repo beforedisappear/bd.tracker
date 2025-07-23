@@ -10,6 +10,7 @@ interface Props {
   direction?: AssigneesPopoverTriggerDirection;
   avatarLimit?: number;
   align?: PopoverContentProps['align'];
+  offAll?: boolean;
 }
 
 export function BoardAssigneesPopover(props: Props) {

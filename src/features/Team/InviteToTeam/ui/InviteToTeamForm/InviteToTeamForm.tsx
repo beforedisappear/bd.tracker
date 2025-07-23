@@ -1,12 +1,13 @@
 import { cn } from '@/shared/lib/css';
 import { Loader2 } from 'lucide-react';
 
-import { Button, Form, Input, Checkbox, ScrollArea } from '@/shared/ui/c';
+import { Button, Form, Input, CheckboxSelectField } from '@/shared/ui/c';
 
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import { useTenant } from '@/shared/lib/navigation';
 import { useDeviceType } from '@/shared/lib/deviceType/c';
+import { useDebounce } from '@/shared/lib/ui';
 
 import { teamQueries, InviteToTeamSchema } from '@/entities/Team';
 import { getErrorMessage } from '@/shared/lib/error';
@@ -16,7 +17,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 
 import type { Project } from '@/entities/Project';
-import { useDebounce } from '@/shared/lib/ui';
 
 interface Props {
   projects: Project[];
@@ -26,7 +26,7 @@ interface Props {
 export function InviteToTeamForm(props: Props) {
   const { projects, onClose } = props;
 
-  const { isMobile, isDesktop } = useDeviceType();
+  const { isMobile } = useDeviceType();
   const tenant = useTenant();
 
   const form = useForm<z.infer<typeof InviteToTeamSchema>>({
@@ -82,14 +82,6 @@ export function InviteToTeamForm(props: Props) {
       );
   });
 
-  const onSetAll = (checked: boolean) => {
-    const values = Object.fromEntries(
-      projects.map(project => [project.id, checked]),
-    );
-
-    form.setValue('projectIds', values);
-  };
-
   const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = InviteToTeamSchema.safeParse({
       inviteeEmail: e.target.value,
@@ -113,38 +105,16 @@ export function InviteToTeamForm(props: Props) {
         />
 
         {projects.length > 0 && (
-          <div className='flex flex-col gap-2'>
+          <div className='flex flex-col flex-grow gap-2'>
             <span className='font-medium mb-1'>
               Также пригласить в проекты:
             </span>
 
-            <ScrollArea
-              type='always'
-              className={cn('flex flex-col gap-1 pr-4 mr-[-1rem]', {
-                'h-36': isDesktop,
-                'h-full max-h-[400px]': isMobile,
-              })}
-            >
-              <Checkbox
-                name='all'
-                label='Все проекты'
-                className='h-6 items-center'
-                labelClassName='font-normal text-base'
-                onCheckedChange={onSetAll}
-              />
-
-              <div className='border-b-2 border-y-primary/50 my-1 rounded-full' />
-
-              {projects.map(project => (
-                <Checkbox
-                  key={project.id}
-                  name={`projectIds.${project.id}`}
-                  className='h-6 items-center'
-                  labelClassName='font-normal text-base'
-                  label={project.name}
-                />
-              ))}
-            </ScrollArea>
+            <CheckboxSelectField
+              inputName='projectIds'
+              allLabel='Все проекты'
+              items={projects}
+            />
           </div>
         )}
 

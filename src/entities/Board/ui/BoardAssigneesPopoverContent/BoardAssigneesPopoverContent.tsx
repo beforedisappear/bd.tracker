@@ -1,3 +1,5 @@
+'use client';
+
 import {
   ProjectMembersField,
   ProjectMembersFieldSchema,
@@ -19,10 +21,11 @@ import type { CheckedState } from '@radix-ui/react-checkbox';
 interface Props {
   taskId: Task['id'];
   assignees: Task['assignees'];
+  offAll?: boolean;
 }
 
 export function BoardAssigneesPopoverContent(props: Props) {
-  const { taskId, assignees } = props;
+  const { taskId, assignees, offAll } = props;
 
   const { boardId } = useProject();
 
@@ -53,6 +56,7 @@ export function BoardAssigneesPopoverContent(props: Props) {
       <ProjectMembersField
         onCheckedChange={onSelect}
         onClick={e => e.stopPropagation()}
+        offAll={offAll}
       />
     </Form>
   );

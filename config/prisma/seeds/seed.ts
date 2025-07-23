@@ -10,7 +10,6 @@ import { v4 } from 'uuid';
 
 const prisma = new PrismaClient();
 
-//TODO: finish seed
 async function main() {
   const [testUser, user2, user3] = await Promise.all([
     createUser(process.env.TEST_USER_EMAIL!),

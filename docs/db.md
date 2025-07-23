@@ -7,5 +7,5 @@
 $ bun db:pg:generate
 
 # apply migrations
-$ bun db:pg:migrate:dev "init"
+$ bun db:pg:migrate:init
 ```

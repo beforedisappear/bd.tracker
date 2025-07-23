@@ -2,7 +2,7 @@ import {
   BriefcaseBusiness,
   UserRound,
   Folder,
-  MessageSquare,
+  // MessageSquare,
 } from 'lucide-react';
 
 import { Logout } from '@/features/Logout';
@@ -62,18 +62,18 @@ export const getMainSidebarGroupItems = (args: Args): SidebarGroupEl[] => {
           isDefaultOpen: true,
           subItems: projects,
         },
-        {
-          type: 'item-sub' as const,
-          trigger: {
-            label: 'Личные чаты',
-            icon: <MessageSquare />,
-          },
-          isDefaultOpen: true,
-          subItems: [
-            { type: 'item-link', link: { title: 'Чат №1', url: '#' } },
-            { type: 'item-link', link: { title: 'Чат №2', url: '#' } },
-          ],
-        },
+        // {
+        //   type: 'item-sub' as const,
+        //   trigger: {
+        //     label: 'Личные чаты',
+        //     icon: <MessageSquare />,
+        //   },
+        //   isDefaultOpen: true,
+        //   subItems: [
+        //     { type: 'item-link', link: { title: 'Чат №1', url: '#' } },
+        //     { type: 'item-link', link: { title: 'Чат №2', url: '#' } },
+        //   ],
+        // },
       ],
     },
   ];

@@ -1,3 +1,5 @@
+'use client';
+
 import { ErrorBoundary } from '@/shared/ui/c';
 import { ManageProjectsItem } from '../ManageProjectsItem/ManageProjectsItem';
 import { ManageProjectsLoading } from './ManageProjects.loading';
@@ -5,7 +7,6 @@ import { ManageProjectsPlaceholder } from './ManageProjects.placeholder';
 
 import { useTenant } from '@/shared/lib/navigation';
 import { useQuery } from '@tanstack/react-query';
-import { useTeamAccess } from '@/entities/Team';
 
 import { cn } from '@/shared/lib/css';
 import { projectQueries } from '@/entities/Project';
@@ -13,11 +14,6 @@ import { getManageProjectsContainerClassName } from '../../constants';
 
 export function ManageProjects() {
   const tenant = useTenant();
-  const {
-    userId,
-    isEnoughAccess,
-    isLoading: isTeamAccessLoading,
-  } = useTeamAccess();
 
   const {
     data,
@@ -27,9 +23,8 @@ export function ManageProjects() {
     refetch,
   } = useQuery(projectQueries.getProjectsByTeam({ teamIdOrSlug: tenant }));
 
-  if (isProjectsLoading || isTeamAccessLoading)
-    return <ManageProjectsLoading />;
-  else if (isError || !data || !userId)
+  if (isProjectsLoading) return <ManageProjectsLoading />;
+  else if (isError || !data)
     return <ErrorBoundary error={error} className='m-auto' reset={refetch} />;
 
   return (
@@ -39,8 +34,6 @@ export function ManageProjects() {
           key={project.id}
           project={project}
           tenant={tenant}
-          userId={userId}
-          isEnoughAccess={isEnoughAccess}
         />
       ))}
 

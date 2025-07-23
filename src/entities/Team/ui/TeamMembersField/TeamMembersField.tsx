@@ -1,6 +1,6 @@
 'use client';
 
-import { ErrorBoundary, MembersField, PureInput } from '@/shared/ui/c';
+import { ErrorBoundary, CheckboxSelectField, PureInput } from '@/shared/ui/c';
 import { TeamMembersFieldLoading } from './TeamMembersField.loading';
 
 import { useState } from 'react';
@@ -62,9 +62,10 @@ export function TeamMembersField(props: Props) {
         )}
 
         {isSuccess && (
-          <MembersField
-            members={teamMembers}
+          <CheckboxSelectField
             inputName='membersIds'
+            allLabel='Все участники'
+            items={teamMembers}
             disabled={disabled}
           />
         )}

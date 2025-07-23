@@ -22,6 +22,7 @@ export function BoardAssigneesPopoverTrigger(props: Props) {
     ...rest
   } = props;
 
+  const length = assignees.length;
   const isLeftToRight = direction === 'leftToRight';
   const isRightToLeft = direction === 'rightToLeft';
 
@@ -30,7 +31,7 @@ export function BoardAssigneesPopoverTrigger(props: Props) {
     onClick?.(e);
   };
 
-  if (assignees.length > 0)
+  if (length > 0)
     return (
       <div
         className={cn('flex justify-end min-w-14', {
@@ -53,8 +54,8 @@ export function BoardAssigneesPopoverTrigger(props: Props) {
               className={cn(
                 'grid place-content-center h-6 w-6 text-xs border-2 border-muted',
                 {
-                  'mr-[-10px]': isLeftToRight,
-                  'ml-[-10px]': isRightToLeft,
+                  'mr-[-10px]': isLeftToRight && length > 1,
+                  'ml-[-10px]': isRightToLeft && length > 1,
                 },
               )}
             />

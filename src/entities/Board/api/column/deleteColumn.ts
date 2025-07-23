@@ -1,4 +1,4 @@
-import { apiClient } from '@/shared/api/apiClient';
+import { apiClient } from '@/shared/api/c';
 
 import type { DeleteColumnDtoReq, DeleteColumnDtoRes } from '../../model/types';
 

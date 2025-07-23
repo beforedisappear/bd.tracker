@@ -1,5 +1,3 @@
-'use client';
-
 import { ProjectView } from '@/widgets/ProjectView';
 import { TaskFilters } from '@/widgets/TaskFilters';
 import { TaskOverviewSheet } from '@/widgets/TaskOverviewSheet';
@@ -7,15 +5,11 @@ import { TaskOverviewSheet } from '@/widgets/TaskOverviewSheet';
 import { DeleteBoard } from '@/features/Board/DeleteBoard';
 import { SelectProjectView } from '@/features/Project/SelectProjectView';
 import { ManageProjectMembers } from '@/features/Project/ManageProjectMembers';
+import { ManageStickers } from '@/features/ManageStickers';
 
 import { BoardStoreProvider } from '@/entities/Board';
 
-import { useScrollLock } from '@/shared/lib/ui';
-import { ManageStickers } from '@/features/ManageStickers';
-
 export function ProjectByIdPage() {
-  useScrollLock({ enabled: true, type: 'x' });
-
   return (
     <BoardStoreProvider>
       <div className='flex flex-col gap-4 w-full h-full'>

@@ -59,14 +59,14 @@ export function TeamMemberProfileModalContent() {
       <div className='flex flex-col gap-2 flex-1'>
         <div className='flex items-center text-sm text-gray-400 gap-1'>
           <Signature size={16} className='text-gray-400' />
-          <span>Имя:</span>
-          <span className='line-clamp-1'>{teamMember.name}</span>
+          <span className='whitespace-nowrap'>Имя:</span>
+          <span className='line-clamp-2 break-all'>{teamMember.name}</span>
         </div>
 
         <div className='flex items-center text-sm text-gray-400 gap-1'>
           <Mail size={16} className='text-gray-400' />
-          <span>E-mail:</span>
-          <span className='line-clamp-1'>{teamMember.email}</span>
+          <span className='whitespace-nowrap'>E-mail:</span>
+          <span className='line-clamp-2 break-all'>{teamMember.email}</span>
         </div>
 
         {teamMember.isOwner && (

@@ -2,6 +2,8 @@ import { mutationOptions } from '@/shared/lib/tanstack-query';
 import { queryOptions } from '@tanstack/react-query';
 import { queryClient } from '@/shared/config/query';
 
+import { projectQueries } from '@/entities/Project/@x/team';
+
 import { getHaveAccessToTeam } from './getHaveAccessToTeam';
 import { getUserTeamList } from './getUserTeamList';
 import { getTeamMembers } from './getTeamMembers';
@@ -84,7 +86,6 @@ export const teamQueries = {
     queryOptions({
       queryKey: [...teamQueries.teamMemberById(dto.teamIdOrSlug, dto.memberId)],
       queryFn: () => getTeamMemberById(dto),
-      select: res => res.data,
     }),
 
   createTeam: () =>
@@ -175,6 +176,10 @@ export const teamQueries = {
 
         queryClient.invalidateQueries({
           queryKey: [...teamQueries.teamMembers(teamIdOrSlug)],
+        });
+
+        queryClient.invalidateQueries({
+          queryKey: [...projectQueries.teamProjects(teamIdOrSlug)],
         });
       },
     }),

@@ -1,4 +1,4 @@
-import { apiClient } from '@/shared/api/apiClient';
+import { apiClient } from '@/shared/api/c';
 import type { InviteToTeamDtoReq, InviteToTeamDtoRes } from '../models/types';
 
 export const inviteToTeam = async (data: InviteToTeamDtoReq) => {

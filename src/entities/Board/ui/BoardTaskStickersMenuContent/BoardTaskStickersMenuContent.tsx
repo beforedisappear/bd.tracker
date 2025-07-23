@@ -1,3 +1,5 @@
+'use client';
+
 import { Form } from '@/shared/ui/Form';
 import { BoardStickerInput, taskQueries, type Sticker } from '@/entities/Board';
 

@@ -1,12 +1,14 @@
-import { apiClient } from '@/shared/api/apiClient';
+import { apiClient } from '@/shared/api/c';
 
 import type {
   GetTeamMemberByIdDtoReq,
   GetTeamMemberByIdDtoRes,
 } from '../models/types';
 
-export const getTeamMemberById = (data: GetTeamMemberByIdDtoReq) => {
-  return apiClient.withAuth.get<GetTeamMemberByIdDtoRes>(
-    `/team/${data.teamIdOrSlug}/members/${data.memberId}`,
-  );
+export const getTeamMemberById = async (data: GetTeamMemberByIdDtoReq) => {
+  const { teamIdOrSlug, memberId } = data;
+
+  return apiClient.withAuth
+    .get<GetTeamMemberByIdDtoRes>(`/team/${teamIdOrSlug}/members/${memberId}`)
+    .then(res => res.data);
 };

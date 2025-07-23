@@ -1,3 +1,5 @@
+'use client';
+
 import { LazyManageStickersMobile } from './ManageStickers.mobile.async';
 import { LazyManageStickersDesktop } from './ManageStickers.desktop.async';
 

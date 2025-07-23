@@ -1,3 +1,5 @@
+'use client';
+
 import { useDeviceType } from '@/shared/lib/deviceType/c';
 
 import { LazyCreateProjectDesktop } from './CreateProject.desktop.async';
