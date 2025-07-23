@@ -33,7 +33,7 @@ export const MembersField = memo((props: Props) => {
     onCheckedChange,
   } = props;
 
-  const { setValue } = useFormContext();
+  const { setValue, getValues } = useFormContext();
 
   if (members.length === 0) return null;
 
@@ -71,8 +71,16 @@ export const MembersField = memo((props: Props) => {
           className='h-6 items-center'
           labelClassName='font-normal text-base truncate max-w-64'
           withRightLabel
-          onCheckedChange={checked => onCheckedChange?.(checked, member.id)}
           disabled={disabled}
+          onCheckedChange={checked => {
+            onCheckedChange?.(checked, member.id);
+
+            const allChecked = Object.values(getValues(inputName)).every(
+              v => v === true,
+            );
+
+            setValue('all', allChecked);
+          }}
         />
       ))}
     </ScrollArea>
