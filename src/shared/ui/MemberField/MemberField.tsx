@@ -1,3 +1,5 @@
+'use client';
+
 import { ScrollArea, Checkbox } from '@/shared/ui/c';
 
 import { memo } from 'react';

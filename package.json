@@ -10,7 +10,6 @@
     "wss:start": "node socket/server.ts",
     "prod": "next build && next start",
     "build": "next build",
-    "build:with-ws": "NODE_ENV=production ts-node server.ts",
     "start": "next start",
     "lint": "next lint",
     "types": "tsc",
