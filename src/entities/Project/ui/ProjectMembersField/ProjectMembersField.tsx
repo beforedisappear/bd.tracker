@@ -1,4 +1,4 @@
-import { ErrorBoundary, MembersField } from '@/shared/ui/c';
+import { ErrorBoundary, CheckboxSelectField } from '@/shared/ui/c';
 import { ProjectMembersFieldLoading } from './ProjectMembersField.loading';
 
 import { useQuery } from '@tanstack/react-query';
@@ -42,8 +42,10 @@ export function ProjectMembersField(props: Props) {
         </span>
       )}
 
-      <MembersField
-        members={members}
+      <CheckboxSelectField
+        inputName='membersIds'
+        allLabel='Все участники'
+        items={members}
         onCheckedChange={onCheckedChange}
         customHeight={customHeight}
       />

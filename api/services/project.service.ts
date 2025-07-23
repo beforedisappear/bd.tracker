@@ -349,11 +349,16 @@ class ProjectService extends BaseService {
       throw ApiError.notFound('Project not found');
     }
 
-    const { inProject } = await this.checkIsUserInProject(project.id, {
-      userId: initiatorId,
-    });
+    const [{ isAdmin, isOwner }, { inProject }] = await Promise.all([
+      this.checkIsUserInTeam(project.team.id, {
+        userId: initiatorId,
+      }),
+      this.checkIsUserInProject(project.id, {
+        userId: initiatorId,
+      }),
+    ]);
 
-    if (!inProject)
+    if (!inProject && !isAdmin && !isOwner)
       throw ApiError.forbidden('You are not allowed to get this project');
 
     return project.members;

@@ -24,7 +24,7 @@ export { Collapsible } from './Collapsible/Collapsible';
 export { Checkbox } from './Checkbox/Checkbox';
 export { PureCheckbox } from './Checkbox/PureCheckbox';
 export { Popover } from './Popover/Popover';
-export { MembersField } from './MembersField/MembersField';
+export { CheckboxSelectField } from './CheckboxSelectField/CheckboxSelectField';
 export { Calendar } from './Calendar/Calendar';
 export { RenameInput } from './RenameInput/RenameInput';
 

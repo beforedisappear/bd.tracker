@@ -4,43 +4,46 @@ import { ScrollArea, Checkbox } from '@/shared/ui/c';
 
 import { memo } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { useDeviceType } from '@/shared/lib/deviceType/c';
 
 import { cn } from '@/shared/lib/css';
 
 import type { CheckedState } from '@radix-ui/react-checkbox';
 
-type Member = {
+type Item = {
   id: string;
   name: string;
 };
 
-interface Props {
-  members: Member[];
+interface Props<T extends Item> {
+  items: T[];
+  inputName: string;
+  allLabel: string;
   isExpanded?: boolean;
-  inputName?: string;
   onCheckedChange?: (checked: CheckedState, memberId: string) => void;
   customHeight?: number;
   disabled?: boolean;
 }
 
-export const MembersField = memo((props: Props) => {
+export const CheckboxSelectField = memo(<T extends Item>(props: Props<T>) => {
+  const { isMobile } = useDeviceType();
+
   const {
-    members = [],
+    items = [],
     isExpanded,
     customHeight,
-    inputName = 'membersIds',
+    inputName,
+    allLabel,
     disabled = false,
     onCheckedChange,
   } = props;
 
   const { setValue, getValues } = useFormContext();
 
-  if (members.length === 0) return null;
+  if (items.length === 0) return null;
 
   const onSetAll = (checked: CheckedState) => {
-    const values = Object.fromEntries(
-      members.map(member => [member.id, checked]),
-    );
+    const values = Object.fromEntries(items.map(item => [item.id, checked]));
     setValue(inputName, values);
   };
 
@@ -48,12 +51,15 @@ export const MembersField = memo((props: Props) => {
     <ScrollArea
       type='always'
       style={{ height: customHeight }}
-      className={cn('h-40 pr-4 -mr-4', { ['h-52']: isExpanded })}
+      className={cn('h-40 pr-4 -mr-4', {
+        ['h-52']: isExpanded,
+        ['h-full max-h-[400px]']: isMobile,
+      })}
     >
       <Checkbox
         key='all'
         name='all'
-        label='Все участники'
+        label={allLabel}
         className='h-6 items-center'
         withRightLabel
         labelClassName='font-normal text-base truncate max-w-64'
@@ -63,17 +69,17 @@ export const MembersField = memo((props: Props) => {
 
       <div className='border-b-2 border-y-primary/50 my-1 rounded-full' />
 
-      {members.map(member => (
+      {items.map(item => (
         <Checkbox
-          key={member.id}
-          name={`${inputName}.${member.id}`}
-          label={member.name}
+          key={item.id}
+          name={`${inputName}.${item.id}`}
+          label={item.name}
           className='h-6 items-center'
           labelClassName='font-normal text-base truncate max-w-64'
           withRightLabel
           disabled={disabled}
           onCheckedChange={checked => {
-            onCheckedChange?.(checked, member.id);
+            onCheckedChange?.(checked, item.id);
 
             const allChecked = Object.values(getValues(inputName)).every(
               v => v === true,
@@ -87,4 +93,4 @@ export const MembersField = memo((props: Props) => {
   );
 });
 
-MembersField.displayName = 'MembersField';
+CheckboxSelectField.displayName = 'CheckboxSelectField';
