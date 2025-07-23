@@ -41,7 +41,10 @@ export const ScrollAreaContainer = forwardRef<
       <ScrollAreaPrimitive.Viewport
         ref={viewportRef}
         data-testid='scroll-area-viewport'
-        className={cn('h-full w-full rounded-[inherit]', viewportClassName)}
+        className={cn(
+          'h-full w-full rounded-[inherit] [&>div]:!block',
+          viewportClassName,
+        )}
       >
         {children}
       </ScrollAreaPrimitive.Viewport>

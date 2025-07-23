@@ -1,6 +1,6 @@
 import {
   Kanban,
-  List,
+  // List,
   //  Calendar
 } from 'lucide-react';
 
@@ -23,7 +23,7 @@ export function SelectProjectView() {
         <span>Доска</span>
       </Button>
 
-      <Button
+      {/* <Button
         variant={null}
         size='sm'
         disabled
@@ -33,7 +33,7 @@ export function SelectProjectView() {
       >
         <List />
         <span>Список</span>
-      </Button>
+      </Button> */}
 
       {/* <Button variant={null} size='sm'>
         <Calendar />

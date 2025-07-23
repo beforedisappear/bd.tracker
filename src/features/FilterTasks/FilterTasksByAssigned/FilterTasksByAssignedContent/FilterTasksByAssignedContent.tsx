@@ -52,6 +52,7 @@ export function FilterTasksByAssignedContent() {
         labelClassName='text-[10px] font-medium uppercase text-muted-foreground'
         customHeight={120}
         onCheckedChange={onCheckedChange}
+        offAll
       />
     </Form>
   );

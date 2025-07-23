@@ -15,10 +15,11 @@ export function TaskFilters() {
     <ScrollArea
       scrollBar={{ orientation: 'horizontal' }}
       className={cn('w-fit -mb-3 pb-3', {
-        'max-w-fit w-[calc(100vw-9rem)]': isMobile,
+        'max-w-fit w-[calc(100vw-8rem)]': isMobile,
       })}
+      viewportClassName='bg-muted rounded-md'
     >
-      <div className='flex flex-row gap-2 bg-muted rounded-md '>
+      <div className='flex flex-row gap-2 w-full'>
         <FilterTasksByAssigned />
         <FilterTasksByColor />
         <FilterTasksByDateRange />

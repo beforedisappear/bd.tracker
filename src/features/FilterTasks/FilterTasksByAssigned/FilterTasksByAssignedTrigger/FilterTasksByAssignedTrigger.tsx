@@ -26,7 +26,9 @@ export function FilterTasksByAssignedTrigger(props: Props) {
     <Button
       variant={null}
       size='sm'
-      className={cn(className, { 'text-blue-600': assignedTaskFilterUsed })}
+      className={cn(className, {
+        'text-blue-600 bg-muted': assignedTaskFilterUsed,
+      })}
       {...rest}
     >
       <User />

@@ -17,11 +17,18 @@ interface Props {
   onCheckedChange: (checked: CheckedState, memberId: string) => void;
   onClick?: (e: MouseEvent<HTMLDivElement>) => void;
   customHeight?: number;
+  offAll?: boolean;
 }
 
 export function ProjectMembersField(props: Props) {
-  const { label, customHeight, labelClassName, onClick, onCheckedChange } =
-    props;
+  const {
+    label,
+    customHeight,
+    labelClassName,
+    onClick,
+    onCheckedChange,
+    offAll,
+  } = props;
 
   const { projectId } = useProject();
 
@@ -48,6 +55,7 @@ export function ProjectMembersField(props: Props) {
         items={members}
         onCheckedChange={onCheckedChange}
         customHeight={customHeight}
+        offAll={offAll}
       />
     </div>
   );

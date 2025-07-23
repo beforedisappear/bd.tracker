@@ -23,6 +23,7 @@ interface Props<T extends Item> {
   onCheckedChange?: (checked: CheckedState, memberId: string) => void;
   customHeight?: number;
   disabled?: boolean;
+  offAll?: boolean;
 }
 
 export const CheckboxSelectField = memo(<T extends Item>(props: Props<T>) => {
@@ -36,6 +37,7 @@ export const CheckboxSelectField = memo(<T extends Item>(props: Props<T>) => {
     allLabel,
     disabled = false,
     onCheckedChange,
+    offAll,
   } = props;
 
   const { setValue, getValues } = useFormContext();
@@ -56,18 +58,22 @@ export const CheckboxSelectField = memo(<T extends Item>(props: Props<T>) => {
         ['h-full max-h-[400px]']: isMobile,
       })}
     >
-      <Checkbox
-        key='all'
-        name='all'
-        label={allLabel}
-        className='h-6 items-center'
-        withRightLabel
-        labelClassName='font-normal text-base truncate max-w-64'
-        onCheckedChange={onSetAll}
-        disabled={disabled}
-      />
+      {!offAll && (
+        <>
+          <Checkbox
+            key='all'
+            name='all'
+            label={allLabel}
+            className='h-6 items-center'
+            withRightLabel
+            labelClassName='font-normal text-base truncate max-w-64'
+            onCheckedChange={onSetAll}
+            disabled={disabled}
+          />
 
-      <div className='border-b-2 border-y-primary/50 my-1 rounded-full' />
+          <div className='border-b-2 border-y-primary/50 my-1 rounded-full' />
+        </>
+      )}
 
       {items.map(item => (
         <Checkbox

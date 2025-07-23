@@ -24,7 +24,11 @@ export function ViewBoardTaskContent(props: Props) {
         />
       </div>
 
-      <BoardAssigneesPopover taskId={data.id} assignees={data.assignees} />
+      <BoardAssigneesPopover
+        taskId={data.id}
+        assignees={data.assignees}
+        offAll
+      />
     </div>
   );
 }
