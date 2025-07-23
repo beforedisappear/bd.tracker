@@ -21,11 +21,10 @@ export function useTeamAccess(args: Args = {}) {
   const isMember = users?.some(user => data?.userId === user.id) || false;
 
   return {
-    ...(users &&
-      users.length > 0 && {
-        isEnoughAccessAsMember: !!(data?.isOwner || data?.isAdmin || isMember),
-        isMember: users?.some(user => data?.userId === user.id) || false,
-      }),
+    ...(users && {
+      isEnoughAccessAsMember: !!(data?.isOwner || data?.isAdmin || isMember),
+      isMember: users?.some(user => data?.userId === user.id) || false,
+    }),
     isEnoughAccess,
     isOwner: data?.isOwner,
     isAdmin: data?.isAdmin,
