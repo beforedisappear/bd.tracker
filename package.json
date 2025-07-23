@@ -27,6 +27,7 @@
     "db:pg:validate": "prisma validate --schema ./config/prisma/schema.prisma",
     "db:pg:generate": "prisma generate --schema ./config/prisma/schema.prisma",
     "db:pg:seed": "prisma db seed",
+    "db:pg:migrate:init": "prisma migrate dev --schema ./config/prisma/schema.prisma",
     "db:pg:migrate:dev": "prisma migrate dev --schema ./config/prisma/schema.prisma --name",
     "db:pg:migrate:prod": "npx prisma migrate deploy --schema ./config/prisma/schema.prisma",
     "db:pg:reset": "prisma migrate reset --schema ./config/prisma/schema.prisma",
