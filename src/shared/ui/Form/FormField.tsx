@@ -1,3 +1,5 @@
+'use client';
+
 import { FormFieldContext } from '../../lib/rhf';
 import {
   Controller,

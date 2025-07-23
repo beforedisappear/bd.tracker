@@ -1,3 +1,5 @@
+'use client';
+
 import ApiClient from './api/apiClient';
 // import AuthInterceptor from './interceptors/authInterceptor';
 import AuthInterceptorWithQueue from './interceptors/authInterceptorWithQueue';

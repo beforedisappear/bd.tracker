@@ -1,3 +1,5 @@
+'use client';
+
 import { Plus } from 'lucide-react';
 
 import { Button, Form } from '@/shared/ui/c';

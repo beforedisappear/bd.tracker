@@ -2,6 +2,8 @@ import { AppRoutes, routesMetadata } from '@/shared/config/routes';
 
 import type { Metadata } from 'next';
 
+export const dynamic = 'force-static';
+
 export const metadata: Metadata = {
   ...routesMetadata[AppRoutes.PROFILE],
 };

@@ -1,3 +1,5 @@
+'use client';
+
 import { Dialog } from '@/shared/ui/c';
 
 import { getTeamMemberProfileModal, useTeamStore } from '@/entities/Team';

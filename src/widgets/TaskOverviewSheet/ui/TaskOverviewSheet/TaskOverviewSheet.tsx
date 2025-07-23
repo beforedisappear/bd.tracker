@@ -1,3 +1,5 @@
+'use client';
+
 import { Sheet } from '@/shared/ui/c';
 import { TaskOverviewSheetContainer } from '../TaskOverviewSheetContainer';
 

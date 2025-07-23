@@ -1,3 +1,5 @@
+'use client';
+
 import { ErrorBoundary } from '@/shared/ui/c';
 import { ManageProjectsItem } from '../ManageProjectsItem/ManageProjectsItem';
 import { ManageProjectsLoading } from './ManageProjects.loading';

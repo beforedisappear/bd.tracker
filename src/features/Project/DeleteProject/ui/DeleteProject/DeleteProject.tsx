@@ -1,3 +1,5 @@
+'use client';
+
 import { LazyDeleteProjectDesktop } from './DeleteProject.desktop.async';
 import { LazyDeleteProjectMobile } from './DeleteProject.mobile.async';
 

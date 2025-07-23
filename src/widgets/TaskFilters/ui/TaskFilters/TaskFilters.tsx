@@ -1,3 +1,5 @@
+'use client';
+
 import { ScrollArea } from '@/shared/ui/c';
 import { FilterTasksByAssigned } from '@/features/FilterTasks/FilterTasksByAssigned';
 import { FilterTasksByColor } from '@/features/FilterTasks/FilterTasksByColor';

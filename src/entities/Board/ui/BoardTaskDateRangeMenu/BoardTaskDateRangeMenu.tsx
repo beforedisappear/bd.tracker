@@ -1,3 +1,5 @@
+'use client';
+
 import { Popover } from '@/shared/ui/c';
 import { BoardTaskDateRangeMenuTrigger } from '../BoardTaskDateRangeMenuTrigger/BoardTaskDateRangeMenuTrigger';
 import { BoardTaskDateRangeMenuContent } from '../BoardTaskDateRangeMenuContent/BoardTaskDateRangeMenuContent';
