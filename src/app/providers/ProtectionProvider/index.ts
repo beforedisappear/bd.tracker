@@ -1,1 +1,1 @@
-export { ProtectionProvider } from './ui/ProtectionProvider/ProtectionProvider';
+export { ProtectionProvider } from './ProtectionProvider';

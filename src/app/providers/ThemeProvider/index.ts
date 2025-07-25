@@ -1,2 +1,2 @@
-export { ThemeProvider } from './ui/ThemeProvider';
+export { ThemeProvider } from './ThemeProvider';
 export { useTheme } from 'next-themes';

@@ -27,6 +27,8 @@ export const tailwindConfig: Config = {
     TailwindAnimate,
     plugin(function ({ addVariant }) {
       addVariant('hover', '@media (hover: hover) { &:hover }');
+      addVariant('mobile', '.mobile &');
+      addVariant('desktop', '.desktop &');
     }),
   ],
 };
