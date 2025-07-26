@@ -3,7 +3,6 @@
 import { BasicDeleteForm } from '@/shared/ui/c';
 
 import { useMutation } from '@tanstack/react-query';
-import { useDeviceType } from '@/shared/lib/deviceType/c';
 import { useProject } from '@/shared/lib/navigation';
 
 import { columnQueries } from '@/entities/Board';
@@ -21,7 +20,6 @@ export function DeleteColumnForm(props: Props) {
   const { onClose, columnId } = props;
 
   const { boardId } = useProject();
-  const { isMobile, isDesktop } = useDeviceType();
 
   const { mutateAsync: deleteColumn, isPending } = useMutation(
     columnQueries.deleteColumn(),
@@ -38,8 +36,6 @@ export function DeleteColumnForm(props: Props) {
 
   return (
     <BasicDeleteForm
-      isDesktop={isDesktop}
-      isMobile={isMobile}
       onClose={onClose}
       onDelete={onDelete}
       isPending={isPending}

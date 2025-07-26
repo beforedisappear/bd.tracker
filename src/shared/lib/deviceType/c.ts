@@ -1,6 +1,3 @@
-export {
-  DeviceTypeContext,
-  type DeviceType,
-  type DeviceContext,
-} from './contexts';
+export { DeviceTypeContext } from './contexts';
 export { useDeviceType } from './useDeviceType';
+export type { DeviceType, DeviceContext } from './types';

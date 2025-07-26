@@ -4,7 +4,6 @@ import { BasicDeleteForm } from '@/shared/ui/c';
 
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useDeviceType } from '@/shared/lib/deviceType/c';
 import { useProject, useTenant } from '@/shared/lib/navigation';
 
 import { boardQueries } from '@/entities/Board';
@@ -30,7 +29,6 @@ export function DeleteBoardForm(props: Props) {
   const { onClose, boardId } = props;
 
   const { push } = useRouter();
-  const { isMobile, isDesktop } = useDeviceType();
   const tenant = useTenant();
   const { projectId } = useProject();
 
@@ -59,8 +57,6 @@ export function DeleteBoardForm(props: Props) {
 
   return (
     <BasicDeleteForm
-      isDesktop={isDesktop}
-      isMobile={isMobile}
       onClose={onClose}
       onDelete={onDelete}
       isPending={isPending}

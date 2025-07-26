@@ -4,7 +4,6 @@ import { ScrollArea, Checkbox } from '@/shared/ui/c';
 
 import { memo } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { useDeviceType } from '@/shared/lib/deviceType/c';
 
 import { cn } from '@/shared/lib/css';
 
@@ -27,8 +26,6 @@ interface Props<T extends Item> {
 }
 
 export const CheckboxSelectField = memo(<T extends Item>(props: Props<T>) => {
-  const { isMobile } = useDeviceType();
-
   const {
     items = [],
     isExpanded,
@@ -53,9 +50,8 @@ export const CheckboxSelectField = memo(<T extends Item>(props: Props<T>) => {
     <ScrollArea
       type='always'
       style={{ height: customHeight }}
-      className={cn('h-40 pr-4 -mr-4', {
+      className={cn('h-40 pr-4 -mr-4 mobile:h-full mobile:max-h-[400px]', {
         ['h-52']: isExpanded,
-        ['h-full max-h-[400px]']: isMobile,
       })}
     >
       {!offAll && (

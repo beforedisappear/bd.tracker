@@ -4,7 +4,7 @@ import {
   DeviceTypeContext,
   type DeviceContext,
 } from '@/shared/lib/deviceType/c';
-import { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 
 interface Props extends PropsWithChildren {
   value: DeviceContext;

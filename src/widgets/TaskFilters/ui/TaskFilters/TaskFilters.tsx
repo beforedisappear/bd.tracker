@@ -6,19 +6,12 @@ import { FilterTasksByColor } from '@/features/FilterTasks/FilterTasksByColor';
 import { FilterTasksByDateRange } from '@/features/FilterTasks/FilterTasksByDateRange';
 import { FilterTasksBySticker } from '@/features/FilterTasks/FilterTasksBySticker';
 
-import { useDeviceType } from '@/shared/lib/deviceType/c';
-
-import { cn } from '@/shared/lib/css';
-
 export function TaskFilters() {
-  const { isMobile } = useDeviceType();
-
   return (
     <ScrollArea
       scrollBar={{ orientation: 'horizontal' }}
-      className={cn('w-fit -mb-3 pb-3', {
-        'max-w-fit w-[calc(100vw-8rem)]': isMobile,
-      })}
+      className='w-fit -mb-3 pb-3 
+      mobile:max-w-fit mobile:w-[calc(100vw-8rem)]'
       viewportClassName='bg-muted rounded-md'
     >
       <div className='flex flex-row gap-2 w-full'>

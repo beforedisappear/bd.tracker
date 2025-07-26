@@ -7,13 +7,11 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useCallback } from 'react';
 import { useDeviceType } from '@/shared/lib/deviceType/c';
 
-import { cn } from '@/shared/lib/css';
-
 import { TASK_PARAM } from '@/shared/config/routes';
 
 export const TaskOverviewSheet = () => {
   const { push } = useRouter();
-  const { isDesktop, isMobile } = useDeviceType();
+  const { isMobile } = useDeviceType();
   const searchParams = useSearchParams()!;
   const taskId = searchParams.get(TASK_PARAM);
 
@@ -29,10 +27,9 @@ export const TaskOverviewSheet = () => {
       open={!!taskId}
       modal={isMobile}
       content={{
-        className: cn('w-full', {
-          'max-w-md pt-10': isDesktop,
-          '!max-w-full': isMobile,
-        }),
+        className: `w-full 
+        desktop:max-w-md desktop:pt-10 
+        mobile:!max-w-full`,
         side: 'right',
         onClickOnCloseButton: onClose,
       }}

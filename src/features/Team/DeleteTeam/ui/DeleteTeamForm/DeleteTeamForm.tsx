@@ -4,14 +4,13 @@ import { BasicDeleteForm } from '@/shared/ui/c';
 
 import { useMutation } from '@tanstack/react-query';
 import {
-  getDeletingTeam,
   useTeamStore,
+  getDeletingTeam,
   getDeleteTeamModal,
   teamQueries,
 } from '@/entities/Team';
 import { useTenant } from '@/shared/lib/navigation';
 import { useRouter } from 'next/navigation';
-import { useDeviceType } from '@/shared/lib/deviceType/c';
 
 import { getHomeRoutePath } from '@/shared/config/routes';
 import { getErrorMessage } from '@/shared/lib/error';
@@ -31,7 +30,6 @@ export function DeleteTeamForm(props: Props) {
 
   const tenant = useTenant();
   const { push } = useRouter();
-  const { isMobile, isDesktop } = useDeviceType();
   const { setShowDeleteTeamModal } = useTeamStore(getDeleteTeamModal());
   const { setDeletingTeam, deletingTeam } = useTeamStore(getDeletingTeam());
 
@@ -61,8 +59,6 @@ export function DeleteTeamForm(props: Props) {
 
   return (
     <BasicDeleteForm
-      isDesktop={isDesktop}
-      isMobile={isMobile}
       onClose={onClose}
       onDelete={onDelete}
       isPending={isPending}
