@@ -1,4 +1,3 @@
-import { cn } from '@/shared/lib/css';
 import { Loader2 } from 'lucide-react';
 
 import { Button, Form, Input, CheckboxSelectField } from '@/shared/ui/c';
@@ -6,7 +5,6 @@ import { Button, Form, Input, CheckboxSelectField } from '@/shared/ui/c';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import { useTenant } from '@/shared/lib/navigation';
-import { useDeviceType } from '@/shared/lib/deviceType/c';
 import { useDebounce } from '@/shared/lib/ui';
 
 import { teamQueries, InviteToTeamSchema } from '@/entities/Team';
@@ -26,7 +24,6 @@ interface Props {
 export function InviteToTeamForm(props: Props) {
   const { projects, onClose } = props;
 
-  const { isMobile } = useDeviceType();
   const tenant = useTenant();
 
   const form = useForm<z.infer<typeof InviteToTeamSchema>>({
@@ -127,7 +124,7 @@ export function InviteToTeamForm(props: Props) {
 
           <Button
             type='submit'
-            className={cn('min-w-48', { 'w-full': isMobile })}
+            className='min-w-48 mobile:w-full'
             disabled={isPending || !form.formState.isValid}
           >
             {isPending ? (

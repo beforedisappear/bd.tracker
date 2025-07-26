@@ -2,13 +2,7 @@
 
 import { createContext } from 'react';
 
-export type DeviceType = 'mobile' | 'desktop';
-
-export type DeviceContext = {
-  deviceType: DeviceType;
-  isMobile: boolean;
-  isDesktop: boolean;
-};
+import type { DeviceType, DeviceContext } from './types';
 
 const initialContextValue = {
   deviceType: 'mobile' as DeviceType,

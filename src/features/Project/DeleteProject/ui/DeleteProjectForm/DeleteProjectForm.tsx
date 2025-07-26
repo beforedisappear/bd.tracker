@@ -1,6 +1,5 @@
 import { BasicDeleteForm } from '@/shared/ui/c';
 
-import { useDeviceType } from '@/shared/lib/deviceType/c';
 import { useMutation } from '@tanstack/react-query';
 import { useTenant } from '@/shared/lib/navigation/useTenant';
 
@@ -20,8 +19,6 @@ export function DeleteProjectForm(props: Props) {
 
   const tenant = useTenant();
 
-  const { isDesktop, isMobile } = useDeviceType();
-
   const { mutateAsync: deleteProject, isPending } = useMutation(
     projectQueries.deleteProject(),
   );
@@ -37,8 +34,6 @@ export function DeleteProjectForm(props: Props) {
 
   return (
     <BasicDeleteForm
-      isDesktop={isDesktop}
-      isMobile={isMobile}
       onClose={onClose}
       onDelete={onDeleteProject}
       isPending={isPending}

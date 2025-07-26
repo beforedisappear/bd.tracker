@@ -29,7 +29,7 @@ export function ManageProjectMembersForm(props: Props) {
   const { data, projectId } = props;
 
   const tenant = useTenant();
-  const { isDesktop, isMobile } = useDeviceType();
+  const { isDesktop } = useDeviceType();
   const { isEnoughAccess } = useTeamAccess();
   const { setShowProjectMembersModal, setCurrentProjectId } =
     usePrivateGlobalStore(getProjectMembersModal());
@@ -77,10 +77,7 @@ export function ManageProjectMembersForm(props: Props) {
 
           <Button
             type='submit'
-            className={cn('mt-auto', {
-              'w-36': isDesktop,
-              'w-full': isMobile,
-            })}
+            className={cn('mt-auto desktop:w-36 mobile:w-full')}
             disabled={!form.formState.isDirty || isPending || !isEnoughAccess}
           >
             {isPending ? (

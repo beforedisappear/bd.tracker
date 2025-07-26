@@ -8,12 +8,10 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTenant } from '@/shared/lib/navigation';
-import { useDeviceType } from '@/shared/lib/deviceType/c';
 import { useTeamAccess, RenameTeamSchema, teamQueries } from '@/entities/Team';
 
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { cn } from '@/shared/lib/css';
 import { toast } from 'sonner';
 import { getTeamRoutePath } from '@/shared/config/routes';
 import { getErrorMessage } from '@/shared/lib/error';
@@ -25,7 +23,6 @@ interface Props {
 export function EditTeamNameField({ name }: Props) {
   const { push } = useRouter();
   const tenant = useTenant();
-  const { isMobile } = useDeviceType();
 
   const [isEditing, setIsEditing] = useState(false);
   const { mutateAsync: renameTeam } = useMutation(teamQueries.renameTeam());
@@ -68,9 +65,8 @@ export function EditTeamNameField({ name }: Props) {
   return (
     <Form {...form}>
       <form
-        className={cn('flex items-center gap-2', {
-          'flex-col items-start': isMobile,
-        })}
+        className='flex items-center gap-2 
+        mobile:flex-col mobile:items-start'
         onSubmit={onSubmit}
       >
         <EditTeamNameLabel as='h3' label={'Команда'} />

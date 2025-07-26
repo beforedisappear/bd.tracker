@@ -9,38 +9,28 @@ interface Props {
   onClose?: () => void;
   onDelete?: () => void;
   isPending?: boolean;
-  isDesktop?: boolean;
-  isMobile?: boolean;
 }
 
 export function BasicDeleteForm(props: Props) {
-  const { className, onClose, onDelete, isPending, isDesktop, isMobile } =
-    props;
+  const { className, onClose, onDelete, isPending } = props;
 
   return (
     <div
       className={cn(
-        'flex gap-2',
-        {
-          'justify-end  mt-auto': isDesktop,
-          'mt-4': isMobile,
-        },
+        `flex gap-2 
+        desktop:justify-end desktop:mt-auto 
+        mobile:mt-4`,
         className,
       )}
     >
-      {isDesktop && (
-        <Button onClick={onClose} variant='outline'>
-          Отмена
-        </Button>
-      )}
+      <Button onClick={onClose} variant='outline' className='mobile:hidden'>
+        Отмена
+      </Button>
 
       <Button
         type='submit'
         variant='destructive'
-        className={cn({
-          'w-28': isDesktop,
-          'w-full': isMobile,
-        })}
+        className='desktop:w-28 mobile:w-full'
         disabled={isPending}
         onClick={onDelete}
       >

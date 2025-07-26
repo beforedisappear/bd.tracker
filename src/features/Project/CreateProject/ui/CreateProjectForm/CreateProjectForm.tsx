@@ -4,7 +4,6 @@ import { TeamMembersField } from '@/entities/Team';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import { useTenant } from '@/shared/lib/navigation';
-import { useDeviceType } from '@/shared/lib/deviceType/c';
 
 import { z } from 'zod';
 import { projectQueries } from '@/entities/Project';
@@ -28,7 +27,6 @@ export function CreateProjectForm(props: Props) {
   const { onClose, className } = props;
 
   const tenant = useTenant();
-  const { isMobile } = useDeviceType();
   const form = useForm<z.infer<typeof CreateProjectSchema>>({
     resolver: zodResolver(CreateProjectSchema),
   });
@@ -69,7 +67,7 @@ export function CreateProjectForm(props: Props) {
         <TeamMembersField label='Участники Проекта' />
 
         <div className='flex justify-end gap-2 mt-auto'>
-          <Button type='submit' className={cn({ 'w-full': isMobile })}>
+          <Button type='submit' className='mobile:w-full'>
             Создать
           </Button>
         </div>

@@ -1,1 +1,1 @@
-export { PrivateGlobalStoreProvider } from './ui/PrivateGlobalStoreProvider';
+export { PrivateGlobalStoreProvider } from './PrivateGlobalStoreProvider';

@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
 
-import { themeConfig } from '../config/theme.config';
+import { themeConfig } from './ThemeProvider.config';
 
 interface IProps extends React.PropsWithChildren {}
 
