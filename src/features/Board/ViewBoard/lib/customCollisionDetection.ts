@@ -1,4 +1,5 @@
 import { closestCenter, type CollisionDetection } from '@dnd-kit/core';
+
 import { isTypeActive } from './isTypeActive';
 
 export const customCollisionDetection: CollisionDetection = ({
@@ -6,14 +7,14 @@ export const customCollisionDetection: CollisionDetection = ({
   droppableContainers,
   ...args
 }) => {
-  const pointerCollisions = closestCenter({
+  const collisions = closestCenter({
     active,
     droppableContainers,
     ...args,
   });
 
   if (isTypeActive(active, 'Column')) {
-    const filtered = pointerCollisions.filter(entry => {
+    const filtered = collisions.filter(entry => {
       const target = droppableContainers.find(c => c.id === entry.id);
       return target?.data?.current?.type === 'Column';
     });
@@ -21,5 +22,5 @@ export const customCollisionDetection: CollisionDetection = ({
     return filtered;
   }
 
-  return pointerCollisions;
+  return collisions;
 };
