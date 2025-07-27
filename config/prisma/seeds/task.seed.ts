@@ -8,6 +8,7 @@ type Args = {
   tenantId: string;
   projectId: string;
   columnId: string;
+  order: number;
   description?: string;
   stickerIds?: string[];
   assigneeIds?: string[];
