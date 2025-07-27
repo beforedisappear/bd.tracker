@@ -8,12 +8,12 @@ import {
   DndContext,
   DragOverlay,
   PointerSensor,
-  closestCenter,
   useDroppable,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
 
+import { customCollisionDetection } from '../../lib/customCollisionDetection';
 import { useDragAndDropBoardItems } from '../../lib/useDragAndDropBoardItems';
 import { useMemo } from 'react';
 import { useDebounce } from '@/shared/lib/ui';
@@ -76,7 +76,7 @@ export function ViewBoard(props: Props) {
   return (
     <DndContext
       sensors={sensors}
-      collisionDetection={closestCenter}
+      collisionDetection={customCollisionDetection}
       onDragStart={handleDragStart}
       onDragMove={debouncedHandleDragMove}
       onDragOver={handleDragOver}
