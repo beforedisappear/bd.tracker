@@ -10,10 +10,10 @@ import {
   columnQueries,
   taskQueries,
   computeOrder,
+  DEFAULT_TASK_ORDER_GAP,
   type Column,
   type Task,
   type Board,
-  DEFAULT_TASK_ORDER_GAP,
 } from '@/entities/Board';
 import { type DraggableItemObj, IsDraggableItem } from '../model/types';
 import type {
@@ -48,6 +48,7 @@ export function useDragAndDropBoardItems(args: Args) {
     taskQueries.moveTask(),
   );
 
+  // Назначем перетаскиваемый элемент
   const handleDragStart = (event: DragStartEvent) => {
     if (isMovingColumn || isMovingTask) return;
 
@@ -59,6 +60,7 @@ export function useDragAndDropBoardItems(args: Args) {
     });
   };
 
+  // Определяем последний валидный принимающий элемент
   const handleDragOver = (event: DragOverEvent) => {
     if (isMovingColumn || isMovingTask) return;
 
@@ -66,6 +68,7 @@ export function useDragAndDropBoardItems(args: Args) {
 
     if (!over || over.id === active.id) return;
 
+    // если перетаскиваемый элемент - колонка, то не обрабатываем
     if (activeDraggableItem?.type === 'Column') return;
 
     if (over.id === lastValidOver.current?.id) return;
@@ -73,7 +76,7 @@ export function useDragAndDropBoardItems(args: Args) {
     lastValidOver.current = over;
   };
 
-  // only for tasks
+  // Обрабатываем перемещение для задач
   const handleDragMove = (event: DragMoveEvent) => {
     const { active, over } = event;
 
@@ -174,6 +177,7 @@ export function useDragAndDropBoardItems(args: Args) {
     }
   };
 
+  // Обрабатываем перемещение для колонок и делаем запросы на изменение веса
   const handleDragEnd = (event: DragEndEvent) => {
     if (isMovingColumn || isMovingTask) return;
 
@@ -181,6 +185,7 @@ export function useDragAndDropBoardItems(args: Args) {
 
     if (!over) return;
 
+    // если перетаскиваемый элемент - колонка и он перемещается на свое место, то не обрабатываем
     if (activeDraggableItem?.type === 'Column' && active.id === over.id) {
       setActiveDraggableItem(null);
       return;
@@ -189,6 +194,9 @@ export function useDragAndDropBoardItems(args: Args) {
     const isTaskActive = isTypeActive(active, 'Task'); // перетаскиваемый элемент - задача
     const isColumnActive = isTypeActive(active, 'Column'); // перетаскиваемый элемент - колонка
     const isColumnOver = isTypeOver(over, 'Column'); // принимающий элемент - колонка
+    // для таски active.id всегда равен over.id, поэтому ориентируемся на lastValidOver
+    const isColumnOverLastOver = isTypeOver(lastValidOver.current, 'Column');
+    const isTaskOverLastOver = isTypeOver(lastValidOver.current, 'Task');
 
     if (isColumnActive && isColumnOver) {
       const activeColumn = columns.find(column => column.id === active.id);
@@ -237,9 +245,7 @@ export function useDragAndDropBoardItems(args: Args) {
       return;
     }
 
-    // для таски active.id всегда равен over.id, поэтому ориентируемся на lastValidOver
-
-    if (isTaskActive && isTypeOver(lastValidOver.current, 'Column')) {
+    if (isTaskActive && isColumnOverLastOver) {
       const overColumnId = lastValidOver.current!.id as string;
 
       const overColumn = columns.find(column => column.id === overColumnId);
@@ -284,27 +290,27 @@ export function useDragAndDropBoardItems(args: Args) {
       return;
     }
 
-    if (isTaskActive && isTypeOver(lastValidOver.current, 'Task')) {
+    if (isTaskActive && isTaskOverLastOver) {
       const overTaskId = lastValidOver.current!.id;
 
-      const targetColumn = columns.find(column =>
+      const overColumn = columns.find(column =>
         column.tasks.some(task => task.id === overTaskId),
       );
 
-      if (!targetColumn) return;
+      if (!overColumn) return;
 
-      const newActiveTask = targetColumn.tasks.find(
+      const newActiveTask = overColumn.tasks.find(
         task => task.id === active.id,
       );
 
       if (!newActiveTask) return;
 
-      const newActiveTaskIdx = targetColumn.tasks.indexOf(newActiveTask);
+      const newActiveTaskIdx = overColumn.tasks.indexOf(newActiveTask);
 
-      const beforeTask = targetColumn.tasks[newActiveTaskIdx - 1] as
+      const beforeTask = overColumn.tasks[newActiveTaskIdx - 1] as
         | Task
         | undefined;
-      const afterTask = targetColumn.tasks[newActiveTaskIdx + 1] as
+      const afterTask = overColumn.tasks[newActiveTaskIdx + 1] as
         | Task
         | undefined;
 
@@ -314,9 +320,11 @@ export function useDragAndDropBoardItems(args: Args) {
         next: afterTask?.order,
       });
 
+      console.log('computedOrder', computedOrder);
+
       const dto = {
         id: active.id as string,
-        columnId: targetColumn.id,
+        columnId: overColumn.id,
         boardId: board.id,
         order: computedOrder,
       };

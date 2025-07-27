@@ -60,9 +60,9 @@ async function main() {
   };
 
   const [toDoColumn, inProgressColumn, doneColumn] = await Promise.all([
-    createColumn({ name: 'To Do', ...columnArgs, order: 10000000 }),
-    createColumn({ name: 'In Progress', ...columnArgs, order: 20000000 }),
-    createColumn({ name: 'Done', ...columnArgs, order: 30000000 }),
+    createColumn({ name: 'To Do', ...columnArgs, order: 0 }),
+    createColumn({ name: 'In Progress', ...columnArgs, order: 1000000 }),
+    createColumn({ name: 'Done', ...columnArgs, order: 2000000 }),
   ]);
 
   const taskArgs = {
@@ -78,38 +78,45 @@ async function main() {
       assigneeIds: [user2.id],
       description: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.`,
       stickerIds: [frontendSticker.id, designSticker.id],
+      order: 0,
       ...taskArgs,
     }),
     createTask({
       title: 'Тестирование UX-флоу',
       columnId: toDoColumn.id,
       stickerIds: [testingSticker.id],
+      order: 1000000,
       ...taskArgs,
     }),
     createTask({
       title: 'Интеграция онлайн-оплаты',
       columnId: toDoColumn.id,
+      order: 2000000,
       ...taskArgs,
     }),
     createTask({
       title: 'Добавление отзывов клиентов',
       columnId: toDoColumn.id,
+      order: 3000000,
       ...taskArgs,
     }),
     createTask({
       title: 'Настройка событий (Yandex Metrica)',
       columnId: toDoColumn.id,
+      order: 4000000,
       ...taskArgs,
     }),
     createTask({
       title: 'Разработка программы лояльности',
       columnId: toDoColumn.id,
+      order: 5000000,
       ...taskArgs,
     }),
     createTask({
       title: 'Создание email-рассылки',
       columnId: toDoColumn.id,
       stickerIds: [backendSticker.id],
+      order: 6000000,
       ...taskArgs,
     }),
     createTask({
@@ -117,12 +124,14 @@ async function main() {
       columnId: toDoColumn.id,
       assigneeIds: [testUser.id],
       stickerIds: [designSticker.id],
+      order: 7000000,
       ...taskArgs,
     }),
     createTask({
       title: 'Оптимизация времени загрузки',
       columnId: inProgressColumn.id,
       stickerIds: [frontendSticker.id],
+      order: 0,
       ...taskArgs,
     }),
     createTask({
@@ -130,6 +139,7 @@ async function main() {
       columnId: inProgressColumn.id,
       assigneeIds: [user3.id],
       stickerIds: [frontendSticker.id, backendSticker.id],
+      order: 1000000,
       ...taskArgs,
     }),
     createTask({
@@ -137,6 +147,7 @@ async function main() {
       columnId: doneColumn.id,
       assigneeIds: [testUser.id],
       stickerIds: [designSticker.id],
+      order: 0,
       ...taskArgs,
     }),
   ]);
