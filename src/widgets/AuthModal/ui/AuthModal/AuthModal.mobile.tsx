@@ -5,7 +5,7 @@ import { Drawer } from '@/shared/ui/c';
 import { AuthModalContent } from '../AuthModalContent';
 
 import { useRouter } from 'next/navigation';
-import { useState, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 interface Props {
   trigger?: ReactNode;
@@ -14,14 +14,10 @@ interface Props {
 export function AuthModalMobile({}: Props) {
   const { back } = useRouter();
 
-  const [showDrawer, setShowDrawer] = useState(true);
-
   return (
     <Drawer
       title={AUTH_FORM_TITLE}
       description={AUTH_FORM_DESC}
-      open={showDrawer}
-      onOpenChange={setShowDrawer}
       onAnimationEnd={back}
       className='h-[24rem]'
       titleClassName='text-center'
