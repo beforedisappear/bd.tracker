@@ -1,19 +1,23 @@
-import { ErrorBoundary } from '@/shared/ui/c';
+import { ErrorBoundary, Slot } from '@/shared/ui/c';
 import { ManageProjectMembersContentLoading } from './ManageProjectMembersContent.loading';
-import { ManageProjectMembersForm } from '../ManageProjectMembersForm/ManageProjectMembersForm';
 
 import { useTenant } from '@/shared/lib/navigation/useTenant';
-import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
 import { useQuery } from '@tanstack/react-query';
 
-import { getProjectMembersModal, projectQueries } from '@/entities/Project';
+import { projectQueries } from '@/entities/Project';
 import { teamQueries } from '@/entities/Team';
 
 import { mapTeamMembersToProjectMembers } from '../../lib/mapTeamMembersToProjectMembers';
 
-export function ManageProjectMembersContent() {
+interface Props {
+  children: React.ReactNode;
+  projectId: string | null;
+}
+
+export function ManageProjectMembersContent(props: Props) {
+  const { children, projectId } = props;
+
   const tenant = useTenant();
-  const { currentProjectId } = usePrivateGlobalStore(getProjectMembersModal());
 
   const {
     data: projectMembers = [],
@@ -22,8 +26,8 @@ export function ManageProjectMembersContent() {
     error: projectMembersError,
     refetch: refetchProjectMembers,
   } = useQuery({
-    ...projectQueries.getProjectMembers({ projectId: currentProjectId! }),
-    enabled: !!currentProjectId,
+    ...projectQueries.getProjectMembers({ projectId: projectId! }),
+    enabled: !!projectId,
   });
 
   const {
@@ -50,9 +54,11 @@ export function ManageProjectMembersContent() {
     );
 
   return (
-    <ManageProjectMembersForm
-      projectId={currentProjectId as string}
+    <Slot
+      projectId={projectId}
       data={mapTeamMembersToProjectMembers(teamMembers, projectMembers)}
-    />
+    >
+      {children}
+    </Slot>
   );
 }

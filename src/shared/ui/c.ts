@@ -27,6 +27,7 @@ export { Popover } from './Popover/Popover';
 export { CheckboxSelectField } from './CheckboxSelectField/CheckboxSelectField';
 export { Calendar } from './Calendar/Calendar';
 export { RenameInput } from './RenameInput/RenameInput';
+export { Slot } from './Slot/Slot';
 
 //custom
 export { ErrorBoundary } from './ErrorBoundary/ErrorBoundary';
