@@ -3,9 +3,7 @@ import { PencilIcon, Tag, TrashIcon } from 'lucide-react';
 import { DropdownMenu, type DropDownMenuOptions } from '@/shared/ui/c';
 import { ManageBoardsItemMenuTrigger } from '../ManageBoardsItemMenuTrigger/ManageBoardsItemMenuTrigger';
 
-import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
-
-import { getDeleteBoardModalActions } from '@/entities/Board';
+import { boardEventBus } from '@/entities/Board';
 import { toast } from 'sonner';
 
 import { LAST_BOARD_ERROR_MESSAGE } from '../../constants';
@@ -19,13 +17,9 @@ interface Props {
 export function ManageBoardsItemMenu(props: Props) {
   const { boardId, countOfBoards, onRenameBoard } = props;
 
-  const { setShowDeleteBoardModal, setCurrentBoardId } = usePrivateGlobalStore(
-    getDeleteBoardModalActions(),
-  );
-
-  const setShowManageStickersModal = usePrivateGlobalStore(
-    state => state.setShowManageStickersModal,
-  );
+  const onShowManageStickersModal = () => {
+    boardEventBus.emit('showManageStickersModal', { boardId });
+  };
 
   const onDeleteBoard = () => {
     if (countOfBoards === 1) {
@@ -33,13 +27,7 @@ export function ManageBoardsItemMenu(props: Props) {
       return;
     }
 
-    setShowDeleteBoardModal(true);
-    setCurrentBoardId(boardId);
-  };
-
-  const onShowManageStickersModal = () => {
-    setCurrentBoardId(boardId);
-    setShowManageStickersModal(true);
+    boardEventBus.emit('showDeleteBoardModal', { boardId });
   };
 
   const options: DropDownMenuOptions = [

@@ -3,12 +3,7 @@ import { SquarePen, Users, Trash } from 'lucide-react';
 import { DropdownMenu, type DropDownMenuOptions } from '@/shared/ui/c';
 import { ManageProjectsItemMenuTrigger } from '../ManageProjectsItemMenuTrigger/ManageProjectsItemMenuTrigger';
 
-import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
-
-import {
-  getProjectMembersModalActions,
-  getDeleteProjectModalActions,
-} from '@/entities/Project';
+import { projectEventBus } from '@/entities/Project';
 
 interface Props {
   projectId: string;
@@ -18,20 +13,12 @@ interface Props {
 export function ManageProjectsItemMenu(props: Props) {
   const { projectId, onRenameProject } = props;
 
-  const { setShowProjectMembersModal, setCurrentProjectId } =
-    usePrivateGlobalStore(getProjectMembersModalActions());
-  const { setShowDeleteProjectModal } = usePrivateGlobalStore(
-    getDeleteProjectModalActions(),
-  );
-
   const onOpenProjectMembersModal = () => {
-    setCurrentProjectId(projectId);
-    setShowProjectMembersModal(true);
+    projectEventBus.emit('showProjectMembersModal', { projectId });
   };
 
   const onOpenDeleteProjectModal = () => {
-    setCurrentProjectId(projectId);
-    setShowDeleteProjectModal(true);
+    projectEventBus.emit('showDeleteProjectModal', { projectId });
   };
 
   const options: DropDownMenuOptions = [

@@ -1,18 +1,8 @@
-import type {
-  IProjectSliceActions,
-  IProjectSliceState,
-} from './slices/projectSlice';
-import type { IBoardSliceActions, IBoardSliceState } from './slices/boardSlice';
-
-export interface IPrivateGlobalStoreState
-  extends IProjectSliceState,
-    IBoardSliceState {
+export interface IPrivateGlobalStoreState {
   teamIdBySlugMap: Record<string, string>;
 }
 
-export interface IPrivateGlobalStoreActions
-  extends IProjectSliceActions,
-    IBoardSliceActions {
+export interface IPrivateGlobalStoreActions {
   setTeamIdBySlugMap: (map: Record<string, string>) => void;
 }
 

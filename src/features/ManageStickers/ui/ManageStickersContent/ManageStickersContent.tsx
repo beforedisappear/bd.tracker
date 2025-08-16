@@ -1,14 +1,17 @@
-import { ManageStickerList } from '../ManageStickerList/ManageStickerList';
-
 import { stickerQueries } from '@/entities/Board';
-import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
+
 import { useQuery } from '@tanstack/react-query';
 
 import { Skeleton } from '@/shared/ui/s';
-import { ErrorBoundary } from '@/shared/ui/c';
+import { ErrorBoundary, Slot } from '@/shared/ui/c';
 
-export function ManageStickersContent() {
-  const boardId = usePrivateGlobalStore(state => state.currentBoardId);
+interface Props {
+  children: React.ReactNode;
+  boardId?: string | null;
+}
+
+export function ManageStickersContent(props: Props) {
+  const { children, boardId } = props;
 
   const {
     data = [],
@@ -22,5 +25,5 @@ export function ManageStickersContent() {
   else if (isError || !boardId)
     return <ErrorBoundary className='m-auto' error={error} reset={refetch} />;
 
-  return <ManageStickerList boardId={boardId} data={data} />;
+  return <Slot data={data}>{children}</Slot>;
 }

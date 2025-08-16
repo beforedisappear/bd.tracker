@@ -1,7 +1,7 @@
 'use client';
 
-import { isObject } from '@/shared/lib/type-guards';
-import { useSubscription } from '@/shared/lib/tanstack-query';
+import { isObject } from '@/shared/lib/typeGuards';
+import { useSubscription } from '@/shared/lib/tanstackQuery';
 import type { QueryFilters, QueryKey } from '@tanstack/react-query';
 
 import type { ZodSchema, z } from 'zod';

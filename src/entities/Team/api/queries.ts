@@ -1,4 +1,4 @@
-import { mutationOptions } from '@/shared/lib/tanstack-query';
+import { mutationOptions } from '@/shared/lib/tanstackQuery';
 import { queryOptions } from '@tanstack/react-query';
 import { queryClient } from '@/shared/config/query';
 

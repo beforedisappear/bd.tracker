@@ -3,15 +3,17 @@
 import { Drawer } from '@/shared/ui/c';
 import { DeleteBoardForm } from '../DeleteBoardForm';
 
-import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
-
 import { DELETE_BOARD_DESCRIPTION, DELETE_BOARD_TITLE } from '../../constants';
 
-import { getDeleteBoardModal } from '@/entities/Board';
+import { useShowDeleteBoardModal } from '../../lib/useShowDeleteBoardModal';
 
 export function DeleteBoardMobile() {
-  const { setShowDeleteBoardModal, showDeleteBoardModal, deletingBoardId } =
-    usePrivateGlobalStore(getDeleteBoardModal());
+  const {
+    showDeleteBoardModal,
+    setShowDeleteBoardModal,
+    currentBoardId,
+    onCloseModal,
+  } = useShowDeleteBoardModal();
 
   return (
     <Drawer
@@ -23,10 +25,7 @@ export function DeleteBoardMobile() {
       open={showDeleteBoardModal}
       onOpenChange={setShowDeleteBoardModal}
     >
-      <DeleteBoardForm
-        onClose={() => setShowDeleteBoardModal(false)}
-        boardId={deletingBoardId}
-      />
+      <DeleteBoardForm onClose={onCloseModal} boardId={currentBoardId} />
     </Drawer>
   );
 }

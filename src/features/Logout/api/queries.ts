@@ -1,5 +1,5 @@
 import { queryClient } from '@/shared/config/query';
-import { mutationOptions } from '@/shared/lib/tanstack-query';
+import { mutationOptions } from '@/shared/lib/tanstackQuery';
 
 import { logout } from './logout';
 

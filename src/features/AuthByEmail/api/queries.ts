@@ -1,4 +1,4 @@
-import { mutationOptions } from '@/shared/lib/tanstack-query';
+import { mutationOptions } from '@/shared/lib/tanstackQuery';
 
 import { auth } from './auth';
 import { login } from './login';

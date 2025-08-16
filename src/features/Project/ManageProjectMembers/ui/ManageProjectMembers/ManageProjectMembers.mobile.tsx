@@ -3,14 +3,17 @@
 import { Drawer } from '@/shared/ui/c';
 import { ManageProjectMembersContent } from '../ManageProjectMembersContent';
 
-import { getProjectMembersModal } from '@/entities/Project';
-import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
-
 import { MANAGE_PROJECT_MEMBERS_TITLE } from '../../constants';
+import { useShowProjectMembersModal } from '../../lib/useShowProjectMembersModal';
+import { ManageProjectMembersForm } from '../ManageProjectMembersForm/ManageProjectMembersForm';
 
 export function ManageProjectMembersMobile() {
-  const { showProjectMembersModal, setShowProjectMembersModal } =
-    usePrivateGlobalStore(getProjectMembersModal());
+  const {
+    showProjectMembersModal,
+    currentProjectId,
+    setShowProjectMembersModal,
+    onCloseModal,
+  } = useShowProjectMembersModal();
 
   return (
     <Drawer
@@ -20,7 +23,9 @@ export function ManageProjectMembersMobile() {
       open={showProjectMembersModal}
       onOpenChange={setShowProjectMembersModal}
     >
-      <ManageProjectMembersContent />
+      <ManageProjectMembersContent projectId={currentProjectId}>
+        <ManageProjectMembersForm onCloseModal={onCloseModal} />
+      </ManageProjectMembersContent>
     </Drawer>
   );
 }

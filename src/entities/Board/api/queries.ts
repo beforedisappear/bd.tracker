@@ -1,6 +1,6 @@
 import { queryClient } from '@/shared/config/query';
 import { queryOptions, type Query } from '@tanstack/react-query';
-import { mutationOptions } from '@/shared/lib/tanstack-query';
+import { mutationOptions } from '@/shared/lib/tanstackQuery';
 
 import { getAllBoards } from './board/getAllBoards';
 import { getBoardById } from './board/getBoardById';

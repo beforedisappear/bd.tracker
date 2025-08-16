@@ -1,27 +1,20 @@
 import { Dialog } from '@/shared/ui/c';
 import { DeleteProjectForm } from '../DeleteProjectForm/DeleteProjectForm';
 
-import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
-
-import { getDeleteProjectModal } from '@/entities/Project';
-
 import {
   DELETE_PROJECT_MODAL_TITLE,
   DELETE_PROJECT_MODAL_DESCRIPTION,
 } from '../../constants/ui.constants';
 
+import { useShowDeleteProjectModal } from '../../lib/useShowDeleteProjectModal';
+
 export function DeleteProjectDesktop() {
   const {
+    showDeleteProjectModal,
     currentProjectId,
     setShowDeleteProjectModal,
-    showDeleteProjectModal,
-    setCurrentProjectId,
-  } = usePrivateGlobalStore(getDeleteProjectModal());
-
-  const onCloseModal = () => {
-    setShowDeleteProjectModal(false);
-    setCurrentProjectId(null);
-  };
+    onCloseModal,
+  } = useShowDeleteProjectModal();
 
   return (
     <Dialog

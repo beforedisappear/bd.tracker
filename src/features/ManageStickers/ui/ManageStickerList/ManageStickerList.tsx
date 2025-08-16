@@ -5,12 +5,14 @@ import { ManageStickerListItem } from '../ManageStickerListItem/ManageStickerLis
 import { ManageStickerListPlaceholder } from './ManageStickerList.placeholder';
 
 interface Props {
-  boardId: string;
-  data: Sticker[];
+  boardId?: string | null;
+  data?: Sticker[];
 }
 
 export function ManageStickerList(props: Props) {
   const { boardId, data } = props;
+
+  if (!data || !boardId) return null;
 
   return (
     <div className='flex flex-col gap-2'>

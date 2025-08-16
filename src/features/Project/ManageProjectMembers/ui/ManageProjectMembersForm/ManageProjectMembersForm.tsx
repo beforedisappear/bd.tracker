@@ -7,9 +7,8 @@ import {
   type TeamMember,
 } from '@/entities/Team';
 
-import { projectQueries, getProjectMembersModal } from '@/entities/Project';
+import { projectQueries } from '@/entities/Project';
 
-import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
 import { useDeviceType } from '@/shared/lib/deviceType/c';
 import { useTenant } from '@/shared/lib/navigation';
 import { useMutation } from '@tanstack/react-query';
@@ -21,18 +20,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ManageProjectMembersSchema } from '../../model/schemes';
 
 interface Props {
-  projectId: string;
-  data: (TeamMember & { isProjectMember: boolean })[];
+  projectId?: string;
+  data?: (TeamMember & { isProjectMember: boolean })[];
+  onCloseModal: () => void;
 }
 
 export function ManageProjectMembersForm(props: Props) {
-  const { data, projectId } = props;
+  const { data = [], projectId, onCloseModal } = props;
 
   const tenant = useTenant();
   const { isDesktop } = useDeviceType();
   const { isEnoughAccess } = useTeamAccess();
-  const { setShowProjectMembersModal, setCurrentProjectId } =
-    usePrivateGlobalStore(getProjectMembersModal());
 
   const memberValues = data.map(member => [member.id, member.isProjectMember]);
 
@@ -49,14 +47,16 @@ export function ManageProjectMembersForm(props: Props) {
     projectQueries.updateProjectMembers(),
   );
 
+  if (!projectId) return null;
+
   const onSubmit = form.handleSubmit(data => {
     const membersIds = Object.keys(data.membersIds).filter(
       key => data.membersIds?.[key],
     );
 
     updateProjectMembers({ projectId, teamIdOrSlug: tenant, membersIds })
-      .then(() => setShowProjectMembersModal(false))
-      .then(() => setCurrentProjectId(null));
+      .then(onCloseModal)
+      .catch(console.error);
   });
 
   return (
@@ -66,11 +66,7 @@ export function ManageProjectMembersForm(props: Props) {
 
         <div className='flex justify-end gap-2'>
           {isDesktop && (
-            <Button
-              type='button'
-              variant='outline'
-              onClick={() => setShowProjectMembersModal(false)}
-            >
+            <Button type='button' variant='outline' onClick={onCloseModal}>
               Отмена
             </Button>
           )}

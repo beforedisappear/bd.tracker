@@ -11,7 +11,6 @@ export {
   useBoardStore,
   type BoardStore,
 } from './model/store';
-export { getDeleteBoardModal } from './model/selectors/getDeleteBoardModal';
 export { getDeleteColumnModal } from './model/selectors/getDeleteColumnModal';
 export { getCreateTaskModal } from './model/selectors/getCreateTaskModal';
 export { getMapColorTaskFilterByBoardId } from './model/selectors/getMapColorTaskFilterByBoardId';
@@ -19,8 +18,6 @@ export { getMapAssigneesTaskFilterByBoardId } from './model/selectors/getMapAssi
 export { getMapDateRangeTaskFilterByBoardId } from './model/selectors/getMapDateRangeTaskFilterByBoardId';
 export { getMapStickerTaskFilterByBoardId } from './model/selectors/getMapStickerTaskFilterByBoardId';
 export { getAllMapTaskFilters } from './model/selectors/getAllMapTaskFilters';
-export { getManageStickersModal } from './model/selectors/getManageStickersModal';
-export { getDeleteBoardModalActions } from './model/selectors/getDeleteBoardModalActions';
 
 export { computeOrder } from './lib/computeOrder/computeOrder';
 export { getItemWithHighestOrder } from './lib/getItemWithHighestOrder';
@@ -33,6 +30,8 @@ export { BoardTaskStickersMenu } from './ui/BoardTaskStickersMenu/BoardTaskStick
 export { BoardTaskDateRangeMenu } from './ui/BoardTaskDateRangeMenu/BoardTaskDateRangeMenu';
 export { BoardAssigneesPopover } from './ui/BoardAssigneesPopover/BoardAssigneesPopover';
 export { BoardColumnMenu } from './ui/BoardColumnMenu/BoardColumnMenu';
+
+export { boardEventBus } from './lib/boardEventBus';
 
 export { mapColorToClassName } from './config';
 
