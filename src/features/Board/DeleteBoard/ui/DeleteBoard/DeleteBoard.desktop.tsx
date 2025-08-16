@@ -3,19 +3,17 @@
 import { Dialog } from '@/shared/ui/c';
 import { DeleteBoardForm } from '../DeleteBoardForm';
 
-import { usePrivateGlobalStore } from '@/shared/store/privateGlobalStore';
-
-import { getDeleteBoardModal } from '@/entities/Board';
+import { useShowDeleteBoardModal } from '../../lib/useShowDeleteBoardModal';
 
 import { DELETE_BOARD_DESCRIPTION, DELETE_BOARD_TITLE } from '../../constants';
 
 export function DeleteBoardDesktop() {
-  const { setShowDeleteBoardModal, showDeleteBoardModal, deletingBoardId } =
-    usePrivateGlobalStore(getDeleteBoardModal());
-
-  const onCloseModal = () => {
-    setShowDeleteBoardModal(false);
-  };
+  const {
+    showDeleteBoardModal,
+    currentBoardId,
+    setShowDeleteBoardModal,
+    onCloseModal,
+  } = useShowDeleteBoardModal();
 
   return (
     <Dialog
@@ -28,7 +26,7 @@ export function DeleteBoardDesktop() {
       onOpenChange={setShowDeleteBoardModal}
       open={showDeleteBoardModal}
     >
-      <DeleteBoardForm onClose={onCloseModal} boardId={deletingBoardId} />
+      <DeleteBoardForm onClose={onCloseModal} boardId={currentBoardId} />
     </Dialog>
   );
 }
