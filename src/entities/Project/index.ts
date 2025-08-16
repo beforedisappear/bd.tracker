@@ -2,7 +2,7 @@ export { projectQueries } from './api';
 
 export { ProjectMembersField } from './ui/ProjectMembersField/ProjectMembersField';
 
-export { projectEventBus } from './lib/projectEventBus';
+export { projectEventBus, useProjectEvent } from './lib/projectEventBus';
 
 export {
   ProjectMembersFieldSchema,

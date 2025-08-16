@@ -1,23 +1,16 @@
-import { useEffect, useState } from 'react';
-
-import { boardEventBus } from '@/entities/Board';
+import { useState } from 'react';
+import { useBoardEvent } from '@/entities/Board';
 
 export const useShowDeleteBoardModal = () => {
   const [showDeleteBoardModal, setShowDeleteBoardModal] = useState(false);
   const [currentBoardId, setCurrentBoardId] = useState<string | null>(null);
 
-  useEffect(() => {
-    const onShowDeleteBoardModal = ({ boardId }: { boardId: string }) => {
-      setShowDeleteBoardModal(true);
-      setCurrentBoardId(boardId);
-    };
+  const onShowDeleteBoardModal = ({ boardId }: { boardId: string }) => {
+    setShowDeleteBoardModal(true);
+    setCurrentBoardId(boardId);
+  };
 
-    boardEventBus.on('showDeleteBoardModal', onShowDeleteBoardModal);
-
-    return () => {
-      boardEventBus.off('showDeleteBoardModal', onShowDeleteBoardModal);
-    };
-  }, []);
+  useBoardEvent('showDeleteBoardModal', onShowDeleteBoardModal);
 
   return {
     showDeleteBoardModal,
