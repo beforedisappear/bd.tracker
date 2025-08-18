@@ -31,7 +31,7 @@ export { BoardTaskDateRangeMenu } from './ui/BoardTaskDateRangeMenu/BoardTaskDat
 export { BoardAssigneesPopover } from './ui/BoardAssigneesPopover/BoardAssigneesPopover';
 export { BoardColumnMenu } from './ui/BoardColumnMenu/BoardColumnMenu';
 
-export { boardEventBus } from './lib/boardEventBus';
+export { boardEventBus, useBoardEvent } from './lib/boardEventBus';
 
 export { mapColorToClassName } from './config';
 
