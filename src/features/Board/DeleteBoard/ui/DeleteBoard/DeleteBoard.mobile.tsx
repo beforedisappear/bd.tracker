@@ -5,7 +5,7 @@ import { DeleteBoardForm } from '../DeleteBoardForm';
 
 import { DELETE_BOARD_DESCRIPTION, DELETE_BOARD_TITLE } from '../../constants';
 
-import { useShowDeleteBoardModal } from '../../lib/useShowDeleteBoardModal';
+import { useShowDeleteBoardModal } from '../../model/useShowDeleteBoardModal';
 
 export function DeleteBoardMobile() {
   const {

@@ -2,7 +2,7 @@ import { apiClient } from '@/shared/api/c';
 
 import type { RenameColumnDtoReq, RenameColumnDtoRes } from '../../model/types';
 
-export const renameColumn = async (dto: RenameColumnDtoReq) => {
+export const renameColumnRequest = async (dto: RenameColumnDtoReq) => {
   const { id, name } = dto;
 
   return apiClient.withAuth

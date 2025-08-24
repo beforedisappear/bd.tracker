@@ -1,3 +1,5 @@
+'use client';
+
 import { useEvent } from '@/shared/lib/eventBus';
 import { boardEventBus } from './boardEventBus';
 

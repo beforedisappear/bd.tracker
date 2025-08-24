@@ -19,7 +19,7 @@ export { getMapDateRangeTaskFilterByBoardId } from './model/selectors/getMapDate
 export { getMapStickerTaskFilterByBoardId } from './model/selectors/getMapStickerTaskFilterByBoardId';
 export { getAllMapTaskFilters } from './model/selectors/getAllMapTaskFilters';
 
-export { computeOrder } from './lib/computeOrder/computeOrder';
+export { computeOrder } from './model/reducers/computeOrder/computeOrder';
 export { getItemWithHighestOrder } from './lib/getItemWithHighestOrder';
 
 export { BoardColorInput } from './ui/BoardColorInput/BoardColorInput';

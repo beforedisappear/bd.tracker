@@ -2,30 +2,30 @@ import { queryOptions } from '@tanstack/react-query';
 import { mutationOptions } from '@/shared/lib/tanstackQuery';
 import { queryClient } from '@/shared/config/query';
 
-import { getUser } from './getUser';
-import { updateUser } from './updateUser';
-import { changeEmail } from './changeEmail';
+import { getUserRequest } from './getUser';
+import { updateUserRequest } from './updateUser';
+import { changeEmailRequest } from './changeEmail';
 
 import type { PostChangeEmailDtoReq, UpdateUserDtoReq } from '../model/types';
 
-export const userQueries = {
-  all: () => ['user'],
+export namespace userQueries {
+  const all = () => ['user'];
 
-  getUser: () =>
+  export const getUser = () =>
     queryOptions({
-      queryKey: [...userQueries.all()],
-      queryFn: getUser,
+      queryKey: [...all()],
+      queryFn: getUserRequest,
       select: res => res.data,
-    }),
+    });
 
-  updateUser: () =>
+  export const updateUser = () =>
     mutationOptions({
-      mutationFn: (user: UpdateUserDtoReq) => updateUser(user),
-      onSuccess: data => queryClient.setQueryData([...userQueries.all()], data),
-    }),
+      mutationFn: (user: UpdateUserDtoReq) => updateUserRequest(user),
+      onSuccess: data => queryClient.setQueryData([...all()], data),
+    });
 
-  changeEmail: () =>
+  export const changeEmail = () =>
     mutationOptions({
-      mutationFn: (dto: PostChangeEmailDtoReq) => changeEmail(dto),
-    }),
-};
+      mutationFn: (dto: PostChangeEmailDtoReq) => changeEmailRequest(dto),
+    });
+}

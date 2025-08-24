@@ -2,7 +2,7 @@ import { Dialog } from '@/shared/ui/c';
 import { ManageStickersContent } from '../ManageStickersContent';
 import { ManageStickerList } from '../ManageStickerList/ManageStickerList';
 
-import { useManageStickersModal } from '../../lib/useManageStickersModal';
+import { useManageStickersModal } from '../../model';
 
 import { MANAGE_STICKERS_TITLE } from '../../constants';
 

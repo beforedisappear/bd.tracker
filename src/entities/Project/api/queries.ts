@@ -2,14 +2,15 @@ import { queryClient } from '@/shared/config/query';
 import { queryOptions } from '@tanstack/react-query';
 import { mutationOptions } from '@/shared/lib/tanstackQuery';
 
-import { createProject } from '../api/createProject';
-import { getProjectsByTeam } from './getProjectsByTeam';
-import { getProjectMembers } from './getProjectMembers';
-import { deleteProject } from './deleteProject';
-import { addProjectMember } from './addProjectMember';
-import { removeProjectMember } from './removeProjectMembet';
-import { updateProjectMembers } from './updateProjectMembers';
-import { renameProject } from './renameProject';
+import { createProjectRequest } from './project/createProject';
+import { renameProjectRequest } from './project/renameProject';
+import { getProjectsByTeamRequest } from './project/getProjectsByTeam';
+import { deleteProjectRequest } from './project/deleteProject';
+
+import { getProjectMembersRequest } from './projectMember/getProjectMembers';
+import { addProjectMemberRequest } from './projectMember/addProjectMember';
+import { removeProjectMemberRequest } from './projectMember/removeProjectMember';
+import { updateProjectMembersRequest } from './projectMember/updateProjectMembers';
 
 import type {
   GetProjectsByTeamDtoReq,
@@ -20,69 +21,73 @@ import type {
   RemoveProjectMemberDtoReq,
   UpdateProjectMembersDtoReq,
   RenameProjectDtoReq,
-} from '../models/types';
+} from '../model/types';
 
-export const projectQueries = {
-  teamProjects: (teamIdOrSlug: string) => ['projects', teamIdOrSlug],
+export namespace projectQueries {
+  export const teamProjects = (teamIdOrSlug: string) => [
+    'projects',
+    teamIdOrSlug,
+  ];
 
-  projectMembers: (projectId: string) => ['projectMembers', projectId],
+  const projectMembers = (projectId: string) => ['projectMembers', projectId];
 
-  getProjectsByTeam: (dto: GetProjectsByTeamDtoReq) =>
+  export const getProjectsByTeam = (dto: GetProjectsByTeamDtoReq) =>
     queryOptions({
       queryKey: [...projectQueries.teamProjects(dto.teamIdOrSlug)],
-      queryFn: () => getProjectsByTeam(dto),
+      queryFn: () => getProjectsByTeamRequest(dto),
       select: res => res.data,
-    }),
+    });
 
-  getProjectMembers: (dto: GetProjectMembersDtoReq) =>
+  export const getProjectMembers = (dto: GetProjectMembersDtoReq) =>
     queryOptions({
-      queryKey: [...projectQueries.projectMembers(dto.projectId)],
-      queryFn: () => getProjectMembers(dto),
+      queryKey: [...projectMembers(dto.projectId)],
+      queryFn: () => getProjectMembersRequest(dto),
       select: res => res.data,
-    }),
+    });
 
-  createProject: () =>
+  export const createProject = () =>
     mutationOptions({
-      mutationFn: (dto: CreateProjectDto) => createProject(dto),
+      mutationFn: (dto: CreateProjectDto) => createProjectRequest(dto),
       onSuccess: (_, { teamIdOrSlug }) =>
         queryClient.invalidateQueries({
           queryKey: [...projectQueries.teamProjects(teamIdOrSlug)],
         }),
-    }),
+    });
 
-  renameProject: () =>
+  export const renameProject = () =>
     mutationOptions({
-      mutationFn: (dto: RenameProjectDtoReq) => renameProject(dto),
+      mutationFn: (dto: RenameProjectDtoReq) => renameProjectRequest(dto),
       onSuccess: (_, { teamIdOrSlug }) => {
         queryClient.invalidateQueries({
           queryKey: [...projectQueries.teamProjects(teamIdOrSlug)],
         });
       },
-    }),
+    });
 
-  deleteProject: () =>
+  export const deleteProject = () =>
     mutationOptions({
-      mutationFn: (dto: DeleteProjectDtoReq) => deleteProject(dto),
+      mutationFn: (dto: DeleteProjectDtoReq) => deleteProjectRequest(dto),
       onSuccess: (_, { teamIdOrSlug }) =>
         queryClient.invalidateQueries({
           queryKey: [...projectQueries.teamProjects(teamIdOrSlug)],
         }),
-    }),
+    });
 
-  addProjectMember: () =>
+  export const addProjectMember = () =>
     mutationOptions({
-      mutationFn: (dto: AddProjectMemberDtoReq) => addProjectMember(dto),
-    }),
+      mutationFn: (dto: AddProjectMemberDtoReq) => addProjectMemberRequest(dto),
+    });
 
-  removeProjectMember: () =>
+  export const removeProjectMember = () =>
     mutationOptions({
-      mutationFn: (dto: RemoveProjectMemberDtoReq) => removeProjectMember(dto),
-    }),
+      mutationFn: (dto: RemoveProjectMemberDtoReq) =>
+        removeProjectMemberRequest(dto),
+    });
 
-  updateProjectMembers: () =>
+  export const updateProjectMembers = () =>
     mutationOptions({
       mutationFn: (dto: UpdateProjectMembersDtoReq) =>
-        updateProjectMembers(dto),
+        updateProjectMembersRequest(dto),
       onSuccess: (_, { teamIdOrSlug, projectId }) => {
         queryClient.invalidateQueries({
           queryKey: [...projectQueries.teamProjects(teamIdOrSlug)],
@@ -91,11 +96,11 @@ export const projectQueries = {
         setTimeout(
           () =>
             queryClient.invalidateQueries({
-              queryKey: [...projectQueries.projectMembers(projectId)],
+              queryKey: [...projectMembers(projectId)],
               refetchType: 'active',
             }),
           0,
         );
       },
-    }),
-};
+    });
+}

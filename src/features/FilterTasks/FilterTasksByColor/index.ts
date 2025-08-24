@@ -1,1 +1,1 @@
-export { FilterTasksByColor } from './FilterTasksByColor/FilterTasksByColor';
+export { FilterTasksByColor } from './ui/FilterTasksByColor/FilterTasksByColor';

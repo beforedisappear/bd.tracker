@@ -4,19 +4,22 @@ import { queryClient } from '@/shared/config/query';
 
 import { projectQueries } from '@/entities/Project/@x/team';
 
-import { getHaveAccessToTeam } from './getHaveAccessToTeam';
-import { getUserTeamList } from './getUserTeamList';
-import { getTeamMembers } from './getTeamMembers';
-import { getTeamById } from './getTeamByid';
-import { getTeamMemberById } from './getTeamMemberById';
-import { createTeam } from './createTeam';
-import { deleteTeam } from './deleteTeam';
-import { renameTeam } from './renameTeam';
-import { inviteToTeam } from './inviteToTeam';
-import { addAdmin } from './addAdmin';
-import { deleteAdmin } from './deleteAdmin';
-import { deleteTeamMember } from './deleteTeamMember';
-import { checkTeamInvitation } from './checkTeamInvitation';
+import { getHaveAccessToTeamRequest } from './team/getHaveAccessToTeam';
+import { getUserTeamListRequest } from './team/getUserTeamList';
+import { getTeamByIdRequest } from './team/getTeamByid';
+import { createTeamRequest } from './team/createTeam';
+import { deleteTeamRequest } from './team/deleteTeam';
+import { renameTeamRequest } from './team/renameTeam';
+import { inviteToTeamRequest } from './team/inviteToTeam';
+import { checkTeamInvitationRequest } from './team/checkTeamInvitation';
+
+import { getTeamMemberByIdRequest } from './teamMember/getTeamMemberById';
+import { deleteTeamMemberRequest } from './teamMember/deleteTeamMember';
+import { getTeamMembersRequest } from './teamMember/getTeamMembers';
+
+import { addAdminRequest } from './admin/addAdmin';
+import { deleteAdminRequest } from './admin/deleteAdmin';
+
 import type {
   Team,
   CreateTeamDtoReq,
@@ -31,91 +34,88 @@ import type {
   DeleteTeamMemberAdminDtoReq,
   DeleteTeamMemberDtoReq,
   CheckTeamInvitationDtoReq,
-} from '../models/types';
+} from '../model/types';
 import type { AxiosResponse } from 'axios';
 
-export const teamQueries = {
-  currentUser: () => ['currentUser'],
+export namespace teamQueries {
+  const userTeamList = () => ['userTeamList'];
 
-  userTeamList: () => ['userTeamList'],
+  const userTeamById = (idOrSlug: string) => ['userTeamById', idOrSlug];
 
-  userTeamById: (idOrSlug: string) => ['userTeamById', idOrSlug],
-
-  teamMembers: (idOrSlug: string, keyword?: string) => [
+  const teamMembers = (idOrSlug: string, keyword?: string) => [
     'teamMembers',
     idOrSlug,
     ...(keyword ? ['keyword', keyword] : []),
-  ],
+  ];
 
-  teamMemberById: (idOrSlug: string, memberId: string) => [
+  const teamMemberById = (idOrSlug: string, memberId: string) => [
     'teamMemberById',
     idOrSlug,
     memberId,
-  ],
+  ];
 
-  getUserTeamList: () =>
+  export const getUserTeamList = () =>
     queryOptions({
-      queryKey: [...teamQueries.userTeamList()],
-      queryFn: getUserTeamList,
-      select: res => res.data,
-    }),
+      queryKey: [...userTeamList()],
+      queryFn: getUserTeamListRequest,
+    });
 
-  getTeamMembers: (dto: GetTeamMembersDtoReq) =>
+  export const getTeamMembers = (dto: GetTeamMembersDtoReq) =>
     queryOptions({
-      queryKey: [...teamQueries.teamMembers(dto.idOrSlug, dto.keyword)],
-      queryFn: () => getTeamMembers(dto),
+      queryKey: [...teamMembers(dto.idOrSlug, dto.keyword)],
+      queryFn: () => getTeamMembersRequest(dto),
       select: res => res.data,
-    }),
+    });
 
-  getHaveAccessToTeam: (dto: GetHaveAccessToTeamDto) =>
+  export const getHaveAccessToTeam = (dto: GetHaveAccessToTeamDto) =>
     queryOptions({
       queryKey: ['teamAccess', dto.idOrSlug],
-      queryFn: () => getHaveAccessToTeam(dto),
+      queryFn: () => getHaveAccessToTeamRequest(dto),
       select: res => res.data,
       staleTime: 60 * 1000 * 10,
-    }),
+    });
 
-  getTeamById: (dto: GetTeamByIdDtoReq) =>
+  export const getTeamById = (dto: GetTeamByIdDtoReq) =>
     queryOptions({
-      queryKey: [...teamQueries.userTeamById(dto.idOrSlug)],
-      queryFn: () => getTeamById(dto),
+      queryKey: [...userTeamById(dto.idOrSlug)],
+      queryFn: () => getTeamByIdRequest(dto),
       select: res => res.data,
-    }),
+    });
 
-  getTeamMemberById: (dto: GetTeamMemberByIdDtoReq) =>
+  export const getTeamMemberById = (dto: GetTeamMemberByIdDtoReq) =>
     queryOptions({
-      queryKey: [...teamQueries.teamMemberById(dto.teamIdOrSlug, dto.memberId)],
-      queryFn: () => getTeamMemberById(dto),
-    }),
+      queryKey: [...teamMemberById(dto.teamIdOrSlug, dto.memberId)],
+      queryFn: () => getTeamMemberByIdRequest(dto),
+    });
 
-  createTeam: () =>
+  export const createTeam = () =>
     mutationOptions({
       mutationKey: ['createTeam'],
-      mutationFn: (data: CreateTeamDtoReq) => createTeam(data),
+      mutationFn: (data: CreateTeamDtoReq) => createTeamRequest(data),
       onSuccess: () =>
         queryClient.invalidateQueries({
-          queryKey: [...teamQueries.userTeamList()],
+          queryKey: [...userTeamList()],
           refetchType: 'active',
         }),
-    }),
+    });
 
-  deleteTeam: () =>
+  export const deleteTeam = () =>
     mutationOptions({
       mutationKey: ['deleteTeam'],
-      mutationFn: (dto: DeleteTeamDtoReq) => deleteTeam(dto),
+      mutationFn: (dto: DeleteTeamDtoReq) => deleteTeamRequest(dto),
       onSuccess: () =>
         queryClient.invalidateQueries({
-          queryKey: [...teamQueries.userTeamList()],
+          queryKey: [...userTeamList()],
           refetchType: 'active',
         }),
-    }),
+    });
 
-  renameTeam: () =>
+  export const renameTeam = () =>
     mutationOptions({
       mutationKey: ['renameTeam'],
-      mutationFn: (dto: RenameTeamDtoReq) => renameTeam(dto),
+      mutationFn: (dto: RenameTeamDtoReq) => renameTeamRequest(dto),
       onMutate: async ({ idOrSlug, name }) => {
-        const queryKey = teamQueries.userTeamList();
+        const queryKey = userTeamList();
 
         await queryClient.cancelQueries({ queryKey });
 
@@ -135,74 +135,75 @@ export const teamQueries = {
       onError: (_err, _variables, context) => {
         if (!context?.previousTeams) return;
 
-        const queryKey = teamQueries.userTeamList();
+        const queryKey = userTeamList();
         queryClient.setQueryData(queryKey, context.previousTeams);
       },
       onSettled: () =>
         queryClient.invalidateQueries({
-          queryKey: [...teamQueries.userTeamList()],
+          queryKey: [...userTeamList()],
         }),
-    }),
+    });
 
-  inviteToTeam: () =>
+  export const inviteToTeam = () =>
     mutationOptions({
       mutationKey: ['inviteToTeam'],
-      mutationFn: (dto: InviteToTeamDtoReq) => inviteToTeam(dto),
+      mutationFn: (dto: InviteToTeamDtoReq) => inviteToTeamRequest(dto),
       onSuccess: ({ data }, { teamIdOrSlug }) => {
         if (data.result === 'proposal') return;
 
         queryClient.invalidateQueries({
-          queryKey: [...teamQueries.teamMembers(teamIdOrSlug)],
+          queryKey: [...teamMembers(teamIdOrSlug)],
           refetchType: 'active',
         });
       },
-    }),
+    });
 
-  checkTeamInvitation: () =>
+  export const checkTeamInvitation = () =>
     mutationOptions({
       mutationKey: ['checkTeamInvitation'],
-      mutationFn: (dto: CheckTeamInvitationDtoReq) => checkTeamInvitation(dto),
-    }),
+      mutationFn: (dto: CheckTeamInvitationDtoReq) =>
+        checkTeamInvitationRequest(dto),
+    });
 
-  deleteTeamMember: () =>
+  export const deleteTeamMember = () =>
     mutationOptions({
       mutationKey: ['deleteTeamMember'],
-      mutationFn: (dto: DeleteTeamMemberDtoReq) => deleteTeamMember(dto),
+      mutationFn: (dto: DeleteTeamMemberDtoReq) => deleteTeamMemberRequest(dto),
       onSuccess: (_, { teamIdOrSlug, memberId }) => {
         queryClient.setQueryData(
-          [...teamQueries.teamMemberById(teamIdOrSlug, memberId)],
+          [...teamMemberById(teamIdOrSlug, memberId)],
           null,
         );
 
         queryClient.invalidateQueries({
-          queryKey: [...teamQueries.teamMembers(teamIdOrSlug)],
+          queryKey: [...teamMembers(teamIdOrSlug)],
         });
 
         queryClient.invalidateQueries({
           queryKey: [...projectQueries.teamProjects(teamIdOrSlug)],
         });
       },
-    }),
+    });
 
-  addAdmin: () =>
+  export const addAdmin = () =>
     mutationOptions({
       mutationKey: ['addAdmin'],
-      mutationFn: (dto: AddTeamMemberAdminDtoReq) => addAdmin(dto),
+      mutationFn: (dto: AddTeamMemberAdminDtoReq) => addAdminRequest(dto),
       onSuccess: (_, { teamIdOrSlug, memberId }) =>
         queryClient.invalidateQueries({
-          queryKey: [...teamQueries.teamMemberById(teamIdOrSlug, memberId)],
+          queryKey: [...teamMemberById(teamIdOrSlug, memberId)],
           refetchType: 'active',
         }),
-    }),
+    });
 
-  deleteAdmin: () =>
+  export const deleteAdmin = () =>
     mutationOptions({
       mutationKey: ['deleteAdmin'],
-      mutationFn: (dto: DeleteTeamMemberAdminDtoReq) => deleteAdmin(dto),
+      mutationFn: (dto: DeleteTeamMemberAdminDtoReq) => deleteAdminRequest(dto),
       onSuccess: (_, { teamIdOrSlug, memberId }) =>
         queryClient.invalidateQueries({
-          queryKey: [...teamQueries.teamMemberById(teamIdOrSlug, memberId)],
+          queryKey: [...teamMemberById(teamIdOrSlug, memberId)],
           refetchType: 'active',
         }),
-    }),
-};
+    });
+}

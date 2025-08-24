@@ -10,15 +10,14 @@ import { ProjectViewWrapper } from '../ProjectViewWrapper/ProjectViewWrapper';
 import { useQuery } from '@tanstack/react-query';
 import { useProject } from '@/shared/lib/navigation';
 import { useDeviceType } from '@/shared/lib/deviceType/useDeviceType';
-import { useBoardRealTime } from '../../lib/useBoardRealTime';
+import { useBoardRealTime, normalizeAndSortBoardData } from '../../model';
 import {
   useBoardStore,
   boardQueries,
   getAllMapTaskFilters,
 } from '@/entities/Board';
 
-import { getContentMargin } from '../../lib/getContentMargin';
-import { normalizeAndSortBoardData } from '../../lib/normalizeAndSortBoardData';
+import { getContentMargin } from '../../lib';
 
 export function ProjectView() {
   const { boardId } = useProject();

@@ -4,6 +4,6 @@ import { apiClient } from '@/shared/api/c';
 
 import type { User } from '../model/types';
 
-export const updateUser = async (user: UpdateUserDtoReq) => {
+export const updateUserRequest = async (user: UpdateUserDtoReq) => {
   return apiClient.withAuth.put<User>(`/profile`, user);
 };

@@ -4,7 +4,9 @@ import {
   GetAllBoardStickersDotRes,
 } from '../../model/types';
 
-export const getAllBoardStickers = async (dto: GetAllBoardStickersDtoReq) => {
+export const getAllBoardStickersRequest = async (
+  dto: GetAllBoardStickersDtoReq,
+) => {
   const { boardId } = dto;
 
   return apiClient.withAuth

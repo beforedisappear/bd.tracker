@@ -4,7 +4,9 @@ import {
   CreateBoardStickerDtoRes,
 } from '../../model/types';
 
-export const createBoardSticker = async (dto: CreateBoardStickerDtoReq) => {
+export const createBoardStickerRequest = async (
+  dto: CreateBoardStickerDtoReq,
+) => {
   const { boardId, ...body } = dto;
 
   return apiClient.withAuth

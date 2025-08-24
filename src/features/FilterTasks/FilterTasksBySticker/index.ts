@@ -1,1 +1,1 @@
-export { FilterTasksBySticker } from './FilterTasksBySticker/FilterTasksBySticker';
+export { FilterTasksBySticker } from './ui/FilterTasksBySticker/FilterTasksBySticker';

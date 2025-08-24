@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { projectQueries } from '@/entities/Project';
 import { teamQueries } from '@/entities/Team';
 
-import { mapTeamMembersToProjectMembers } from '../../lib/mapTeamMembersToProjectMembers';
+import { mapTeamMembersToProjectMembers } from '../../model';
 
 interface Props {
   children: React.ReactNode;

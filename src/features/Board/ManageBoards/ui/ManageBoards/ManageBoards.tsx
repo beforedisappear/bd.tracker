@@ -3,7 +3,7 @@ import { ManageBoardsLoading } from './ManageBoards.loading';
 
 import { useProject } from '@/shared/lib/navigation';
 import { useQuery } from '@tanstack/react-query';
-import { useManageBoardsRealTime } from '../../lib';
+import { useManageBoardsRealTime } from '../../model';
 
 import { boardQueries } from '@/entities/Board';
 
