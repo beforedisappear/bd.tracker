@@ -5,8 +5,9 @@ import { EditTeamNamePlaceholder } from './EditTeamName.placeholder';
 import { EditTeamNameLoading } from './EditTeamName.loading';
 
 import { useQuery } from '@tanstack/react-query';
-import { teamQueries } from '@/entities/Team/api/queries';
 import { useTenant } from '@/shared/lib/navigation';
+
+import { teamQueries } from '@/entities/Team';
 
 export function EditTeamName() {
   const tenant = useTenant();
