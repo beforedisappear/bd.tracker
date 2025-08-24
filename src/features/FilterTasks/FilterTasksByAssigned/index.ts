@@ -1,1 +1,1 @@
-export { FilterTasksByAssigned } from './FilterTasksByAssigned/FilterTasksByAssigned';
+export { FilterTasksByAssigned } from './ui/FilterTasksByAssigned/FilterTasksByAssigned';

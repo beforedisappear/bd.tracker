@@ -14,11 +14,14 @@ import {
 } from '@dnd-kit/core';
 
 import { customCollisionDetection } from '../../lib/customCollisionDetection';
-import { useDragAndDropBoardItems } from '../../lib/useDragAndDropBoardItems';
 import { useMemo } from 'react';
 import { useDebounce } from '@/shared/lib/ui';
-
-import type { Board, Column, Task } from '@/entities/Board';
+import {
+  useDndBoard,
+  type Board,
+  type Column,
+  type Task,
+} from '@/entities/Board';
 
 interface MapColumnsAndTasksById {
   columns: Record<string, Column>;
@@ -41,7 +44,7 @@ export function ViewBoard(props: Props) {
     handleDragOver,
     handleDragMove,
     handleDragEnd,
-  } = useDragAndDropBoardItems({ board });
+  } = useDndBoard({ board });
 
   const { setNodeRef } = useDroppable({ id: board.id });
   const sensors = useSensors(
@@ -100,14 +103,16 @@ export function ViewBoard(props: Props) {
       <DragOverlay>
         {activeDraggableItem && activeDraggableItem.type === 'Column' && (
           <ViewBoardColumn
-            data={mapColumnsAndTasksById.columns[activeDraggableItem.id]}
+            data={
+              mapColumnsAndTasksById.columns[activeDraggableItem.id] as Column
+            }
             sortableTaskIds={sortableTaskIds}
           />
         )}
 
         {activeDraggableItem && activeDraggableItem.type === 'Task' && (
           <ViewBoardTask
-            data={mapColumnsAndTasksById.tasks[activeDraggableItem.id]}
+            data={mapColumnsAndTasksById.tasks[activeDraggableItem.id] as Task}
           />
         )}
       </DragOverlay>

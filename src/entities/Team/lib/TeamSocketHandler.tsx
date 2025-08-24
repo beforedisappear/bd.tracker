@@ -10,7 +10,7 @@ import { teamQueries } from '../api';
 import type {
   SubscribeSocketAction,
   UnsubscribeSocketAction,
-} from '../models/types/socket';
+} from '../model/types';
 
 export function TeamSocketHandler() {
   const tenant = useTenant();

@@ -44,12 +44,14 @@ export async function GetAllTeamProjects(request: NextRequest) {
 
     const { userId } = await authService.verifyJwt(accessToken);
 
-    const { teamIdOrSlug } = getQueryParams(request, ['teamIdOrSlug']);
+    const { teamIdOrSlug } = getQueryParams(request, ['teamIdOrSlug'], {
+      strict: true,
+    });
 
     GetAllTeamProjectsReqQuerySchema.parse({ teamIdOrSlug });
 
     const projects = await projectService.getAllProjects({
-      teamIdOrSlug: teamIdOrSlug,
+      teamIdOrSlug: teamIdOrSlug!,
       initiatorId: userId,
     });
 

@@ -6,7 +6,7 @@ import {
   DELETE_PROJECT_MODAL_DESCRIPTION,
 } from '../../constants/ui.constants';
 
-import { useShowDeleteProjectModal } from '../../lib/useShowDeleteProjectModal';
+import { useShowDeleteProjectModal } from '../../model/useShowDeleteProjectModal';
 
 export function DeleteProjectMobile() {
   const {

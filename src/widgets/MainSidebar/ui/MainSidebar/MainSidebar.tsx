@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useTenant } from '@/shared/lib/navigation';
 import { useDeviceType } from '@/shared/lib/deviceType/c';
 import { useEffect } from 'react';
-import { useMainSidebarProjects } from '../../lib';
+import { useMainSidebarProjects } from '../../model';
 
 import {
   getMainSidebarGroupItems,

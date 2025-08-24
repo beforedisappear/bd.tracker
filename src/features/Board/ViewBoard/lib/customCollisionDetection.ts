@@ -1,6 +1,6 @@
 import { closestCenter, type CollisionDetection } from '@dnd-kit/core';
 
-import { isTypeActive } from './isTypeActive';
+import { isTypeActive } from '@/entities/Board';
 
 export const customCollisionDetection: CollisionDetection = ({
   active,

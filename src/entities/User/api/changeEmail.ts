@@ -5,7 +5,7 @@ import type {
   PostChangeEmailDtoRes,
 } from '../model/types';
 
-export const changeEmail = (dto: PostChangeEmailDtoReq) => {
+export const changeEmailRequest = (dto: PostChangeEmailDtoReq) => {
   return apiClient.withAuth.post<PostChangeEmailDtoRes>(
     '/profile/email/send-change-request',
     dto,

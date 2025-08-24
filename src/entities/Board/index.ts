@@ -19,8 +19,8 @@ export { getMapDateRangeTaskFilterByBoardId } from './model/selectors/getMapDate
 export { getMapStickerTaskFilterByBoardId } from './model/selectors/getMapStickerTaskFilterByBoardId';
 export { getAllMapTaskFilters } from './model/selectors/getAllMapTaskFilters';
 
-export { computeOrder } from './lib/computeOrder/computeOrder';
 export { getItemWithHighestOrder } from './lib/getItemWithHighestOrder';
+export { mapTasksById } from './model/reducers/mapTasksById';
 
 export { BoardColorInput } from './ui/BoardColorInput/BoardColorInput';
 export { BoardSticker } from './ui/BoardSticker/BoardSticker';
@@ -30,6 +30,11 @@ export { BoardTaskStickersMenu } from './ui/BoardTaskStickersMenu/BoardTaskStick
 export { BoardTaskDateRangeMenu } from './ui/BoardTaskDateRangeMenu/BoardTaskDateRangeMenu';
 export { BoardAssigneesPopover } from './ui/BoardAssigneesPopover/BoardAssigneesPopover';
 export { BoardColumnMenu } from './ui/BoardColumnMenu/BoardColumnMenu';
+
+export { isTypeActive } from './lib/isTypeActive';
+export { isTypeOver } from './lib/isTypeOver';
+
+export { useDndBoard } from './lib/useDndBoard';
 
 export { boardEventBus, useBoardEvent } from './lib/boardEventBus';
 

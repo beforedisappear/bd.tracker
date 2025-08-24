@@ -1,1 +1,1 @@
-export { FilterTasksByDateRange } from './FilterTasksByDateRange/FilterTasksByDateRange';
+export { FilterTasksByDateRange } from './ui/FilterTasksByDateRange/FilterTasksByDateRange';

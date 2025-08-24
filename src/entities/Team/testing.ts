@@ -1,1 +1,1 @@
-export type { GetUserTeamListDtoRes } from './models/types';
+export type { GetUserTeamListDtoRes } from './model/types';

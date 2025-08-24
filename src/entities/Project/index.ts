@@ -7,10 +7,10 @@ export { projectEventBus, useProjectEvent } from './lib/projectEventBus';
 export {
   ProjectMembersFieldSchema,
   RenameProjectSchema,
-} from './models/schemes';
+} from './model/schemes';
 
 export type {
   Project,
   ProjectWithFirstBoardId,
   ProjectMember,
-} from './models/types';
+} from './model/types';

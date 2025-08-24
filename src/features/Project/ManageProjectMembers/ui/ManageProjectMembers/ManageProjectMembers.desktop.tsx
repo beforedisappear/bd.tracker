@@ -4,7 +4,7 @@ import { Dialog } from '@/shared/ui/c';
 import { ManageProjectMembersContent } from '../ManageProjectMembersContent';
 
 import { MANAGE_PROJECT_MEMBERS_TITLE } from '../../constants';
-import { useShowProjectMembersModal } from '../../lib/useShowProjectMembersModal';
+import { useShowProjectMembersModal } from '../../model';
 import { ManageProjectMembersForm } from '../ManageProjectMembersForm/ManageProjectMembersForm';
 
 export function ManageProjectMembersDesktop() {

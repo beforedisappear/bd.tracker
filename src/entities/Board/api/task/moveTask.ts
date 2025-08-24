@@ -2,7 +2,7 @@ import { apiClient } from '@/shared/api/c';
 
 import type { MoveTaskDtoReq, MoveTaskDtoRes } from '../../model/types';
 
-export async function moveTask(dto: MoveTaskDtoReq) {
+export async function moveTaskRequest(dto: MoveTaskDtoReq) {
   const { id, ...body } = dto;
 
   return apiClient.withAuth

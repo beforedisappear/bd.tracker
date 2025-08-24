@@ -4,7 +4,9 @@ import {
   DeleteBoardStickerDtoRes,
 } from '../../model/types';
 
-export const deleteBoardSticker = async (dto: DeleteBoardStickerDtoReq) => {
+export const deleteBoardStickerRequest = async (
+  dto: DeleteBoardStickerDtoReq,
+) => {
   const { id, boardId } = dto;
 
   return apiClient.withAuth

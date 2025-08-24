@@ -1,3 +1,5 @@
+/* eslint-disable boundaries/element-types */
+
 import { DeviceTypeProvider } from '@/app/providers/DeviceTypeProvider/testing';
 import type { Decorator } from '@storybook/react';
 

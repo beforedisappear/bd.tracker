@@ -31,7 +31,7 @@ export async function GetCheckInvitationExists(
     const isInvitationExists =
       await teamService.checkInvitationExistsByInviteeEmail({
         idOrSlug,
-        inviteeEmail,
+        inviteeEmail: inviteeEmail!,
         checkerId: userId,
       });
 

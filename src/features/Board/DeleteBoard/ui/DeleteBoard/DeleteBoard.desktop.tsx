@@ -3,7 +3,7 @@
 import { Dialog } from '@/shared/ui/c';
 import { DeleteBoardForm } from '../DeleteBoardForm';
 
-import { useShowDeleteBoardModal } from '../../lib/useShowDeleteBoardModal';
+import { useShowDeleteBoardModal } from '../../model/useShowDeleteBoardModal';
 
 import { DELETE_BOARD_DESCRIPTION, DELETE_BOARD_TITLE } from '../../constants';
 

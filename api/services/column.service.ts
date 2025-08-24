@@ -154,7 +154,7 @@ class ColumnService extends BaseService {
 
         for (let i = 0; i < columns.length; i++) {
           const column = await tx.column.update({
-            where: { id: columns[i].id },
+            where: { id: columns[i]!.id },
             data: { order: i * COLUMN_ORDER_STEP },
           });
 
