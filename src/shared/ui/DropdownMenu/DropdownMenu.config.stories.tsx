@@ -31,18 +31,18 @@ const subItems: MenuItem[] = [
 ];
 
 export const groupMenuData: DropDownMenuOptions = [
-  simpleMenuData[0],
+  simpleMenuData[0]!,
   { type: 'separator' },
   {
     type: 'group',
     subItems: [...subItems],
   },
   { type: 'separator' },
-  simpleMenuData[2],
+  simpleMenuData[2]!,
 ];
 
 export const groupMenuData2: DropDownMenuOptions = [
-  simpleMenuData[0],
+  simpleMenuData[0]!,
   { type: 'separator' },
   {
     type: 'group',

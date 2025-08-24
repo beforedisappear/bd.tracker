@@ -13,9 +13,7 @@ export interface Board extends SummaryBoard {
   columns: Column[];
 }
 
-export type GetAllBoardsDtoReq = {
-  projectId: string;
-};
+export type GetAllBoardsDtoReq = { projectId: string };
 
 export type GetAllBoardsDtoRes = SummaryBoard[];
 

@@ -69,11 +69,14 @@ describe('NavigationMenu ui component', () => {
 
     expect(menuItems[0]).toHaveTextContent(firstLabel);
     expect(menuItems[0]).toHaveTextContent(firstDescription);
-    expect(menuItems[0].querySelector('a')).toHaveAttribute('href', firstLink);
+    expect(menuItems[0]!.querySelector('a')).toHaveAttribute('href', firstLink);
 
     expect(menuItems[1]).toHaveTextContent(secondLabel);
     expect(menuItems[1]).toHaveTextContent(secondDescription);
-    expect(menuItems[1].querySelector('a')).toHaveAttribute('href', secondLink);
+    expect(menuItems[1]!.querySelector('a')).toHaveAttribute(
+      'href',
+      secondLink,
+    );
   });
 
   it('renders multiple items', () => {

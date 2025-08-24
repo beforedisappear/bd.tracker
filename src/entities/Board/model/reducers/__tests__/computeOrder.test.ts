@@ -1,9 +1,9 @@
 import { arrayMove } from '@dnd-kit/sortable';
-import { computeOrder } from './computeOrder';
+import { calculateOrder } from '../calculateOrder';
 
 describe('computeOrder (task type)', () => {
   it('should compute order for insertion at the beginning', () => {
-    const result = computeOrder({
+    const result = calculateOrder({
       prev: undefined,
       next: 2_000_000,
       type: 'task',
@@ -13,7 +13,7 @@ describe('computeOrder (task type)', () => {
   });
 
   it('should compute order for insertion at the end', () => {
-    const result = computeOrder({
+    const result = calculateOrder({
       prev: 3_000_000,
       next: undefined,
       type: 'task',
@@ -23,7 +23,7 @@ describe('computeOrder (task type)', () => {
   });
 
   it('should compute order for insertion between two tasks', () => {
-    const result = computeOrder({
+    const result = calculateOrder({
       prev: 1_000_000,
       next: 3_000_000,
       type: 'task',
@@ -33,7 +33,7 @@ describe('computeOrder (task type)', () => {
   });
 
   it('should compute order for insertion between tasks with odd sum', () => {
-    const result = computeOrder({
+    const result = calculateOrder({
       prev: 1_000_000,
       next: 4_000_000,
       type: 'task',
@@ -43,7 +43,7 @@ describe('computeOrder (task type)', () => {
   });
 
   it('should return 0 for first task when no prev and no next', () => {
-    const result = computeOrder({
+    const result = calculateOrder({
       prev: undefined,
       next: undefined,
       type: 'task',
@@ -65,16 +65,16 @@ describe('column normalization scenarios', () => {
     for (let i = 0; i < 15; i++) {
       const lastColumnIndex = columns.length - 1;
 
-      const secondColumn = columns[1];
-      const thirdColumn = columns[2];
+      const secondColumn = columns[1]!;
+      const thirdColumn = columns[2]!;
 
-      const newOrder = computeOrder({
+      const newOrder = calculateOrder({
         type: 'column',
-        prev: secondColumn.order,
-        next: thirdColumn.order,
+        prev: secondColumn?.order,
+        next: thirdColumn?.order,
       });
 
-      columns[lastColumnIndex].order = newOrder;
+      columns[lastColumnIndex]!.order = newOrder;
 
       const newColumns = arrayMove(
         columns,
@@ -87,7 +87,7 @@ describe('column normalization scenarios', () => {
 
     // Проверяем, что каждый элемент меньше следующего
     for (let i = 0; i < columns.length - 1; i++) {
-      expect(columns[i].order).toBeLessThan(columns[i + 1].order);
+      expect(columns[i]!.order).toBeLessThan(columns[i + 1]!.order);
     }
   });
 
@@ -110,13 +110,13 @@ describe('column normalization scenarios', () => {
       const firstColumn = columns[0];
       const secondColumn = columns[1];
 
-      const newOrder = computeOrder({
+      const newOrder = calculateOrder({
         type: 'column',
-        prev: firstColumn.order,
-        next: secondColumn.order,
+        prev: firstColumn?.order,
+        next: secondColumn?.order,
       });
 
-      columns[lastColumnIndex].order = newOrder;
+      columns[lastColumnIndex]!.order = newOrder;
 
       const newColumns = arrayMove(
         columns,
@@ -129,7 +129,7 @@ describe('column normalization scenarios', () => {
 
     // Проверяем, что каждый элемент меньше следующего
     for (let i = 0; i < columns.length - 1; i++) {
-      expect(columns[i].order).toBeLessThan(columns[i + 1].order);
+      expect(columns[i]!.order).toBeLessThan(columns[i + 1]!.order);
     }
   });
 
@@ -152,28 +152,28 @@ describe('column normalization scenarios', () => {
 
       if (pattern === 0) {
         // Move to beginning
-        newOrder = computeOrder({ type: 'column', next: columns[0].order });
+        newOrder = calculateOrder({ type: 'column', next: columns[0]!.order });
         targetIndex = 0;
       } else if (pattern === 1) {
         // Move to end
-        newOrder = computeOrder({
+        newOrder = calculateOrder({
           type: 'column',
-          prev: columns[columns.length - 1].order,
+          prev: columns[columns.length - 1]?.order,
         });
 
         targetIndex = columns.length;
       } else {
         // Move to middle
         const middleIndex = Math.floor(columns.length / 2);
-        newOrder = computeOrder({
+        newOrder = calculateOrder({
           type: 'column',
-          prev: columns[middleIndex - 1].order,
-          next: columns[middleIndex].order,
+          prev: columns[middleIndex - 1]?.order,
+          next: columns[middleIndex]?.order,
         });
         targetIndex = middleIndex;
       }
 
-      columns[lastColumnIndex].order = newOrder;
+      columns[lastColumnIndex]!.order = newOrder;
 
       const newColumns = arrayMove(columns, lastColumnIndex, targetIndex);
 
@@ -181,7 +181,7 @@ describe('column normalization scenarios', () => {
     }
 
     for (let i = 0; i < columns.length - 1; i++) {
-      expect(columns[i].order).toBeLessThan(columns[i + 1].order);
+      expect(columns[i]!.order).toBeLessThan(columns[i + 1]!.order);
     }
   });
 
@@ -197,16 +197,16 @@ describe('column normalization scenarios', () => {
       const columnToMove = columns[3];
       const targetPosition = (i % 3) + 1;
 
-      const prevColumn = columns[targetPosition - 1];
-      const nextColumn = columns[targetPosition];
+      const prevColumn = columns[targetPosition - 1]!;
+      const nextColumn = columns[targetPosition]!;
 
-      const newOrder = computeOrder({
+      const newOrder = calculateOrder({
         type: 'column',
         prev: prevColumn.order,
         next: nextColumn.order,
       });
 
-      columnToMove.order = newOrder;
+      columnToMove!.order = newOrder;
 
       const newColumns = arrayMove(columns, 3, targetPosition);
 
@@ -214,7 +214,7 @@ describe('column normalization scenarios', () => {
     }
 
     for (let i = 0; i < columns.length - 1; i++) {
-      expect(columns[i].order).toBeLessThan(columns[i + 1].order);
+      expect(columns[i]!.order).toBeLessThan(columns[i + 1]!.order);
     }
   });
 });

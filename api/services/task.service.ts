@@ -259,7 +259,7 @@ class TaskService extends BaseService {
 
         for (let i = 0; i < tasks.length; i++) {
           const updatedTask = await tx.task.update({
-            where: { id: tasks[i].id },
+            where: { id: tasks[i]!.id },
             data: { order: i * TASK_ORDER_STEP },
           });
 

@@ -1,7 +1,7 @@
 import {
   DEFAULT_TASK_ORDER_GAP,
   DEFAULT_COLUMN_ORDER_GAP,
-} from '../../../constants';
+} from '../../constants';
 
 type Args = {
   type?: 'task' | 'column';
@@ -9,7 +9,7 @@ type Args = {
   next?: number;
 };
 
-export function computeOrder(args: Args): number {
+export function calculateOrder(args: Args): number {
   const { prev, next, type = 'task' } = args;
 
   const DEFAULT_STEP =

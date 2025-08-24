@@ -93,6 +93,8 @@ export const getSimpleGroupItemsWithActive = (): SidebarGroupEl[] => {
   const items = sidebarGroupElement1.items.slice(0, itemsLength - 1);
   const lastItem = sidebarGroupElement1.items[itemsLength - 1];
 
+  if (!lastItem) return [];
+
   if (lastItem.type === 'separator' || lastItem.type === 'item-sub') return [];
 
   return [

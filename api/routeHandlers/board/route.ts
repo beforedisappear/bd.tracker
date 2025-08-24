@@ -44,10 +44,12 @@ export const GetProjectBoards = async (request: NextRequest) => {
     const accessToken = getAccessTokenFromReq(request);
     const { userId } = await authService.verifyJwt(accessToken);
 
-    const { projectId } = getQueryParams(request, ['projectId']);
+    const { projectId } = getQueryParams(request, ['projectId'], {
+      strict: true,
+    });
 
     const boards = await boardService.getAllBoards({
-      projectId,
+      projectId: projectId!,
       initiatorId: userId,
     });
 

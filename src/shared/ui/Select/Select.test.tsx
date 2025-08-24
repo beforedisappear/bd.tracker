@@ -100,9 +100,9 @@ describe('Select ui component', () => {
     await userEvent.click(trigger);
 
     const options = screen.getAllByRole('option');
-    await userEvent.click(options[1]); // Выбираем вторую опцию
+    await userEvent.click(options[1]!); // Выбираем вторую опцию
 
-    expect(onChange).toHaveBeenCalledWith(mockOptions[1].value);
+    expect(onChange).toHaveBeenCalledWith(mockOptions[1]!.value);
   });
 
   it('selects value when option is clicked', async () => {
@@ -114,9 +114,9 @@ describe('Select ui component', () => {
     await userEvent.click(trigger);
 
     const options = screen.getAllByRole('option');
-    await userEvent.click(options[1]); // Выбираем вторую опцию
+    await userEvent.click(options[1]!); // Выбираем вторую опцию
 
-    expect(trigger).toHaveTextContent(mockOptions[1].name);
+    expect(trigger).toHaveTextContent(mockOptions[1]!.name);
   });
 
   it('renders in disabled state', () => {
