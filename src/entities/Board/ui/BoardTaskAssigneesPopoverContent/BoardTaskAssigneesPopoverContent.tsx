@@ -3,7 +3,7 @@
 import {
   ProjectMembersField,
   ProjectMembersFieldSchema,
-} from '@/entities/Project';
+} from '@/entities/Project/@x/board';
 import { Form } from '@/shared/ui/c';
 
 import { useForm } from 'react-hook-form';
@@ -24,7 +24,7 @@ interface Props {
   offAll?: boolean;
 }
 
-export function BoardAssigneesPopoverContent(props: Props) {
+export function BoardTaskAssigneesPopoverContent(props: Props) {
   const { taskId, assignees, offAll } = props;
 
   const { boardId } = useProject();

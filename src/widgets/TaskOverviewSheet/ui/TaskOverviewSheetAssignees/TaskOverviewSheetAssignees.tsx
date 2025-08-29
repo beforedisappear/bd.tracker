@@ -1,5 +1,5 @@
 import { Avatar } from '@/shared/ui/s';
-import { BoardAssigneesPopover, TaskExtended } from '@/entities/Board';
+import { BoardTaskAssigneesPopover, type TaskExtended } from '@/entities/Board';
 
 interface Props {
   taskId: TaskExtended['id'];
@@ -28,7 +28,7 @@ export function TaskOverviewSheetAssignees(props: Props) {
 
         <div className='flex items-center gap-2 text-sm'>
           <span>Ответственные:</span>
-          <BoardAssigneesPopover
+          <BoardTaskAssigneesPopover
             taskId={taskId}
             assignees={assignees}
             direction='leftToRight'

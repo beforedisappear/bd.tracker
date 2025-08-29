@@ -1,4 +1,4 @@
-import { BoardAssigneesPopover } from '@/entities/Board';
+import { BoardTaskAssigneesPopover } from '@/entities/Board';
 import {
   BoardTaskDateRangeMenu,
   BoardTaskStickersMenu,
@@ -24,7 +24,7 @@ export function ViewBoardTaskContent(props: Props) {
         />
       </div>
 
-      <BoardAssigneesPopover
+      <BoardTaskAssigneesPopover
         taskId={data.id}
         assignees={data.assignees}
         offAll
