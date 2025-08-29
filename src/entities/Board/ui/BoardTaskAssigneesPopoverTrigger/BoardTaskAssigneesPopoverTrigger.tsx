@@ -13,7 +13,7 @@ interface Props extends ButtonProps {
   avatarLimit?: number;
 }
 
-export function BoardAssigneesPopoverTrigger(props: Props) {
+export function BoardTaskAssigneesPopoverTrigger(props: Props) {
   const {
     onClick,
     assignees,

@@ -28,7 +28,7 @@ export { BoardStickerInput } from './ui/BoardStickerField/BoardStickerField';
 export { BoardTaskHeader } from './ui/BoardTaskHeader/BoardTaskHeader';
 export { BoardTaskStickersMenu } from './ui/BoardTaskStickersMenu/BoardTaskStickersMenu';
 export { BoardTaskDateRangeMenu } from './ui/BoardTaskDateRangeMenu/BoardTaskDateRangeMenu';
-export { BoardAssigneesPopover } from './ui/BoardAssigneesPopover/BoardAssigneesPopover';
+export { BoardTaskAssigneesPopover } from './ui/BoardTaskAssigneesPopover/BoardTaskAssigneesPopover';
 export { BoardColumnMenu } from './ui/BoardColumnMenu/BoardColumnMenu';
 
 export { isTypeActive } from './lib/isTypeActive';

@@ -1,6 +1,6 @@
 import { Popover, type PopoverContentProps } from '@/shared/ui/c';
-import { BoardAssigneesPopoverContent } from '../BoardAssigneesPopoverContent/BoardAssigneesPopoverContent';
-import { BoardAssigneesPopoverTrigger } from '../BoardAssigneesPopoverTrigger/BoardAssigneesPopoverTrigger';
+import { BoardTaskAssigneesPopoverContent } from '../BoardTaskAssigneesPopoverContent/BoardTaskAssigneesPopoverContent';
+import { BoardTaskAssigneesPopoverTrigger } from '../BoardTaskAssigneesPopoverTrigger/BoardTaskAssigneesPopoverTrigger';
 
 import type { AssigneesPopoverTriggerDirection, Task } from '../../model/types';
 
@@ -13,13 +13,13 @@ interface Props {
   offAll?: boolean;
 }
 
-export function BoardAssigneesPopover(props: Props) {
+export function BoardTaskAssigneesPopover(props: Props) {
   const { direction = 'rightToLeft', avatarLimit, align, ...rest } = props;
 
   return (
     <Popover
       trigger={
-        <BoardAssigneesPopoverTrigger
+        <BoardTaskAssigneesPopoverTrigger
           assignees={props.assignees}
           direction={direction}
           avatarLimit={avatarLimit}
@@ -28,7 +28,7 @@ export function BoardAssigneesPopover(props: Props) {
       className='flex flex-col w-80 h-[180px] gap-2'
       content={{ align: align ?? 'end' }}
     >
-      <BoardAssigneesPopoverContent {...rest} />
+      <BoardTaskAssigneesPopoverContent {...rest} />
     </Popover>
   );
 }
