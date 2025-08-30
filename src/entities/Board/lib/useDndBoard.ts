@@ -236,14 +236,18 @@ export function useDndBoard(args: Args) {
     }
   };
 
+  const getDndProps = () => ({
+    onDragStart: handleDragStart,
+    onDragOver: handleDragOver,
+    onDragMove: handleDragMove,
+    onDragEnd: handleDragEnd,
+  });
+
   return {
     columns,
     activeDraggableItem,
     isMovingColumn,
     isMovingTask,
-    handleDragStart,
-    handleDragOver,
-    handleDragMove,
-    handleDragEnd,
+    getDndProps,
   };
 }
