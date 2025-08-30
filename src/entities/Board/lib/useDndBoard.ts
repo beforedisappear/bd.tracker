@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useRef, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 
@@ -93,11 +95,14 @@ export function useDndBoard(args: Args) {
     const isTaskOver = isTypeOver(over, 'Task'); // принимающий элемент - задача
     const isColumnOver = isTypeOver(over, 'Column'); // принимающий элемент - колонка
 
+    const activeId = active.id as string;
+    const overId = over.id as string;
+
     if (isTaskActive && isTaskOver) {
       const newColumns = moveTaskOnTask({
         columns,
-        activeTaskId: active.id as string,
-        overTaskId: over.id as string,
+        activeTaskId: activeId,
+        overTaskId: overId,
       });
 
       if (!newColumns) return;
@@ -109,8 +114,8 @@ export function useDndBoard(args: Args) {
     if (isTaskActive && isColumnOver) {
       const newColumns = moveTaskOnColumn({
         columns,
-        activeTaskId: active.id as string,
-        overColumnId: over.id as string,
+        activeTaskId: activeId,
+        overColumnId: overId,
       });
 
       if (!newColumns) return;
@@ -141,11 +146,14 @@ export function useDndBoard(args: Args) {
     const isColumnOverLastOver = isTypeOver(lastValidOver.current, 'Column');
     const isTaskOverLastOver = isTypeOver(lastValidOver.current, 'Task');
 
+    const activeId = active.id as string;
+    const overId = over.id as string;
+
     if (isColumnActive && isColumnOver) {
       const newColumns = moveColumnOnColumn({
         columns,
-        activeColumnId: active.id as string,
-        overColumnId: over.id as string,
+        activeColumnId: activeId,
+        overColumnId: overId,
       });
 
       if (!newColumns) return;
@@ -154,8 +162,8 @@ export function useDndBoard(args: Args) {
 
       const newOrder = computeColumnOrder({
         columns: newColumns,
-        activeColumnId: active.id as string,
-        overColumnId: over.id as string,
+        activeColumnId: activeId,
+        overColumnId: overId,
         length: columns.length,
       });
 
@@ -163,7 +171,7 @@ export function useDndBoard(args: Args) {
 
       const dto = {
         boardId: board.id,
-        columnId: active.id as string,
+        columnId: activeId,
         order: newOrder,
       };
 
@@ -178,19 +186,18 @@ export function useDndBoard(args: Args) {
     }
 
     if (isTaskActive && isColumnOverLastOver) {
-      const activeTaskId = active.id as string;
       const overColumnId = lastValidOver.current!.id as string;
 
       const newOrder = computeMovedTaskOnColumnOrder({
         columns,
-        activeTaskId,
+        activeTaskId: activeId,
         overColumnId,
       });
 
       if (!newOrder) return;
 
       const dto = {
-        id: activeTaskId,
+        id: activeId,
         columnId: overColumnId,
         boardId: board.id,
         order: newOrder,
@@ -207,19 +214,18 @@ export function useDndBoard(args: Args) {
     }
 
     if (isTaskActive && isTaskOverLastOver) {
-      const activeTaskId = active.id as string;
       const overTaskId = lastValidOver.current!.id as string;
 
       const res = computeMovedTaskOnTaskOrder({
         columns,
-        activeTaskId,
+        activeTaskId: activeId,
         overTaskId,
       });
 
       if (!res) return;
 
       const dto = {
-        id: activeTaskId,
+        id: activeId,
         columnId: res.overColumnId,
         boardId: board.id,
         order: res.order,
