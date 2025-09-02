@@ -34,6 +34,7 @@ export function TaskOverviewSheetAssignees(props: Props) {
             direction='leftToRight'
             avatarLimit={10}
             align='start'
+            offAll
           />
         </div>
       </div>

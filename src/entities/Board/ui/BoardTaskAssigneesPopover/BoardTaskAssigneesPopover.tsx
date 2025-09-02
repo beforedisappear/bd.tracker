@@ -25,7 +25,7 @@ export function BoardTaskAssigneesPopover(props: Props) {
           avatarLimit={avatarLimit}
         />
       }
-      className='flex flex-col w-80 h-[180px] gap-2'
+      className='flex flex-col w-80 h-[180px] gap-2 px-5'
       content={{ align: align ?? 'end' }}
     >
       <BoardTaskAssigneesPopoverContent {...rest} />
