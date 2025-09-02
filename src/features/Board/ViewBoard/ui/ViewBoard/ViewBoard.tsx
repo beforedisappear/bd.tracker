@@ -40,11 +40,10 @@ export function ViewBoard(props: Props) {
     activeDraggableItem,
     isMovingColumn,
     isMovingTask,
-    handleDragStart,
-    handleDragOver,
-    handleDragMove,
-    handleDragEnd,
+    getDndProps,
   } = useDndBoard({ board });
+
+  const dndProps = getDndProps();
 
   const { setNodeRef } = useDroppable({ id: board.id });
   const sensors = useSensors(
@@ -54,7 +53,7 @@ export function ViewBoard(props: Props) {
     }),
   );
 
-  const debouncedHandleDragMove = useDebounce(handleDragMove, 25);
+  const debouncedHandleDragMove = useDebounce(dndProps.onDragMove, 25);
 
   const mapColumnsAndTasksById: MapColumnsAndTasksById = useMemo(() => {
     return columns.reduce(
@@ -80,10 +79,8 @@ export function ViewBoard(props: Props) {
     <DndContext
       sensors={sensors}
       collisionDetection={customCollisionDetection}
-      onDragStart={handleDragStart}
+      {...dndProps}
       onDragMove={debouncedHandleDragMove}
-      onDragOver={handleDragOver}
-      onDragEnd={handleDragEnd}
     >
       <SortableContext
         items={sortableColumnIds}

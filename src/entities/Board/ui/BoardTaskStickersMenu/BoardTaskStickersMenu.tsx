@@ -21,7 +21,7 @@ export function BoardTaskStickersMenu(props: Props) {
           triggerType={triggerType}
         />
       }
-      className='flex flex-col w-56 min-h-36'
+      className='flex flex-col w-56 min-h-36 px-5'
       content={{ align: 'start' }}
     >
       <BoardTaskStickersMenuContent taskId={taskId} stickers={stickers} />

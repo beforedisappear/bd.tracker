@@ -50,6 +50,7 @@ export const CheckboxSelectField = memo(<T extends Item>(props: Props<T>) => {
     <ScrollArea
       type='always'
       style={{ height: customHeight }}
+      isScrollbarOutside
       className={cn('h-40 pr-4 -mr-4 mobile:h-full mobile:max-h-[400px]', {
         ['h-52']: isExpanded,
       })}

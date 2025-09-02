@@ -17,6 +17,7 @@ export type ScrollAreaContainerProps = ComponentPropsWithoutRef<
   scrollBar?: ScrollBarProps;
   viewportRef?: RefObject<HTMLDivElement | null>;
   viewportClassName?: string;
+  isScrollbarOutside?: boolean;
 };
 
 export const ScrollAreaContainer = forwardRef<
@@ -29,6 +30,7 @@ export const ScrollAreaContainer = forwardRef<
     scrollBar,
     viewportRef,
     viewportClassName,
+    isScrollbarOutside,
     ...restProps
   } = props;
 
@@ -41,10 +43,9 @@ export const ScrollAreaContainer = forwardRef<
       <ScrollAreaPrimitive.Viewport
         ref={viewportRef}
         data-testid='scroll-area-viewport'
-        className={cn(
-          'h-full w-full rounded-[inherit] [&>div]:!block',
-          viewportClassName,
-        )}
+        className={cn('h-full w-full rounded-[inherit]', viewportClassName, {
+          '[&>div]:!block': isScrollbarOutside,
+        })}
       >
         {children}
       </ScrollAreaPrimitive.Viewport>
